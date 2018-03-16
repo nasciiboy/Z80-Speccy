@@ -1,0 +1,442 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 29</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 29
+Reports
+
+Subjects covered...
+
+	Reports and messages
+	CONTINUE
+
+Reports appear at the bottom of the screen whenever the +3 has stopped
+executing some BASIC. They explain why it has stopped - be it for some
+natural reason, or because an error has occurred.
+
+Most reports have a code number or letter (so that you can refer to
+the table ahead), a brief message explaining what happened, and the
+line number (and the statement number within the line) where BASIC
+stopped. (A command is shown as line '0'. Within a line, statement '1'
+is at the beginning, statement '2' comes after the first colon (or
+THEN), and so on.)
+
+Reports pertaining to disk operation (or +3DOS) do not start with a
+number or letter - they are shown ahead in alphabetical order.
+
+The behaviour of the CONTINUE command depends very much on the
+reports. Normally, CONTINUE goes to the line and statement specified
+in the last report, but there are exceptions with reports '0', '9' and
+'D'.
+
+Here is a table showing all the reports. The right-hand column tells
+you in which circumstances the report can occur, and this refers you
+to part 31 of this chapter. For example, you can see from the table
+that the error 'A Invalid argument' can occur with SQR, LN, ACS, ASN
+and USR. If you then look up these keywords in part 31 of this
+chapter, you will be able to find out just which arguments are
+invalid.
+
+Disk errors marked by 'RIC' (in the left-hand column) will normally be
+displayed followed by the options: '- Retry, Ignore or Cancel?'. If
+the cancel option is chosen, then the report shown in the second
+column will be displayed.
+
+
+.-----------------------------------------------------------------------------.
+|CODE | REPORT/EXPLANATION                               | SITUATION          |
+|-----+--------------------------------------------------+--------------------|
+|     |                                                  |                    |
+| 0   | OK                                               | Any                |
+|     | Successful completion, or jump to a line number  |                    |
+|     | bigger than any existing. This report does not   |                    |
+|     | change the line and statement jumped to by       |                    |
+|     | CONTINUE.                                        |                    |
+|     |                                                  |                    |
+| 1   | NEXT without FOR                                 | NEXT               |
+|     | The control variable does not exist (it has not  |                    |
+|     | been set up by a FOR statement), but there is an |                    |
+|     | ordinary variable with the same name.            |                    |
+|     |                                                  |                    |
+| 2   | Variable not found                               | Any                |
+|     | For a simple variable, this will happen if the   |                    |
+|     | variable is used before it has been assigned to  |                    |
+|     | by a LET, READ or INPUT statement, loaded from   |                    |
+|     | disk (or tape), or set up in a FOR statement.    |                    |
+|     | For a subscripted variable, it will happen if    |                    |
+|     | the variable is used before it has been          |                    |
+|     | dimensioned in a DIM statement, or loaded from   |                    |
+|     | disk (or tape).                                  |                    |
+|     |                                                  |                    |
+| 3   | Subscript wrong                                  | Subscripted        |
+|     | A subscript is beyond the dimension of the array | variables,         |
+|     | or there are the wrong number of subscripts. If  | Substrings         |
+|     | the subscript is negative or bigger than 65535,  |                    |
+|     | then error 'B' will result.                      |                    |
+|     |                                                  |                    |
+| 4   | Out of memory                                    | LET, INPUT,        |
+|     | There is not enough room in the computer for     | FOR, DIM,          |
+|     | what you are trying to do. If the computer       | GO SUB,            |
+|     | really seems to be stuck in this state, you may  | LOAD, MERGE,       |
+|     | have to clear out the command line using DELETE  | Sometimes          |
+|     | and then delete a program line or two (with the  | during             |
+|     | intention of putting them back afterwards) to    | expression         |
+|     | give yourself room to manoeuvre.                 | evaluation.        |
+|     |                                                  |                    |
+| 5   | Out of screen                                    | INPUT,             |
+|     | An INPUT statement has tried to generate more    | PRINT AT           |
+|     | than 23 lines in the lower half of the screen.   |                    |
+|     | Also occurs with 'PRINT AT 22,xx'.               |                    |
+|     |                                                  |                    |
+| 6   | Number too big                                   | Any                |
+|     | Calculations have yielded a number greater than  | arithmetic         |
+|     | approximately 10^38.                             |                    |
+|     |                                                  |                    |
+| 7   | RETURN without GO SUB                            | RETURN             |
+|     | There has been one more RETURN than there were   |                    |
+|     | GO SUBs.                                         |                    |
+|     |                                                  |                    |
+|     | [The missing error 8 is 'End of file', not used  |                    |
+|     | on the +3.]                                      |                    |
+|     |                                                  |                    |
+| 9   | STOP statement                                   | STOP               |
+|     | After this, CONTINUE will not repeat the STOP,   |                    |
+|     | but carries on with the statement after.         |                    |
+|     |                                                  |                    |
+| A   | Invalid argument                                 | SQR, LN, ASN,      |
+|     | The argument for a function is unsuitable (for   | ACS, USR,          |
+|     | some reason).                                    | (with string       |
+|     |                                                  | argument)          |
+|     |                                                  |                    |
+| B   | Integer out of range                             | RUN, RANDOMIZE,    |
+|     | When an integer is required, the floating point  | POKE, DIM, GO TO,  |
+|     | argument is rounded to the nearest integer. If   | GO SUB, LIST,      |
+|     | this is outside a suitable range, then this      | LLIST, PAUSE,      |
+|     | error results.                                   | PLOT, CHR$,        |
+|     |                                                  | PEEK, USR          |
+|     | For array access, see also error 3.              | (with numeric      |
+|     |                                                  | argument)          |
+|     |                                                  |                    |
+| C   | Nonsense in BASIC                                | VAL, VAL$          |
+|     | The text of the (string) argument does not form  |                    |
+|     | a valid expression. Also used when the argument  |                    |
+|     | for a function or command is outrageously wrong. |                    |
+|     |                                                  |                    |
+| D   | BREAK - CONT repeats                             | LOAD, SAVE,        |
+|     | BREAK was pressed during some peripheral         | VERIFY, MERGE,     |
+|     | operation. The behaviour of CONTINUE after this  | Also used when     |
+|     | report is normal in that it repeats the          | the computer asks  |
+|     | statement. Compare with report 'L'.              | 'scroll?' and you  |
+|     |                                                  | press N, BREAK     |
+|     |                                                  | or the space bar   |
+|     |                                                  |                    |
+| E   | Out of DATA                                      | READ               |
+|     | You have tried to READ past the end of the DATA  |                    |
+|     | list.                                            |                    |
+|     |                                                  |                    |
+| F   | Invalid filename                                 | SAVE               |
+|     | SAVE with filename empty (or longer than 10      |                    |
+|     | characters using tape).                          |                    |
+|     |                                                  |                    |
+| G   | No room for line                                 | Entering a line    |
+|     | There is not enough room left in memory to       | into the program   |
+|     | accommodate the new program line.                |                    |
+|     |                                                  |                    |
+| H   | STOP in INPUT                                    | INPUT              |
+|     | Some INPUT data started with STOP. Unlike the    |                    |
+|     | case with report '9', after this report,         |                    |
+|     | CONTINUE will behave normally, by repeating the  |                    |
+|     | INPUT statement.                                 |                    |
+|     |                                                  |                    |
+| I   | FOR without NEXT                                 | FOR                |
+|     | There was a FOR loop to be executed no times     |                    |
+|     | (e.g. 'FOR n=1 TO 0) and the corresponding NEXT  |                    |
+|     | statement could not be found.                    |                    |
+|     |                                                  |                    |
+| J   | Invalid I/O device                               | Stream operations; |
+|     | You are attempting to input characters from (or  | OPEN #,            |
+|     | output characters to) a device that doesn't      | CLOSE #,           |
+|     | support it. For example, it is not possible to   | INPUT #,           |
+|     | input characters from the screen stream. A       | PRINT #, etc.      |
+|     | command such as 'INPUT #2,a$' will therefore     |                    |
+|     | result in this error.                            |                    |
+|     |                                                  |                    |
+| K   | Invalid colour                                   | INK, PAPER,        |
+|     | The number specified is not an appropriate       | BORDER, FLASH,     |
+|     | value.                                           | BRIGHT, INVERSE,   |
+|     |                                                  | OVER, also after   |
+|     |                                                  | one of the         |
+|     |                                                  | corresponding      |
+|     |                                                  | control            |
+|     |                                                  | characters         |
+|     |                                                  |                    |
+| L   | BREAK into program                               | Any                |
+|     | BREAK pressed. This is detected between two      |                    |
+|     | statements. The line and statement number in the |                    |
+|     | report refer to the statement before BREAK was   |                    |
+|     | pressed, but CONTINUE goes to the statement      |                    |
+|     | after (allowing for any jumps to be made), so    |                    |
+|     | that it does not repeat any statements.          |                    |
+|     |                                                  |                    |
+| M   | RAMTOP no good                                   | CLEAR; possibly    |
+|     | The number specified for RAMTOP is either too    | in RUN             |
+|     | big or too small                                 |                    |
+|     |                                                  |                    |
+| N   | Statement lost                                   | RETURN, NEXT,      |
+|     | Jump to a statement that no longer exists.       | CONTINUE           |
+|     |                                                  |                    |
+| O   | Invalid Stream                                   | INPUT #,           |
+|     | Trying to input from (or output to) a stream     | OPEN #,            |
+|     | that isn't open or that is out of range          | PRINT #            |
+|     | (0...15), or trying to open a stream that is out |                    |
+|     | of range.                                        |                    |
+|     |                                                  |                    |
+| P   | FN without DEF                                   | FN                 |
+|     | User-defined function used without a             |                    |
+|     | corresponding DEF in the program.                |                    |
+|     |                                                  |                    |
+| Q   | Parameter error                                  | FN                 |
+|     | Wrong number of arguments, or one of them is the |                    |
+|     | wrong type (string instead of number, or vice    |                    |
+|     | versa).                                          |                    |
+|     |                                                  |                    |
+| R   | Tape loading error                               | VERIFY, LOAD       |
+|     | A file on tape was found but for some reason     | or MERGE           |
+|     | could not be read in, or would not verify.       |                    |
+|     |                                                  |                    |
+| d   | Too many brackets                                | PLAY               |
+|     | Too many brackets around a repeated phrase in    |                    |
+|     | one of the arguments.                            |                    |
+|     |                                                  |                    |
+| j   | Invalid baud rate                                | FORMAT LINE        |
+|     | The baud rate for the RS232 was set to zero.     |                    |
+|     |                                                  |                    |
+| k   | Invalid note name                                | PLAY               |
+|     | PLAY came across a note or command it didn't     |                    |
+|     | recognise, or a command which was in lower case. |                    |
+|     |                                                  |                    |
+| l   | Number too big                                   | PLAY               |
+|     | A parameter for a command is an order of         |                    |
+|     | magnitude too big.                               |                    |
+|     |                                                  |                    |
+| m   | Note out of range                                | PLAY               |
+|     | A series of sharps of flats has taken a note     |                    |
+|     | beyond the range of the sound chip.              |                    |
+|     |                                                  |                    |
+| n   | Out of range                                     | PLAY               |
+|     | A parameter for a command is too big or too      |                    |
+|     | small. If the error is very large, error 'l'     |                    |
+|     | results.                                         |                    |
+|     |                                                  |                    |
+| o   | Too many tied notes                              | PLAY               |
+|     | An attempt was made to tie too many notes        |                    |
+|     | together.                                        |                    |
+|     |                                                  |                    |
+|     | Bad filename                                     | CAT, COPY,         |
+|     | The filename used in any of the disk commands    | ERASE, LOAD,       |
+|     | does not conform to the limits described in part | MERGE, MOVE,       |
+|     | 20 of this chapter.                              | SAVE               |
+|     |                                                  |                    |
+|     | Bad parameters                                   | Unlikely           |
+|     | One of the values passed to +3DOS by BASIC is    |                    |
+|     | out of range. It is unlikely that this error     |                    |
+|     | will ever be seen.                               |                    |
+|     |                                                  |                    |
+| RIC | CRC data error                                   | CAT, COPY,         |
+|     | The cyclic redundancy check (checksum byte) for  | ERASE, LOAD,       |
+|     | a sector is incorrect. This is a rare error that | MERGE, MOVE,       |
+|     | is produced if the disk being read has been      | SAVE               |
+|     | corrupted in some way (perhaps magnetically).    |                    |
+|     |                                                  |                    |
+|     | Code length error                                | LOAD...CODE        |
+|     | Trying to load a CODE file from disk that is     |                    |
+|     | longer than the value given in the LOAD command. |                    |
+|     |                                                  |                    |
+|     | Destination cannot be wild                       | COPY...TO          |
+|     | Trying to give a wildcard file specification for |                    |
+|     | the destination in a COPY command when the       |                    |
+|     | source also contains wildcard characters. In     |                    |
+|     | this case, the destination can only be a drive   |                    |
+|     | letter.                                          |                    |
+|     |                                                  |                    |
+|     | Destination must be drive                        | COPY...TO          |
+|     | The source filename in a COPY command contains   |                    |
+|     | wildcard characters, but the destination is only |                    |
+|     | a single file name. In this case, the            |                    |
+|     | destination can only be a drive letter.          |                    |
+|     |                                                  |                    |
+|     | Directory full                                   | COPY, SAVE         |
+|     | Trying to create the 65th file on a disk; (the   |                    |
+|     | normal disk directory can only have 64 entries). |                    |
+|     |                                                  |                    |
+|     | Disk full                                        | COPY, SAVE         |
+|     | Saving or copying files to a disk has used the   |                    |
+|     | last byte of free space. The CAT command can be  |                    |
+|     | used to check that there is sufficient free      |                    |
+|     | space before attempting such an operation. When  |                    |
+|     | copying, any partially-copied files will be      |                    |
+|     | deleted. However, when saving, it is possible    |                    |
+|     | that part of the file may be left on the disk -  |                    |
+|     | this part should be erased, as any attempt to    |                    |
+|     | use it will fail.                                |                    |
+|     |                                                  |                    |
+| RIC | Disk has been changed                            | CAT, COPY,         |
+|     | While executing a command, +3DOS has noticed     | ERASE, LOAD,       |
+|     | that the disk in the drive is not the same one   | MERGE, MOVE,       |
+|     | that was present at the beginning of command     | SAVE               |
+|     | execution. If a machine code program has opened  |                    |
+|     | files on a disk (then the disk is changed) and a |                    |
+|     | +3 BASIC command tries to access the disk, then  |                    |
+|     | this report will be produced.                    |                    |
+|     |                                                  |                    |
+|     | Disk is not bootable                             | LOAD "*"           |
+|     | An attempt has been made to load the 'bootstrap' |                    |
+|     | program from a disk that doesn't have a boot     |                    |
+|     | sector.                                          |                    |
+|     |                                                  |                    |
+| RIC | Disk is write protected                          | COPY, ERASE,       |
+|     | An attempt has been made to write to a disk      | FORMAT, MOVE,      |
+|     | whose write protect hole is open. Write          | SAVE               |
+|     | protection may be disabled by sliding closed the |                    |
+|     | appropriate tab, before the disk is written to.  |                    |
+|     |                                                  |                    |
+|     | Drive B: is not present                          | FORMAT             |
+|     | An attempt has been made to use the FORMAT       |                    |
+|     | command on the external disk drive (drive B:)    |                    |
+|     | when it has not been connected.                  |                    |
+|     |                                                  |                    |
+|     | Drive in use                                     | Unlikely           |
+|     | An attempt has been made to re-map a drive that  |                    |
+|     | has files open on it. It is very unlikely that   |                    |
+|     | this error will ever be seen.                    |                    |
+|     |                                                  |                    |
+|     | Drive not found                                  | CAT, COPY,         |
+|     | A filename used in a disk command contains a     | ERASE, LOAD,       |
+|     | drive letter specifying a drive that isn't       | MERGE, MOVE,       |
+|     | present. For example, 'ERASE "c:fred"'.          | SAVE               |
+|     |                                                  |                    |
+| RIC | Drive not ready                                  | CAT, COPY          |
+|     | A disk command has been attempted when the drive | ERASE, FORMAT,     |
+|     | was not ready. This usually happens because      | LOAD, MERGE,       |
+|     | there is no disk in the drive. It will usually   | MOVE, SAVE         |
+|     | be possible to simply put a disk in the drive    |                    |
+|     | and type 'R'.                                    |                    |
+|     |                                                  |                    |
+|     | End of file found                                | Unlikely           |
+|     | An attempt has been made to read a byte past the |                    |
+|     | end-of-file position. It is unlikely that this   |                    |
+|     | report will be seen.                             |                    |
+|     |                                                  |                    |
+|     | File already exists                              | MOVE...TO          |
+|     | The destination filename in a MOVE command (that |                    |
+|     | is being used to rename a file) already exists.  |                    |
+|     |                                                  |                    |
+|     | File already in use                              | Unlikely; COPY,    |
+|     | If a machine code program has opened files       | LOAD, MERGE,       |
+|     | 1...3, then a +3 BASIC command might fail with   | SAVE               |
+|     | this error when it tries to open a file that was |                    |
+|     | already open. It is unlikely that this error     |                    |
+|     | will ever be seen.                               |                    |
+|     |                                                  |                    |
+|     | File is read only                                | COPY, ERASE,       |
+|     | Trying to update, erase or save using the name   | MOVE, SAVE         |
+|     | of a file that has its protection attribute set  |                    |
+|     | (using the command 'MOVE filename TO "+P"). Use  |                    |
+|     | the command 'MOVE filename TO "-P" to remove     |                    |
+|     | write protection.                                |                    |
+|     |                                                  |                    |
+|     | File not found                                   | COPY, ERASE,       |
+|     | The filename given for one of the disk reading   | LOAD, MERGE,       |
+|     | commands specifies a file that does not exist.   | MERGE              |
+|     |                                                  |                    |
+|     | File not open                                    | Unlikely           |
+|     | A disk command has tried to operate on a file    |                    |
+|     | which has not been opened. It is very unlikely   |                    |
+|     | that this error will ever be seen.               |                    |
+|     |                                                  |                    |
+|     | File too big                                     | Unlikely           |
+|     | An attempt has been made to write a file that is |                    |
+|     | greater than 8 megabytes in length. It is very   |                    |
+|     | unlikely that this error will ever be seen.      |                    |
+|     |                                                  |                    |
+|     | Invalid attribute                                | MOVE...TO          |
+|     | The attribute character following '+' or '-' in  |                    |
+|     | a MOVE command is not 'P', 'S' or 'A' (or there  |                    |
+|     | is more than one character after the '+' or      |                    |
+|     | '-').                                            |                    |
+|     |                                                  |                    |
+|     | Invalid drive                                    | FORMAT             |
+|     | A drive letter other than 'A:' or 'B:' has been  |                    |
+|     | specified in a FORMAT command.                   |                    |
+|     |                                                  |                    |
+| RIC | Missing address mark                             | CAT, COPY,         |
+|     | A sector being read from the disk does not       | ERASE, LOAD,       |
+|     | contain the usual information that is used by    | MERGE, MOVE,       |
+|     | the system to identify where it is on the disk.  | SAVE               |
+|     | This almost invariably means that an attempt is  |                    |
+|     | being made to read a disk that has not been      |                    |
+|     | formatted. The error may possibly occur when     |                    |
+|     | trying to read a disk that has become corrupted  |                    |
+|     | in some way, or one that employs some form of    |                    |
+|     | in-built protection.                             |                    |
+|     |                                                  |                    |
+|     | Missing extent                                   | Unlikely; COPY,    |
+|     | Files are essentially made up of 16K blocks and  | LOAD, MERGE        |
+|     | each of these is known as an extent. This error  |                    |
+|     | might occur while reading a file from disk if    |                    |
+|     | the disk is changed after the system has read    |                    |
+|     | the directory entry for a file (but before it    |                    |
+|     | has read a particular extent). However, it is    |                    |
+|     | very unlikely that this error will ever be seen. |                    |
+|     |                                                  |                    |
+| RIC | No data                                          | CAT, COPY, ERASE,  |
+|     | This is a low level disk error that occurs when  | LOAD, MERGE, MOVE, |
+|     | a sector identifier cannot be found. It is       | SAVE               |
+|     | possible that the error might occur while trying |                    |
+|     | to copy a disk that employs some form of         |                    |
+|     | in-built protection.                             |                    |
+|     |                                                  |                    |
+|     | No rename between drives                         | MOVE...TO          |
+|     | An attempt has been made to use the MOVE command |                    |
+|     | specifying source and destination filenames that |                    |
+|     | are on different drives.                         |                    |
+|     |                                                  |                    |
+| RIC | Seek fail                                        | CAT, COPY, ERASE,  |
+|     | This is a hardware error that means the drive is | ERASE, FORMAT,     |
+|     | unable to locate the track that has been         | LOAD, MERGE,       |
+|     | requested. If this error persists, it may        | MOVE, SAVE         |
+|     | indicate that the computer needs to be serviced. |                    |
+|     |                                                  |                    |
+|     | Uncached                                         | Unlikely           |
+|     | This is an internal system error and it is very  |                    |
+|     | unlikely that it will ever be seen.              |                    |
+|     |                                                  |                    |
+| RIC | Unknown disk error                               | Unlikely; CAT,     |
+|     | An error has occurred that the system is not     | COPY, ERASE,       |
+|     | familiar with. It is very unlikely that it will  | FORMAT, LOAD,      |
+|     | ever be seen.                                    | MERGE, MOVE, SAVE  |
+|     |                                                  |                    |
+| RIC | Unrecognised disk format                         | CAT, COPY, ERASE,  |
+|     | While trying to read/write a disk, +3DOS has     | LOAD, MERGE,       |
+|     | been unable to recognise its format, i.e. it has | MOVE, SAVE         |
+|     | read the disk specification but has found        |                    |
+|     | information there that doesn't make sense. This  |                    |
+|     | error may occur when trying to access disks      |                    |
+|     | which employ some form of in-built protection.   |                    |
+|     |                                                  |                    |
+| RIC | Unsuitable media                                 | CAT, COPY, ERASE,  |
+|     | The disk in the drive has a format that is not   | FORMAT, LOAD,      |
+|     | suitable. This error might occur when, for       | MERGE, MOVE,       |
+|     | example, trying to write to an 80 track disk     | SAVE               |
+|     | placed in the (40 track) disk drive of the +3.   |                    |
+|     |                                                  |                    |
+`-----------------------------------------------------------------------------'
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt28.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt30.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

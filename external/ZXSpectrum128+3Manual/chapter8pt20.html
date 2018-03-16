@@ -1,0 +1,1517 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 20</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 20
+File operations
+
+Subjects covered...
+
+	Drives
+	FORMAT
+	Filenames
+	SAVE, LOAD
+	Disk catalog: CAT
+	Wildcards
+	MERGE
+	Deleting and renaming files
+	File attributes
+	ERASE, MOVE, COPY
+	The RAMdisk
+	Tape operations
+	VERIFY
+	Tape catalog: CAT
+
+Drives
+
+The +3 has a built-in disk drive that can be used to save and load
+your own programs, and to load programs produced by other people. As
+it is also possible to connect a second disk drive to the +3, BASIC
+must have some way of identifying which disk drive is which. The
+built-in drive is known as drive A: (always followed by a colon
+because +3 BASIC knows that when you say A:, you mean 'disk drive A').
+If the external drive is present, it is referred to as drive B:.
+
+As the processor at the heart of the +3 can only converse with 64K of
+memory at a time, the extra RAM in the +3's 128K memory is used just
+like another drive. This is called the RAMdisk and is identified by
+the letter M: (for memory drive). All the commands (except FORMAT)
+that you can use on drives A: and B: can also be used on drive M:.
+Drive M: is much faster than the mechanical disk drives, but it is
+very important to remember that just like the contents of the program
+memory, the contents of drive M: are erased if you press the RESET
+button or switch off the +3. BASIC's NEW command, however, will leave
+any files stored on drive M: intact.
+
+If you don't have a second disk drive connected to your +3, you can
+still use the machine as if drive B: were present. If you ask the
+machine to perform an operation on drive B: (you'll see how to do this
+later), a message will appear asking you to...
+
+	Please put the disk for B: into the drive then press any key
+
+...whereupon you should put the disk that you would have used in drive
+B: (if it had existed) into drive A: then press any key (for example
+ENTER). From then on, the machine will treat the built-in disk drive
+as if it really were drive B:. When the +3 next needs to perform some
+operation on the disk that was originally in the drive, it will ask
+you to...
+
+	Please put the disk for A: into the drive then press any key
+
+This technique will be particularly useful when using the COPY command
+(described later in this section).
+
+Now that you know which drives are available and what they are called,
+let's see what they can be used for. Type in the short program (which
+displays coloured squares) that you first met at the end of part 16,
+i.e....
+
+	10 POKE 22527+ RND *704, RND *127
+	20 GO TO 10
+
+This is the program that you are going to save to disk.
+
+As previously explained (in chapter 6), you cannot simply unwrap a
+brand new disk and hope to save programs onto it straight away; it
+must first be made ready to use with the aid of the FORMAT command.
+FORMAT will erase anything that was previously on the disk and set it
+up for +3 BASIC to use. Be careful, therefore, not to FORMAT any disk
+that has programs on it you might like to keep. To format your new
+disk, type in the following...
+
+	FORMAT "a:"
+
+If you haven't already put your new disk into the drive, don't worry -
+the +3 will just come back with the error report 'Drive not ready'.
+
+In this case, put your new disk into drive A: and re-type the command.
+
+By the way, while you are using the various disk commands you may
+occasionally see the report 'Drive A: not ready' (possibly followed by
+'- Retry, Ignore or Cancel ?'). This invariably means that you have
+forgotten to put a disk into the drive.
+
+Whenever a report appears that ends with '- Retry, Ignore or Cancel
+?', there are three options open to you.
+
+The first is to take action to rectify the problem, for example, if the
+report was 'Drive not ready', then put a disk into the drive and type
+'R' (to retry). The disk system will then try to carry out the same
+operation again and hopefully this time it will succeed.
+
+If you were half way through copying a large file and an error such as
+'Missing address mark' appeared, this would usually mean that the disk
+being read has been damaged in some way. Try 'R' a few times and if
+the error persists, you indeed have a damaged disk. At this stage,
+you'll probably want to salvage any un-damaged data, so try typing 'I'
+(to ignore). Although this tells the +3's disk system to ignore the
+error, there is no guarantee that all your data will be read intact -
+it's really just a last ditch operation when all else has failed.
+
+Finally, if you have tried to perform an operation where an error
+occurs, you may realise that there is no point in trying to go on. In
+this case type 'C' (to cancel) which tells the +3's disk system to
+abandon the current command. Having typed 'C', BASIC will report an
+error (usually very similar to the text of the previous report.
+
+Back to out attempt to format a disk. If you have made a mistake and
+the disk you put into drive A: has already been formatted, the +3 will
+spot this and you will receive the report...
+
+	Disk is already formatted, A to abandon, other key continue
+
+This is a safety feature that will allow you to abandon the format
+before the process gets going, if, by some chance, you inserted the
+wrong disk. In this case, you should type 'A' (to abandon) and nothing
+more will happen. If, however, you really do intend to reformat the
+disk and don't mind losing what's on it, then press any key apart from
+'A' (e.g. press ENTER).
+
+After about 30 seconds, the usual '0 OK' report will appear. The disk
+is now usable and should not need to be formatted again. You can
+always reformat a disk if you wish to clear the disk of data
+completely, but remember that it is an irreversible process.
+
+Disks can occasionally become spoilt (corrupted). This can happen if
+some dust or dirt comes into contact with the disk surface, if the
+disk is left too close to a magnetic field (such as that produced by a
+TV or a telephone), if the disk is ejected while it is being written
+to, or if the disk is left in the drive when the computer is switched
+on or off. A corrupted disk will cause errors during LOAD or SAVE, and
+should be reformatted before any more data is saved onto it.
+
+If you want to recover files from a corrupted disk, you can try to
+copy them individually (using COPY) to a known 'good' disk. If one or
+more files prove uncopiable, then you have probably lost them for
+good. We recommend that you keep at least two copies of important
+files (on different disks) - one for day-to-day use, and one kept in a
+safe place just in case the unthinkable happens. Making regular copies
+of valuable data and programs is known as backing-up, and is an
+essential habit to get into. Backing-up can save you untold misery and
+tears. You can of course make back-ups onto tape, which may prove
+cheaper in the long run.
+
+Unlike many computers, the FORMAT command is built-in and can be used
+like any other BASIC command. It doesn't affect the program you have
+in the computer, so you can save the little two-line program you typed
+in a moment ago.
+
+Type in the following...
+
+	SAVE "squares"
+
+The words 'SQUARES' is just a name that you use to 'label' the program
+you are going to store on disk. To prevent confusion, everything
+stored on disk must be given a name. These names (called filenames)
+are a little different from those that you may use when storing
+programs on tape.
+
+
+Filenames
+
+The range of characters that you are allowed to use for disk filenames
+is more limited than for tape filenames. The format of filenames used
+on +3 disks is the same as that used by an operating system known as
+CP/M (Control Program/Monitor) by Digital Research Inc. The fact that
+these formats are the same means that you can take a +3 disk and use
+it on other computers. Data can be transferred in this way between the
++3 and a CP/M system, and this is most likely to be useful for people
+writing machine code programs or moving text from a +3 word processor
+to a CP/M program. (It is extremely unlikely that programs written in
+BASIC can be usefully converted from one machine to another using this
+method.)
+
+Filenames can be as simple as the example above - 'SQUARES' (or even
+simpler - 'S', for example). However a full CP/M-type filename can be
+made up of as many as four parts: user number, drive letter, name and
+type. Each of these parts is called a field (e.g. the name field or
+the type field).
+
+You needn't worry about what user number means; if you don't know
+already, then it's probably best to remain blissfully ignorant.
+However, for anyone who is interested: on CP/M machines with very
+large disk capacities (or hard disks) with perhaps more than one
+terminal connected, user numbers are used to partition files into
+subsections (known as user areas) so that there isn't just one huge
+directory with several thousand files. On the +3, however, disks
+cannot have more than 64 files, so the use of user areas is not really
+necessary. Nevertheless, user areas can be specified in filenames used
+in +3 disk commands. They take the form...
+
+	user number  drive letter : filename
+
+...where user number is in the range 0 to 15, and drive letter is A:,
+B: or M:. If you specify a user number, then you must also specify a
+drive letter. So, to save our example program in user area 5, we would
+use...
+
+	SAVE "5a:squares"
+
+The problem with using user areas is that it's quite easy to forget
+which user area you saved a file to, and so finding it could take a
+while (as the CAT command can only catalog one user area at a time).
+
+As just mentioned, the drive letter will normally be A:, B: or M:.
+notice that the letter must be followed by a colon (e.g. 'a:squares').
+If you don't specify a drive letter, then +3 BASIC will use the drive
+that was last used - this is known as the default drive. (When you
+first switch on the +3, the default drive is set to A:.) So typing...
+
+	SAVE "squares"
+
+...is just as if you had typed...
+
+	SAVE "a:squares"
+
+There are special forms of SAVE and LOAD which can be used to change
+the default drive. When SAVE or LOAD is followed by a filename that
+contains nothing but a drive letter and a colon, the drive identified
+by the letter is then made the new default drive. So...
+
+	SAVE "m:"
+	SAVE "squares"
+
+...will change the default drive to drive M: then save the program
+onto drive M:. (If the above command had been 'SAVE "m:squares"' the
+program would still have been saved to drive M: though the default
+drive would not have been changed.)
+
+To switch the default back to drive A:, type...
+
+	SAVE "a:"
+
+Note that SAVE and LOAD followed by just a drive letter (and colon)
+wildcard will do nothing other than change the default drive. They
+certainly won't save or load a program. You must use SAVE or LOAD
+followed by a real filename for this.
+
+The name field of a filename is the only field that you have to
+specify when using SAVE, LOAD, etc. The name field can be from 1 to 8
+characters long and may contain any of the following:
+
+	Letters:	  abcdefghijklmnopqrstuvwxyz (upper or lower case)
+	Digits:		  0123456789
+	Other characters: "#$'@^_{}~`
+
+[The backquote (`) should really be a pound sign; pity nobody noticed
+that before they printed the manual :-)]
+
+Upper and lower case letters are the same in filenames, so 'EXAMPLE'
+and 'example' would be identical.
+
+A filename can end with an optional type field (which is just a
+further three characters) that you may wish to use in order to group
+together files of the same type. If a type field is specified, it must
+be preceded by a dot. (Unlike some other BASICs, +3 BASIC does not
+automatically allocate a type field to files if one is not specified.)
+You may find it useful to add your own type fields - a popular
+convention is to use the type fields '.BAS' to identify BASIC files
+and '.BIN' to identify CODE files ('.BIN' being short for binary). If
+you think this is a good idea, then the previous example program could
+be saved using...
+
+	SAVE "squares.bas"
+
+The characters '*' and '?' have a special meaning to +3 BASIC, and
+cannot be used in a filename for LOAD and SAVE. There are, however,
+file commands in which '*' and '?' can be used, and these will be
+discussed later.
+
+Here are some examples of valid filenames...
+
+	z
+	squares
+	m:picture.bin
+	a:fred
+	13a:hello
+	0M:CAPITALS
+	test.bas
+	philip
+	glass.mus
+	a:a.a
+
+Here are some illegal filenames (and reasons why)...
+
+	pac man		(must not contain any spaces)
+	(test)		(must not contains brackets)
+	/<>-+=!&	(must not contain any of these characters)
+	excessive	(more than 8 characters long)
+	.bas		(has no name field)
+	later...	(only one dot allowed)
+	7:dubious	(if user number is specified, then filename
+			must also contain drive letter - e.g.
+			'7a:dubious')
+
+
+Disk catalog
+
+You may have spotted the fact that we have now saved the same program
+twice with two different names ('SQUARES' and 'SQUARES.BAS'). It would
+be nice to be able to check what has been saved on a particular disk,
+and this is where the CAT command comes in. CAT displays a catalog of
+what you have stored on a disk.
+
+Press ENTER then type in...
+
+	CAT
+
+The +3 will take a quick look at the disk (the read/write indicator
+lamp will come on briefly), and will display a list of the disk's
+contents on the screen. The list is sorted into alphanumerical order
+and each file is followed by an indication of its size to the nearest
+number of kilobytes (rounded up). At the end of the list, the amount
+of free space on the disk is also displayed.
+
+CAT (on its own) is the simplest form of the command. If you wanted to
+list all the files on a different drive (e.g. drive M:), you would
+use...
+
+	CAT "m:"
+
+When CAT is followed by a filename containing just a drive letter,
+i.e. 'A:', 'B:' or 'M:' (including the colon), all the files on the
+nominated drive will be listed. CAT on its own gave a list of the
+files on drive A:, this is because A: is the current default drive.
+You will remember that LOAD or SAVE followed by a drive letter will
+make that drive the current default. So...
+
+	LOAD "m:"
+	CAT
+
+...will also list all the files on drive M:. This isn't quite the same
+as 'CAT "m:"', because now the default drive has been left as M:.
+Change it back to A: before going further.
+
+We will now save several copies of our simple example program using
+different names, so that you will be able to see what the various forms
+of the CAT command will produce. So far the disk should contains
+'SQUARES' and 'SQUARES.BAS'. If either of these weren't listed with
+the above CAT command, add their name to the list below. Type the
+following...
+
+	SAVE "fred"
+	SAVE "fat"
+	SAVE "santa.bin"
+	SAVE "trepur.bak"
+	SAVE "cliff.cjl"
+	SAVE "sausages.bas"
+
+Don't worry about cluttering up the disk with lots of copies of the
+same thing - you'll be shown how files can be erased later.
+
+
+Wildcards
+
+If a disk has a large number of files, it is often desirable to
+selectively list only those of interest. The +3 caters for this. If,
+for example, you wished to list only those files that ended in '.BAS'
+you would use:
+
+	CAT "*.bas"
+
+The asterisk character '*' is what's known as a wildcard. When a
+filename, perhaps containing a wildcard, is specified, CAT will list
+only the files that match the 'specification' given. When the '*'
+wildcard is used (in either the name field or the type field) it means
+'any character from here to the end of this field'. So, in the above
+command, we want CAT to display any files that have any characters in
+their name field and the letters 'BAS' in their type field. If there
+are no files on the disk that match the specification, the report 'No
+files found' will be displayed (followed by the amount of free space).
+If you give a file specification of '*.*' (i.e. 'CAT "*.*"') or no
+specification at all, (i.e. CAT) and the report 'No files found' is
+displayed, then this means that the disk is empty. An empty disk in
+drive A: or B: will have a free space value of 173K (this value may be
+different for disks from other types of computer). An empty drive M:
+will usually have 58K free. If you catalog a disk containing a
+commercial program (such as a game), it might appear to have no files
+on it but very little space free. This is a protection measure taken
+by the software writers to prevent illicit copying, and shouldn't
+cause any concern.
+
+If we use...
+
+	CAT "s*.bas"
+
+...then all files that begin with the letter 'S' and then have any
+characters whatsoever between the 'S' and the end of the name field,
+followed by a type field of 'BAS', will be shown. Files with the names
+'SQUARES.BAS', 'SAUSAGE.BAS', 'SUPER.BAS' would all be listed, but
+'SQUARES.BIN', 'TOAST.BAS' and 'SQUARES' would not.
+
+The '*' wildcard can also be used in the type field of a filename
+(note, however, that you cannot use it in place of the user number or
+drive letter). If we wanted to list all files that had 'SQUARES' as
+their name field and anything as their type field, we would use...
+
+	CAT "squares.*"
+
+Similarly, if we wanted to list all the files that began with a letter
+'S' and had a type field that began with the letter 'B' we would
+use...
+
+	CAT "s*.b*"
+
+When we type CAT (on its own), we want to list all files on a disk.
+Therefore, CAT is just a shorthand way of saying...
+
+	CAT "*.*"
+
+From the above you will notice that the '*' wildcard can only be used
+as the last character in a field, and it is used to mean 'I don't care
+what other characters are present between here and the end of this
+field'. Sometimes, however, you may want to specify a group of files
+but need to be a little more discerning. This is when you use the '?'
+question mark wildcard (in either the name field or the type field).
+The '?' wildcard means 'I don't mind what character happens to be in
+this specific position'.
+
+Therefore, if we used the command...
+
+	CAT "?at"
+
+...then the files listed would be all those that are three characters
+long, ending in 'AT', but we don't mind what character is in the first
+position. Thus files such as 'CAT', 'SAT', 'MAT' and 'FAT' would be
+listed, but 'CAR', 'CATTLE' and 'AT' would not. Unlike the '*'
+, '?' wildcards can be used in place of any of the 8
+characters of the name field and the 3 characters of the type field.
+There is no limit to the number of question marks you can use (other
+than the 8 and 3 limits of the filename field lengths).
+
+Valid file specifications containing '?' wildcards include...
+
+?.bas		(one letter name with a type field of 'BAS')
+s?uares.*	(specific files whose second character doesn't matter,
+		with any type field)
+ca??.?t?	(files beginning 'CA' with four characters in the name
+		field, and with a type field of 3 characters whose
+		second letter is 'T')
+????????.???	(exactly the same as '*.*')
+
+If you have a printer connected to your +3, you may find it useful to
+print-out the files listed by CAT. You can do this by directing the
+output from CAT to stream 3 (streams are explained in part 22 of this
+chapter). The command to do this is...
+
+	CAT #3
+
+If you only want some of the files printed-out, you can also include a
+file specification in exactly the same way as before. For example...
+
+	CAT #3,"a:*.bas"
+
+(The above 'CAT #3' commands will not work unless a printer is
+connected to the +3 and is on line. To abandon, press BREAK.)
+
+Any form of the CAT command may also end with the word EXP, for
+example, 'CAT "a:" EXP'. The EXP is short for expanded, and as the
+name might suggest, gives you a little more information about the
+attributes of the files on a disk. Not only will the expanded catalog
+display system files but also it will indicate whether files are set
+to write protected mode, archive mode or system status (these terms
+are explained in the section ahead entitled 'File attributes').
+
+(There is one other specialist use for the CAT command, and this will
+be dealt with in the section ahead entitled 'Tape catalog'.)
+
+Now that you have successfully saved a program to drive A:, you can
+happily switch off or reset the +3, or start a NEW program, knowing
+that you could always load in the saved program if you needed it.
+Remember - there is a difference between resetting the +3 and using
+the NEW command - if you reset, all the +3's memory (RAM) will be
+cleared. This includes any files you may have saved on drive M:. When
+you use NEW, however, any files on drive M: will remain intact. As we
+have saved the program on the disk in drive A:, you can go ahead and
+press the RESET button, then release it. The usual opening menu will
+be displayed. Select '+3 BASIC' then type the command...
+
+	LOAD "squares"
+
+The LOAD command reads in a new program (and variables) from disk, and
+then deletes any program (and variables) previously in the memory. (If
+the program that you specified to load is not on the disk, then any
+program currently in the memory is not deleted.) Just like SAVE, the
+LOAD command must be given a filename whose name field is at least one
+character long. If you have been used to a tape machine in the past,
+then you may have used 'LOAD ""' to mean 'load the next program on the
+tape'. The concept of a 'next program' on disk does not exist, so if
+you don't specify a filename, the disk system won't know what to load
+and will report an error. If you can't remember what name you saved a
+file under, use CAT to check what's on the disk (this is why it's a
+good idea to save programs on disk using 'mnemonic' names (names that
+remind you what they contain) - e.g. it is more obvious what sort of
+program a file named 'TENNIS.BAS' contains compared to one simply
+named 'T').
+
+There is a short cut for loading programs (such as games) that have
+been specially set up - you can select the 'Loader' option from the
+opening menu. This option, when selected, attempts to load and run
+programs. First of all, it looks for a program called '*' on the disk.
+If this exists, then it will be loaded and run. The program has to be
+a machine code program saved in a particular fashion (as BASIC can't
+use '*' as a filename for SAVE), and is, therefore, only for use on
+commercial software or by those who understand machine code.
+
+If '*' can't be found, the +3 will then look for a file called 'DISK'.
+This can be a BASIC program that you've previously written and saved,
+so if the 'Loader' option finds a program called 'DISK', it will load
+it and wait for the next operation.
+
+At this point, pressing ENTER will just load the program again.
+
+If you wish to run or edit the program after it has loaded, first
+press the cursor down key once, then ENTER. This selects the '+3
+BASIC' option from the opening menu.
+
+If there isn't a program called 'DISK' on the disk (or if the +3
+detects that there isn't a disk in the disk drive), then the computer
+will try to load a program from tape, displaying the message...
+
+	Insert tape and press PLAY
+	To cancel - press BREAK twice
+
+This is the recommended method for loading Spectrum +3 (Spectrum +2
+and Spectrum 128) software from tape (see chapter 4).
+
+As previously mentioned, LOAD deletes the old program and variables in
+the +3 whenever it loads in the new ones from disk. However, there is
+another command - MERGE, which is similar to LOAD but it only deletes
+an old program line or variable if there is a new one with the same
+line number or name. Clear the program memory using the NEW command,
+then type in the 'dice' program from part 11 of this chapter and SAVE
+it onto disk, using...
+
+	SAVE "dice"
+
+Use NEW to clear the program memory again, then enter and run the
+following program...
+
+	 1 PRINT 1
+	 2 PRINT 2
+	10 PRINT 10
+	20 LET x=20
+
+Now type in...
+
+	MERGE "dice"
+
+If you then LIST the program, you will see that lines 1 and 2 have
+survived, but lines 10 and 20 have been overwritten by those from the
+dice program. Note that the value of the variable 'x' has also
+survived (try 'PRINT x').
+
+You have now seen simple forms of five of the commands that work in
+conjunction with disk:
+
+FORMAT		Prepares brand new disks so that programs can be saved
+		onto them. FORMAT can be used to completely erase
+		everything on a disk that has already been used.
+
+SAVE		Stores the program and variables onto a disk.
+
+LOAD		Clears the computer of all its program and variables,
+		and replaces them with new ones read in from disk.
+
+MERGE		Similar to LOAD except that it does not clear the old
+		program lines and variables unless it has to (because
+		they are the same as those being loaded in from disk).
+
+CAT		Displays a list of the files contained on a disk.
+
+A variant on SAVE takes the form...
+
+	SAVE filename LINE number
+
+A program which is saved using this command, is stored in such a way
+that when it is loaded, it automatically jumps to the line with the
+given number, then runs itself.
+
+Use NEW to clear the program memory then type in the following...
+
+	10 PRINT "program running"
+	20 PLAY "cdefgabC"
+
+Now save this program using the command...
+
+	SAVE "disk" LINE 10
+
+Now reset the +3, and when the main menu appears, ensure that the disk
+(with the above program on it) is in the drive then press the ENTER
+key. This will select the 'Loader' option which searches for a file on
+the disk called 'DISK'. When it finds the simple example program you
+just saved, it will load it, and as it was saved using a LINE
+parameter, it will automatically start running (from line 10).
+
+At this point, pressing ENTER will load and run the program again.
+
+If you wish to edit the program after it has run, press the cursor
+down key once, then ENTER. This selects the +3 BASIC option from the
+opening menu.
+
+Note that if you load a program called 'DISK' which doesn't
+automatically run (using the 'Loader' option from the opening menu),
+then you will have to select the +3 BASIC option (after the program
+has loaded) before you can run it or edit it.
+
+So far, the only kinds of information we have stored on disk have been
+programs (together with their variables). There are also two other
+kinds of information, called arrays and bytes.
+
+You can save arrays on disk using the keyword DATA in a SAVE
+statement...
+
+	SAVE filename DATA array name ()
+
+...where filename is the name that the information will have on disk
+and works in exactly the same way as when you save a program.
+
+The array name specified the array you want to save, so it is just a
+letter (or a letter followed by '$'). Remember to put the brackets
+'()' after the array name.
+
+Be clear about the separate roles of filename and array name. If you
+say (for instance)...
+
+	SAVE "bloggs" DATA b ()
+
+...then SAVE takes the array 'b()' from the computer and stores it on
+disk under the name 'BLOGGS'.
+
+The command...
+
+	LOAD "bloggs" DATA b ()
+
+...sees if it is possible to load the array (i.e. if there is room for
+it in the computer), then if so, deletes any already existing array
+called 'b()' and loads in the array 'BLOGGS' from disk, calling it
+'b()' in the computer.
+
+You cannot use MERGE with saved arrays.
+
+You can save character (string) arrays in exactly the same way.
+However, note that when you load in a character array, it will delete
+not only any previous character array with the same name, but also any
+simple string variable with the same name.
+
+When dealing with a large amount of data you may find it useful to use
+the SAVE...DATA option and the LOAD...DATA option to and from drive
+M:. Once saved on drive M: the space previously used by an array can
+be re-used. Using drive M: will mean that saving and loading are very
+fast.
+
+Byte storage is used for pieces of information without any reference
+to what the information is used for - it could be a screen display, or
+perhaps some user-defined graphics, or just something you have made up
+for yourself. It is specified using the word CODE, as in...
+
+	SAVE "picture.bin" CODE 16384,6912
+
+The unit of storage in memory is the byte (a number between 0 and
+255), and each byte has an address (which is a number between 0 and
+65535). The first number after CODE is the address of the first byte
+to be stored on disk; the second number is the amount of bytes to be
+stored. In our case, '16384' is the address of the first byte in the
+file (which contains the screen display), and '6912' is the amount of
+bytes in it, so we are saving an actual copy of the screen display
+onto disk. Try the above SAVE command. (You don't have to save the
+bytes using the name 'PICTURE.BIN' - it's merely a convenient reminder
+of what's on the disk.)
+
+To load it back, use...
+
+	LOAD "picture.bin" CODE
+
+You can put parameters after CODE in the form...
+
+	LOAD filename CODE start,length
+
+Here, the length parameter is used as a safety measure - when the
+computer attempts to load the bytes from disk, it will check the
+length and refuse to load the bytes if there are more than specified
+(thereby safeguarding against the extra bytes accidentally overwriting
+an area of memory that you wished to preserve). In such a case, the
+report 'Code length error' is displayed. (Anyone using a cassette unit
+under 48 BASIC should note that the above error will display a
+different report: 'R Tape loading error'.
+
+If you leave out the length parameter, the +3 will read in the bytes
+however many there are.
+
+The start parameter shows the address where the first byte is to be
+loaded back to - this can be different from the address it was saved
+from, though if they are the same, then you can leave out the start
+parameter in the LOAD statement.
+
+'CODE 16384,6912' is such a useful area of memory (the screen display)
+to save and load, that a special function (SCREEN$) has been provided
+to represent it, so you can type (for example)...
+
+	SAVE "picture.bin" SCREEN$
+
+...or...
+
+	LOAD "picture.bin" SCREEN$
+
+
+Automatic back-ups
+
+If you have saved one or two things on a disk and then you save
+something with a filename that has already been used, what will
+happen? Well, each time you save a program, the disk system checks to
+see if the filename you specify has already been used. If it has, the
+existing copy on disk is given a new filename before the information
+you have asked to save is stored. The new name given to the existing
+file has the same name field but its type field will always be '.BAK'
+(short for backup).
+
+If a '.BAK' version of the file already exists, then that will be lost
+in preference to the new '.BAK' file. This means that as you save
+successive versions of a program with the same name the previous copy
+will still be there in a file called filename.BAK. So, if you make a
+serious programming error and inadvertently save the program, you can
+delete the newest version and rename the '.BAK' file to the original
+filename. The next section shows you how to do this; but first,
+type...
+
+	SAVE "a:squares"
+
+...to save the program using the filename 'SQUARES' yet again.
+
+
+Deleting and renaming files
+
+Files can be deleted from a disk using the ERASE command. This should
+be followed by a filename that specifies which file or files are to be
+deleted. Just like CAT, you can use the wildcards '*' and '?' to
+identify a group of files, or you can specify the name in full if you
+only want to get rid of one particular file. If you specify a single
+filename, that file will immediately be erased from the disk - so take
+care. If you specify a group of files (by including '*' or '?'), BASIC
+will ask you to confirm that you really mean to delete this group of
+files. Typing 'Y' will make the deletion process continue, so if you
+have made a mistake, type 'N'.
+
+If, for example, you wanted to delete a file from drive M: called
+'FRED.BAS', you would use...
+
+	ERASE "m:fred.bas"
+
+If drive M: has already been set as the default drive, then you don't
+need to include the M: at the start of the filename. It doesn't hurt
+to include the drive letter anyway, and with as powerful a command as
+ERASE, you might feel safer if you do. To erase all the files on drive
+B: you would use...
+
+	ERASE "b:*.*"
+
+Before doing this, BASIC will ask for confirmation...
+
+	Erase b:*.* ? (Y/N)
+
+...and assuming that you really mean to wipe all the files from the
+disk in drive B:, you would then type 'Y'.
+
+If you ask to delete a single file (or a group of files using the
+wildcards '*' and '?') and there are no files on the disk that match
+the specification, then the report 'File not found' will be displayed.
+
+Note that ERASE followed by just a drive letter (e.g. 'ERASE "m:"')
+will erase all files on the specified drive without asking for
+confirmation. Be careful, therefore, not to enter this form of the
+command unless you really mean to delete everything! (The ERASE
+process will stop and report an error if a write protected disk or
+file is detected.)
+
+The disk you have been using up to now has many copies of the simple
+'SQUARES' program (saved under different names) on it. This is a waste
+of space so you might as well erase those that aren't needed. What you
+want to do in effect is erase everything except 'SQUARES' (though
+there is no simple way to do this). However, some of the different
+files have the same letters in common, so you may be able to use
+various forms of '*' and '?' specifications to cur down the amount of
+typing. See if you can work out the fewest number of ERASE commands to
+erase all files other than 'SQUARES'.
+
+Once a file has been saved, it can be given a new names using the MOVE
+command. For example, if there is a file on drive M: called 'SQUARES'
+that you would like to call 'BLOCKS', its name could be changed as
+follows (first we make sure there is a file called 'SQUARES' on drive
+M:). Type...
+
+	SAVE "m:squares"
+	MOVE "m:squares" TO "m:blocks"
+	CAT "m:"
+
+Imagine we have saved a file called 'FRED', and then after working on
+it and saving a new version with the same name, realised that we had
+made a terrible mistake and would like to recover the last version.
+This would be possible using the commands...
+
+	ERASE "fred"
+	MOVE "fred.bak" TO "fred"
+
+Unlike ERASE, you cannot include the wildcards '*' or '?' when
+renaming files.
+
+MOVE will take into account the current default drive so the filename
+doesn't necessarily have to contain a drive letter. Note, however,
+that it is not possible to use MOVE to rename files between different
+drives. The command...
+
+	MOVE "a:fred" TO "b:eric"
+
+...(for example) will fail with the error 'No rename between drives'
+reported. Instead, you can use the COPY command (explained ahead)
+followed by ERASE to achieve the desired result.
+
+
+File attributes
+
+MOVE has another use besides renaming files. It can also be used to
+change the attributes of a file. Attributes are bits of information
+associated with a file that tell you (and the computer) a little more
+about it.
+
+There are three attributes that can be changed. The most useful
+attribute is write protection. Once a file's write protection
+attribute has been set, it will not be possible to erase it (or save a
+file with the same name) until you remove the write protection. It
+behaves a little like the write protect hole on the disk, but works
+just on individual files. Unlike the write protect hole, however, it
+offers no protection against FORMAT, which erases everything on a
+disk, regardless of attributes. You can set a file's write protection
+attribute to on with a command such as...
+
+	MOVE "squares" to "+p"
+
+The letter 'P' is short for protection (against overwriting). If you
+now try to use the command...
+
+	ERASE "squares"
+
+...you will receive an error report saying 'File is read only'.
+
+To switch write protection off, use...
+
+	MOVE "squares" TO "-p"
+
+...and you'll be able to erase the file as before.
+
+In all the MOVE commands that change attributes, '+' means switch it
+on, and '-' means switch it off.
+
+When you are using MOVE to change attributes, the filename can include
+the wildcards '*' and '?'. So, to make all the files on drive M: write
+protected, you would use...
+
+	MOVE "m:*.*" to "+p"
+
+As always, the drive letter can be omitted if it is the current
+default drive.
+
+You can repeatedly switch attributes on or off without causing an
+error, so if you set write protect on a file that has already got
+write protection, it will just stay protected.
+
+The second attribute that can be changed is known as the system status
+attribute. This is really provided just to be compatible with other
+CP/M based computers, however, if you do set a file's system attribute
+to on, then you will notice that the file no longer appears in the
+list of files when you use CAT. The system status attribute is
+identified by '+S' (or '-S') in the MOVE command. If you use the
+expanded catalog, (i.e. 'CAT EXP'), all the files will then be listed
+including system status files (which are followed by the letters
+'SYS'). You may also notice that any files that are write protected
+are followed by the letters 'PROT'. You can use the system attribute
+to remove files from a catalog if they would otherwise just clutter
+things up.
+
+Bear in mind that you cannot have two files on the same disk with the
+same filename and different system status attributes; so if you try to
+create or copy a file onto a disk where a file of that already exists
+(but is hidden from CAT), then the previous file will be deleted.
+
+The final attribute you can change is known as the archive
+attribute. In an expanded catalog it shows up as 'ARC', and is
+identified by '+A' (or '-A') in the MOVE command. On the +3, the
+archive attribute is of no practical use and is only provided for file
+compatibility with CP/M based computers.
+
+Here are some attribute-setting MOVE commands. See if you can predict
+what they will do...
+
+	MOVE "*.*" TO "+p"
+	MOVE "*.bas" TO "-s"
+	MOVE "s???.*" TO "+a"
+	MOVE "m:?.?" TO "-p"
+
+If you try to use any letter other than 'A', 'S' or 'P' in setting or
+resetting attributes, or if the 'attribute string' is not two
+characters long, then you will receive the report 'Invalid attribute'.
+
+Quite often, a situation will arise when you would like to make a copy
+of one of your files, (to give to a friend perhaps, or to put it on
+drive M: so that it can be accessed quicker). The COPY command can be
+used to copy from one drive to another and even to make complete
+copies of disks. The very simplest form of the COPY command will look
+something like this...
+
+	COPY "a:fred" TO "m:"
+
+This means, put a copy of the contents of the file called 'FRED' (which
+is presently on drive A:) onto drive M:. As no destination name has
+been specified (after M:), the new file will also be called 'FRED'.
+
+The name before the word TO is known as the source filename, and the
+name after TO is the destination filename.
+
+The command...
+
+	COPY "fred" TO "eric"
+
+...will take the contents of a file called 'FRED' on the default drive
+and copy it to a file called 'ERIC', also on the default drive. The
+files 'FRED' and 'ERIC' then contain the same information.
+
+You cannot copy one file to another with the same name and on the same
+drive. Trying to do so will result in the error report 'File already
+exists' (or possibly 'File already in use').
+
+The source filename for copying from can include the wildcards '*' and
+'?', however, in this case the destination filename has to be just a
+drive letter. So, for example...
+
+	COPY "a:*.ovl" TO "m:"
+
+...will work (assuming that there are some files on drive A: that
+match this specification), and transfers all files on A: with a '.OVL'
+type field onto drive M:. However, the command...
+
+	COPY "a:*.bas" TO "m:*.bin"
+
+...will fail with the error report 'Destination cannot be wild'.
+
+The COPY command does not copy any attribute information associated
+with a file; you have to set any attributes you require on the new
+file after copying.
+
+COPY will always list the files it is copying in two columns. This
+will allow you to check that any wildcard specification you use
+encompasses all the files that you were intending to copy.
+
+After copying, a report will appear to let you know many files were
+copied. (If you were copying a group of files, this may be useful to
+check that you have indeed copied all the files you intended to.)
+
+There is a special format of the COPY command as follows...
+
+	COPY "a:" TO "b:"
+
+...which will perform a complete 'sector by sector' copy of the disk
+in drive A: to an already formatted disk in drive B:. Anything already
+stored on the disk in drive B: will be lost - so, if there are only a
+few files on the source disk to be copied, it may be quicker to use...
+
+	COPY "a:*.*" TO "b:"
+
+Even if you have only one drive (A:), you can use the fact that the
+single mechanism can be used as if it were drive A: or drive B:. For
+example, suppose you have a single drive system and want to copy a
+couple of files (that both end in '.BAS') from one disk to
+another. Put the source disk in the drive and type...
+
+	COPY "a:*.bas" to "b:"
+
+Once the +3 has read part of the first file that ends in '.BAS', it
+will ask you to...
+
+	Please put in the disk for B: into
+	the drive then press any key
+
+Simply follow this instruction. After the +3 has written the
+information onto the 'drive B:' disk, it will ask you to...
+
+	Please put in the disk for A: into
+	the drive then press any key
+
+This process of swapping between disks will go on until all files have
+been copied. Because the COPY command will try to use any free space
+on drive M:, it is a good idea to clear drive M: (if possible) before
+doing a lot of copying (as this can reduce the number of disk swaps
+needed).
+
+As well as copying files between drives, COPY can also be used to copy
+files to the screen or to a printer (if connected). The command...
+
+	COPY "words.txt" TO SCREEN$
+
+...will display the contents of a file on the default drive called
+'WORDS.TXT'. Any control characters (except carriage returns) will be
+filtered out. This command cannot really be used to look at BASIC
+program files as they contain various control codes. Its main use will
+be to inspect the contents of ASCII text files, such as those produced
+by a word processor.
+
+The command...
+
+	COPY "words.txt" TO LPRINT
+
+...is similar to the above, but this time the contents of the file
+will be sent to the printer. In this case, however, control codes will
+be sent to the printer. If you have set the print output to be via the
+RS232 with tokens unexpanded (using 'FORMAT LPRINT "R";"U"'), then
+this command can be used to 'export' files to other computers. Once
+again, this command cannot be used for BASIC programs - it is intended
+for sending ASCII text files only.
+
+People writing machine code programs may find it easier to do so on a
+larger development machine. However, the files produced by this method
+will probably not be recognised by the +3, as BASIC expects to find a
+128 byte header at the start of each file which contains information
+used by the LOAD command. However, once a binary file has been
+produced on a +3 formatted disk, it can have a header of the correct
+type put on it using a command such as...
+
+	COPY "game.com" TO SPECTRUM FORMAT
+
+This will produce a new file on the same drive, having the same name
+field but with a type field of '.HED' (short for headed). In the above
+example, a new file called 'GAME.HED' will be created, and it will be
+written to the default drive (as no drive letter was specified).
+
+Obviously this command will only be of use for machine code
+files. Headed files produced in this way will have the length part in
+their header set to the correct value and the type part set to be a
+CODE file. However, BASIC cannot know what address the file should be
+loaded to, so the load address should be specified when the
+'LOAD...CODE' command is used. For example, if the above program had
+been assembled to execute at 7000h (the 'h' denotes a hexadecimal
+number) or 28672 decimal, then the headed file could be loaded with
+the command...
+
+	LOAD "game.hed" CODE 28672
+
+As SCREEN$ files are just another type of CODE file, this technique
+can be used to 'import' screens designed on another machine, though
+they obviously wouldn't make much sense unless they had been tailored
+to fit the +3's size and layout.
+
+
+The RAMdisk
+
+You may have been wondering what point there is in storing information
+in the RAMdisk (drive M:) as it will be lost once the +3 is switched
+off. Well, perhaps the most obvious use of drive M: is to store chunks
+of BASIC program (or routines) which can be merged (using 'MERGE
+"M:filename"') into a smaller program, in sequence. This makes it
+possible to write about 90K of BASIC program, and hold it in the +3
+(though to do this, the program structure has to be well defined).
+
+You can keep the various routines on a 3 inch disk and use COPY to put
+them into drive M: before you run the program. The benefit of doing
+this is that drive M: is much quicker to access than the mechanical
+drives (A: and B:). The mechanical drives, however, can hold much more
+data, so you might like to evolve a system using both disk and
+RAMdisk. Careful design and planning will repay itself many times over
+it terms of speed and performance.
+
+One of the more interesting uses of the RAMdisk is in animation, where
+a series of pictures can be defined by a 'slow' BASIC program, stored
+in drive M:, then called back to the screen at high speed. The
+following program offers a taste of this. Doubtless you can do
+better...
+
+	 10 INK 5: PAPER 0: BORDER 0: CLS
+	 20 FOR f=1 TO 10
+	 30 CIRCLE f*20,150,f
+	 40 SAVE "m:ball"+ STR$ (f) CODE 16384,2048
+	 50 CLS
+	 60 NEXT f
+	 70 FOR f=1 TO 10
+	 80 LOAD "m:ball"+ STR$ (f) CODE
+	 90 NEXT f
+	100 BEEP 0.01, 0.01
+	110 FOR f=9 TO 2 STEP -1
+	120 LOAD "m:ball"+ STR$ (f) CODE
+	130 NEXT f
+	140 BEEP 0.01, 0.01
+	150 GO TO 70
+
+Before running the program, always make sure that drive M: is empty.
+If it isn't, first type 'ERASE "m:*.*"' (typing 'Y' at the '(Y/N)'
+prompt), then RUN.
+
+Note that in line 40 of this program, the two numbers following CODE
+are the address in memory of the start of the screen ('16384') and the
+length of the top third of it ('2048'). By saving and loading only the
+top third, the overall speed is maintained.
+
+
+Tape operations
+
+(See chapter 10 (Peripherals for your +3) for details on how to
+connect a cassette unit to your +3.)
+
+Much of what has been said in this section about the use of LOAD, SAVE
+and MERGE on disk will apply equally to tape (if you have connected a
+cassette unit to the +3). However, the commands FORMAT, COPY, MOVE,
+CAT and ERASE do not apply on tape (although there is a special form
+of CAT that can be used - described in the section ahead entitled
+'Tape catalog').
+
+As you will already know, when you first switch on the +3, the default
+drive for all file operations is set to drive A:. This means that if
+you use CAT, ERASE, LOAD, SAVE, etc. without specifying a drive
+letter, then +3 BASIC will perform the operation on drive A:. You will
+also know that the default disk can be changed using either...
+
+	LOAD "drive letter:"
+
+...or...
+
+	SAVE "drive letter:"
+
+...where drive letter is either 'A:', 'B:' or 'M:' (which must include
+the colon). In fact you can also use 'T:' as a drive letter, but only
+in this one special form of the LOAD and SAVE command...
+
+	LOAD "t:"
+
+After 'LOAD "t:"', all subsequent LOAD and MERGE operations are
+performed to tape (until changed back to disk by, for example, 'LOAD
+"a:"'). Similarly, if you use...
+
+	SAVE "t:"
+
+...then all future SAVE operations will be performed to tape (again,
+until changed back to disk by, for example, 'SAVE "a:"'). Unlike 'A:',
+'B:' or 'M:', when you use 'T:' as the drive letter, it will change
+only future LOAD, SAVE and MERGE commands. The default drive used for
+MOVE, COPY, CAT and ERASE will stay the same as it was before (as
+these commands have no relevance to tape).
+
+If all this sounds a little complicated, a few examples might help to
+make it a little clearer. Assuming you have just switched on (or
+reset) the +3, the default for all operations will be A:. So if you
+now type...
+
+	SAVE "m:"
+
+...then the default drive for all subsequent operations will be set to
+drive M: (this is exactly the same as if the command 'LOAD "m:"' had
+been used). Using the command...
+
+	LOAD "b:"
+
+...will then set the default drive for all operations to drive B:. For
+this sort of thing, LOAD and SAVE operate in exactly the same way.
+
+If we now use the command...
+
+	SAVE "t:"
+
+...this will perform all future SAVE operations to tape, but all other
+commands will still default to drive B:. Using the command...
+
+	LOAD "t:"
+
+...will also perform all future LOAD and MERGE operations to tape;
+however, the default drive for all disk-only commands will still be
+drive B:.
+
+Finally, using the command...
+
+	SAVE "a:"
+
+...will perform all future SAVE operations and all disk operations
+(except LOAD and MERGE) to drive A:. LOAD and MERGE will still be from
+tape, however.
+
+Let's try to save our simple 'squares' program onto tape. Reset the +3
+then type...
+
+	LOAD "squares"
+
+This should load in the program that we saved earlier. If you press
+ENTER, the program will be listed as follows...
+
+	10 POKE 22527+ RND *704, RND *127
+	20 GO TO 10
+
+This is the program that you are now going to save to tape. Any
+standard tape should work, although low noise tapes are preferable.
+
+Type in the following...
+
+	SAVE "t:"
+	SAVE "squares"
+
+This will save the program onto tape using the filename 'SQUARES'.
+When saving files on tape, you are allowed up to ten characters in the
+name. Unlike disk, you can use any characters you like and the name
+can include spaces.
+
+The +3 will display the message...
+
+	Press REC & PLAY, then any key.
+
+We shall first go through a 'dry run' so that you can see what will
+happen when we actually do save the program later. This time,
+therefore, don't press REC and PLAY on your cassette unit - just press
+a key on the +3 (for example ENTER) and watch the border around the
+screen display. You will see patterns of coloured horizontal stripes
+as follows:
+
+Five seconds of red and cyan stripes moving slowly upwards, followed
+by a very short burst of blue and yellow stripes.
+
+A short pause.
+
+Two seconds of the red and cyan stripes again, followed by another
+short burst of blue and yellow stripes.
+
+While the stripes appear on the screen, you can also hear the 'sound'
+of the data through your TV's speaker.
+
+Keep trying out the above SAVE command (without actually operating
+your cassette unit) until you can recognise these patterns. What's
+actually happening is that the information is being saved in two
+blocks and both blocks have a 'lead-in' (which corresponds to the red
+and cyan stripes) followed by the information itself (which
+corresponds to the blue and yellow stripes). The first block is a
+preliminary one containing the name and various other bits of
+information about the program, and the second is the program itself
+together with any variables present. The pause between them is just a
+gap.
+
+Now let's actually save the program onto tape:
+
+1. Wind the tape to an area that is either blank, or that you are
+prepared to overwrite.
+
+2. Type...
+
+	SAVE "squares"
+
+3. Follow the instructions on the screen, i.e....
+
+	Press REC & PLAY, then any key.
+
+4. Watch the screen as before. When the +3 has finished (with the
+report '0 OK'), stop the tape.
+
+Whenever you save a program to tape, before clearing the saved program
+from the +3's memory, you should always make sure that the program was
+correctly saved. You can check the signal on the tape against the
+program in the memory using the VERIFY command (this command isn't
+used on disk, as disks are not prone to the same sorts of errors as
+tapes are):
+
+1. Rewind the tape to just before the point at which you saved the
+program.
+
+2. Type...
+
+	VERIFY "squares"
+
+Play the tape. The border will alternate between red and cyan until
+the +3 finds the program that you specified, then you will see the
+same pattern as you did when you saved the program. During the pause
+between the blocks, the message 'Program: squares' will be displayed
+on the screen. (When the +3 is searching for something on tape, it
+displays the name of everything it comes across.) If, after the
+pattern has appeared, the +3 displays the report '0 OK', then your
+program is safely stored on tape and you can skip to the section ahead
+entitled 'Verified OK'. Otherwise, something has gone wrong - take the
+following steps to find out what.
+
+If the program name has not been displayed, then either the program
+was not saved properly in the first place, or it was but was not 'read
+back' properly. You need to find out which. To see if it was saved
+properly, rewind the tape to just before the point at which you saved
+the program, then play it back while listening to the TV's speaker.
+The (red and cyan) lead-in should produce a clear, steady high pitched
+note, while the (blue and yellow) information part gives a much
+harsher screech.
+
+If you do not hear these noises, then the program was probably not
+saved. Check that you were not trying to save the program onto the
+plastic leader at the beginning of the tape. When you have checked
+this, try saving again.
+
+If you can hear the sounds as described, then SAVE was probably
+alright and your problem is with reading back.
+
+It could be that you mistyped the program name when you saved it (in
+which case when the +3 finds the program it will display the mistyped
+name on the screen). On the other hand, perhaps you mistyped the
+program name when you verified it, in which case the +3 will ignore
+the correctly saved program and carry on looking for the wrong name,
+flashing red and cyan as it goes.
+
+If there is a genuine mistake on the tape, then the +3 will display
+the report 'R Tape loading error' which means in this case that it
+failed to verify the program. Note that a slight fault on the tape
+itself (which might be almost inaudible with music) can wreak havoc
+with a computer program. Try saving the program again, perhaps on a
+different part of the tape (or a different tape altogether).
+
+
+Verified OK
+
+Now let us suppose that you have saved the program and successfully
+verified it. Loading it back into the memory is just a matter of
+typing...
+
+	LOAD "squares"
+
+(Since the program verified properly, you should have no problem
+loading it.)
+
+LOAD deletes the old program (and variables) in the memory when it
+loads in the new one from tape.
+
+Once a program has been loaded, the report '0 OK' will appear. The
+program can then be run or edited.
+
+As mentioned in chapter 4, it is possible to buy pre-recorded programs
+(software) on tape. They must be specially written for the ZX Spectrum
+range (i.e. the Spectrum, the Spectrum +, the Spectrum 128, the
+Spectrum +2 or the Spectrum +3). Different makes and models of
+computer have different ways of storing programs, so they cannot use
+each other's tapes.
+
+If your tape has more than one program stored on the same side, then
+each program will have a name. You can choose the program you wish to
+load using the LOAD command - for instance, if the one you want is
+called 'HELICOPTER', you could type...
+
+	LOAD "helicopter"
+
+The command 'LOAD ""' means 'load the first program that the +3 comes
+across on tape'. This can be very useful if you cannot remember the
+name that you saved the program under! (Remember that this only works
+on tape - normally you cannot specify a blank filename.)
+
+When there is no disk in drive A: (or the disk contains no file called
+'*' or 'DISK'), then the option 'Loader' from the opening menu has the
+same action as 'LOAD ""' from tape, and is much quicker to use -
+simply switch on (or reset) the +3 and press ENTER.
+
+MERGE will operate in a similar way to that described for disk except,
+of course, that on tape you can use 'MERGE ""' to mean 'merge the next
+file on tape'. Filenames in a MERGE command may conform to the less
+stringent limits for tape (i.e. any combination of 10 characters
+including spaces).
+
+If you have BASIC programs saved on tape (perhaps because you owned a
+previous Spectrum model), you will probably want to transfer them to
+disk to gain the advantage of faster loading. This should be
+relatively straightforward. Just use...
+
+	LOAD "t:"
+	SAVE "a:"
+
+...then for each BASIC file on the tape, use...
+
+	LOAD ""
+
+...which will load the next file from the tape into the +3's program
+memory. Once loaded, the file can be saved out to disk using...
+
+	SAVE filename
+
+Remember that files on disk must be given a filename which conforms to
+the limitations outlined at the beginning of this section.
+
+If the BASIC programs have been saved with an automatic execution
+LINE, you will find that attempting to LOAD them will also run them.
+Obviously you don't want this so, for each program you wish to load,
+reset the computer, select '+3 BASIC' and type...
+
+	MERGE ""
+
+...(rather than 'LOAD ""').
+
+If you have saved data (numeric or string) arrays, it should be an
+equally simple matter to LOAD them into memory from tape, then SAVE
+them to disk.
+
+The only file types that may cause difficulty when you want to
+transfer them from tape to disk are CODE (and SCREEN$) files. To be
+able to transfer a file of this type you need to know at least two
+things about it.
+
+	1. The address it was saved from.
+	2. How many bytes it contains.
+
+
+Tape catalog
+
+This is where the final form of the CAT command comes in. If the file
+specification given is simply 'T:', a special form of the CAT command
+comes into action. After you type...
+
+	CAT "t:"
+
+...the +3 will wait for you to play a tape (the 'CAT "t:"' operation
+can be abandoned by pressing BREAK). When the +3 finds a header on
+tape it will display the information (in the same form it was saved).
+This means that there will be a ten character filename in inverted
+commas. What follows the filename will depend upon the type of file -
+if it was a BASIC program, the word '(BASIC)' will be displayed. If a
+LINE parameter was specified when the file was saved, this will also
+be shown. If the file holds data, then the word DATA followed by the
+array name will be displayed, and finally, if the file was saved using
+CODE (or SCREEN$, which is really just 'CODE 16384,6912'), the word
+CODE will be printed followed by the start address and length that
+were specified when the file was saved.
+
+Here is a sample display resulting from a 'CAT "t:"' command, which
+may make this a little clearer...
+
+	"simple    " (BASIC)
+	"execute   " LINE 10 (BASIC)
+	"numbers   " DATA f()
+	"words     " DATA c$()
+	"m/c       " CODE 30000,12345
+	"picture   " CODE 16384,6912
+
+The last item was, in fact, saved using...
+
+	SAVE "picture" SCREEN$
+
+Just like the other forms of CAT, its output can be directed to a
+printer using stream 3, i.e....
+
+	CAT #3,"t:"
+
+(Streams are explained in part 22 of this chapter.) Note that the
+above 'CAT #3,"t:"' command will not work unless a printer is
+connected to the +3 and is on-line. To abandon, press BREAK.
+
+From the above it can be seen that if you have loaded (using 'MERGE
+""') a program containing an execution LINE parameter, the 'CAT "t:"'
+display will identify that line number for you. You may then wish to
+save that program to disk using...
+
+	SAVE filename LINE line number
+
+...so that the disk version of that program runs itself automatically.
+
+It is the values for the CODE files that you will probably find most
+useful from the 'CAT "t:"' display. Either note them down or print
+them out. Then rewind the tape so it just before the header that has
+been read. Type...
+
+	CLEAR start-1
+
+...where start is the value printed for the start address. Now type...
+
+	LOAD "" CODE
+
+When the file has loaded into memory and the '0 OK' report appears,
+the file can be saved to disk using...
+
+	SAVE filename CODE start,length
+
+This technique is only intended for transferring your own code files
+(where you may have forgotten what start and length values were used
+when you saved them). Note that using this method to copy commercial
+software may be a breach of copyright - check with the software author
+first.
+
+There are several reasons why this simple scheme may not work:
+
+1. The code, when loaded would overwrite some of the system variables
+(in the range 23296 (5B00h) to 23755 (5CC6h)). This upper address
+limit may vary - it is the value held in the system variable PROG (see
+part 25 of this chapter).
+
+2. Attempting to load code that has no header (or that is protected in
+some other way) probably won't even produce any output from 'CAT "t:"'
+and you certainly won't be able to use the BASIC LOAD command to load
+it.
+
+3. If the code file is so long that it stretches right from the screen
+display area to the end of memory, then it will be possible to load
+it, but as soon as it has loaded, the machine will crash. This is
+because BASIC will have 'lost' its stack.
+
+
+Exercise...
+
+1. Practise the operations shown in this section until you are
+completely au fait with manipulating files to and from the disk, the
+RAMdisk, and cassette unit (if connected).
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt19.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt21.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

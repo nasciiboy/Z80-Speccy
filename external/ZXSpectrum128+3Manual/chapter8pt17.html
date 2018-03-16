@@ -1,0 +1,288 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 17</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 17
+Graphics
+
+Subjects covered...
+
+	PLOT, DRAW, CIRCLE
+	Pixels
+
+For all of this section, type in the example programs, commands and
+RUN in the small screen (use the edit menu's Screen option).
+
+In this section we shall see how to draw pictures on the +3. The part
+of the screen you can see has 22 lines and 32 columns, making 22x32
+=704 character positions. As you may remember from part 16, each of
+these character positions is made up of an 8 x 8 grid of dots which
+are called pixels (picture elements).
+
+A pixel is specified by two numbers - its coordinates. The first, its
+x coordinate, says how far it is across from the extreme left-hand 
+column. The second, its y coordinate, says how far it is up from the
+bottom. These coordinates are usually written as a pair in brackets,
+so (0,0) (255,0) (0,175) and (255,175) are the bottom left, bottom 
+right, top left and top right corners of the screen.
+
+If you have trouble memorising which coordinate is which, simply 
+remember that 'x is a cross' (x is across).
+
+The statements...
+
+	PLOT x coordinate, y coordinate
+
+..inks in the pixel with these coordinates, so this measles program...
+
+	10 PLOT INT ( RND *256), INT (RND *176): INPUT a$: GO TO 10
+
+...plots a random point each time you press ENTER.
+
+Here is a rather more interesting program. It plots a graph of the
+function SIN (a sine wave) for values between 0 and 2*PI...
+
+	10 FOR n=0 TO 255
+	20 PLOT n, 88+80* SIN (n/128*PI )
+	30 NEXT n
+
+This next program plots a graph of SQR (part of a parabola) between
+0 and 4...
+
+	10 FOR n=0 TO 255
+	20 PLOT n, 80* SQR (n/64)
+	30 NEXT n
+
+Notice that pixel coordinates are rather different from the line and
+column in an AT item. You may find that the diagram in part 15 of this
+chapter is useful when working out pixel coordinates and line and
+column numbers.
+
+To help you with your pictures, the +3 will draw straight lines,
+circles and parts of circles for you, using DRAW and CIRCLE 
+statements.
+
+The statement DRAW (to draw a straight line) takes the form...
+
+	DRAW x, y
+
+The starting place of the line is the pixel where the last PLOT, DRAW
+or CIRCLE statement left off (this is called the PLOT position - RUN,
+CLEAR, CLS and NEW reset it to the bottom left-hand corner, at 0,0);
+the finishing place of the line is x pixels to the right of that and y
+pixels up. The DRAW statement on its own determines the length and 
+direction of the line, but not its starting point.
+
+Experiment with a few PLOT and DRAW commands, for instance...
+
+	PLOT 0,100: DRAW 80,-35
+	PLOT 90,150: DRAW 80,-35
+
+Notice that the numbers in a DRAW statement can be negative, but those
+in a PLOT statement can't.
+
+You can also plot and draw in colour, although you have to bear in
+mind that colours always cover the whole of a character cell and
+cannot be specified for individual pixels. When a pixel is plotted, it
+is set to show the full ink colour, and the whole of the character
+cell containing it is given the current ink colour. This program
+demonstrates that point...
+
+	10 BORDER 0: PAPER 0: INK 7: CLS: REM black out screen
+	20 LET x1=0: LET y1=0: REM start of line
+	30 LET c=1: REM for ink colour, starting blue
+	40 LET x2= INT ( RND *256): LET y2= INT ( RND *176): REM
+	   random finish on line
+	50 DRAW INK c;x2-x1,y2-y1
+	60 LET x1=x2: LET y1=y2: REM next line starts where last
+	   one finished
+	70 LET c=c+1: IF c=8 THEN LET c=1: REM new colour
+	80 GO TO 40
+
+The lines seem to get broader as the program goes on, and this is
+because a line changes the colours of all the inked-in pixels of all
+character cells that it passes through. Note that you can embed PAPER,
+INK, FLASH, BRIGHT, INVERSE and OVER items in a PLOT or DRAW statement
+just as you could with PRINT and INPUT. They go between the keyword
+and the coordinates, and are terminated by either semicolons or 
+commas.
+
+An extra frill with DRAW is that you can use it to draw part of
+circles instead of straight lines, by including an extra number to
+specify an angle to be turned through. The form is...
+
+	DRAW x,y,a
+
+x and y are used to specify the finishing point of the line just as
+before, and a is the number of radians that it must turn through as
+it goes. If a is positive then it turns to the left, if a is negative
+then it turns to the right. Another way of seeing a is as showing the
+fraction of a complete circle that will be drawn, (a complete circle
+is 2*PI radians) so if a equals pi it will draw a semicircle, if a
+equals 0.5*PI a quarter if a circle, and so on.
+
+For instance, suppose a equals PI. Then whatever values x and y take,
+a semicircle will be drawn.
+Try...
+
+	10 PLOT 100,100: DRAW 50,50, PI
+
+...which will draw this...
+
+
+                                       `-.   Finish at (150,150)
+                                          `
+                                           `
+                                            :
+                                            :
+                                           ;
+                                         ,'
+                             `--______--'
+
+                        Start at (100,100)
+
+
+The drawing starts off in a south-easterly direction, but by the time
+it stops, it is going north-west. In between, it has turned through
+180 degrees, or PI radians (the value of a).
+
+Run the program several times, with PI replaced by various other
+expressions, e.g. -PI, PI/2, 3*PI/2, PI/4, 1, 0, etc.
+
+The last statement in this section is CIRCLE, which draws an entire
+circle. You specify the coordinates of the centre and the radius of
+the circle using...
+
+	CIRCLE x coordinate, y coordinate, radius
+
+Just as with PLOT and DRAW, you can put various sorts of colour items
+in at the beginning of a CIRCLE statement.
+
+The POINT function tells you whether a pixel is ink or paper colour.
+Its two arguments are the coordinates of the pixel (which must be
+enclosed in brackets) and its result is 0 if the pixel is paper
+colour, or 1 if its ink colour. Try...
+
+	CLS : PRINT POINT (0,0): PLOT 0,0: PRINT POINT (0,0)
+
+Type...
+
+	PAPER 7: INK 0
+
+...and investigate how INVERSE and OVER work inside PLOT statement.
+These two affect just the relevant pixel, and not the rest of the
+character cell. They are normally off (0) in a PLOT statement, so you
+only need to mention them to turn them on (1).
+
+Here is a list if the possibilities for reference:
+
+PLOT;			    - This is the usual form. It plots an ink
+			      dot, i.e. sets the pixel to show the ink
+			      colour.
+
+PLOT INVERSE 1;		    - This plots a dot of 'ink eradicator',
+			      i.e. it sets the pixel to show the paper
+			      colour.
+
+PLOT OVER 1;		    - This exchanges the pixel colour with
+			      whatever it was before, so if it was ink
+			      colour then it becomes paper colour, and
+			      vice versa.
+
+PLOT INVERSE 1; OVER 1;     - This leaves the pixel exactly as it was
+			      before, but note that it also changes the
+			      PLOT position, so you might use it simply
+			      to do that.
+
+As another example of using OVER statement, fill the screen up with
+writing using black on white, and then type...
+
+	PLOT 0,0: DRAW OVER 1;255,175
+
+This will draw a fairly decent line, even though it has gaps in it
+wherever it hits some writing. Now type in exactly the same command
+again. The line will vanish without leaving any trace whatsoever - 
+this is the great advantage of OVER 1. If you had drawn the line 
+using...
+
+	PLOT 0,0: DRAW 255,175
+
+...and erased using...
+
+	PLOT 0,0: DRAW INVERSE 1;255,175
+
+...then you would also have erased some of the writing.
+
+Now try...
+
+	PLOT 0,0: DRAW OVER 1;250,175
+
+...and try to 'undraw' it using...
+
+	DRAW OVER 1;-250,-175
+
+This doesn't quite work because the pixels that the line uses on the
+way back are not quite the same as the ones that it used on the way
+there. You must therefore undraw a line in exactly the same direction
+as you drew it.
+
+One way to get unusual colours is to speckle two normal ones together
+in a single square, using a user-defined graphic. Try this program...
+
+	1000 FOR n=o TO 6 STEP 2
+	1010 POKE USR "a"+n, BIN 01010101: POKE USR "a"+n+1,
+	      BIN 10101010
+	1020 NEXT n
+	1030 REM now press GRAPH then A
+
+...which gives the user-defined graphic corresponding to a chessboard
+pattern. If you print the character (press GRAPH then A) you will find
+that the character is reproduced in a combination of the current paper
+and ink colours.
+
+
+Exercises...
+
+1. Experiment with PAPER, INK, FLASH and BRIGHT items in a PLOT
+statement. These are the parts that affect the whole of the character
+cell containing the pixel. Normally it is as though the PLOT statement
+had started off...
+
+	PLOT PAPER 8; FLASH 8; BRIGHT 8; ...etc
+
+...and only the ink colour of a character cell is altered when
+something is plotted there, but you can change this if you wish.
+
+Be especially careful when using colours with INVERSE 1, because this
+sets the pixel to show the paper colour, and may change the ink 
+colour, which might not be what you expect.
+
+2. If you have read part 10, see if you can work out how to draw
+circles using SIN and COS. Run this program...
+
+	10 FOR n=0 TO 2* PI STEP PI /180
+	20 PLOT 100+80* COS n, 87+80*SIN n
+	30 NEXT n
+	40 CIRCLE 150, 87, 80
+
+You can see that the CIRCLE statement is much quicker, albeit less
+accurate.
+
+3. Try...
+
+	CIRCLE 100,87,80: DRAW 50,50
+
+You can see from this that the CIRCLE statement leaves the PLOT
+position at a rather indeterminate place - it is always somewhere
+about half way up the right-hand side of the circle. You will usually
+need to follow the CIRCLE statement with a PLOT statement before you
+do any more drawing.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt16.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt18.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

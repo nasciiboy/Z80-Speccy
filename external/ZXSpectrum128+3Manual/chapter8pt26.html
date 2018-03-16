@@ -1,0 +1,602 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 26</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 26
+Using machine code
+
+Subjects covered...
+
+	USR with numeric argument
+
+This section is written for those who understand Z80 machine code i.e.
+the set of instructions that the Z80 processor chip users. If you do
+not, but would like to, there are plenty of books about it. You should
+get one called something along the lines of... 'Z80 machine code (or
+assembly language) for the absolute beginner', and if it mentions the
+'+3' or other computers in the ZX Spectrum range, so much the better.
+
+Machine code programs are normally written in assembly language,
+which, although cryptic, is not too difficult to understand with
+practice. You can see the assembly language instructions in part 28 of
+this chapter. However, to run them on the +3 you need to code the
+program into a sequence of bytes - then called machine code. This
+translation is usually done by the computer itself using a program
+called an assembler. There is no assembler built in to the +3, but you
+will be able to buy one on disk or tape. Failing that, you will have
+to do the translation yourself, provided that the program is not too
+long.
+
+Let's take as an example the program...
+
+	ld bc, 99
+	ret
+
+...which loads the BC register pair with 99. This translates into the
+four machine code bytes 1, 99, 0 (for ld bc, 99) and 201 (for RET).
+(If you look up codes 1 and 201 in part 28 of this chapter, you will
+find that corresponds to ld bc, NN - where NN stands for any two-byte
+number, and 201 corresponds to ret.)
+
+When you have got your machine code program, the next step is to get
+into the computer - (an assembler would probably do this
+automatically). You need to decide whereabouts in memory to locate it
+- the best thing is to make extra space for it between the BASIC area
+and the user-defined graphics.
+
+If you type...
+
+	CLEAR 65267
+
+...this will give you a space of 100 (for good measure) bytes starting
+at address 65268.
+
+To put in the machine code program, you would run a BASIC program
+something like...
+
+	10 LET a=65268
+	20 READ n: POKE a,n
+	30 LET a=a+1: GO TO 20
+	40 DATA 1,99,0,201
+
+(This will stop with the report E Out of DATA when it has filled in
+the four bytes you specified.)
+
+To run the machine code, you use the function USR - but this time with
+a numeric argument, i.e. the starting address. Its result is the value
+of the BC register on return from the machine code program, so if you
+type...
+
+     PRINT USR 65268
+
+...you will get the answer 99.
+
+The return address to BASIC is 'stacked' in the usual way, so return
+is by a Z80 ret instruction. You should not use the IY and I registers
+in a machine code routine that expects to use the BASIC interrupt
+mechanism. If you are writing a program that might eventually run on
+an older Spectrum (up to and including the +2), you should not load I
+with values between 40h and 7Fh (even if you never use IM 2). Values
+between C0h and FFh for I should also be avoided if contended memory
+(i.e. RAM 4 to 7) is to be paged in between C000h and FFFFh. This is due
+to an interaction between the video controller and the Z80 refresh
+mechanism, and can cause otherwise inexplicable crashes, screen
+corruption or other undesirable effects. This, you should only vector
+IM 2 interrupts to between 8000h and BFFFh, unless you are very
+confident of your memory mapping (or you are only going to run your
+program on the +3 where this problem does not exist).
+
+The system variable at 5CB0h (23728) was documented on previous models
+of the Spectrum as 'Not used'. It is now used on the +3 as an NMI jump
+vector. If an NMI occurs, this address is checked. If it contains a 0,
+then no action is taken. However, for any other (non-zero) value, a
+jump will be made to the address given by this variable. NMIs must not
+occur while the disk system is active.
+
+There are a number of standard pitfalls when programming a banked
+system such as the +3 from machine code. If you are experiencing
+problems, check that your stack is not being paged out during
+interrupts, and that your interrupt routine is always where you expect
+it to be (it is advisable to disable interrupts during paging
+operations). It is also recommended that you keep a copy of the
+current bank register setting in unpaged RAM somewhere as the ports
+are write-only. BASIC and the editor use the system variables BANKM
+and BANK678 for 7FFDh and 1FFDh respectively.
+
+If you call +3DOS routines, remember that interrupts should be enabled
+upon entry to the routines. Remember also that the stack must be below
+BFE0h (49120) and above 4000h (16384), and that there must be at least
+50 words of stack space available.
+
+You can save your machine code program easily enough with (for
+example)...
+
+     SAVE "name" CODE 65268,4
+
+On the face of it, there is no way of saving the program so that when
+loaded it automatically runs itself; however, you can get around this
+by using the short BASIC program...
+
+     10 LOAD "name" CODE 65268,4
+     20 PRINT USR 65268
+
+...which should also be saved (as a separate program) using the
+command (for example)...
+
+     SAVE "loader" LINE 10
+
+Then you may run the machine code from BASIC using the single
+command...
+
+     LOAD "loader"
+
+...which loads and automatically runs the BASIC program which in turn
+loads and runs the machine code.
+
+
+Calling +3DOS from BASIC
+
+When BASIC's USR function is used, the code it references is entered
+with the memory configured as illustrated below (left), i.e. the ROM
+switched in at the bottom of memory in the address range
+(000h...3FFFh) is ROM 3 (the 48 BASIC ROM). The RAM page at the top of
+memory is page 0 and the machine stack resides in this area (unless
+the CLEAR command has been used to reduce it to somewhere below
+C000h). As explained in part 27 of this chapter (which describes the
++3DOS routines), DOS can only be called with RAM page 7 switched in at
+the top of memory, the stack held somewhere in that range
+4000h...BFE0h, and ROM 2 (the DOS ROM) switched in at the bottom of
+memory (000h...3FFFh). This configuration is illustrated below
+(right).
+
+          In BASIC                      (using DOS)
+          (after USR)
+          +---------+                   +---------+
+          |  Page 0 | <-SP              |  Page 7 |
+    C000h +---------+                   +---------+
+          |  Page 2 |                   |  Page 2 | <- SP
+    8000h +---------+                   +---------+
+          |  Page 5 |                   |  Page 5 |
+    4000h +---------+                   +---------+
+          |  ROM  3 |                   |  ROM  2 |
+    0000h +---------+                   +---------+
+
+Consequently, it will be necessary to switch both ROM and RAM, and
+move the stack before and after calling one of the entries in the DOS
+jump table. The following very simple example shows one way of
+achieving the desired set up in order to call DOS CATALOG.
+
+If BASIC's CLEAR command has been used so that the BASIC stack is
+below BFE0h (49120), then it is not necessary to move the stack.
+However, we have done so in the following example to demonstrate the
+technique when this is not the case.
+
+A simple example to call DOS CATALOG...
+
+     org  7000h
+
+mystak       equ 9FFFh  ;arbitrary value picked to be below BFE0h and above 4000h
+staksto      equ 9000h  ;somewhere to put BASIC's stack pointer
+bankm        equ 5B5Ch  ;system variable that holds the last value output to 7FFDh
+port1        equ 7FFDh  ;address of ROM/RAM switching port in I/O map
+catbuff      equ 8000h  ;somewhere for DOS to put its catalog
+dos_catalog  equ 011Eh  ;the DOS routine to call
+
+demo:
+
+     di                  ;unwise to switch RAM/ROM without disabling interrupts
+     ld   (staksto),sp   ;save BASIC's stack pointer
+     ld   bc,port1       ;the horizontal ROM switch/RAM switch I/O address
+     ld   a,(bankm)      ;system variable that holds current switch state
+     res  4,a            ;move right to left in horizontal ROM switch (3 to 2)
+     or   7              ;switch in RAM page 7
+     ld   (bankm),a      ;must keep system variable up to date (very important)
+     out  (c),a          ;make the switch
+     ld   sp,mystak      ;make sure stack is above 4000h and below BFE0h
+     ei                  ;interrupts can now be enabled
+
+;
+;The above will have switched in the DOS ROM and RAM page 7. The stack has also
+;been located in a "safe" position for calling DOS
+;
+;The following is the code to set up and call DOS CATALOG. This is where your
+;own code would be placed.
+;
+
+     ld   hl,catbuff     ;somewhere for DOS to put the catalog
+     ld   de,catbuff+1   ;
+     ld   bc,1024        ;maximum is actually 64x13+13 = 845
+     ld   (hl),0
+     ldir                ;make sure at least first entry is zeroised
+     ld   b,64           ;the number of entries in the buffer
+     ld   c,1            ;include system files in the catalog
+     ld   de,catbuff     ;the location to be filled with the disk catalog
+     ld   hl,stardstar   ;the file name ("*.*")
+     call dos_catalog    ;call the DOS entry
+     push af             ;save flags and possible error number returned by DOS
+     pop  hl
+     ld   (dosret),hl    ;put it where it can be seen from BASIC
+     ld   c,b            ;move number of files in catalog to low byte of BC
+     ld   b,0            ;this will be returned in BASIC by the USR function
+
+;
+;If the above worked, then BC holds number of files in catalog, the "catbuff"
+;will be filled with the alphanumerically sorted catalog and the carry flag but
+;in "dosret" will be set. This will be peeked from BASIC to check if all went
+;well.
+;
+;Having made the call to DOS, it is now necessary to undo the ROM and RAM
+;switch and put BASIC's stack back to where it was on entry. The following
+;will achieve this.
+
+     di                  ;about to ROM/RAM switch so be careful
+     push bc             ;save number of files
+     ld   bc,port1       ;I/O address of horizontal ROM/RAM switch
+     ld   a,(bankm)      ;get current switch state
+     set  4,a            ;move left to right (ROM 2 to ROM 3)
+     and  F8h            ;also want RAM page 0
+     ld   (bankm),a      ;update the system variable (very important)
+     out  (c),a          ;make the switch
+     pop  bc             ;get back the saved number of files in catalog
+     ld   sp,(staksto)   ;put BASIC's stack back
+     ret                 ;return to BASIC, value in BC is returned to USR
+
+stardstar:
+
+     defb "*.*",FFh      ;the file name, must be terminated with FFh
+
+dosret:
+
+     defw 0              ;a variable to be peeked from BASIC to see if it worked
+
+
+As some of you may not have an assembler available, the following is a
+BASIC program that pokes the above code into memory, calls it, and
+then uses the value returned by the USR function and the contents of
+'dosret' to print a very simple catalog of the disk.
+
+      10  LET sum=0
+      20  FOR i=28672 TO 28758
+      30  READ n
+      40  POKE i,n : LET sum=sum+n
+      50  NEXT i
+      60  IF sum <> 9387 THEN PRINT "Error in DATA" : STOP
+      70  LET x= USR 28672
+      80  IF INT ( PEEK (28757)/2)= PEEK (28757)/2 THEN PRINT "Disk Error ";
+		PEEK (28758): STOP
+      90  IF x=1 THEN PRINT "No file found": STOP
+     100  FOR i=0 TO x-2
+     110  FOR j=0 TO 10
+     120  PRINT CHR$ ( PEEK (32781+i*13+j));
+     130  NEXT j
+     140  PRINT
+     150  NEXT i
+     160  DATA 243,237,115,0,144,1,253,127,58,92,91,203,167,246,7,50,92,91,237,
+          121,49,255,159,251
+     170  DATA 33,0,128,17,1,128,1,0,4,54,0,237,176,6,64,14,1,17,0,128,33,81,112,
+          205,30,1,245,225,34,85,112,72,6,0
+     180  DATA 243,197,1,253,127,58,92,91,203,231,230,248,50,92,91,237,121,193,
+          237,123,0,144,201
+     190  DATA 42,46,42,255,0,0
+
+
+The addresses picked for the above code and its data areas are
+completely arbitrary. However, it is a good idea to keep things in the
+central 32K wherever possible so as not to run into the pitfall of
+accidentally switching out a vital variable or piece of code.
+
+If interrupts are to be enabled (as is the case in the above example),
+it is imperative that the system is kept up to date about the latest
+ROM switch. This mean that the user must make the BANK678 system
+variable reflect the last value output to the port at 1FFDh. As shown
+by the above example, the general technique is to take a copy of the
+variable in A, set/reset the relevant its, update the system variable
+then make the switch with an OUT instruction. Interrupts must be
+disabled while the system variable does not reflect the current state
+of the port. The port at 1FFDh doesn't just control the ROM switch, so
+setting the variable to absolute values would be very unwise. Using
+AND/OR with a bit mask or SET/RES instructions is the preferred method
+of updating the variable.
+
+Just as BANK678 reflects the last value output to 1FFDh, BANKM should
+also be kept up to date with the last value output to 7FFDh. Again, it
+is unwise to use absolute values, as the port is used for other
+purposes. For example, the bottom 3 bits of the port are used to
+select the RAM page that is switched into the memory area
+C000h...FFFFh (this is also shown in the above example). naturally,
+when more than one bit is to be set/reset, a bit mask used with OR/AND
+is the more efficient method. note that RAM paging was described in
+the section entitled 'Memory management' in part 24 of this chapter.
+
+The above was a very simple example of calling DOS routines. The
+following shows one or two extra techniques that you may find useful.
+However, if you are not already familiar with assembler programming,
+it might be better to skip this example.
+
+Although part 20 of this chapter suggested that the opening menu's
+Loader option first looks for a file called * and the one called DISK
+before trying to load the first file from tape - this isn't exactly
+the whole story. The first operation actually tries to load a
+bootstrap sector from the disk in drive A. The sector on side 0, track
+0, sector 1 will be used as a loader (bootstrap) if the system finds
+that the 9 bit checksum of the sector is 3. The following program
+ensures that the checksum of 512 bytes conforms to this requirement,
+then writes the information to the disk in the correct position. Once
+a disk has been modified in this way, the Loader option can be used to
+automatically load and run the disk. Alternatively, the BASIC command
+LOAD "*" can be used.
+
+This example was developed using the M80 on a CP/M based machine - so
+the method to ensure that the code is assembled relative to the
+correct address might be different from that used by your own
+assembler.
+
+;
+;Simple example program to write a boot sector to the disk in drive A:.
+;
+;by Cliff Lawson
+;copyright (c) AMSTRAD plc. 1987
+;
+
+          .z80                          ;ignore this if not using M80
+
+     bank1               equ  07FFDh    ;"horizontal" and RAM switch port
+     bankm               equ  05B5Ch    ;associated system variable
+     bank2               equ  01FFDh    ;"vertical" switch port
+     bank678             equ  05B67h    ;associated system variable
+
+     select              equ  01601h    ;BASIC routine to open stream
+     dos_ref_xdpb        equ  0151h     ;
+     dd_write_sector     equ  0166h     ;see part 27 of this chapter
+     dd_login            equ  0175h     ;
+
+          org            0
+          .phase         07000h
+
+;
+;(This allows M80 to generate a .COM file that has addresses relative to 7000h.
+;Assemble with "M80 = prog" and link with "L80 /p:0,/d:0,prog,prog/n:p/y/e"
+;This can be headed with COPY...TO SPECTRUM FORMAT and loaded with
+;LOAD...CODE 28672.
+;
+start:
+
+     ld   (olstak),sp         ;save BASIC's stack pointer
+     ld   sp,mystak           ;put stack below switched RAM pages
+     push iy                  ;save IY on stack for the moment
+
+     ld   a,"A"               ;drive A:
+     ld   iy,dos_ref_xdpb     ;make IX point to XDPB A: (necessary for
+     call dodos               ;calling DD routines)
+
+     ld   c,0                 ;log in disk in unit 0 so that writing sectors
+     push ix                  ;wont say "disk has been changed"
+     ld   iy,dd_login
+     call dodos
+     pop  ix
+
+     ld   hl,bootsector
+     ld   bc,512              ;going to checksum 512 bytes of sector
+     xor  a
+     ld   (bootsector+15),a   ;reset checksum for starters
+     ld   e,a                 ;E will hold 8 bit sum
+
+ckloop:
+
+     ld   a,e
+     add  a,(hl)              ;this loop makes 8 bit checksum of 512 bytes
+     ld   e,a                 ;sector in E
+     inc  hl
+     dec  bc
+     ld   a,b
+     or   c
+     jr   nz,ckloop
+
+     ld   a,e                 ;A now has 8 bit checksum of the sector
+     cpl                      ;ones complement (+1 will give negative value)
+     add  a,4                 ;add 3 to make sum = 3 + 1 to make twos complement
+     ld   (bootsector+15),a   ;will make bytes checksum to 3 mod 256
+
+     ld   b,0                 ;page 0 at C000h
+     ld   c,0                 ;unit 0
+     ld   d,0                 ;track 0
+     ld   e,0                 ;sector 1 (0 because of logical/physical trans.)
+     ld   hl,bootsector       ;address of info. to write as boot sector
+     ld   iy,dd_write_sector
+     call dodos               ;actually write sector to disk
+     pop  iy                  ;put IY back to BASIC can reference its system
+                              ;variables
+     ld   sp,(olstak)         ;put original stack back
+     ret                      ;return to USR call in BASIC
+
+dodos:
+;
+;IY holds the address of the DOS routine to be run. All other registers are
+;passed intact to the DOS routine and are returned from it.
+;
+;Stack is somewhere in central 32K (conforming to DOS requirements), so save AF
+;and BC will not be switched out.
+;
+     push af
+     push bc                  ;temp save registers while switching
+     ld   a,(bankm)           ;RAM/ROM switching system variable
+     or   7                   ;want RAM page 7
+     res  4,a                 ;and DOS ROM
+     ld   bc,bank1            ;port used for horiz ROM switch and RAM paging
+     di
+     ld   (bankm),a           ;keep system variables up to date
+     out  (c),a               ;RAM page 7 to top and DOS ROM
+     ei
+     pop  bc
+     pop  af
+
+     call jumptoit            ;go sub routine address in IY
+
+     push af                  ;return from JP (IY) will be to here
+     push bc
+     ld   a,(bankm)
+     and  0F8h                ;reset bits for page 0
+     set  4,a                 ;switch to ROM 3 (48 BASIC)
+     ld   bc,bank1
+     di
+     ld   (bankm),a
+     out  (c),a               ;switch back to RAM page 0 and 48 BASIC
+     ei
+     pop  bc
+     pop  af
+     ret
+
+jumptoit:
+
+     jp   (iy)                ;standard way to CALL (IY), by calling this jump
+
+olstak:
+
+     dw   0                   ;somewhere to put BASIC's stack pointer
+     ds   100
+
+mystak:                       ;enough stack to meet +3DOS requirements
+
+bootsector:
+
+     .dephase                 ;these are M80 pseudo ops. your assembler
+     .phase    0FE00h         ;may use something different
+
+;
+;Bootstrap will load into page 3 at address FE00h. The code will be entered at
+;FE10h.
+;
+;Before it is written to track 0, sector 1, the bootstrap has byte 15
+;changed so that it will checksum to 3 mod 256.
+;
+;Boot will switch the memory so that the 48 BASIC ROM is at the bottom.
+;Next up is page 5 - the screen, then page 2, and the top will keep
+;page 3, as it would be unwise to switch out the bootstrap. BASIC
+;routines can be called with any RAM page switched in at the top, but
+;the stack shouldn't be in the TSTACK area.
+
+
+bootstart:
+;
+;The bootstrap sector contains the 16 bytes disk specification at the start.
+;The following values are for a AMSTRAD PCW range CF2/Spectrum +3 format disk.
+;
+     db   0                   ;+3 format
+     db   0                   ;single sided
+     db   40                  ;40 tracks per side
+     db   9                   ;9 sectors per track
+
+     db   2                   ;log2(512)-7 = sector size
+     db   1                   ;1 reserved track
+     db   3                   ;blocks
+     db   2                   ;2 directory blocks
+
+     db   02Ah                ;gap length (r/w)
+     db   052h                ;page length (format)
+     ds   5,0                 ;5 reserved bytes
+
+cksum:         db   0         ;checksum must = 3 mod 256 for the sector
+;
+;The bootstrap will be entered here with the 4, 7, 6, 3 RAM pages switched in.
+;To print something, we need 48 BASIC in at the bottom, page 5 (the screen and
+;system variables) next up. The next page will be 0, and the top will be kept
+;as page 3 because it still contains the bootstrap and stack (stack is FE00h on
+;entry).
+;
+     di
+     ld   a,(bankm)
+     and  0F8h
+     or   3                   ;RAM page 3 (as it holds bootstrap)
+     set  4,a                 ;right-hand ROMs
+     ld   bc,bank1
+     ld   (bankm),a
+     out  (c),a               ;switch RAM and horizontal ROM
+     ld   a,(bank678)
+     and  0F8h
+     or   4                   ;set bit 2 and reset bit 0 (gives ROM 3)
+     ld   bc,bank2
+     ld   (bank678),a
+     out  (c),a               ;should now have R3,5,2,3
+
+     ld   a,2
+     call select              ;BASIC ROM routine to open stream (A)
+     ld   hl,message
+     call print               ;print a message
+
+eloop:
+;
+;end with an endless loop changing the border. This is where your own code
+;for a game or operating system would go.
+;
+     ld   a,r                 ;a not-very-random random number
+     out  (0feh),a            ;switch the border
+     jr   eloop               ;and loop
+
+print:
+     ld   a,(hl)              ;this just loops printing characters
+     cp   0FFh                ;until if finds FFh
+     ret  z
+     rst  10h                 ;with 48K ROM in, this will print char in A
+     inc  hl
+     jr   print
+
+message:
+     defb 16,2,17,7,19,0,22,10,1,"Hello, good evening and welcome",0ffh
+cliff:
+     ds   512-(cliff-bootstart),0  ;fill to end of sector with 0s
+
+     end
+
+
+There are one or two things that may be worth noting about this
+example. The first is that because BASIC normally has the address of
+the ERR NR system variable held in IY (so it can easily reference its
+system variables). It is important to store IY and replace it before
+returning to the original USR call.
+
+Just as before, the stack is moved so that is sits in the central 32K
+of memory. This will allow +3DOS routines to be called without having
+to move it again.
+
+The 'dodos' subroutine may be useful in your own programs. It only
+uses the IY register - which isn't used by the +3DOS system and allows
+a call to be made to any of the +3DOS routines.
+
+The program uses DOS REF XDPB to make IX point at the relevant XDPB
+for drive A:. It then logs in the disk in A: so that it can be written
+to. After calculating and modifying the checksum byte for the
+information to be written to the boot sector of the disk, it writes
+the boot sector using DD WRITE SECTOR.
+
+No checks are made to see that there is even a disk interface, and
+possible errors are ignored - the routine isn't designed to be used by
+those unfamiliar with possible pitfalls. The routine can be called
+with the BASIC command...
+
+     USR 28672
+
+...which will come back with whatever number BC happens to contain
+after completion of the routine.
+
+The boot sector that is written to the disk has a standard disk
+specification in the first 16 bytes. This is followed by the bootstrap
+code that will be entered at address FE10h. As will be described in
+the interface for DOS BOOT (see part 27 of this chapter), the memory
+will initially be set up as 4, 7, 6, 3; however, the BASIC system
+variables are still intact and BASIC can be operated by switching in
+the correct ROM (3) t5o the bottom of memory and making sure that page
+5 is in the 4000h...7FFFh area of memory.
+
+This very simple boot program just uses the BASIC ROM to print a
+greeting then enters a tight loop changing the border colour. It could
+be modified to load a large binary file and enter it or perform any
+other action you desired.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt25.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt27.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

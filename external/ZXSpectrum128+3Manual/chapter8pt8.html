@@ -1,0 +1,116 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 8</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 8
+Strings
+
+Subjects covered...
+
+	Slicing, using TO
+
+Given a string, a substring of it consists of some consecutive
+characters from it, taken in sequence. Thus "cut" is a substring of
+"cutlery", but "cute" and "cruelty" are not substrings.
+
+There is a notation called slicing for describing substrings, and this
+can be applied to arbitrary string expressions. The general form is...
+
+	string expression (start TO finish)
+
+...so that, for instance...
+
+	"abcdef"(2 TO 5)
+
+...is equal to 'bcde'.
+
+If you omit the start, then 1 is assumed; if you omit the finish, then
+the length of the string is assumed. Thus...
+
+	"abcdef"( TO 5)      is equal to 'abcde'
+	"abcdef"(2 TO )      is equal to 'bcdef'
+	"abcdef"( TO )       is equal to 'abcdef'
+
+You can also write this last one as "abcdef"().
+
+A slightly different form misses out the TO and just has one number.
+
+	"abcdef"(3) is equal to "abcdef"(3 TO 3) is equal to 'c'.
+
+Although normally both start and finish must refer to existing parts
+of the string, this rule is overridden by another one: if the start is
+more than the finish, then the result is the empty string. So...
+
+	"abcdef"(5 TO 7)
+
+...gives the error '3 Subscript wrong' because the string only
+contains 6 characters and 7 is too many, but...
+
+	"abcdef"(8 TO 7)
+
+...and...
+
+	"abcdef"(1 TO 0)
+
+...are both equal to the empty string "" and are therefore permitted.
+
+The start and finish must not be negative, or you get the error 'B
+integer out of range'. This next program is a simple one illustrating
+some of these rules...
+
+	10 LET a$="abcdef"
+	20 FOR n=1 TO 6
+	30 PRINT a$(n TO 6)
+	40 NEXT n
+
+Type NEW when this program has been run and enter the next program.
+
+	10 LET a$="1234567890"
+	20 FOR n=1 TO 10
+	30 PRINT a$(n TO 10),a$((11-n) TO 10)
+	40 NEXT n
+
+For string variables, we can not only extract substrings, but also
+assign to them. For instance, type...
+
+	LET a$="Velvet Donkey"
+
+...and then...
+
+	LET a$(8 TO 13)="Lips******"
+
+...and...
+
+	PRINT a$
+
+Since the substring 'a$(8 TO 13)' is only 6 characters long, only its
+first 6 characters ('Lips**') are used; the remaining 4 characters are
+discarded. This is a characteristic of assigning to substrings: the
+substring has to be exactly the same length afterwards as it was
+before. To make sure this happens, the string that is being assigned
+to it is cut off on the right if it is too long, or filled out with
+spaces if it is too short - this is called 'Procrustean assignment'
+after the inn-keeper Procrustes who used to make sure that his guests
+fitted their beds by either stretching them out on a rack or cutting
+their feet off!
+
+Complicated string expressions will need brackets around them before
+they can be sliced. For example...
+
+	"abc"+"def"(1 TO 2)      is equal to "abcde"
+	("abc"+def")(1 TO 2)     is equal to "ab"
+
+
+Exercise...
+
+1. Try writing a program to print the day of the week using string
+slicing. (Hint - Let the string be 'SunMonTuesWednesThursFriSatur'.)
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt7.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt9.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

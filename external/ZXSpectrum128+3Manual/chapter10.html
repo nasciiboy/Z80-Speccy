@@ -1,0 +1,520 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 10</TITLE>
+</HEAD>
+<BODY>
+<PRE>Chapter 10
+Peripherals for your +3
+
+Subjects covered...
+
+	Cassette unit
+	Printer
+	Additional disk drive
+	Joystick(s)
+	VDU Monitor
+	Amplifier
+	Serial devices
+	MIDI device
+	Auxiliary interface
+	Expansion devices
+
+The +3 is capable of operating with a wide range of add-ons
+(peripherals) such as joystick(s), printer, cassette unit, etc. This
+section contains all the information necessary to connect these.
+
+
+Cassette unit
+
+Programs may be loaded from, or saved to tape instead of disk, (the
+commands which instruct the computer to direct data to and from disk
+or tape were explained earlier in this manual).
+
+To connect your cassette unit to the +3, you will require a suitable
+interconnecting lead, wired as follows...
+
+
+            TAPE/SOUND socket on the +3                     Cassette unit
+
+                                                            To EAR socket
+                         Input                                 ___
+                         (EAR)                             __ /   |____
+                           |                              / _|    |____()
+                           |       ___                   / /  \___|
+             ___    _      v      |   --_               / /
+ Input (EAR)    \/ | |     _ _____|      -.------------' /
+                   | |  ()[_[_____|       |-------------&lt;
+Output (MIC) _/\   |_|  ^       | |     _-^------------. \  To MIC socket
+                    |   |       | |___--                \ \    ___
+GND (common) _______|   |       |                        \ \_ /   |____
+                      Output   GND                        \__|    |____()
+                       (MIC) (common)                         \___|
+
+                                                              (red)
+
+
+You will see that the shaft of one of the jack plugs is divided into 3
+separate metal sections - this is the plug that should be inserted
+into the socket marked TAPE/SOUND at the back of the +3.
+
+The shafts of the other two jack plugs are divided into only 2
+separate metal sections - these are the plugs that should be inserted
+into the sockets on your cassette unit marked MIC and EAR. (On most
+commercially available leads, the plug for the MIC socket is coloured
+red.)
+
+(On some cassette units, the MIC socket may be labelled COMPUTER IN or
+INPUT. Likewise, the EAR socket may be labelled COMPUTER OUT or
+OUTPUT.)
+
+It is important to remember that the successful transfer of programs
+to and from tape is largely dependent on the correct setting of the
+LEVEL or VOLUME control on your cassette unit. If you cannot load or
+save program easily, try experimenting with different LEVEL control
+positions until the optimum setting is found. If you cannot seem to
+load or save any programs at all, try reversing the plugs to the MIC
+and EAR sockets on your cassette unit.
+
+Details of tape operation will be found in chapter 4 and chapter 8
+parts 20 and 27.
+
+
+Printer
+
+The +3 may be used with any Centronics compatible parallel printer. We
+would particularly recommend the AMSTRAD DMP range of printers
+(e.g. models DMP2000, DMP3000, DMP3160 or DMP4000) for use with the
++3.
+
+If you intend to connect the AMSTRAD DMP2000 to the +3, simply use the
+interconnecting lead provided with the printer.
+
+If you wish to use any other Centronics compatible printer, you will
+require the AMSOFT PL-1 printer interconnecting lead.
+
+Connect the end of the lead which is fitted with the flat
+edge-connector plug, into the socket marked PRINTER at the back of the
++3.
+
+Connect the other end of the lead (which is fitted with a Centronics
+style plug) into the socket on the printer. If your printer is
+equipped with security clips at each side of the socket, these may be
+clipped into the cut-outs at the side of the printer plug.
+
+
+  17  16  15  14  13  12  11  10   9   8   7   6   5   4   3   2   1
+  .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|^^^^^^^^^^^^^^^^|
+|____________________________________________________|________________|
+  `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-'
+  35  34  33  32  31  30  29  28  27  26  25  24  23  22  21  20  19
+
+                          (viewed from rear)
+
+                            PRINTER socket
+
+
+PIN	FUNCTION	PIN	FUNCTION
+	______
+1	STROBE		19	GND
+2	D0		20	GND
+3	D1		21	GND
+4	D2		22	GND
+5	D3		23	GND
+6	D4		24	GND
+7	D5		25	GND
+8	D6		26	GND
+9	D7		27	not used
+10	not used	28	GND
+11	BUSY		29	not used
+12	not used	30	not used
+13	not used	31	not used
+14	GND		32	not used
+15	not used	33	GND
+16	GND		34	not used
+17	not used	35	not used
+18	does not exist	36	does not exist
+
+
+Although there are only 34 terminations at the +3's PRINTER socket,
+the pins are numbered 1...17 and 19...35 (with 18 and 36 non-existent)
+for equivalence with the Centronics socket on the printer itself...
+
+Note that printers for use with the +3 must generate their line feeds
+internally. If you experience problems with printer line feeds, try
+adjusting the appropriate 'DIP switch' inside your printer. (On the
+AMSTRAD DMP range of printers, DIP switch DS1-4 controls the line feed
+setting.)
+
+
+The +3 may also be used with most serial printers conforming to the
+RS232 standard. It is recommended that inexperienced users should not
+attempt to experiment with serial interface connections. You should
+obtain a suitable computer-to-serial printer lead from your Sinclair
+dealer, and you should always follow the printer manufacturer's
+installation and operation instructions.
+
+
+A serial printer should be connected to the RS232/MIDI socket at the
+back of the +3.
+
+Details of (parallel and serial) printer operation will be found in
+chapter 8 parts 21 and 22.
+
+
+Additional disk drive
+
+The AMSTRAD model FD-1 may be added to the +3 system as an additional
+disk drive.
+
+Thanks to the versatility of +3 BASIC, you can do all necessary file
+maintenance, copying, erasing, etc., on a single disk drive. However,
+a second drive will certainly speed up these operations and reduce the
+scope for accidents.
+
+To connect the FD-1 to the +3, you will require the AMSOFT DL-2 disk
+interconnecting lead.
+
+Connect the end of the lead which is fitted with the larger
+edge-connector plug, into the socket marked DISK B: at the back of the
++3.
+
+Connect the other end of the lead which is fitted with a smaller plug,
+into the socket at the back of the FD-1 disk drive.
+
+Important - Before connecting or disconnecting the additional disk
+drive, make sure that any disks are removed from both drives, and that
+the system is switched off. If connections are altered while the
+system is on, it is likely that the system will crash, losing any
+program or data. Always save any valuable programs before meddling
+with connections!
+
+When the FD-1 is connected to the +3, first switch on the FD-1 (using
+the slide switch at the back of the disk drive), then switch on the +3
+(by plugging in the PSU). Both the green and red indicators on the
+front panel of the FD-1 should be illuminated. The two-drive system
+will then be ready to operate.
+
+
+   2   4   6   8  10  12  14  16  18  20  22  24  26  28  30  32  34
+  .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+|^^^^^^^^|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|
+|________|____________________________________________________________|
+  `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-' `-'
+   1   3   5   7   9  11  13  15  17  19  21  23  25  27  29  31  33
+
+                          (viewed from rear)
+
+                            DISK B: socket
+
+
+PIN	FUNCTION	PIN	FUNCTION
+	_____
+1	READY		18	GND
+				________
+2	GND		19	MOTOR ON
+	_____________
+3	SIDE 1 SELECT	20	GND
+
+4	GND		21	not used
+	_________
+5	READ DATA	22	GND
+				______________
+6	D4		23	DRIVE SELECT 1
+	_____________
+7	WRITE PROTECT	24	GND
+
+8	GND		25	not used
+	_______
+9	TRACK 0		26	GND
+				_____
+10	GND		27	INDEX
+	__________
+11	WRITE GATE	28	GND
+
+12	GND		29	not used
+	__________
+13	WRITE DATA	30	GND
+
+14	GND		31	not used
+	____
+15	STEP		32	GND
+
+16	GND		33	not used
+	_______________
+17	DIRECTIONSELECT	34	GND
+
+
+Details of two-drive operation will be found in chapter 8 parts 20 and
+27.
+
+
+Joystick(s)
+
+We recommend that you use the Sinclair SJS range of joystick(s) with
+the +3. Other types of joystick (e.g. Atari) will not operate
+directly, as their connecting plugs are wired differently.
+
+There are two joystick sockets at the left-hand side of the +3. In
+general, games use the JOYSTICK 1 socket.
+
+If a program offers you a choice of joystick types, then choose the
+'Interface Two' (or 'Sinclair') option (as the +3's joystick circuitry
+is designed to work exactly like the Interface Two).
+
+It is safe to plug in (or unplug) a joystick while the +3 is switched
+on.
+
+
+PIN     FUNCTION
+
+1       not used
+2       common			JOYSTICK 1 and JOYSTICK 2 sockets
+3       not used                      _____________________
+4       fire                         /  1   2   3   4   5  \
+5       up                           \  o   o   o   o   o  /
+6       right                         \   6   7   8   9   /
+7       left                           \  o   o   o   o  /
+8       common                          \_______________/
+9       down
+
+
+VDU Monitor
+
+The +3 can use a monochrome or colour VDU monitor (or a French
+standard PERITEL TV) instead of (or in addition to) an ordinary TV. If
+the monitor that you wish to use isn't quoted as being Spectrum +3
+compatible, then the chances are you'll have to buy a lead for it
+(contact your Sinclair dealer).
+
+A VDU monitor (or PERITEL TV) should be plugged into the RGB/PERITEL
+socket at the back of the +3.
+
+
+PIN	FUNCTION
+				      RGB/PERITEL socket
+1	+12V				    __   __
+2	GND				  _- |___| -_
+3	audio out			 /  7     6  \
+	______________			/   o     o   \
+4	composite sync			| 3    8    1 |
+5	+12V				| o    o    o |
+6	green				\  5       4  /
+7	red				 \ o   2   o /
+8	blue				  -_   o   _-
+					    `-----'
+
+When using a monitor, some provision may have to be made for sound (if
+required). If the monitor has an audio input, then this should be
+connected either to pin 3 of the RGB/PERITEL socket or to the
+TAPE/SOUND socket at the back of the +3. If the monitor is not capable
+of producing sound, then an external amplifier will have to be
+used. See the next paragraph for further details.
+
+
+Amplifier
+
+The +3 normally reproduces sound through the TV set it is connected
+to. However, if a VDU monitor is being used, or if you would like to
+record or amplify the sound further, then a sound signal is available
+from the TAPE/SOUND socket at the back of the +3. This is a 3.5mm jack
+socket producing 200mV pk-pk at approximately 5 Kohms impedance. When
+using an amplifier, it is worth remembering that if you have connected
+a cassette unit to the +3, the tape 'load' and 'save' signals are also
+fed to the TAPE/SOUND socket (and therefore the amplifier's volume
+control should be turned down when performing these operations).
+
+Another point to note is that the level of sound produced by the BEEP
+command is set to be the same as that of all three channels of PLAY
+running at the same time. In practice, this means that BEEP will sound
+quite a lot louder than PLAY (which may cause problems if sound levels
+are critical).
+
+It is safe to plug in (or unplug) an amplifier, tape recorder,
+etc. into the TAPE/SOUND socket while the +3 is switched on.
+
+
+                         Input
+                       (not used)
+                           |
+                           |       ___
+             ___    _      v      |   --_
+  (not used)    \/ | |     _ _____|      -.___________
+                   | |  ()[_[_____|       |___________
+Audio output _/\   |_|  ^       | |     _-'
+                    |   |       | |___--
+GND (common) _______|   |       |
+                      Audio    GND
+                      output (common)
+
+		    TAPE/SOUND socket
+
+Details of the +3's sound facilities will be found in chapter 8 part
+19.
+
+
+Serial devices
+
+To connect any serial device to the +3, you will require a Spectrum +3
+serial lead - available from your Sinclair dealer.
+
+If you wish to wire-up your own, then the connections are as
+follows...
+
+
+PIN	FUNCTION
+
+1	GND			    ___________________________
+2	TXD			 __|   6   5   4   3   2   1   |
+3	RXD			|__   ### ### ### ### ### ###  |
+4	DTR			   |___________________________|
+5	CTS
+6	+12V				   RS232 socket
+
+
+Details of serial operations will be found in chapter 8 part 21.
+
+
+MIDI device
+
+Although the +3's MIDI (Musical Instrument Digital Interface) socket
+shares the same socket as the RS232, you will need a different lead
+for it (available from your Sinclair dealer). The lead should be
+connected into the 'MIDI IN' socket on your synthesiser, drum machine,
+etc. There is no provision for the +3 to receive MIDI data - it can
+only act as a source. No setting up of the MIDI is necessary before
+use (except the inclusion of the 'Y' parameter within the PLAY command
+to turn it on).
+
+
+PIN	FUNCTION
+
+1	RETURN			    ___________________________
+2	not used		 __|   6   5   4   3   2   1   |
+3	not used		|__   ### ### ### ### ### ###  |
+4	not used		   |___________________________|
+5	DATA OUT
+6	not used			    MIDI socket
+
+
+Details of MIDI operations will be found in chapter 8 part 19.
+
+
+Auxiliary interface
+
+The AUX (auxiliary interface) socket supports two input lines (pins 2
+and 5) and two output lines (pins 2 and 4). The I/O lines are driven
+by 1488 and 1489 line driver chips which are, in turn, connected to
+the I/O lines of the AY-3-8912 (see the manufacturer's data sheet for
+this device). Basically, register 16 of the AY-3-8912 controls eight
+I/O lines, the bits are designated as follows...
+
+
+BIT	SIGNAL
+
+0	AUX pin 2 (out)
+1	AUX pin 4 (out)
+2	RS232 pin 5 (CTS out)
+3	RS232 pin 3 (RXD out)
+4	AUX pin 3 (in)
+5	AUX pin 5 (in)
+6	RS232 pin 4 (DTR in)
+7	RS232 pin 5 (TXD in)
+
+
+Using software control loops, the I/O lines could be driven as a
+second RS232 port (in the same way as the RS232/MIDI socket is driven
+using bits 2, 3, 6 and 7). Alternatively, the I/O lines could be used
+to drive, for example, a robot or some other external device.
+
+
+PIN	FUNCTION
+
+1	GND			    ___________________________
+2	OUTPUT BIT 0		 __|   6   5   4   3   2   1   |
+3	INPUT BIT 4		|__   ### ### ### ### ### ###  |
+4	OUTPUT BIT 1		   |___________________________|
+5	INPUT BIT 5
+6	+12V				    AUX socket
+
+
+Expansion devices
+
+The +3 can connect to a very wide range of peripherals via the
+EXPANSION I/O socket at the back of the machine. Although this socket
+is much the same as on the old-style Spectrum 48K, there is no
+guarantee that a device which ran correctly on a Spectrum 48K will run
+on a +3. You should, therefore, before you purchase any expansion
+device or add-on, verify that it will work with the +3, and not just
+with a 48K Spectrum.
+
++--------------------------------------------------------------------+
+| WARNING - It is very dangerous indeed to plug in (or unplug) any   |
+| device from the EXPANSION I/O socket while the +3 is switched on - |
+| you will probably damage both the +3 and the expansion device if   |
+| you do so.                                                         |
++--------------------------------------------------------------------+
+
+
+U 27  26  25  24  23  22  21 	       8   7   6   5   4   3   2   1
+  .-. .-. .-. .-. .-. .-. .-.         .-. .-. .-. .-. .-. .-. .-. .-.
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^ /////// ^^^^^^^^^^^^^^^|^^^^^^^^^^^^^^^^|
+|____________________________ /////// _______________|________________|
+  `-' `-' `-' `-' `-' `-' `-'         `-' `-' `-' `-' `-' `-' `-' `-'
+L 27  26  25  24  23  22  21 	       8   7   6   5   4   3   2   1
+
+
+			EXPANSION I/O socket
+
+
+PIN	UPPER ROW (U)	LOWER ROW (L)
+
+1	A15		A14
+2	A13		A12
+3	D7    __	+5V
+4	ROM 1 OE	not used
+5	D0		GND
+6	D1		GND
+7	D2		CK
+8	D6		A0
+9	D5		A1
+10	D3		A2
+11	D4		A3
+	___
+12	INT		not used
+	___
+13	NMI		GND
+	____		      __
+14	HALT		ROM 2 OE
+	____		     __
+15	MREQ		DISK RD
+        ____		     __
+16	IORQ		DISK WR
+	__		________
+17	RD		MOTOR ON
+	__		_____
+18	WR		BUSRQ
+			_____
+19	not used	RESET
+	____
+20	WAIT		A7
+21	+12V		A6
+22	-12V		A5
+	__
+23	M1		A4
+	____
+24	RFSH		not used
+25	A8		BUSACK
+26	A10		A9
+27	RESET		A11
+
+
+Details of the +3's hardware will be found in chapter 8 part 30.
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter9.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

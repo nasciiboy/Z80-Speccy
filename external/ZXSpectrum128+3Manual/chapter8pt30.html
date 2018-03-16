@@ -1,0 +1,152 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 30</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 30
+Reference section
+
+Subjects covered...
+
+	Hardware
+
+The +3 is designed around the Z80A microprocessor, which runs at a
+speed of 3.5469MHz (about three and half million cycles per second).
+
+The +3's memory is divided into 64K ROM and 128K RAM, arranged in 16K
+pages. The four ROM pages (0-3) can be mapped into the bottom 16K
+(0000h-3FFFh) of the memory map.The eight RAM pages (0-7) are usually
+mapped into the top 16K (C000h-FFFFh) of the memory map. RAM page 5 is
+also mapped into the range 4000h-7FFFh, and RAM page 2 is mapped into
+the range 8000h-BFFFh.There are also several RAM page combinations
+that occupy the full 64K address range. These were given in part 35 of
+this chapter, under the heading 'Memory management'.
+
+Physically speaking, the ROMs are two 32K devices (similar to the
+27256), which are both treated by the system as two 16K chips. The RAM
+is composed of four 16K x 4 bit chips (41464), some of which (RAM
+banks 4-7) are time-shared between the circuitry that produces the
+screen display, and the Z80A. The others (RAM banks 0-3) are for the
+exclusive use of the Z80A, as in the ROM.
+
+For the contended RAM (which shares time between the video circuitry
+and the processor), during 128 out of every 228 CPU T states (1 TV
+line), and during 192 out of every 311 TV lines (1 frame) the CPU is
+allowed only 1 access to contended RAM in every 8 T states. The CPU is
+controlled by introducing wait states.
+
+Executing NOP instructions in contended RAM will have an effective
+average clock frequency of 2.66MHz (a reduction of about 25%).
+
+The Uncommitted Logic Array (ULA) handles most of the I/O such as
+keyboard, tape interface, part of the printer interface and screen
+handling. It converts bytes in memory into patterns and colours on the
+screen, and allows the Z80A to scan the keyboard and read and write
+data to tape.
+
+The three-channel sound is produced by the AY-3-8912 - a very popular
+sound chip, and this device also controls the RS232/MIDI and AUX
+ports.
+
+The two serial ports can be driven only by software. The +3 has no
+software support for the AUX port - this is left to the user's
+discretion. The RS232/MIDI port is fully supported from +3 BASIC.
+
+The way in which the AY-3-8912 works is quite complex, and the
+would-be experimenter is advised to get the manufacturer's data sheet.
+The following information should be enough to get things underway,
+however.
+
+The sound chip contains sixteen registers which are selected by
+writing first to the address write port FFFDh (65533) with the
+register number, and then reading the register value (same address),
+or writing to the data register write address BFFDh (49149). Once a
+register has been selected, any number of data read/writes can be
+made; the address write port need only be re-written if a different
+register needs to be addressed.
+
+The basic clock frequency of the circuit is 1.7734MHz (to 0.01%).
+
+The registers do the following:
+
+     R0 - Fine tone control channel A
+     R1 - Coarse tone control channel A
+     R2 - Fine tone control channel B
+     R3 - Coarse tone control channel B
+     R4 - Fine tone control channel C
+     R5 - Coarse tone control channel C
+
+The tone of a channel is a 12 bit value taken from the sum of D3-D0 of
+the coarse register, and D7-D0 of the fine register. The basic unit of
+tone is the clock frequency divided by 16 (ie 110.83KHz), and with a
+12 bit counter range, frequencies from 27Hz to 11KHz can generated.
+
+     R6 - Noise generator control, D4-D0
+
+The period of the noise source is taken by counting down the lower 5
+bits of the noise register every sound clock period divided by 16.
+
+     R7 - Mixer and I/O control
+
+     D7 - Not used
+     D6 - 1 means input port
+        - 0 means output port
+     D5 - Channel C noise
+     D4 - Channel B noise
+     D3 - Channel C noise
+     D2 - Channel C tone
+     D1 - Channel B tone
+     D0 - Channel A tone
+
+This register controls both the mixing of noise and tone values for
+each channel, and the direction of the 8 bit I/O port. A zero in a mix
+bit indicates that the function is enabled.
+
+     R8 - Amplitude control channel A
+     R9 - Amplitude control channel B
+     RA - Amplitude control channel C
+
+     D4 - 1 means use envelope generator
+        - 0 means use value of D3-D0 for amplitude
+     D3-D0 - Amplitude
+
+These three registers control the amplitude of each channel and
+whether or not it is modulated by the envelope registers.
+
+     RB - Envelope coarse period control
+     RC - Envelope fine period control
+
+The eight bit values in RB+RC are summed to produce a 16 bit number
+which is counted down in units of 256 multiplied by the sound clock.
+Envelope frequencies can be between 0.1Hz and 6KHz.
+
+     RD - Envelope control
+
+     D3 - Continue
+     D2 - Attack
+     D1 - Alternate
+     D0 - Hold
+
+The diagram of envelope shapes (in part 19 of this chapter) gives a
+graphical illustration of the possible settings for this register.
+
+The disk drive is controlled by the uPD765A floppy disk controller
+chip. As described in part 23 of this chapter, the data register for
+this device is at address 3FFDh (16381) and the status register is at
+2FFDh (12285). This is a very complex device and it would be unwise to
+attempt to use it without full details of its operation (see the
+manufacturer's data sheet).
+
+The Centronics parallel printer port is basically just an 8 bit data
+latch (74273) whose address is 0FFDh (4093). The STROBE signal for the
+printer is produced by the ULA and is accessed using the bit 4 of
+address 1FFDh (8189). The state of the BUSY line from the printer is
+read from bit 0 of address 0FFDh (4093).
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt29.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt31.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

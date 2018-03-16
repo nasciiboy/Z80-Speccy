@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 6</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 6
+Data in programs
+
+Subjects covered...
+
+	READ, DATA, RESTORE
+
+In some of the previous programs we saw that information, or data, can
+be entered directly into the +3 using the INPUT statement. Sometimes
+this can be very tedious, especially if a lot of the data is repeated
+every time the program is run. You can save a lot of time by using the
+READ, DATA and RESTORE commands. For example:
+
+	10 READ a,b,c
+	20 PRINT a,b,c
+	30 DATA 1,2,3
+
+A READ statement consists of READ followed by a list of the names of
+variables, separated by commas. It works rather like an INPUT
+statement, except that instead of getting you to type in the values to
+give to the variables, the +3 looks up the values in the DATA
+statement.
+
+Each DATA statement is a list of expressions - numeric or string
+expressions - separated by commas. You can put them anywhere you like
+in a program, because the +3 ignores them except when it is doing a
+READ. You must imagine the expressions from all the DATA statements in
+the program as being put together to form one long list of expressions
+- the DATA list. The first time the +3 goes to READ a value, it reads
+the first expression from the DATA list; the next time, it reads the
+second; and thus as it meets successive READ statements, it works its
+way through the DATA list. (If it tries to read past the end of the
+DATA list, then it reports an error.)
+
+Note that it's a waste of time putting DATA statements in a direct
+command, because READ will not find them. DATA statements must go in a
+program.
+
+Let's see how all this works in the program you've just typed in. Line
+10 tells the +3 to read three pieces of data and assign them to the
+variable 'a', 'b' and 'c'. Line 20 then say PRINT these variables. The
+DATA statement in line 30 provides the values of 'a', 'b' and 'c' for
+line 10 to read.
+
+The information in DATA can be part of a FOR...NEXT loop. Type in...
+
+	10 DATA 2,4,6,8,10,12
+	20 FOR n=1 TO 6
+	30 READ d
+	40 PRINT d
+	50 NEXT n
+
+Note from the above two programs that a DATA statement can appear
+anywhere - before or after the READ statement.
+
+When the above program is run, the READ statement moves through the
+DATA list with each pass of the FOR...NEXT loop.
+
+DATA statements may also contain string variables. For example...
+
+	10 FOR a=1 TO 7
+	20 READ n$
+	30 PRINT n$
+	40 DATA "Bob","Edith","Carole","Jacquie","Gavin","Charles","Holly"
+	50 NEXT a
+
+The +3 doesn't have to READ the DATA statements in order - it can be
+made to 'jump about' between DATA statements by using the RESTORE
+command. The form of the command is...
+
+	RESTORE xxx
+
+...where 'xxx' is the line number of the DATA statement to be READ
+from. If you use the command RESTORE on its own (without a line
+number) the +3 will jump to the first DATA statement in the program.
+
+Type in and run the following program...
+
+	 10 DATA 1,2,3,4,5
+	 20 DATA 6,7,8,9
+	 30 GO SUB 110
+	 40 GO SUB 110
+	 50 GO SUB 110
+	 60 RESTORE 20
+	 70 GO SUB 110
+	 80 RESTORE
+	 90 GO SUB 110
+	100 STOP
+	110 READ a,b,c
+	120 PRINT a'b'c
+	130 PRINT
+	140 RETURN
+
+The command 'GO SUB 110' calls a subroutine which READs the next three
+items of DATA and the PRINTs them. Notice how the RESTORE command
+affects which items are read.
+
+Delete line 60 and run this program again to see what happens.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt5.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt7.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

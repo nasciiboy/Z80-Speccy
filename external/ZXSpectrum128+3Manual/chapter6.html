@@ -1,0 +1,567 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 6</TITLE>
+</HEAD>
+<BODY>
+<PRE>Chapter 6
+Introducing +3 BASIC
+
+Subjects covered...
+
+	The editor
+	The edit menu
+	Renumbering a BASIC program
+	Swapping screens
+	Listing to the printer
+	Typing in a program
+	Moving the cursor
+	Running a program
+	Commands and instructions
+	Simple disk operations
+	Formatting a disk
+	Saving a program
+	Filenames
+	Disk catalog
+	Loading a program
+	Error reports
+
+The +3 has an advanced editor to create, modify and run BASIC
+programs. To enter the editor, select the option +3 BASIC from the
+opening menu, using the cursor keys and ENTER. (If you don't know how
+to select a menu option, refer back to chapter 2.)
+
+The screen should now look like this...
+
+    +-------------------------------------------------------------+
+    |							          |
+    |	[]      					          |
+    |           	                               	          |
+    |								  |
+    |								  |
+    |								  |
+    |								  |
+    |								  |
+    |								  |
+    |								  |
+    |								  |
+    |		        				          |
+    |		        				          |
+    |		        				          |
+    |		                                                  |
+    |     ___________________________________________________     |
+    |    [_+3_BASIC__________________________________________]    |
+    |        						          |
+    |        						          |
+    +-------------------------------------------------------------+
+
+There are three things to notice about this screen.
+
+Firstly, there is a flashing blue and white blob in the top left-hand
+corner. This is called the cursor, and if you type any letters at the
+keyboard, then they will appear on the screen at the position of the
+cursor.
+
+Secondly, there's a black bar towards the bottom of the screen. This
+is called the footer bar, and tells you which part of the +3's
+built-in software you're using. At the moment, it says +3 BASIC
+because that's the name of the editor.
+
+The last item of note at the moment is the small screen. This fits
+between the footer bar and the bottom of the screen, and is currently
+blank. It only has room for two lines of text, and is most often used
+by the +3 when it detects an error and needs to print a report to say
+so. It does have other uses, however, and these will be described
+later.
+
+Now press the EDIT key. You will notice two things happen - the cursor
+vanishes, and a new menu appears. This is called the edit menu...
+
+    +-------------------------------------------------------------+
+    |							          |
+    |							          |
+    |    		                               	          |
+    |    		   _________________         	          |
+    |                     |_Options_________|        	          |
+    |                     |//+3 BASIC///////|        	          |
+    |                     |  Renumber       |		          |
+    |           	  |  Screen         |		          |
+    |                     |  Print          |		          |
+    |                     |  Exit  	    |		          |
+    |                     +-----------------+		          |
+    |		        				          |
+    |		        				          |
+    |		        				          |
+    |		                                                  |
+    |     ___________________________________________________     |
+    |    [_+3_BASIC__________________________________________]    |
+    |        						          |
+    |        						          |
+    +-------------------------------------------------------------+
+
+The edit menu's options are selected in the same way as for the
+opening menu (by using the cursor keys and ENTER).
+
+Taking the options in turn...
+
++3 BASIC - This option simply cancels the edit menu and restores the
+cursor. On the face of it - not very useful; however, if EDIT is
+pressed accidentally, then this option allows you to return to your
+program with no damage done.
+
+Renumber - BASIC programs use line numbers to determine the order of
+the instructions to be carried out. You enter these numbers (which can
+be any whole-number from 1 to 9999) at the beginning of each program
+line you type in. Selecting the Renumber option causes the BASIC
+program's line numbers to start at line 10 and go up in steps of 10.
+BASIC commands which include references to line numbers (such as GO
+TO, GO SUB, LINE, RESTORE, RUN and LIST) also have these references
+renumbered accordingly.
+
+If for any reason it's not possible to renumber, perhaps because
+there's no program in the +3, or because Renumber would generate line
+numbers greater than 9999, then the +3 makes a low-pitched bleep and
+the menu goes away.
+
+A useful aid to this renumbering facility can be found in chapter 8
+part 33.
+
+Screen - This option moves the cursor into the smaller (bottom) part
+of the screen, and allows BASIC to be entered and edited there. This
+is most useful for working with graphics, as any editing in the bottom
+screen does not disturb the top screen. To switch back to the top
+screen (which you can do at any time whilst editing), select the edit
+menu option Screen again.
+
+Print - If a printer is connected, this option will print-out a
+listing of the current program to it. When the listing has finished,
+the menu will go away and the cursor will come back. If for some
+reason the computer cannot print (e.g. the printer is not connected or
+is off-line), then pressing the BREAK key twice will return you to the
+editor.
+
+Exit - This option returns you to the opening menu - the +3 retains
+any program that you were working on in the memory. If you wish to go
+back to the program again, select the option +3 BASIC from the opening
+menu.
+
+If you select the opening menu option 48 BASIC (or if you switch off
+or reset the +3), then any program in the memory will be lost. (You
+may, however, use the opening menu option Calculator without losing a
+program in the memory.)
+
+Reset the computer and select +3 BASIC. Now type in the line below. As
+you type it in, the characters will appear on the screen (a character
+is a letter, number, space, etc.). Note that to type in the equals
+sign '=' you should hold down the SYMB SHIFT key, then press the L key
+once. Try typing in the line now...
+
+	10 for f=1 to 100 step 10
+
+...then press ENTER. Providing you have spelt everything correctly,
+the +3 should have reprinted the line with the words FOR, TO and STEP
+in capital letters, like this...
+
+	10 FOR f=1 TO 100 STEP 10
+
+The +3 should have also emitted a short high-pitched bleep, and moved
+the cursor to the start of the next line.
+
+If the line remains in small letters and you hear a low-pitched bleep,
+then this indicates that you have typed in something wrong. Note also
+that the colour of the cursor changes to red when a mistake is
+detected, and you must correct the line before it will be accepted by
+the +3. To do this, use the cursor keys to move to the part of the
+line that you wish to correct, then type in any characters you wish to
+insert (or use the DELETE key to remove any characters you wish to get
+rid of). When you have finally corrected the line, press ENTER.
+
+Now type in the line below...
+
+(The colon ':' is obtained by SYMB SHIFT and Z, and the minus sign '-'
+is obtained by SYMB SHIFT and J.)
+
+	20 plot 0,0:draw f,175:plot 255,0:draw -f,175
+
+...then press ENTER. On the screen you will see...
+
+	10 FOR f=1 TO 100 STEP 10
+	20 PLOT 0,0: DRAW f,175: PLOT
+	   255,0: DRAW -f,175
+
+Don't worry about line 20 spilling over onto the next line of the
+screen - the computer will take care of this and align the text so
+that it is easier to read. Unlike a typewriter, there's no need for
+you to do anything when you approach the end of a screen line because
+the +3 detects this automatically and moves the cursor to the
+beginning of a new line.
+
+The final line of this program to type in is...
+
+	30 next f
+
+...again, press ENTER.
+
+The numbers at the beginning of each line are called line numbers and
+are used to identify each line. The line you just typed in is line 30,
+and the cursor should be positioned just below it. As an exercise, we
+will now edit line 10 (to change the number '100' to '255'). Press the
+cursor up key (four times) until the cursor has moved up to line 10.
+Now press the cursor right key until the cursor has moved to the right
+of '100'. Press DELETE three times and you will see the '100'
+disappear.  Now type in '255' and press ENTER. Line 10 of the program
+has now been edited...
+
+	10 FOR f=1 TO 255 STEP 10
+
+The computer has opened up a new line in preparation for some new
+text. Type...
+
+	run
+
+Press ENTER and watch what happens. Firstly, the footer bar and the
+program lines are cleared off the screen as the +3 BASIC editor
+prepares to hand over control to the program you've just typed in.
+Then the program starts, draws a pattern, and stops with the report...
+
+	0 OK, 30:1
+
+Don't worry about what this report means.
+
+Press ENTER. The screen will clear and the footer bar will come back,
+as will the program listing. This takes about a second or so, during
+which time the +3 won't be taking input from the keyboard, so don't
+try and type anything while it's all happening.
+
+You've just done most of the major operations necessary to program and
+use a computer! First, you've given the +3 a list of instructions.
+Instructions tell the +3 what to do (like the instruction '30 NEXT
+f').  Instructions have a line number and are 'stored away' rather
+than used immediately you type them in. Then you gave the +3 the
+command run to execute the stored program.
+
+Commands are just like instructions, only they don't have line numbers
+and the +3 carries them out immediately (as soon as ENTER is pressed).
+In general, any instruction can be used as a command, and vice versa -
+it all depends on the circumstances. Every instruction or command must
+have at least one keyword. Keywords make up the vocabulary of the
+computer, and many of them require parameters. In the command 'DRAW
+40,200' for example, 'DRAW' is the keyword, while '40' and '200' are
+the parameters (telling the computer exactly where to do the drawing).
+Everything the computer does in BASIC will follow these rules.
+
+Now press EDIT and select the Screen option. The editor moves the
+program down into the bottom screen, and gets rid of the footer bar.
+You can only see line 10 of the program as the rest is 'hiding'
+off-screen (you can prove this by moving the cursor up and down).
+
+Press ENTER then type...
+
+	run
+
+Press ENTER again, and the program will run exactly the same as
+before. But this time, if you press ENTER afterwards, the screen
+doesn't clear, and you can move up and down the program listing (using
+the cursor keys) without disturbing the top screen. If you press EDIT
+to get the edit menu, you might think that this would mess up the top
+screen. However, the +3 remembers whatever's behind the edit menu and
+restores it when the menu is removed.
+
+To prove that the editor really is working in the bottom screen, press
+ENTER and change line 10 to...
+
+	10 FOR f=1 TO 255 STEP 7
+
+...by moving the cursor to the end of line 10 (just to the right of
+'STEP 10'), then pressing DELETE twice, and typing '7' (press ENTER).
+
+Now type...
+
+	go to 10
+
+(Press ENTER.) The keywords 'go to' tell the +3 not to cleat the screen
+before starting the program. The modified program draws a slightly
+different pattern on top of the old one. You may continue editing the
+program to add further patterns, if you wish.
+
+A word of warning - while editing in the bottom screen, don't try to
+edit instructions which are more than two screen lines long.
+Otherwise, when the editor comes across an instruction which has its
+beginning or its end off-screen, it may become 'confused'. (The same
+is true of the top screen, but of course, this is unlikely to cause
+any problems as the screen is so much larger.)
+
+One thing you may notice while you're typing away is that CAPS SHIFT
+and the number keys used together do strange things. CAPS SHIFT with
+5, 6, 7 and 8 move the cursor about, CAPS SHIFT with 1 calls up the
+edit menu, CAPS SHIFT with 0 deletes a character, CAPS SHIFT and 2 is
+equivalent to CAPS LOCK, and finally CAPS SHIFT with 9 selects
+graphics mode. All of these functions are available using the
+dedicated keys on the +3, and so there is no reason why you should
+ever want to use the above CAPS SHIFT and number key alternatives.
+
+
+Simple disk operations
+
+You have seen how to place a program into the computer's memory by
+typing it in. This is all very well the first time you write a
+particular program, but what about if you switch off the computer and
+want to use the same program the next day? Surely you don't have to
+type it all in again from scratch - the answer, of course, is no
+[anyone with the slightest grasp of grammar will rightly disagree] -
+the disk drive section of the +3 allows you to save a program from the
+computer's memory onto a disk, and to load a program from a disk into
+the computer's memory. This means that you can type in a program, save
+it to disk, then happily switch off the +3 knowing that next time you
+switch it on, you'll be able to load that same program back into the
+memory.
+
+The final part of this chapter, therefore, deals with these two very
+important operations (saving and loading). However, before you can do
+either of these, you will be shown how to prepare a brand new disk so
+that it is ready for saving programs onto. This preparation process is
+called formatting.
+
+You will need to have a brand new blank disk to hand as you work
+through this chapter. Whatever you do - don't use a disk with any
+valuable software, games, etc. on it.
+
+
+Disks and tapes
+
+Even if you are familiar with saving and loading, it is worth pointing
+out two important points which must be remembered when dealing with
+disks.
+
+Firstly, a brand new blank disk cannot be simply taken out of its
+wrapper and recorded onto (as is the case with a tape) - instead, each
+side of a disk must be formatted first. Note that the formatting
+process completely erases that side of the disk.
+
+Secondly, it is important that disk files are correctly 'named'.
+Filenames on tape may vary greatly in length and may at times be
+omitted. Not so with disks - disk filenames must conform to very
+strict standards (and you will read about these shortly in the section
+ahead called 'Filenames'.
+
+
+Formatting a disk
+
+Formatting can be likened to building a series of shelves and
+pigeonholes on a disk [!? never tried that one myself] prior to the
+storage of information on those shelves. In other words, formatting
+lays down an organised framework around which data can be put in or
+taken out.
+
+The formatting divides the disk into 360 distinctly separate areas...
+
+[Standard diagram of a disk. Track 39 is innermost, track 0 outermost.
+Shows what a sector is, too.]
+
+There are 40 concentric tracks from the outside of the disk (Track 0)
+to the inside (Track 39), and each track is divided into 9 sectors.
+
+Each portion of track in a sector can store up to 512 bytes of data,
+hence the total available space on each side of a disk is 180
+kilobytes (180K). Note that 7K of the 180K is reserved for the
+computer's own use, this leaves 173K per side for your programs.
+
+We will now format a new blank disk, and save the program below...
+
+	10 FOR f=1 TO 255 STEP 7
+	20 PLOT 0,0: DRAW f,175: PLOT 255,0: DRAW -f,175
+	30 NEXT f
+
+...which should still be in the memory from the previous exercise
+(check that the above program is currently in the memory by pressing
+ENTER then typing...
+
+	list
+
+(Press ENTER again.) If the program isn't in the memory (or you have
+since switched off the +3), then switch it on, select +3 BASIC and
+type in the above program).
+
+Insert side 1 of a new blank disk into the disk drive and type...
+
+	format "a:"
+
+(Press ENTER.) The read/write indicator lamp on the disk drive will
+start to flash on and off. About 30 seconds later, you will see the
+report...
+
+	0 OK, 0:1
+
+You have now formatted side 1 of the disk. Once you have done this,
+you should not need to format side 1 of that disk ever again.
+
+(If you don't receive the above report (and some other message appears
+instead), check the section entitled 'Error reports' at the end of
+this chapter.)
+
+
+Saving a program
+
+Having formatted side 1, it is now ready for saving programs onto.
+
+In order that each program file on a disk can be identified, you must
+give the program a filename when you save it. For example, as the
+program that you are about to save draws a patterned picture, save the
+program using the name 'pattern.pic', i.e. type in...
+
+	save "pattern.pic"
+
+(Press ENTER.) After a few seconds, you will see the report...
+
+	0 OK, 0:1
+
+The program is now saved onto disk.
+
+(If you don't receive the above report (and some other message appears
+instead), check the section entitled 'Error reports' at the end of
+this chapter.)
+
+
+Filenames
+
+Note that a filename on disk consists of two parts (fields). The first
+field is obligatory and can contain up to 8 characters (letters and
+numbers may be used but no spaces and punctuation marks). In the above
+example filename, 'pattern' is the first field.
+
+The second field is optional. You can use up to 3 characters (but
+again no spaces or punctuation). In the above example filename, 'pic'
+is the second field.
+
+If you use two fields in a filename, they must be separated by a dot
+(e.g. 'pattern.pic').
+
+
+Disk catalog
+
+A catalog of the disk (in alphabetical order) can be displayed by
+typing in...
+
+	cat
+
+(Press ENTER.) The filenames of all the programs on that side of the
+disk will be displayed, together with each file's length (to the
+nearest higher kilobyte). The amount of free space will also be
+indicated.
+
+	PATTERN .PIC    1K
+
+	172K free
+
+
+Loading a program
+
+Imagine that you have switched off the +3 and later want to load the
+program you have just saved. Do this now by resetting the +3 (using
+the RESET button) and selecting the option +3 BASIC from the opening
+menu. Type in...
+
+	load "pattern.pic"
+
+(Press ENTER.) After a few seconds, you will see the report...
+
+	0 OK, 0:1
+
+The program is now loaded from disk. Press ENTER and you will see the
+program listing displayed.
+
+(If you don't receive the above report (and some other message appears
+instead), check the next section entitled 'Error reports'.)
+
+Once loaded, you may run the program by simply typing...
+
+	run
+
+...and pressing ENTER, as before.
+
+
+Error reports
+
+If you don't correctly carry out the instructions in this section, you
+may receive various error reports. If so, identify the report (from
+those shown below), read the explanation given, and then take the
+necessary corrective action.
+
+	Drive not ready
+
+The above report means that you have probably forgotten to insert a
+disk into the disk drive. If there is a disk inserted in the disk
+drive, then eject it, re-insert it and try again.
+
+	Disk is write protected
+
+The above report means that you are trying to format, or save a
+program to, a disk which has its write protect hole open. Eject the
+disk, close its write protect hole, re-insert the disk and try again.
+
+	File not found
+
+The above report means that you are trying to load a program which
+doesn't exist on that side of the disk. Eject the disk, make sure that
+the correct disk is inserted (the right way up) and try again. Take
+care to ensure that you accurately type in the filename to load.
+
+	Bad filename
+
+...or...
+
+	Invalid filename
+
+The above reports mean that you are trying to load or save a program
+using an illegal filename (or no filename at all). Read the section
+entitled 'Filenames' earlier in this chapter, and try again.
+
+	Disk is already formatted
+	A to abandon, other key continue
+
+The above report means that you are trying to format a disk that has
+already been formatted. In general, a disk should need formatting only
+once (at the beginning of its life). In rare cases, a disk may become
+corrupted and there will be no alternative other than to format it
+again. However, unless this is the case, you should always type A (to
+abandon) when you see the above report.
+
+NOTE - If you don't type A, then the formatting process will go ahead
+and completely erase that side of the disk (as soon as you press a
+key).
+
+If you find that one particular disk (or side of a disk) keeps
+requiring formatting, then it is likely that the disk itself is
+damaged and you should avoid using it in future.
+
+Some commands that fail produce reports that offer you the options...
+
+	- Retry, Ignore or Cancel?
+
+If you receive the above options, then:
+
+...typing R (after taking the necessary corrective action) makes the
+computer retry the command;
+
+...typing I makes the computer ignore the reason that the command
+failed in the first place and continue regardlessly (typing I is
+therefore not recommended unless you know exactly what you're doing);
+
+...typing C abandons the command (this may be followed by the
+appearance of another report).
+
+
+Further information
+
+Further information on disk operations (together with details of how
+to use the +3's RAMdisk and how to use an external cassette unit) can
+be found in chapter 8 part 20. A guide to +3DOS (the +3 Disk Operating
+System) will be found in chapter 8 part 27.
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter5.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter6.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

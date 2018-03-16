@@ -1,0 +1,185 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 9</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+<PRE>Chapter 9
+Using the calculator
+
+Subjects covered...
+
+	Selecting the calculator
+	Entering numbers
+	Running total
+	Using built-in mathematical functions
+	Editing the screen
+	Assigning variables
+	User defined functions
+	Exiting from the calculator
+
+The +3 can be used as a full function calculator.
+
+To use the calculator, call up the opening menu and select the
+'Calculator' option. (If you don't know how to select a menu option,
+refer back to chapter 2.)
+
+The calculator may be selected as soon as the +3 is switched on.
+Alternatively, if you are working on a +3 BASIC program, you may
+select the calculator by choosing the 'Exit' option from the edit menu
+(which returns you to the opening menu), at which point you can select
+the 'Calculator' option. Note that any BASIC program which was being
+worked on (when you selected the calculator) will be remembered and
+restored when you exit from the calculator and return to +3 BASIC.
+
+When you have selected the 'Calculator' option, the screen will change
+to...
+
+    +-------------------------------------------------------------+
+    |                                                             |
+    |   []                                                        |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |     ___________________________________________________     |
+    |    [_Calculator________________________________________]    |
+    |                                                             |
+    |                                                             |
+    +-------------------------------------------------------------+
+
+...and the +3's calculator is ready to accept your first entry. Type
+in...
+
+	6+4
+
+As soon as you press ENTER, the answer '10' will appear. (Note that
+you don't key in '=' as you would on a conventional calculator.)
+
+You will see that the cursor is positioned to the right of the answer,
+which is a running total (like on a conventional calculator). This
+means that you can simply type in the next operation to be carried out
+on the running total (without having to type in a whole new
+calculation). So, with the cursor still positioned to the right of the
+'10' on the screen, type in...
+
+	/5
+
+...and back comes the answer '2'. Now type in...
+
+	*PI
+
+This produces the result '6.2831853' on the screen. The +3 has used
+its built-in pi function - all you had to do was type in PI. This
+applies to all the +3's mathematical functions. To demonstrate, type
+in...
+
+	*ATN 60
+
+...which gives the result '9.7648943'. You may also 'edit' the
+contents of the screen. To demonstrate, move the cursor (using the
+cursor left key) to the beginning of the line and then type in INT
+so that the line reads...
+
+	INT 9.7648943
+
+...and as soon as ENTER is pressed, back comes the answer '9'. This
+also demonstrates that the +3 doesn't have to perform a calculation in
+order to print the value of an expression. As another example, press
+ENTER and type...
+
+	1E6
+
+...and back will come the value of that expression. Notice that before
+you typed in '1E6', you pressed ENTER on its own - this tells the +3
+that you are about to start a new calculation.
+
+One extremely useful feature of the +3's calculator is that it will
+allow you to assign values to variables and then use them in
+subsequent calculations. This is achieved by using the LET statement
+(as you would in BASIC). To demonstrate, press ENTER and type in the
+following...
+
+	LET x=10
+
+(You must then press ENTER twice for the +3 to accept the variable
+assignment.) Now verify that the variable 'x' is being used, by
+typing...
+
+	x+90
+
+...then...
+
+	+x*x
+
+If you are using the calculator whilst working on a BASIC program,
+then any variables used by the calculator should be chosen so that
+they do not conflict with those used by the program itself.
+
+BASIC keywords are not allowed to be used as variable names.
+
+When you have finished using the calculator, press the EDIT key. The
+screen will change to...
+
+    +-------------------------------------------------------------+
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                      _________________                      |
+    |                     |_Options_________|                     |
+    |                     |//Calculator/////|                     |
+    |                     |  Exit           |                     |
+    |                     +-----------------+                     |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |     ___________________________________________________     |
+    |    [_Calculator________________________________________]    |
+    |                                                             |
+    |                                                             |
+    +-------------------------------------------------------------+
+
+Select the 'Exit' option to return to the opening menu. If you were
+working on a +3 BASIC program before you started using the calculator,
+then you may return to the program by selecting the '+3 BASIC' option.
+(If you wish to continue using the calculator, then select the
+'Calculator' option.)
+
+Note that if you have set up any user defined functions (using the
+'DEF FN' statement) whilst working on a BASIC program, you will be
+able to invoke that function when using the calculator. To illustrate
+this point, return to +3 BASIC and type in (for example)...
+
+	9000 DEF FN c(n)=n*n*n
+
+...which sets up the user defined function 'FN c(n)' which returns the
+'cube' of n (the number you type into the brackets). Now exit from +3
+BASIC and return to the calculator - you can now use this user defined
+function as if it were one of the +3's own built-in functions. For
+example, enter...
+
+	FN c(3)
+
+...and the calculator will print the number '27' (i.e. the cube of 3).
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt33.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter10.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

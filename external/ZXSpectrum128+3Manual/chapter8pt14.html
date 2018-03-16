@@ -1,0 +1,460 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 14</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 14
+The Character Set
+
+Subjects covered...
+
+	CODE, CHR$
+	POKE, PEEK
+	USR
+	BIN
+
+The letters, digits, spaces, punctuation marks and so on that can
+appear in strings are called characters, and they make up the
+character set that the +3 uses. Most of these characters are single
+symbols, but there are some more, called tokens, that represent whole
+words, such as PRINT, STOP, '<>' and so on.
+
+There are 256 characters, and each one has a code between 0 and 255
+(there is a complete list of them in part 26 of this chapter). To
+convert between codes and characters, there are two functions, CODE
+and CHR$.
+
+CODE is applied to a string, and gives the code of the first character
+in the string (or 0 if the string is empty).
+
+CHR$ is applied to a number, and gives the single character string
+whose code is that number.
+
+This program prints out the entire character set...
+
+	10 FOR a=32 TO 255: PRINT CHR$ a;: NEXT a
+
+On the screen will appear the following...
+
+  +----------------------------------------------------------------------+
+  |                                                                      |
+  |     ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?    |
+  |   /=A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _    |
+  |   ` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ ()   |
+  |      '' '' . :'.':. .': :'...::.::A B C D E F G H I J K L M N O P    |
+  |   Q R S   S P E C T R U M   P L A Y   R N D I N K E Y $ P I F N      |
+  |   P O I N T   S C R E E N $   A T T R   A T   T A B   V A L $   C    |
+  |   O D E   V A L   L E N   S I N   C O S   T A N   A S N   A C S      |
+  |   A T N   L N   E X P   I N T   S Q R   S G N   A B S   P E E K      |
+  |   I N   U S R   S T R $   C H R $   N O T   B I N   O R   A N D      |
+  |   < = > = < >   L I N E   T H E N   T O   S T E P   D E F   F N      |
+  |   C A T   F O R M A T   M O V E   E R A S E   O P E N   #   C L O    |
+  |   S E   #   M E R G E   V E R I F Y   B E E P   C I R C L E   I N    |
+  |   K   P A P E R   F L A S H   B R I G H T   I N V E R S E   O V E    |
+  |   R   O U T   L P R I N T   L L I S T   S T O P   R E A D   D A T    |
+  |   A   R E S T O R E   N E W   B O R D E R   C O N T I N U E   D I    |
+  |   M   R E M   F O R   G O   T O   G O   S U B   I N P U T   L O A    |
+  |   D   L I S T   L E T   P A U S E   N E X T   P O K E   P R I N T    |
+  |     P L O T   R U N   S A V E   R A N D O M I Z E   I F   C L S      |
+  |   D R A W   C L E A R   R E T U R N   C O P Y                        |
+  |                                                                      |
+  |                                                                      |
+  |                                                                      |
+  |                                                                      |
+  |   0   O K ,   1 0 : 1                                                |
+  |                                                                      |
+  +----------------------------------------------------------------------+
+
+                             The character set
+
+
+As you can see, the character set consists of a space, 15 symbols and
+punctuation marks, the ten digits, seven more symbols, the capital
+letters, six more symbols, the lower case letters and five more
+symbols. These are all (except the pound sign shown above as '/=', and
+the copyright symbol shown above as '()') taken from a widely-used set
+of characters known as ASCII (American Standard Codes for Information
+Interchange). ASCII also assigns numeric codes to these characters,
+and these are the codes that the +3 uses.
+
+The rest of the characters are not part of ASCII, but are dedicated to
+the ZX Spectrum range of computers. First amongst them are a space and
+15 patterns of black and white blobs [although it is difficult to
+depict them in ASCII, as you have recently seen]. These are called the
+graphics symbols and can be used for drawing pictures. You can enter
+these from the keyboard, using what's known as graphics mode. Pressing
+the GRAPH key switches on graphics mode, after which the keys 1, 2, 3,
+4, 5, 6, 7 and 8 will produce the graphics symbols...
+
++-----------------------------------------------------------------------------+
+|     |     |..## |##.. |#### |.... |..## |##.. |#### |.... |graph|     |     |
+|     |     |....1|....2|....3|..##4|..##5|..##6|..##7|....8|off 9|     |     |
+|-----------------------------------------------------------------------------|
+|       |     |     |     |     |     |     |     |     |     |     |     |   |
+|       |GRAPH|     |     |     |     |     |     |     |     |     |     |   |
+|-------------------------------------------------------------------------+   |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+|-----------------------------------------------------------------------------|
+|            |     |     |     |     |     |     |     |     |     |          |
+|            |     |     |     |     |     |     |     |     |     |          |
+|-----------------------------------------------------------------------------|
+|     |     |     |     |     |                       |     |     |     |     |
+|     |     |     |     |     |                       |     |     |     |     |
++-----------------------------------------------------------------------------+
+
+
+While in graphics mode, pressing CAPS SHIFT together with one of the
+keys 1 to 8 produces 'inverted' versions of the same symbols, i.e.
+black becomes white and white becomes black...
+
+
++-----------------------------------------------------------------------------+
+|     |     |##.. |..## |.... |#### |##.. |..## |.... |#### |graph|     |     |
+|     |     |####1|####2|####3|##..4|##..5|##..6|##..7|####8|off 9|     |     |
+|-----------------------------------------------------------------------------|
+|       |     |     |     |     |     |     |     |     |     |     |     |   |
+|       |GRAPH|     |     |     |     |     |     |     |     |     |     |   |
+|-------------------------------------------------------------------------+   |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+|-----------------------------------------------------------------------------|
+|            |     |     |     |     |     |     |     |     |     |          |
+| CAPS SHIFT |     |     |     |     |     |     |     |     |     |CAPS SHIFT|
+|-----------------------------------------------------------------------------|
+|     |     |     |     |     |                       |     |     |     |     |
+|     |     |     |     |     |                       |     |     |     |     |
++-----------------------------------------------------------------------------+
+
+
+The cursor keys won't work properly while all this is going on as the
++3 interprets them as shifted number keys, and prints graphics
+characters accordingly.
+
+Pressing the 9 key turns everything back to normal (as does pressing
+GRAPH again). The 0 key deletes the character to the left of the
+cursor.
+
+Here are the sixteen graphics symbols...
+
+
+           Symbol    Code                Symbol    Code
+            ____                          ____          
+           |    |    128                 |####|    143
+           |____|                        |####|       
+            ____                          ____        
+           |  ##|    129                 |##  |    142
+           |____|                        |####|       
+            ____                          ____        
+           |##  |    130                 |  ##|    141
+           |____|                        |####|       
+            ____                          ____        
+           |####|    131                 |    |    140
+           |____|                        |####|       
+            ____                          ____        
+           |    |    132                 |####|    139
+           |__##|                        |##__|       
+            ____                          ____        
+           |  ##|    133                 |##  |    138
+           |__##|                        |##__|       
+            ____                          ____        
+           |##  |    134                 |  ##|    137
+           |__##|                        |##__|       
+            ____                          ____        
+           |####|    135                 |    |    136
+           |__##|                        |##__|
+
+
+After the graphics symbols in the character set, you will see what
+appears to be another copy of the alphabet from A to S. These are
+characters that you can redefine yourself (though when the machine is
+first switched on they are set as letters) - they are called
+user-defined graphics. You can type these in from the keyboard by
+going into graphics mode, and then using the letter keys A to S.
+
+To define a new character for yourself, follow this recipe - it
+defines a character to show pi.
+
+(i) Work out what the character looks like. Each character has an 8x8
+grid of dots, each of which can appear to be either on or off. You'd
+draw a diagram something like this (with blank squares representing
+the dots which are on)...
+
+                    _______________________________
+                   |   |   |   |   |   |   |   |   |
+                   |___|___|___|___|___|___|___|___|
+                   |   |   |   |   |   |   |   |   |
+                   |___|___|___|___|___|___|___|___|
+                   |   |   |   |   |   |   |###|   |
+                   |___|___|___|___|___|___|###|___|
+                   |   |   |###|###|###|###|   |   |
+                   |___|___|###|###|###|###|___|___|
+                   |   |###|   |###|   |###|   |   |
+                   |___|###|___|###|___|###|___|___|
+                   |   |   |   |###|   |###|   |   |
+                   |___|___|___|###|___|###|___|___|
+                   |   |   |   |###|   |###|   |   |
+                   |___|___|___|###|___|###|___|___|
+                   |   |   |   |   |   |   |   |   |
+                   |___|___|___|___|___|___|___|___|
+
+
+When a dot is on, the +3 prints the ink colour; when a dot if off, the
++3 prints the paper colour. (The terms ink and paper are explained in
+part 16 of this chapter.)
+
+We've left a one-square border around the edge because all the other
+letters also have one (except for lower case letters with tails, where
+the tail goes right down to the bottom).
+
+(ii) Work out which user-defined graphic you wish to display pi -
+let's say the one corresponding to 'P' so that if you press P (after
+pressing GRAPH) you get pi.
+
+
+(iii) Store the new pattern. Each user-defined graphic has its pattern
+stored as eight numbers, one for each row.  You can write each of
+these numbers in a program as BIN followed by eight 0's or 1's - 0 for
+paper, 1 for ink - so the eight numbers for our pi character are...
+
+	BIN 00000000	- top row
+	BIN 00000000	- second row down
+	BIN 00000010	- third row down
+	BIN 00111100	- forth row down
+	BIN 01010100	- fifth row down
+	BIN 00010100	- sixth row down
+	BIN 00010100	- seventh row down
+	BIN 00000000	- bottom row
+
+(If you know about binary numbers, then it should help you to know
+that BIN is used to write a number in binary instead of the usual
+decimal.) Look at the pattern of binary numbers through half-closed
+eyes - you may even be able to see the pi character!
+
+These eight numbers are stored in eight locations (bytes) in memory.
+Each of these locations has an address. The address of the first byte
+(or group of eight digits) is 'USR "P"' (we chose 'P' in (ii) above).
+The address of the second byte is 'USR "P"+1', and so on up to the
+address 'USR "P"+7'.
+
+USR here is a function to convert a string argument into the address
+of the first byte in memory for the corresponding user-defined
+graphic. The string argument must be a single character which can be
+either the user-defined graphic itself or the corresponding letter (in
+upper or lower case). There is another use for USR, when its argument
+is a number, which will be dealt with later.
+
+Even if you don't understand this, the following program will define
+the character for you...
+
+	 10 FOR n=0 TO 7
+	 20 READ row: POKE USR "P"+n, row
+	 30 NEXT n
+	 40 DATA BIN 00000000
+	 50 DATA BIN 00000000
+	 60 DATA BIN 00000010
+	 70 DATA BIN 00111100
+	 80 DATA BIN 01010100
+	 90 DATA BIN 00010100
+	100 DATA BIN 00010100
+	110 DATA BIN 00000000
+
+The POKE statement stores a number directly in a memory location,
+bypassing the mechanisms normally used by the BASIC. The opposite of
+POKE is PEEK, and this allows us to look at the contents of a memory
+location although it does not actually alter the contents themselves.
+PEEK and POKE are described more fully in part 24 of this chapter.
+
+After the user-defined graphics in the character set come the tokens.
+
+You will have noticed that we have not printed out the first 32
+characters (codes 0 to 31) - these are control characters. They don't
+produce anything printable, but instead are used to control the screen
+display or some other function of the +3.
+
+(If you try to print control characters, the +3 displays '?' to show
+that it doesn't understand them. Control characters are described
+more fully in part 28 of this chapter.)
+
+The three control characters that the screen display uses are 6, 8 and
+13 (these will now be explained). On the whole, 'CHR$ 8' is the only
+one you are likely to find useful.
+
+'CHR$ 6' prints spaces in exactly the same way as a comma does in a
+PRINT statement, for instance...
+
+	PRINT 1; CHR$ 6;2
+
+...does the same as...
+
+	PRINT 1,2
+
+Obviously this is not a very clear way of using it. A more subtle way
+is to say...
+
+	LET a$="1"+ CHR$ 6+"2"
+	PRINT a$
+
+'CHR$ 8' is 'backspace' - it moves the print position back one place.
+Try...
+
+	PRINT "1234"; CHR$ 8;"5"
+
+...which prints out...
+
+	1235
+
+'CHR$ 13' is 'newline' - it moves the print position to the beginning
+of the next line.
+
+The screen display also uses control codes 16 to 23 - these are
+explained in parts 15 and 16 of this chapter (all the codes are listed
+in part 28).
+
+Using the codes for the characters we can extend the concept of
+'alphanumerical ordering' to cover strings containing any characters,
+not just letters. If instead of thinking in terms of the usual
+alphabet of 26 letters we use the extended alphabet of 256 characters,
+in the same order as their codes, then the principle is exactly the
+same. For instance, the following strings are in their 'Spectrum'
+ASCII alphabetical order. (Notice the rather odd feature that lower
+case letters come after all the capitals; so 'a' comes after 'Z'.
+Notice also that spaces are significant.)
+
+	CHR$ 3+"ZOOLOGICAL GARDENS"
+	CHR$ 8+"AARDVARK HUNTING"
+	" AAAARGH!"
+	"(Parenthetical remark)"
+	"100"
+	"129.95 inc. VAT"
+	"AASVOGEL"
+	"Aardvark"
+	"Elgar, the Regal Lager"
+	"PRINT"
+	"Zoo"
+	"[interpolation]"
+	"aardvark"
+	"aasvogel"
+	"derby"
+	"zoo"
+	"zoology"
+
+Here is the rule for finding out in which order two strings come.
+Start by comparing the first two characters. If they are different,
+then one of them has its code less than the other, and the string it
+comes from is the earlier (lesser) of the two strings. If they are the
+same, then go on to compare the next two characters. If in this
+process one of the strings runs out before the other, then that string
+is the earlier; otherwise they must be equal.
+
+The relations '=', '<', '>', '<=', '>=' and '<>' are used for strings
+as well as for numbers: '<' means 'comes before' and '>' means 'comes
+after', so that...
+
+	"AA man"<"AARDVARK"
+	"AARDVARK">"AA man"
+
+...are both true.
+
+'<=' and '>=' work in the same way as they do for numbers, so that...
+
+	"The same string" <= "The same string"
+
+...is true, but...
+
+	"The same string" < "The same string"
+
+...is false.
+
+Experiment on all this using the program here, which inputs two
+strings and puts them in order.
+
+	10 INPUT "Type in two strings:",a$,b$
+	20 IF a$>b$ THEN LET c$=a$: LET a$=b$: LET b$=c$
+	30 PRINT a$;" ";
+	40 IF a$<b$ THEN PRINT "<";: GO TO 60
+	50 PRINT "=";
+	60 PRINT " ";b$
+	70 GO TO 10
+
+Note (in the above program and also in the program at the end of part
+13) how we have to introduce 'c$' in line 20 when we swap over 'a$'
+and 'b$'. Can you see why simply using...
+
+	LET a$=b$: LET b$=a$
+
+...would not have the desired effect?
+
+The next program sets up user defined graphics for the following keys
+to display chess pieces...
+
+	B for bishop
+	K for king
+	R for rook
+	Q for queen
+	P for pawn
+	N for knight
+
+Chess pieces...
+
+	5 LET b=BIN 01111100: LET c=BIN 00111000: LET d=BIN00010000
+	10 FOR n=1 TO 6: READ p$: REM 6 pieces
+	20 FOR f=0 TO 7: REM read pieces into 8 bytes
+	30 READ a: POKE USR p$+f, a
+	40 NEXT f
+	50 NEXT n
+	100 REM bishop
+	110 DATA "b", 0, d, BIN 00101000, BIN 01000100
+	120 DATA BIN 01101100, c, b, 0
+	130 REM king
+	140 DATA "k", 0, d, c, d
+	150 DATA c, BIN 01000100, c, 0
+	160 REM rook
+	170 DATA "r", 0, BIN 01010100, b, c
+	180 DATA c, b, b, 0
+	190 REM queen
+	200 DATA "q", 0, BIN 01010100, BIN 00101000, d
+	210 DATA BIN 01101100, b, b, 0
+	220 REM pawn
+	230 DATA "p", 0, 0, d, c
+	240 DATA c, d, b, 0
+	250 REM knight
+	260 DATA "n", 0, d, c, BIN 01111000
+	270 DATA BIN 00011000, c, b, 0
+
+Note that in the above DATA statements, we have simply used '0'
+instead of 'BIN 00000000'.
+
+When you have run this program, you may look at the pieces by pressing
+GRAPH followed by any of the keys: B, K, R, Q, P or N.
+
+
+Exercises...
+
+1. Imagine the space for one symbol divided up into four quarters like
+a Battenberg cake. Then if each quarter can be either black or white,
+there are 2^4 = 16 possibilities. Find them all in the character set.
+
+2. Run this program...
+
+	10 INPUT c
+	20 PRINT CHR$ c;
+	30 GO TO 10
+
+If you experiment with it, you'll find that 'CHR$ c' is rounded to the
+nearest whole number; and if 'c' is not in the range 0 to 255, then
+the program stops with the error report 'B integer out of range'.
+
+3. Which of these is the lesser?
+
+	"EVIL"
+	"evil"
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt13.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt15.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

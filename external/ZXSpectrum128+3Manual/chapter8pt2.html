@@ -1,0 +1,418 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 2</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 2
+Simple programming concepts
+
+Subjects covered...
+
+	Programs
+	Line numbers
+	Editing programs using the cursor keys
+	RUN, LIST
+	GO TO, CONTINUE, INPUT, NEW, REM
+	PRINT
+	Stopping a program
+
+Type in the following first two lines of a program (which will
+eventually print the sum of two numbers). Don't forget to press ENTER
+after you type each line...
+
+	20 print a
+	10 let a=10
+
+Note that the screen looks like this...
+
+	10 LET a=10
+[]
+	20 PRINT a
+
+As we have already discussed - because these lines began with numbers,
+they were not obeyed immediately but were stored away as program
+lines. You will have also noticed here that the line numbers govern
+the order in which the program lines are to be executed, and as you
+can see on the screen, the +3 sorts all the lines into order whenever
+a new line is entered.
+
+Note also that although we typed each line in lower case letters, the
+keywords (i.e. PRINT and LET) were converted to upper case as soon the
+line was entered and accepted by the +3. From now on, we will show
+keywords to be typed in upper case letters; however, you may continue
+to type in lower case letters.
+
+(By the way, if you don't know what a keyword is, you should have
+studied chapter 6 before reading this chapter.)
+
+So far you have only entered one number, so type...
+
+	15 LET b=15
+
+...and press ENTER. Now you need to change line 20 to...
+
+	20 PRINT a+b
+
+You could type out the replacement line in full, but it is far easier
+to move the cursor (using the cursor keys) to just after the 'a', and
+then type...
+
+	+b	(don't press ENTER yet)
+
+Check that the line then reads...
+
+	20 PRINT a+b
+
+...then press ENTER. The cursor will move to the line below, and the
+screen should look like this...
+
+	10 LET a=10
+	15 LET b=15
+	20 PRINT a+b
+[]
+
+What you have done in this program is to have assigned the value 10 to
+the variable called 'a', and the value 15 to the variable called 'b'.
+You have then instructed the computer to print the sum of these two
+values by simply adding the two variables.
+
+Run this program by typing...
+
+	RUN
+
+...and pressing ENTER. The sum of the two numbers will be displayed...
+
+	25
+
+Run the program again and then afterwards, press ENTER and type...
+
+	PRINT a,b
+
+Now press ENTER again and notice how the values of the variables 'a'
+and 'b' are still in the +3's memory, even though the program has
+finished...
+
+	10              15
+
+
+Mistakes
+
+If you enter a line by mistake, say...
+
+	12 LET b=8
+
+...and you wish to delete the line, then simply type...
+
+	12
+
+..and press ENTER. Line 12 will vanish, and the cursor will reappear
+where line 12 used to be.
+
+Now type...
+
+	30
+
+...and press ENTER. The +3 will search for line 30, and since there
+isn't one, it will 'fall off' the end of the program. The cursor will
+be positioned just after the last line. If you enter any non-existent
+line number (such as 30), then the +3 will place the cursor where it
+thinks the line would have been if it really existed. This can be a
+useful way of moving about large programs, but beware - it can also be
+very dangerous because if the line really did exist before you entered
+the line number - it certainly wouldn't exist afterwards!
+
+To list a program on the screen, type...
+
+	LIST
+
+...and press ENTER. You may (particularly when working with more
+lengthy programs) wish to list from a certain point onwards. This can
+be achieved by typing an appropriate line number after the LIST
+command.
+
+Type...
+
+	LIST 15
+
+...and press ENTER, to see this illustrated.
+
+When we were developing the above program, note how we were able to
+insert line 15 between the other two lines - this would have been
+impossible if they had been numbered 1 and 2 instead of 10 and 20. It
+is always good practice, therefore, to leave gaps between line
+numbers.
+
+(Note that line numbers must be entered as whole numbers between 1 and
+9999.)
+
+If, at some time, you find that you haven't left enough space between
+line numbers, then you may use the edit menu to renumber a program. To
+do this, press the EDIT key then select the Renumber option from the
+menu that appears; this sets the gap between each line number to 10.
+Try this out and see how the line numbers change.
+
+We are now going to use the BASIC command NEW. This erases any
+existing programs and variables in the +3's memory. The command should
+be used whenever you are about to start afresh, so type...
+
+	NEW
+
+...and press ENTER. From now on, we won't mention 'press ENTER' every
+time - we'll assume that you'll remember.
+
+With the opening menu on the screen, start up BASIC by selecting the
+option +3 BASIC.
+
+Now carefully type in this program, which converts Fahrenheit
+temperatures to Celsius (centigrade)...
+
+	10 REM temperature conversion
+	20 PRINT "deg F","deg C"
+	30 PRINT
+	40 INPUT "Enter deg F",f
+	50 PRINT f,
+	60 PRINT (f-32)*5/9
+	70 GO TO 40
+
+Although you can type in all of line 10 in lower case, only the REM
+will be converted to upper case on entry as it's the only keyword that
+the +3 recognises. Also, although the words GO TO will appear with a
+space between them, they may be typed in as one word (GOTO) if you
+prefer.
+
+Now run the program. The instructions will start being carried out in
+the order determined by the line numbers. First of all, you'll see
+the headings deg F and deg C printed on the screen (as instructed by
+line 20), but what has line 10 done? It looks like the +3 has
+completely ignored it - in fact, it has! The REM in line 10 stands for
+remark, so line 10 is solely to remind you of what the program does. A
+REM command consists of REM followed by anything you like - the +3
+will ignore everything after the REM, right up to the end of the line.
+
+After line 20, the +3 carries out line 30 which simply prints a blank
+line. When the +3 gets to the INPUT command in line 40 it waits for
+you to type in a value for the variable 'f' - you can tell this
+because at the bottom of the screen is a flashing cursor.
+
+Type in a number (then press ENTER). The +3 displays the result and
+then waits for you to enter another number. This is because the
+instruction in line 70 says 'GO TO 40' - in other words, 'instead of
+running out of program and stopping, jump back to line 40 and continue
+running from there'.
+
+So, enter another temperature, then another...
+
+After a few more of there you might be wondering if the computer will
+ever get bored of this - it won't! Next time it asks for another
+number, hold down SYMB SHIFT and type A. The word 'STOP' will appear,
+and when you press ENTER then +3 comes back with the report...
+
+	H STOP in INPUT in line 40:1
+
+...which tells you why it stopped, and where (in line 40). (The ':1'
+after the line number in the report tells you that the 1st instruction
+in line 40 is being reported upon.)
+
+If you wish to continue the program, type...
+
+	CONTINUE
+
+...and the +3 will ask you for another number.
+
+When CONTINUE is used, the +3 remembers the line number in the last
+report that it sent you (as long as the report that it sent you (as
+long as the report was not 0 OK) and jumps back to that line, which in
+this case is line 40 (the INPUT command).
+
+Stop the program again and replace line 70 by...
+
+	70 GO TO 31
+
+There will be no perceptible difference to the running of the program
+because if the line number in a GO TO command refers to a non-existent
+line, then the jump is to the next line after the given number. The
+same goes for RUN (in face, RUN on its own actually means RUN 0).
+
+Keep entering numbers until the screen starts getting full. When it is
+full, the +3 will move the whole of the top half of the screen up one
+line to make room, losing the heading off the top - this is called
+scrolling.
+
+When you are tired of entering numbers, stop the program as before and
+enter the editor by pressing ENTER.
+
+Look at the PRINT statement in line 50. The ',' comma in this line is
+very important.
+
+Commas are used to make the printing start either at the left-hand
+margin, or in the middle of the screen (depending upon which comes
+next). Thus in line 50, the comma causes the Celsius temperature to be
+printed in the middle of the line.
+
+A semicolon ';' on the other hand, is used to make the next number (or
+characters) be printed immediately after the preceding one(s).
+
+Another punctuation mark you can use like this in PRINT commands is
+the apostrophe ('). This makes whatever is printed next appear at the
+beginning of the next line on the screen. This also happens by default
+at the end of each PRINT command.
+
+If you wish to inhibit this (so that whatever follows to be printed
+continues on the same line) you can put a comma or semicolon at the
+end of the PRINT statement. To see how this works, replace line 50 in
+turn by each of these...
+
+	50 PRINT f,
+	50 PRINT f;
+	50 PRINT f
+
+...and run the program each time to see the difference.
+
+The line with the comma (you typed in originally) printed everything
+in two columns; the line with the semicolon crams everything together,
+and the line without either, prints each number on a new line (you
+could have also used PRINT f' to do this).
+
+Always remember the difference between commas and semicolons in PRINT
+commands, and do not confuse them with colons which are used as
+separators between commands on a single line, for example...
+
+	PRINT f: GO TO 40
+
+Now type in these extra lines...
+
+	100 REM greeting program
+	110 INPUT "Enter your name",n$
+	120 PRINT "Hello ";n$;"!"
+	130 GO TO 110
+
+This is a separate program from the last one, but you may keep them
+both in the +3 at the same time. To run the new one, type...
+
+	RUN 100
+
+Because this program expects you to input a string (a character or
+group of characters) instead of a number, it prints out two string
+quotes '""' as a reminder. So type in a name and press ENTER.
+
+Next time round, you will get two string quotes again, but you don't
+have to use them if you don't want to. Try this, for example: rub out
+the quotes by pressing cursor right, then DELETE twice, and type...
+
+	n$
+
+Since there are no string quotes, the +3 knows that it has to do some
+calculation - the calculation in this case is to find the value of the
+string variable called 'n$' (which is whatever name you happen to have
+typed in last time round). In this way, the INPUT statement acts like
+'LET n$=n$', so the value of 'n$' is unchanged.
+
+If you wish to stop the program, delete the quotes then hold down SYMB
+SHIFT and type A, then ENTER.
+
+Now look back at that 'RUN 100' instruction which jumps to line 100
+and runs the program from there. You may be asking, "What's the
+difference between 'RUN 100' and 'GO TO 100'?" Well, 'RUN 100' first
+of all clears all the variables and the screen, and after that works
+just like 'GO TO 100'. On the other hand, 'GO TO 100' doesn't clear
+anything, and there may well be occasions where you wish to run a
+program without clearing any variables; here GO TO would be necessary
+and RUN could be disastrous, so it is better not to get into the habit
+of automatically typing 'RUN' to start a program.
+
+Another difference of course is that you may type RUN without a line
+number, and it starts off at the first line in the program; GO TO must
+always be followed by a line number.
+
+Both this program and the 'temperature conversion' program stopped
+because you pressed SYMB SHIFT and typed A in the input line.
+Sometimes, you may write a program that you can't stop and that won't
+stop itself. Type...
+
+	200 GO TO 200
+	RUN 200
+
+Although the screen is blank, the program is running - executing line
+200 over and over again. This looks all set to go on forever unless
+you pull the plug out or reset the computer! However, these is a less
+drastic remedy - press the BREAK key. The program will stop with the
+report...
+
+	L BREAK into program
+
+At the end of every statement, the program looks to see if this key is
+pressed, and if it is, then the program stops. The BREAK key can also
+be used when you are in the middle of using a printer, a cassette
+unit, or various other add-ons that you can attach to the +3.
+
+In these cases there is a different report...
+
+	D BREAK - CONT repeats
+
+The instruction CONTINUE in this case *and in most other cases too)
+repeats the statement where the program was stopped and carries
+straight on with the next statement (after allowing for any jumps to
+be made).
+
+Run the 'name' program again and when it asks you for input, type...
+
+	n$	(after removing the quotes)
+
+Because 'n$' is an undefined variable, you will get the error
+report...
+
+	2 Variable not found
+
+If you now type...
+
+	LET n$="Fremsley"
+
+(which produces the report '0 OK, 0:1'), and then type...
+
+	CONTINUE
+
+...you will find that you can use 'n$' as input data without any
+trouble.
+
+In that case CONTINUE does a jump to the INPUT command in line 110. It
+disregards the report from the LET statement because that said OK and
+jumps to the command referred to in the previous report, i.e. line
+110. This feature can be extremely useful as it allows you to 'fix' a
+program that has stopped due to errors, and then CONTINUE from that
+point.
+
+As we said before, the report 'L BREAK into program' is special
+because after it, CONTINUE does not repeat the command where the
+program stopped.
+
+You have now seen the statements, PRINT, LET, INPUT, RUN, LIST, GO TO,
+CONTINUE, NEW and REM, and they can all be used either as direct
+commands or in program lines - this is true of almost all commands in
++3 BASIC, however, RUN, LIST, CONTINUE and NEW are not usually of much
+use in a program.
+
+
+Exercises...
+
+1. Put a LIST statement in a program, so that when you run it, it lists
+itself afterwards.
+
+2. Write a program to input prices and print out the tax due (at 15
+percent). Put in PRINT statements so that the +3 announces what it is
+going to do, and asks for the input price with extravagant politeness.
+Modify the program so that you can also input the tax rate (to allow
+for zero ratings or future changes).
+
+3. Write a program to print a running total of numbers you input (like
+an adding machine).
+
+4. What would CONTINUE and NEW do in a program? Can you think of any
+uses at all for this?
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt1.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt3.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

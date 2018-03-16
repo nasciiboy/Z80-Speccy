@@ -1,0 +1,197 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 12</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 12
+Arrays
+
+Subjects covered...
+
+	Arrays
+	DIM
+
+Suppose that you have a list of numbers - for instance, the marks of
+ten people in a class. To store them in the +3 you could use the
+variables 'm1', 'm2', 'm3'... and so on up to 'm10', but the program
+to set up these ten variables would be rather long and tedious to type
+in, i.e....
+
+	 10 LET m1=75
+	 20 LET m2=44
+	 30 LET m3=90
+	 40 LET m4=38
+	 50 LET m5=55
+	 60 LET m6=64
+	 70 LET m7=70
+	 80 LET m8=12
+	 90 LET m9=75
+	100 LET m10=60
+
+Instead, these is a mechanism, known as an array whereby you may
+specify a variable which (instead of containing a single value as
+variables normally do) may contain a number of separate elements, each
+of which may contain different values. Each element is referenced by
+an index number (the subscript) written in brackets after the variable
+name. For the above example, the array variable's name could be 'm' -
+(the name of an array variable must be a single letter), and the ten
+variables would then be 'm(1)', 'm(2)', 'm(3)'... and so on up to
+'m(10)'.
+
+The elements of an array are called subscripted variables, as opposed
+to the simple variables that you are already familiar with.
+
+Before you can use an array, you must reserve some space for it in the
++3's memory, and you do this by using the keyword DIM (for dimension).
+The statement...
+
+	DIM m(10)
+
+...sets up an array called 'm' whose dimensions are 10 (i.e. there are
+10 subscripted variables). The DIM statement initialises each element
+in the array to zero. It also deletes any array called 'm' that
+existed previously - (however, it doesn't delete any simple variable
+called 'm'. An array variable can coexist alongside a simple numerical
+variable of the same name because the array can always be
+distinguished by its subscript).
+
+The array elements' subscripts may be represented by any numerical
+expression yielding a valid subscript number. This means that an
+array can be processed using a FOR...NEXT loop. Thus, instead of the
+above long-winded process, we can now set up the variables
+'m(1)'...'m(10)' using...
+
+	10 DIM m(10)
+	20 FOR n=1 TO 10
+	30 READ m(n)
+	40 NEXT n
+	50 DATA 75,44,90,38,55,64,70,12,75,60
+
+...to READ in the elements' values from a DATA list, or...
+
+	10 DIM m(10)
+	20 FOR n=1 TO 10
+	30 INPUT m(n)
+	40 NEXT n
+
+...to INPUT the elements' values by hand.
+
+Note that the DIM statement must come before any attempt to access the
+array in a program.
+
+If you wish, you may examine the contents of the array using...
+
+	10 FOR n=1 TO 10
+	20 PRINT m(n)
+	30 NEXT n
+
+...or individually using...
+
+	PRINT m(1)
+	PRINT m(2)
+	PRINT m(3)
+
+...etc....
+
+You can also set up arrays with more than one dimension. In a two
+dimensional array you need two numbers to specify an element - rather
+like the line and column numbers that specify a character position on
+the screen. If you imagine the line and column number (two
+dimensional) as referring to a printed page, you could then, for
+example, have an extra dimension to represent the page numbers. Think
+of the elements of a three dimensional array 'v' as being specified by
+'v(page number,line number,column number)'.
+
+Fro example, to set up a two-dimensional array 'c' with dimensions 3
+and 6, you use the DIM statement...
+
+	DIM c(3,6)
+
+This then gives you 3x6=18 subscripted variables...
+
+	c(1,1), c(1,2)... to c(1,6)
+	c(2,1), c(2,2)... to c(2,6)
+	c(3,1), c(3,2)... to c(3,6)
+
+
+The same principle works for any number of dimensions.
+
+Although you can have a number and an array with the same name, you
+cannot have two arrays with the same name, even if they have a
+different number of dimensions.
+
+There are also string arrays. The strings in an array differ from
+simple strings in that they are of fixed length and assignment to them
+is always Procrustean (i.e. chopped off or padded with spaces).
+
+The name of a string array is a single letter followed by '$'. Unlike
+numeric arrays, a string array and a string cannot have the same name.
+
+Suppose then, that you want an array 'a$' of five strings. You must
+decide how long these strings are to be - let us suppose that 10
+characters for each element is long enough. You then say...
+
+	DIM a$(5,10)	(type this in)
+
+This sets up a 5x10 array of characters, but you can also think of
+each row as being a string...
+
+	a$(1) equals a$(1,1), a$(1,2)... to a$(1,10)
+	a$(2) equals a$(2,1), a$(2,2)... to a$(2,10)
+	a$(3) equals a$(3,1), a$(3,2)... to a$(3,10)
+	a$(4) equals a$(4,1), a$(4,2)... to a$(4,10)
+	a$(5) equals a$(5,1), a$(5,2)... to a$(5,10)
+
+If you give the same number of subscripts (two in this case) as there
+were dimensions in the DIM statement, then you get a single character,
+but if you miss the last one out, then you get a fixed length string.
+So, for instance, 'a$(2,7)' is the 7th character in the string
+'a$(2)'. Using the slicing notation, we could also write this as
+'a$(2)(7)'. Now type...
+
+	LET a$(2)="1234567890"
+
+...and...
+
+	PRINT a$(2), a$(2,7)
+
+You get...
+
+	1234567890     7
+
+For the last subscript (the one you can miss out), you can also have a
+slicer, so that for instance...
+
+	a$(2,4 TO 8) is equal to a$(2)(4 TO 8) is equal to "45678"
+
+Remember - In a string array, all the strings have the same fixed
+length.
+
+The DIM statement has an extra number (the last one) to specify this
+length. When you write down a subscripted variable for a string array,
+you can put in an extra number (a slicer) to correspond with the extra
+number in the DIM statement.
+
+You can have string arrays with no extra dimensions. Type...
+
+	DIM a$(10)
+
+...and you will find that 'a$' behaves just like a string variable,
+except that it always has length 10, and assignment to it is always
+Procrustean.
+
+
+Exercise...
+
+1. Use READ and DATA statements to set up an array 'm$' of twelve
+strings in which 'm$(n)' is the name of the nth month. (Hint - The DIM
+statement will be 'DIM m$(12,9)'. Test it by printing out all the
+values of 'm$(n)' (use a loop).)
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt11.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt13.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

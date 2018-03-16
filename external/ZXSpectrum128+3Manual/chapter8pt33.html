@@ -1,0 +1,349 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 33</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 33
+Example programs
+
+Programs...
+
+	Renumber
+	Clock
+	Bustout
+	Telly tennis
+
+Renumber
+
+This short program is an aid to the renumbering facility provided by
+the edit menu's 'Renumber' option. If you MERGE this program into the
+program you are developing (or wish to renumber), you will be able to
+select both the starting line number and the step size (between
+successive program lines).
+
+Type 'RUN 9000' to run the program, enter the start line (in the range
+1...9999), enter the step size (in the range 1...9999), then press the
+EDIT key and select the 'Renumber' option from the edit menu.
+
+9000 INPUT "Start size",st
+9010 INPUT "Step size",sp
+9020 LET hst= INT (st/256)
+9030 LET hsp= INT (sp/256)
+9040 POKE 23413,st-256*hst
+9050 POKE 23414,hst
+9060 POKE 23415,sp-256*hsp
+9070 POKE 23416,hsp
+9080 PRINT "Press EDIT then select Renumber option"
+
+
+Clock
+
+This program sets up the +3 as an analogue (and digital) clock.
+
+Type RUN to start the program, enter the hour (in the range 1...12)
+and enter the minute (in the range 0...59). The clock will then start.
+
+  10 DIM s(60): DIM c(60)
+  20 BORDER 0: PAPER 0: BRIGHT 1: INK 7: CLS 
+  30 PRINT AT 10,1;"Hold on while I calculate"
+  40 PRINT AT 11,2;"some sines and cosines"
+  50 GO SUB 370
+  60 LET z$="00"
+  70 CLS 
+  80 INPUT "What hour is it ";h
+  90 INPUT "How many minutes past ";m
+ 100 LET s=0: POKE 23672,0: POKE 23673,0
+ 110 IF h=12 THEN LET h=0
+ 120 LET xc=112: LET yc=90: LET r=70: LET rh=r/2: LET rm=r*3/4: LET rs=r*5/6
+ 130 CIRCLE xc,yc,r
+ 140 INK 1
+ 150 FOR i=0 TO 359 STEP 30
+ 160 PLOT (r+1)*s(i/6+1)+xc,(r+1)*c(i/6+1)+yc
+ 170 NEXT i
+ 180 INK 4
+ 190 OVER 1: GO SUB 500
+ 200 GO SUB 470
+ 210 GO SUB 440
+ 220 LET tm=INT ((PEEK 23672+256*PEEK 23673)/50)
+ 230 IF s+1=tm THEN LET os=s: LET s=s+1: GO TO 250
+ 240 GO TO 220
+ 250 IF s=60 THEN LET s=0: POKE 23672,0: POKE 23673,0: LET om=m:
+      LET m=m+1: GO TO 290
+ 260 PLOT xc,yc: DRAW rs*s(os+1),rs*c(os+1)
+ 270 GO SUB 440
+ 280 GO TO 220
+ 290 IF m=60 THEN LET m=0: LET oh=h: LET h=h+1: GO TO 330
+ 300 PLOT xc,yc: DRAW rm*s(om+1),rm*c(om+1)
+ 310 GO SUB 470
+ 320 GO TO 260
+ 330 IF h=12 THEN LET h=0
+ 340 PLOT xc,yc: DRAW rh*s(oh*5+1),rh*c(oh*5+1)
+ 350 GO SUB 500
+ 360 GO TO 300
+ 370 PRINT AT 14,0
+ 380 FOR i=6 TO 360 STEP 6
+ 390 PRINT ".";
+ 400 LET s(i/6)=SIN ((i-6)*PI/180)
+ 410 LET c(i/6)=COS ((i-6)*PI/180)
+ 420 NEXT i
+ 430 RETURN 
+ 440 PLOT xc,yc: DRAW rs*s(s+1),rs*c(s+1)
+ 450 LET s$=STR$ (s): PRINT OVER 0;AT 18,27; INK 4;":"; INK 6;
+      z$( TO 2-LEN (s$));s$
+ 460 RETURN 
+ 470 PLOT xc,yc: DRAW rm*s(m+1),rm*c(m+1)
+ 480 LET m$=STR$ (m): PRINT OVER 0;AT 18,24; INK 2;":"; INK 5;
+      z$( TO 2-LEN (m$));m$
+ 490 RETURN 
+ 500 PLOT xc,yc: DRAW rh*s(h*5+1),rh*c(h*5+1)
+ 510 LET ph=h: IF ph=0 THEN LET ph=12
+ 520 LET h$=STR$ (ph): PRINT OVER 0; INK 3;AT 18,22;"  "( TO 2-LEN (h$));h$
+ 530 RETURN 
+
+
+Bustout
+
+This program provides a colourful and entertaining little game for one
+player against the computer.
+
+To play the game, type RUN, then press any key to start.
+
+Options:
+
+	Cursor left moves the bat left.
+	Cursor right moves the bat right.
+	The space bar trades a life for a new screen.
+	See if you can get the highest 'hiscore'!
+
+Note the following when typing in the listing:
+
+	1. The "BBBBBBB..."s shown in lines 30 and 50 are graphics
+	characters. They are produced by pressing the GRAPH key once
+	(to switch graphics mode on), typing the charactres (using the
+	'B' key), then pressing the GRAPH key again (to switch
+	graphics mode off).
+
+	2. The "3333"s shown in line 210 are also graphics
+	characters. Again, they are produced by pressing GRAPH once,
+	pressing the '3' key four times, then pressing GRAPH
+	again. (Note that these characters will look like black blocks
+	on the screen.)
+
+	3. The "A" shown in line 430 is also a graphics
+	character. Again, it is produced by pressing GRAPH once,
+	pressing the 'A' key once, then pressing GRAPH again.
+
+
+  10 BORDER 0: INK 0: PAPER 0: CLS : BRIGHT 1
+  20 GO SUB 560
+  30 LET b$="BBBBBBBBBBBBBBBBBBBBBBBBBBBB": REM 28 Bs
+  40 LET s$="                                ": REM 32 spaces
+  50 PRINT AT 3,12; INK 7; FLASH 1;"BUSTOUT"; FLASH 0;AT 6,9; INK 1;"B";
+      INK 7;" = 20 Points";AT 8,9; INK 4;"B"; INK 7;" = 10 Points";AT 10,9;
+      INK 2;"B"; INK 7;" =  5 Points"
+  60 PRINT AT 14,1; INK 4;"Press SPACE or FIRE to trade";AT 16,3;
+      "a life for a new sheet."
+  70 PAUSE 200
+  80 LET hiscore=0
+  90 LET tscore=0
+ 100 LET lives=5
+ 110 LET score=0
+ 120 CLS 
+ 130 INK 7: PLOT 12,13: DRAW 0,160: DRAW 230,0: DRAW 0,-160: INK 0
+ 140 PRINT AT 1,2; INK 1;b$;AT 2,2; INK 4;b$
+ 150 FOR r=5 TO 6: PRINT AT r,2; INK 2;b$: NEXT r
+ 160 LET bx=9
+ 170 PRINT AT 19,5; INK 6;"PRESS ANY KEY TO START";AT 17,4;
+      "Use < and > to move bat"
+ 180 PAUSE 0
+ 190 PRINT AT 19,5; INK 0;s$( TO 24);AT 20,0;s$( TO 32);AT 17,4;s$( TO 24)
+ 200 PRINT AT 21,0; INK 0;s$( TO 32): GO SUB 540: GO TO 220
+ 210 PRINT AT 20,bx; INK 0;" "; INK 5;"3333"; INK 0;" ": RETURN 
+ 220 LET xa=1: LET ya=1: IF INT (RND*2)=1 THEN LET xa=-xa
+ 230 GO SUB 210
+ 240 LET x=bx+4: LET y=11: LET xc=x: LET yc=y
+ 250 REM main loop
+ 260 IF score>1100 THEN GO TO 110
+ 270 IF INKEY$=" " OR INKEY$="0" THEN IF lives>1 THEN LET lives=lives-1:
+      GO TO 110
+ 280 LET xc=x+xa: LET yc=y+ya
+ 290 REM scan the keyboard
+ 300 GO SUB 470
+ 310 IF yc=20 THEN IF ATTR (yc,xc)=69 THEN PLAY "N1g": LET ya=-ya:
+      LET yc=yc-2: IF xc=bx+1 OR xc=bx+4 THEN LET xa=-xa: LET xc=x+xa
+ 320 IF yc=21 THEN PLAY "O3N7#d": PRINT AT y,x;" ": GO TO 450
+ 330 GO SUB 470
+ 340 IF yc=20 THEN GO TO 430
+ 350 LET t=ATTR (yc,xc)
+ 360 IF t=71 THEN GO TO 410
+ 370 IF t=64 THEN GO TO 420
+ 380 LET ya=-ya: LET xz=xc: LET yz=yc: LET yc=yc+ya: GO SUB 510:
+      IF t=66 THEN PLAY "N1e": LET score=score+5: LET tscore=tscore+5:
+      GO SUB 540: GO TO 350
+ 390 IF t=68 THEN PLAY "N1c": LET score=score+10: LET tscore=tscore+10:
+      GO SUB 540: GO TO 350
+ 400 IF t=65 THEN PLAY "N1a": LET score=score+20: LET tscore=tscore+20:
+      GO SUB 540: GO TO 350
+ 410 LET xa=-xa: LET xc=xc+2*xa: PLAY "N1f"
+ 420 IF yc=1 THEN LET ya=1
+ 430 PRINT AT y,x; INK 0;" ";AT yc,xc; INK 3;"B": LET x=xc: LET y=yc
+ 440 GO TO 250
+ 450 LET lives=lives-1: IF lives=0 THEN GO TO 530
+ 460 GO SUB 540: GO TO 220
+ 470 LET a$=INKEY$
+ 480 IF (a$=CHR$ (8) OR a$="6") AND bx>1 THEN LET bx=bx-1: GO SUB 210: RETURN 
+ 490 IF (a$=CHR$ (9) OR a$="7") AND bx<25 THEN LET bx=bx+1: GO SUB 210: RETURN 
+ 500 RETURN 
+ 510 IF yz=20 THEN RETURN 
+ 520 PRINT AT yz,xz; INK 0;" ": RETURN 
+ 530 GO SUB 540: PRINT AT 10,10; INK 7;"GAME OVER";AT 12,8;"You scored : ";
+      tscore: FOR i=1 TO 300: NEXT i: GO TO 90
+ 540 IF tscore>hiscore THEN LET hiscore=tscore
+ 550 PRINT AT 21,11; INK 6;"HISCORE ";hiscore;AT 21,1;"SCORE ";tscore;
+      AT 21,24;"LIVES ";lives: RETURN 
+ 560 FOR i=USR "a" TO USR "b"+7
+ 570 READ b
+ 580 POKE i,b
+ 590 NEXT i
+ 600 RETURN 
+ 610 REM ball
+ 620 DATA 0,60,126,126,126,126,60,0
+ 630 REM brick
+ 640 DATA BIN 11111111
+ 650 DATA BIN 10000001
+ 660 DATA BIN 10111101
+ 670 DATA BIN 10111101
+ 680 DATA BIN 10111101
+ 690 DATA BIN 10111101
+ 700 DATA BIN 10000001
+ 710 DATA BIN 11111111
+
+
+Telly tennis
+
+This program sets up the +3 to play one of the most well-known and
+enduring of computer games. For two players, or one player against the
+computer.
+
+Type RUN to start the program, then type '1' or '2' (for the number of
+players) to play.
+
+Options:
+
+	Player 1 - 'A' moves the bat up, 'Z' moves the bat down.
+	Player 2 - 'K' moves the bat up, 'M' moves the bat down.
+	The first player to score 15 points wins.
+
+Note the following when typing in the listing:
+
+	1. The "66"s shown in lines 150 are graphics characters. They
+	are produced by pressing the GRAPH key once (to switch
+	graphics mode on), typing the charactres (using the 'B6 key),
+	then pressing the GRAPH key again (to switch graphics mode
+	off). (Note that these characters will look like black blocks
+	on the screen.)
+
+	2. The "8"s shown in lines 150, 250 and 540 are also graphics
+	characters. Again, they are produced by pressing GRAPH once,
+	holding down CAPS SHIFT and pressing the '8' key once, then
+	pressing GRAPH again. (Again, note that these characters will
+	look like black blocks on the screen.)
+
+	3. The "A" shown in line 330 is also a graphics
+	character. Again, it is produced by pressing GRAPH once,
+	pressing the 'A' key once, then pressing GRAPH again.
+
+
+  10 PAPER 4: INK 0: BRIGHT 0: BORDER 4
+  20 CLS 
+  30 GO SUB 730
+  40 DIM x(2): DIM y(2): DIM p(2)
+  50 LET comp=1: LET sc1=0: LET sc2=0: LET z$="0"
+  60 PRINT AT 2,9; INK 7;"TELLY TENNIS"
+  70 PRINT AT 8,3;"ONE OR TWO PLAYERS (1/2)?"
+  80 LET i$=INKEY$
+  90 IF i$="1" THEN PRINT AT 12,8;"Use A to go up";AT 14,8;
+      "and Z to go down": GO TO 120
+ 100 IF i$="2" THEN PRINT AT 10,3;"Player 1 use A to go up";AT 12,12;
+      "and Z to go down";AT 14,3;"Player 2 use K to go up";AT 16,12;
+      "and M to go down": LET comp=0: GO TO 120
+ 110 GO TO 80
+ 120 FOR i=0 TO 200: NEXT i
+ 130 LET x(1)=2: LET y(1)=3
+ 140 LET x(2)=29: LET y(2)=18
+ 150 LET e$="8": LET f$="66"
+ 160 PRINT AT 1,0;
+ 170 GO SUB 400: REM top edge
+ 180 FOR i=3 TO 19
+ 190 PRINT AT i,0; INK 6;f$; INK 0;TAB 30; INK 6;f$
+ 200 NEXT i
+ 210 PRINT AT 20,0;
+ 220 GO SUB 400: REM bottom edge
+ 230 PRINT AT 0,0; INK 1;"Player 1: 00";AT 0,19; INK 2;"Player 2 : 00"
+ 240 LET n=INT (RND*2)
+ 250 FOR i=1 TO 2: PRINT AT y(i),x(i); INK i;"8";AT y(i)+1,x(i);"8": NEXT i
+ 260 IF n=0 THEN LET xb=21: LET dx=1: GO TO 280
+ 270 LET xb=19: LET dx=-1
+ 280 LET yb=12: LET dy=INT (RND*3)-1
+ 290 GO SUB 440: REM move bats
+ 300 LET oxb=xb: LET oyb=yb: LET scd=0
+ 310 GO SUB 580: REM move ball
+ 320 PRINT AT oyb,oxb; INK 0;" "
+ 330 PRINT AT yb,xb; INK 7;"8"
+ 340 IF scd=0 THEN GO TO 290
+ 350 PRINT AT yb,xb; INK 0;" "
+ 360 GO SUB 380
+ 370 GO TO 240
+ 380 PRINT AT 0,10; INK 1;z$( TO 2-LEN (STR$ (sc1)));sc1;AT 0,30; INK 2;
+      z$( TO 2-LEN (STR$ (sc2)));sc2
+ 390 RETURN 
+ 400 FOR i=1 TO 64
+ 410 PRINT INK 5;e$;
+ 420 NEXT i
+ 430 RETURN 
+ 440 LET a$=INKEY$
+ 450 IF a$="a" THEN LET p(1)=-1
+ 460 IF a$="z" THEN LET p(1)=2
+ 470 IF comp=1 THEN LET p(2)=(2*(y(2)<(yb))-(y(2)>(yb))): GO TO 500
+ 480 IF a$="k" THEN LET p(2)=-1
+ 490 IF a$="m" THEN LET p(2)=2
+ 500 FOR i=1 TO 2
+ 510 LET a=ATTR (y(i)+p(i),x(i))
+ 520 IF p(i)=2 THEN LET p(i)=1
+ 530 IF a=32 THEN PRINT INK 0;AT y(i),x(i);" ";AT y(i)+1,x(i);" ";
+      AT y(i)+1,x(i);" ": LET y(i)=y(i)+p(i)
+ 540 PRINT AT y(i),x(i); INK i;"8";AT y(i)+1,x(i);"8"
+ 550 LET p(i)=0
+ 560 NEXT i
+ 570 RETURN 
+ 580 LET w=ATTR (yb+dy,xb+dx)
+ 590 IF w=32 THEN LET xb=xb+dx: LET yb=yb+dy: RETURN 
+ 600 IF w=33 OR w=34 THEN LET dx=-dx: PLAY "V15O7N1g":
+      LET dy=INT (RND*3-1): RETURN 
+ 610 IF w=38 THEN GO TO 640
+ 620 IF w=37 THEN PLAY "V15O7N1c": LET dy=-dy
+ 630 RETURN 
+ 640 PLAY "O3V15#d": IF dx>0 THEN LET sc1=sc1+1: GO TO 660
+ 650 LET sc2=sc2+1
+ 660 LET d=(sc1=15)+2*(sc2=15): LET scd=1
+ 670 IF d<>0 THEN GO SUB 380: PRINT INK 7;AT 10,8;"Player ";d;" wins.";
+      AT 12,7;"Play again (y/n)?": GO TO 690
+ 680 RETURN 
+ 690 IF INKEY$="" THEN GO TO 690
+ 700 IF INKEY$="y" THEN RUN 
+ 710 IF INKEY$="n" THEN STOP 
+ 720 GO TO 690
+ 730 FOR i=0 TO 7
+ 740 READ n
+ 750 POKE USR "a"+i,n
+ 760 NEXT i
+ 770 RETURN 
+ 780 DATA 0,60,126,126,126,126,60,0
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt32.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter9.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

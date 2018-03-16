@@ -1,0 +1,237 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 1</TITLE>
+</HEAD>
+<BODY>
+<PRE>Chapter 8
+The +3 BASIC programmer's guide
+
+Part 1
+Introduction
+
+Whether you read chapter 6 first, or came straight here, you should be
+aware that...
+
+	Commands are obeyed straight away.
+
+	Instructions begin with a line number and are stored away for
+	later use.
+
+This guide to BASIC starts by repeating some of the information given
+in chapter 6 (Introducing +3 BASIC), but in greater detail. You may
+also find exercises at the end of some sections - don't ignore these,
+as many of them illustrate points that are hinted at in the text. Look
+through them, and do any that interest you or that seem to cover
+ground that you don't understand properly.
+
+
+The Keyboard
+
++-----------------------------------------------------------------------------+
+|TRUE |INV. |     |     |     |     |     |     |     |     |     |     |     |
+|VIDEO|VIDEO|    1|    2|    3|    4|    5|    6|    7|    8|    9|    0|SPACE|
+|-----------------------------------------------------------------------------|
+|       |     |     |     |     |     |     |     |     |     |     |     |   |
+| DELETE|GRAPH|    Q|    W|    E|    R|    T|    Y|    U|    I|    O|    P|   |
+|-------------------------------------------------------------------------+   |
+| EXTEND  |     |     |     |     |     |     |     |     |     |     |       |
+|  MODE   | EDIT|    A|    S|    D|    F|    G|    H|    J|    K|    L| ENTER |
+|-----------------------------------------------------------------------------|
+|            |CAPS |     |     |     |     |     |     |     |     |          |
+| CAPS SHIFT | LOCK|    Z|    X|    C|    V|    B|    N|    M|    .|CAPS SHIFT|
+|-----------------------------------------------------------------------------|
+|SYMB |     |     | /-- | --\ |                       | ||  | /\  |     |SYMB |
+|SHIFT|    ;|    "| \-- | --/ |                 SPACE | \/  | ||  |    ,|SHIFT|
++-----------------------------------------------------------------------------+
+
+
+The characters used on the +3 comprise not only single symbols
+(letters, digits, etc.) but also compound tokens (keywords, function
+names, etc.). Everything must be typed in full, and in most cases it
+doesn't matter whether capital letters (known as UPPER CASE) or small
+letters (lower case) are used. There are three sorts of keys on the
+keyboard: letter and number keys (called alphanumeric keys); symbol
+keys (punctuation marks); and control keys (things like CAPS SHIFT,
+DELETE and so on).
+
+The most commonly used keys for BASIC are the alphanumeric keys. When
+a letter key is pressed, a lower case letter will appear on the screen
+with a flashing blue and white blob called the cursor. To get an upper
+case letter, the CAPS SHIFT key should be held down while the letter
+is typed.
+
+If you wish to continuously type upper case letters, then pressing the
+CAPS LOCK key once will make all subsequent letters typed upper case.
+To return to lower case letters, simply press CAPS LOCK again.
+
+To type the symbols which appear on the alphanumeric keys on the
+keyboard, i.e....
+
+	! @ # $ % & ' ( ) _ < > ^ - + = : <pound sign> ? / *
+
+...simply hold down the SYMB SHIFT key while the alphanumeric key with
+the required symbol on it is pressed (see the following diagram)...
+
++-----------------------------------------------------------------------------+
+|     |     | !   | @   | #   | $   | %   | &   | '   | (   | )   | _   |     |
+|     |     |    1|    2|    3|    4|    5|    6|    7|    8|    9|    0|     |
+|-----------------------------------------------------------------------------|
+|       |     |     |     |     | <   | >   |     |     |     |     |     |   |
+|       |     |     |     |     |    R|    T|     |     |     |     |     |   |
+|-------------------------------------------------------------------------+   |
+|         |     |     |     |     |     |     | ^   | -   | +   | =   |       |
+|         |     |     |     |     |     |     |    H|    J|    K|    L|       |
+|-----------------------------------------------------------------------------|
+|            |     | :   |pound| ?   | /   | *   |     |     |     |          |
+|            |     |    Z|signX|    C|    V|    B|     |     |     |          |
+=======-----------------------------------------------------------------=======
+=SYMB==     |     |     |     |                       |     |     |     =SYMB==
+=SHIFT=     |     |     |     |                       |     |     |     =SHIFT=
+=======-----------------------------------------------------------------=======
+
+                      Symbols available using SYMB SHIFT
+
+
+Additionally, the symbols...
+
+	 [ ] (C) ~ | \ { }
+
+...can be obtained by first pressing the EXTEND MODE key once, then
+holding down SYMB SHIFT while pressing the appropriate alphanumeric
+key (see the following diagram)...
+
++-----------------------------------------------------------------------------+
+|     |     |     |     |     |     |     |     |     |     |     |     |     |
+|     |     |     |     |     |     |     |     |     |     |     |     |     |
+|-----------------------------------------------------------------------------|
+|       |     |     |     |     |     |     | [   | ]   |     |     |(C)  |   |
+|       |     |     |     |     |     |     |    Y|    U|     |     |    P|   |
+===========---------------------------------------------------------------+   |
+= EXTEND ==     | ~   | |   | \   | {   | }   |     |     |     |     |       |
+== MODE ===     |    A|    S|    D|    F|    G|     |     |     |     |       |
+===========-------------------------------------------------------------------|
+|            |     |     |     |     |     |     |     |     |     |          |
+|            |     |     |     |     |     |     |     |     |     |          |
+=======-----------------------------------------------------------------=======
+=SYMB==     |     |     |     |                       |     |     |     =SYMB==
+=SHIFT=     |     |     |     |                       |     |     |     =SHIFT=
+=======-----------------------------------------------------------------=======
+
+              Symbols available using SYMB SHIFT in EXTEND MODE
+
+
+To enter graphics mode, the GRAPH key is pressed once. Mosaic graphics
+(see the following diagram) can then be produced by pressing the
+number keys (except 9 and 0). Pressing the letter keys (except T, U, V,
+W, X, Y and Z) produce user-defined graphics (if set up).
+
++-----------------------------------------------------------------------------+
+|     |     |..## |##.. |#### |.... |..## |##.. |#### |.... |graph|     |     |
+|     |     |....1|....2|....3|..##4|..##5|..##6|..##7|....8|off 9|     |     |
+|-----------------------------------------------------------------------------|
+|       |     |     |     |     |     |     |     |     |     |     |     |   |
+|       |GRAPH|     |     |     |     |     |     |     |     |     |     |   |
+|-------------------------------------------------------------------------+   |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+|-----------------------------------------------------------------------------|
+|            |     |     |     |     |     |     |     |     |     |          |
+|            |     |     |     |     |     |     |     |     |     |          |
+|-----------------------------------------------------------------------------|
+|     |     |     |     |     |                       |     |     |     |     |
+|     |     |     |     |     |                       |     |     |     |     |
++-----------------------------------------------------------------------------+
+
+                    Mosaic graphics available using GRAPH
+
+
+To obtain inverted mosaic graphics, press the above number keys while
+holding down CAPS SHIFT. [See (near the end of) chapter 7 for a
+diagram showing them.]
+
+
+General keyboard notes
+
+If any key is held down for more than 2 or 3 seconds, it will start
+repeating. As keys are pressed, a line will be built up on the screen.
+A line, by the way, means a line of BASIC, and may easily be several
+lines long on the screen. The cursor keys can be used to move about
+the line, and if the part of the line that the cursor is moved to is
+off screen, then the text on screen will scroll up or down to display
+it. Any characters typed will be inserted at the cursor, and pressing
+DELETE causes the character to the left of the cursor to be removed.
+As soon as ENTER is pressed or any attempt is made to move the cursor
+off the line, the +3 checks to see if the line makes sense. If it
+does, then there is a high-pitched bleep, and the line is either acted
+upon immediately or stored away as part of a program. If the line
+contains an error, then the +3 generates a low-pitched bleep and moves
+the cursor to the area where it thinks the error is (the colour of the
+cursor also changes to red to indicate the error). It is impossible to
+move off a line which contains an error [or even some which contain no
+error - see imc's ROM bugs list] - the +3 will always move the cursor
+back.
+
+
+The monitor screen
+
+This has 24 lines (each being 32 characters long) and is divided into
+two parts. The larger (top) part of the screen is at most 22 lines and
+displays either a listing or program output. It is the one used most
+often for editing. When printing in the top part has reached its
+bottom limit, the contents scroll up by one line. If, however,
+scrolling would mean losing a line that you haven't yet had a chance
+to see, then the +3 stops with the message...
+
+	scroll?
+
+Pressing any key (except N, BREAK or the space bar) will let scrolling
+continue.
+
+Pressing one of the keys N, BREAK or the space bar will make the
+program stop with the report...
+
+	D BREAK - CONT repeats
+
+The smaller (bottom) part of the screen is used for editing short
+programs, entering input data, entering direct commands (where the
+main screen must not be used, e.g. graphics programs), and also for
+displaying reports.
+
+
+Program entry
+
+If the program being entered gets bigger than the screen size, then
+the +3 attempts to display the area of most interest (usually the last
+line entered together with its surrounding lines). You may, however,
+specify a different area of the program to be displayed using the
+command...
+
+	LIST xxx
+
+...where xxx is a line number, telling the +3 to bring a specified
+area of the program into view.
+
+When a command is executed or a program is run, output is displayed in
+the top part of the screen and remains there when the program
+finishes (until a key is pressed). If the program is being edited in
+the bottom part of the screen, then any output in the top screen will
+stay there until it is either overwritten, scrolled off, or a CLS
+command is issued. The bottom screen may display a report giving a
+code (digit or letter) referred to in part 29 of this chapter. This
+report remains in the bottom screen until a key is pressed.
+
+While the +3 is running a BASIC program, the BREAK key is checked
+every so often. This happens at the end of a statement, during use of
+the cassette unit (if connected) or printer (if connected), or while
+music is being played. If the +3 finds that the BREAK key is pressed,
+then program execution stops and displays a report. The program may
+then be edited.
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter7.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt2.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

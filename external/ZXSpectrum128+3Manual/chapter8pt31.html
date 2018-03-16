@@ -1,0 +1,978 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 31</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 31
+The BASIC
+
+Subjects covered...
+
+	Number handling
+	Variables
+	Strings
+	Functions
+	Brief summary of keywords
+	Mathematical operations
+
+Numbers are stored to an accuracy of 9 or 10 digits. The largest
+number you can get is about 10^38, and the smallest (positive) number
+is about 4 x 10^-39.
+
+Unless a number represents an exact power of 2 there is a possibility
+that mathematical inaccuracies may become apparent after repeated
+addition, subtraction, etc. This is true of all computers that do not
+use BCD arithmetic. Use of integers is suggested if absolute
+mathematical accuracy is required.
+
+A number is stored in the +3 in floating point binary with one
+exponent byte e (1<=e<=255), and four mantissa bytes m (0.5<=m<1).
+This represents the number m x 2^(e-128).
+
+Since 0.5<=m<1, the most significant bit of the mantissa m is always
+1. Therefore, in actual fact we can replace it with a bit to show the
+sign - 0 for positive numbers, 1 for negative.
+
+Small integers have a special representation in which the first byte
+is 00h (0), the second is a sign byte (00h or FFh) and the third or
+fourth are the integer itself (in twos complement form) with the least
+significant byte first.
+
+Numeric variables have names of arbitrary length, starting with a
+letter and continuing with letters and digits. Spaces are ignored and
+all letters are converted internally to lower-case letters.
+
+Control variables of FOR...NEXT loops have names a single letter long.
+
+Numeric arrays have names a single letter long, which may be the same
+as the name of a simple variable. They may have many dimensions of
+arbitrary size. Subscript values start at 1.
+
+Strings are completely flexible in length. The name of a string
+consists of a single letter followed by '$'.
+
+String arrays can have many dimensions of arbitrary size. The name is
+a single letter followed by '$' but may not be the same as the name of
+a simple string variable. All the strings in a given array have the
+same fixed length, which is specified as an extra final dimension in
+the DIM statement. Subscript values start at 1.
+
+Slicing: substrings of strings may be specified using slicers. A
+slicer can be one of the following:
+
+	(i) empty
+
+...or...
+
+	(ii) a numerical expression
+
+...or...
+
+	(iii) optional numerical expression TO optional numerical
+		expression
+
+...and is used in expressing a substring by either...
+
+		(a) string expression (slicer)
+
+...or...
+
+		(b) string array variable (subscript, ... subscript,
+			slicer)
+
+...which is the same as...
+
+	string array variable (subscript, ... subscript, slicer)
+
+In (a), suppose the string expression has the value 's$', then if the
+slicer is empty, the result is 's$' (considered as a substring of
+itself).
+
+If the slicer is a numerical expression with value m, then the result
+is the nth character of 's$' (a substring of length 1).
+
+If the slicer has the form (iii), then suppose the first numerical
+expression has the value m (the default value is 1), and the second, n
+(the default value is the length of 's$'). If 1<=m<=n<=the length of
+'s$', then the result is the substring of 's$' starting with the mth
+character and ending with the nth.
+
+If 0<=n<m, then the result is the empty string. Otherwise, error 3 results. Slicing is performed before functions or operations are evaluated (unless brackets dictate otherwise). Substrings can be assigned to (see LET). If a string quote is to be written in a string literal, then it must be doubled. Functions The argument of a function does not need brackets if it is a constant or a variable (optionally subscripted or sliced). ,-------------------------------------------------------------------------. | FUNCTION | TYPE OF ARGUMENT | RESULT | |-------------+-----------------------+-----------------------------------| | | | | | ABS | number | Absolute magnitude. | | | | | | ACS | number | Arccosine in radians. Error 'A' | | | | if x not in the range -1...+1. | | | | | | AND | binary operation, | | | | right operand always | | | | a number | [ a if b<>0		  |
+|             | numeric left operand: | a AND b  --|			  |
+|             |                       |            [ 0 if b=0		  |
+| 	      |			      |					  |
+|             |                       |            [ a$ if b<>0		  |
+|             | string left operand:  | a$ AND b --|			  |
+|             |                       |            [ "" if b=0		  |
+| 	      |			      |					  |
+|             |                       | AND has priority 3.		  |
+| 	      |			      |					  |
+| ASN         | number                | Arcsine in radians. Error 'A' if  |
+|             |                       | x not in the range -1...+1.	  |
+| 	      |			      |					  |
+| ATN         | number                | Arctangent in radians.		  |
+| 	      |			      |					  |
+| ATTR        | two arguments, x and  | A number whose binary form codes  |
+|             | y, both numbers       | the attributes of line x, column  |
+|             | (enclosed in          | y on the screen. Bit 7 (most	  |
+|             | brackets)             | significant) is 1 for flashing,	  |
+|             |                       | 0 for steady. Bit 6 is 1 for	  |
+|             |                       | bright, 0 for normal. Bits 5...3  |
+|             |                       | are the paper colour. Bits 2...0  |
+|             |                       | are ink colour. Error 'B' unless  |
+|             |                       | 0<=x<=23 and 0<=y<=31.		  |
+| 	      |			      |					  |
+| BIN         | binary number         | This is not really a function,	  |
+|             |                       | but an alternative notation for	  |
+|             |                       | numbers: BIN followed by a	  |
+|             |                       | sequence of 0s and 1s is the	  |
+|             |                       | number with such a		  |
+|             |                       | representation in binary.	  |
+| 	      |			      |					  |
+| CHR$        | number                | The character whose code is x,	  |
+|             |                       | rounded to the nearest integer.	  |
+| 	      |			      |					  |
+| CODE        | string                | The code of the first character	  |
+|             |                       | in x (or 0 if x is the empty	  |
+|             |                       | string)				  |
+| 	      |			      |					  |
+| COS         | number (in radians)   | Cosine x.			  |
+| 	      |			      |					  |
+| EXP         | number                | e^x.				  |
+| 	      |			      |					  |
+| FN          |                       | FN followed by a letter calls up  |
+|             |                       | a user-defined function (see	  |
+|             |                       | DEF). The arguments must be	  |
+|             |                       | enclosed in brackets - (even if	  |
+|             |                       | there are no arguments, the	  |
+|             |                       | brackets must still be present).  |
+| 	      |			      |					  |
+| IN          | number                | The result of inputting at	  |
+|             |                       | processor level from port x	  |
+|             |                       | (0<=x<=FFFFh). Loads the BC	  |
+|             |                       | register pair with x and does	  |
+|             |                       | the assembly language		  |
+|             |                       | instruction in a,(c).		  |
+| 	      |			      |					  |
+| INKEY$      |	none                  | Reads the keyboard. The result	  |
+|             |                       | is the character representing	  |
+|             |                       | the key pressed (if there is	  |
+|             |                       | exactly one), else the empty	  |
+|             |                       | string.				  |
+| 	      |			      |					  |
+| INT         | number                | Integer part (always rounds	  |
+|             |                       | down).				  |
+| 	      |			      |					  |
+| LEN         | string                | Length.				  |
+| 	      |			      |					  |
+| LN          | number                | Natural logarithm (to base e).	  |
+|             |                       | Error 'A' if x<=0.		  |
+| 	      |			      |					  |
+| NOT         | number                | 0 if x<>0, 1 if x=0. NOT has	  |
+|             |                       | priority 4.			  |
+| 	      |			      |					  |
+| OR          | binary operation,     |          [ 1 if b<>0		  |
+|             | both operands         | a OR b --|			  |
+|             | numbers.              |          [ a if b=0		  |
+| 	      |			      |					  |
+|             |                       | OR has priority 2.		  |
+| 	      |			      |					  |
+| PEEK        | number                | The value of the byte in memory	  |
+|             |                       | whose address is x (rounded to	  |
+|             |                       | the nearest integer). Error 'B'	  |
+|             |                       | if x is not in the range	  |
+|             |                       | 0...65535.			  |
+| 	      |			      |					  |
+| PI          | none                  | pi (3.1415927...).		  |
+| 	      |			      |					  |
+| POINT       | two arguments, x and  | 1 if the pixel at (x,y) is ink	  |
+|             | y, both numbers       | colour. 0 if it is paper colour.  |
+|             | (enclosed in	      |					  |
+|             | brackets)             | Error 'B' unless 0<=x<=255 and	  |
+|             |                       | 0<=y<=175.			  |
+| 	      |			      |					  |
+| RND         | none                  | The next pseudo-random number in  |
+|             |                       | a sequence generated by taking	  |
+|             |                       | the powers of 75 modulo 65537,	  |
+|             |                       | subtracting 1 and dividing by	  |
+|             |                       | 65536. Yields a number in the	  |
+|             |                       | range 0<=x<1.			  |
+|             |			      |					  |
+| SCREEN$     | two arguments, x and  | The character that appears	  |
+|             | y both numbers        | (either normally or inverted) on  |
+|             | (enclosed in          | the screen at line x, column y.	  |
+|             | brackets)             | Returns the empty string if the	  |
+|             |                       | character is not recognised.	  |
+| 	      |			      |					  |
+|             |                       | Error 'B' unless 0<=x<=23 and	  |
+|             |                       | 0<=y<=31.			  |
+| 	      |			      |					  |
+| SGN         | number                | Sign of number. Returns -1 for	  |
+|             |                       | negative, 0 for zero, or +1 for	  |
+|             |                       | positive.			  |
+| 	      |			      |					  |
+| SIN         | number (in radians)   | Sine x.				  |
+| 	      |			      |					  |
+| SQR         | number                | Square root.			  |
+|             |                       | Error 'A' if x<0.		  |
+| 	      |			      |					  |
+| STR$        | number                | The string of characters that	  |
+|             |                       | would be displayed if x were	  |
+|             |                       | printed.			  |
+| 	      |			      |					  |
+| TAN         | number (in radians)   | Tangent.			  |
+| 	      |			      |					  |
+| USR         | number                | Calls the machine code		  |
+|             |                       | subroutine whose starting	  |
+|             |                       | address is x. On entry to the	  |
+|             |                       | routine at address x the memory	  |
+|             |                       | is configured so that		  |
+|             |                       | 0000h...3FFFh (0...16383) is	  |
+|             |                       | occupied by ROM 3 (48 BASIC),	  |
+|             |                       | 4000h...7FFFh (16384...32767) is  |
+|             |                       | occupied by RAM page 5,		  |
+|             |                       | 8000h...BFFFh (32768...49151) is  |
+|             |                       | occupied by RAM page 2, and	  |
+|             |                       | C000h...FFFFh (49152...65535) is  |
+|             |                       | occupied by RAM page 0. If +3DOS  |
+|             |                       | routines are to be called, RAM	  |
+|             |                       | page 7 should be switched in at	  |
+|             |                       | C000h...FFFFh (49152...65535),	  |
+|             |                       | and ROM 2 (+3DOS) should be	  |
+|             |                       | switched in at 0000h...3FFFh	  |
+|             |                       | (0...16383). See part 26 of this  |
+|             |                       | chapter for further details.	  |
+| 	      |			      |					  |
+|             |                       | On return, the result is the	  |
+|             |                       | contents of the BC register	  |
+|             |                       | pair.				  |
+| 	      |			      |					  |
+| USR         | string                | The address of the bit pattern	  |
+|             |                       | for the user-defined graphic	  |
+|             |                       | corresponding to x. Error 'A' if  |
+|             |                       | x is not a single letter between  |
+|             |                       | 'a' and 'u', or a user-defined	  |
+|             |                       | graphic.			  |
+| 	      |			      |					  |
+| VAL         | string                | Evaluates x (without its	  |
+|             |                       | bounding quotes as a numerical	  |
+|             |                       | expression.			  |
+|             |                       | Error 'C' if x contains a syntax  |
+|             |                       | error, or gives a string value.	  |
+|             |                       | Other errors possible, depending  |
+|             |                       | on the expression.		  |
+| 	      |			      |					  |
+| VAL$        | string                | Evaluates x (without its	  |
+|             |                       | bounding quotes) as a string	  |
+|             |                       | expression.			  |
+|             |                       | Error 'C' if x contains a syntax  |
+|             |                       | error of gives a numerical	  |
+|             |                       | value. Other errors possible (as  |
+|             |                       | for VAL).			  |
+| 	      |			      |					  |
+| -           | number                | Negation.			  |
+|	      |			      |					  |
+`-------------------------------------------------------------------------'
+
+
+The following are binary operations:
+
+	+    Addition (on numbers), or concatenation (on strings)
+	-    Subtraction
+	*    Multiplication
+	/    Division
+	^    Exponentiation (error 'B' if the left operand is negative)
+	=    Equal to			---.
+	>    Greater than		   |   Both operands must be of
+	<    Less than			   |   the same type. The result
+	<=   Less than or equal to	   |-- is a number: 1 if the
+	>=   Greater than or equal to	   |   comparison holds; 0 if it
+	<>   Not equal to		---'   does not
+
+
+Functions and operations have the following priorities:
+
+,----------------------------------------------------------.
+| OPERATION					| PRIORITY |
+|-----------------------------------------------+----------|
+| Subscripting and slicing			| 12       |
+| All functions except NOT and unary minus	| 11       |
+| ^ (exponentiation)				| 10       |
+| - Unary minus (used to negate)		| 9        |
+| *, / (multiplication, division)		| 8        |
+| +, - (addition, subtraction)			| 6        |
+| =, >, <, <=, >=, <> (relational operators)	| 5        |
+| NOT						| 4        |
+| AND						| 3        |
+| OR						| 1        |
+`----------------------------------------------------------'
+
+
+Statements
+
+The following notation is applicable in the remainder of this section:
+
+	l	represents a single letter.
+	v	represents a variable.
+	x,y,z	represent numerical expressions.
+	m,n	represent numerical expressions that are rounded to
+		the nearest integer.
+	e	represents an expression.
+	f	represents a string valued expression.
+	d	represents a string that evaluates to a valid drive,
+		i.e. 'A:', 'B:', 'M:' or 'T:'.
+	u	represents an unambiguous DOS filename.
+	a	represents a DOS filename that may be ambiguous, i.e.
+		one that may contain the wildcards '*' or '?'.
+	s	represents a sequence of statements separated by
+		colons.
+	c	represents a sequence of colour items, each terminated
+		by commas or semicolons. A colour item has the form of
+		a PAPER, INK, FLASH, BRIGHT, INVERSE, or OVER
+		statement.
+
+Note that optional expressions are enclosed in [square brackets].
+
+Arbitrary expressions are allowed everywhere (except for the line
+number at the beginning of a statement).
+
+All statements except INPUT, DEF FN and DATA can be used either as
+commands or in programs (although they may be more sensible in one
+than the other). A command or program line can have several
+statements, separated by colons. There is no restriction on
+whereabouts in a line any particular statement can occur; however, see
+IF and REM.
+
+,-----------------------------------------------------------------------.
+|                     |                                                 |
+| BEEP x,y            | Sounds a note through the TV's speaker for x    |
+|                     | seconds at the pitch y semitones above middle   |
+|                     | C (or below middle C if y is negative).         |
+|                     |                                                 |
+| BORDER m            | Sets the border colour around the screen, and   |
+|                     | also the paper colour for the lower part of     |
+|                     | the screen. Error 'K' unless 0<=m<=7 (i.e.      |
+|                     | unless m is not in the range 0...7).            |
+|                     |                                                 |
+| BRIGHT m            | Sets brightness of characters subsequently      |
+|                     | printed; 0 for normal, 1 for bright, 8 for      |
+|                     | transparent. Error 'K' unless m is 0, 1 or 8.   |
+|                     |                                                 |
+| CAT [#n,] [d] [a]   | The CAT command produces an alphanumerically    |
+|                     | sorted catalog of files on a disk. If used in   |
+|                     | the form 'CAT #n,...' the output is directed    |
+|                     | to stream n. If an unambiguous filename (or an  |
+|                     | ambiguous file specification) is included,      |
+|                     | then only those files that 'match' will be      |
+|                     | displayed. When CAT is followed by a drive      |
+|                     | letter only, then all files on that drive will  |
+|                     | be displayed. If the drive letter specified is  |
+|                     | 'T:', then a catalog of tape filenames will be  |
+|                     | displayed (together with information that will  |
+|                     | be useful for tape-to-disk file transfer).      |
+|                     |                                                 |
+| CAT [#n,] [d] [a]   | Operates as per the CAT command, but produces   |
+|       EXP           | an expanded catalog that includes system        |
+|                     | files, and displays those files whose write     |
+|                     | protection, system status and archive           |
+|                     | attributes have been set. (See 'MOVE u TO f'.)  |
+|                     |                                                 |
+| CIRCLE x,y,z        | Draws an arc of a circle, centre (x,y) radius   |
+|                     | z.                                              |
+|                     |                                                 |
+| CLEAR               | Deletes all variables, freeing the space they   |
+|                     | previously occupied.                            |
+|                     | Executes a RESTORE and CLS, resets the PLOT     |
+|                     | position to the bottom left-hand corner and     |
+|                     | clears the GO SUB stack.                        |
+|                     |                                                 |
+| CLEAR n             | Like CLEAR, but if possible, changes the        |
+|                     | system variable RAMTOP to n and puts the new    |
+|                     | GO SUB stack there.                             |
+|                     | (Note that this command may be used to ensure   |
+|                     | the machine stack is below BFE0h (49120) when   |
+|                     | entering a routine that calls +3DOS from        |
+|                     | BASIC.)                                         |
+|                     |                                                 |
+| CLOSE #n            | Marks stream n as being unattached to any       |
+|                     | channel. It may then be used in a subsequent    |
+|                     | 'OPEN #n,f' statement.                          |
+|                     |                                                 |
+| CLS                 | (Clear screen). Clears the display file.        |
+|                     |                                                 |
+| CONTINUE            | Continues executing a program from the point    |
+|                     | at which it stopped with a report (other than   |
+|                     | '0'). If the report was '9' or 'L', then        |
+|                     | execution continues with the following          |
+|                     | statement (taking any jumps into account);      |
+|                     | otherwise repeats the statement where the       |
+|                     | report occurred. If the last report was in a    |
+|                     | command line, then CONTINUE will attempt to     |
+|                     | continue the command line, and will either go   |
+|                     | into a loop (if the error was in '0:1'),        |
+|                     | generate report '0' (if it was in '0:2'), or    |
+|                     | report 'N' (if it was in '0:3' or greater).     |
+|                     |                                                 |
+| COPY                | Sends (dumps) a copy of the top 22 lines of     |
+|                     | the screen display to the printer (if           |
+|                     | connected) in quad density Epson bit map        |
+|                     | format; otherwise does nothing.                 |
+|                     | Report 'D' if BREAK pressed. Note that if the   |
+|                     | dump is prematurely stopped, the printer may    |
+|                     | be left in graphics mode and the line feed set  |
+|                     | to an odd value.                                |
+|                     |                                                 |
+| COPY EXP [INVERSE]  | Sends a copy of all 24 lines of display to the  |
+|                     | printer (if connected) in quad density Epson    |
+|                     | bit map format; otherwise does nothing. Each    |
+|                     | coloured dot on the screen is printed with a    |
+|                     | different pixel pattern thus providing          |
+|                     | different grey levels for each colour. The      |
+|                     | BRIGHT attribute is also taken into account.    |
+|                     | The optional INVERSE modifier allows the dump   |
+|                     | to be 'reversed' (like a negative) in order to  |
+|                     | save ribbon wear when printing-out              |
+|                     | predominantly black dumps.                      |
+|                     | Report 'D' if BREAK pressed. Note that if the   |
+|                     | dump is prematurely stopped, the printer may    |
+|                     | be left in graphics mode and the line feed set  |
+|                     | to an odd value.                                |
+|                     |                                                 |
+| COPY u1 TO u2       | Copies the first named file to the second       |
+| COPY a TO d         | named file. The names must be different. Drive  |
+| COPY d TO d         | letters and user numbers may be specified       |
+|                     | within the filename.                            |
+|                     | If the source (u1) is an ambiguous file         |
+|                     | specification, then the destination (u2) must   |
+|                     | only be a drive letter. (In this case, the      |
+|                     | destination files will have the same name as    |
+|                     | the source.)                                    |
+|                     | If both source and destination names are just   |
+|                     | drive letters, a complete disk-to-disk          |
+|                     | transfer will be made (note that any files      |
+|                     | previously on the destination disk will be      |
+|                     | deleted). If the destination disk is not +3     |
+|                     | format, then the disk-to-disk transfer will     |
+|                     | not work.                                       |
+|                     |                                                 |
+|                     | When copying files, if the destination          |
+|                     | filename already exists, then the report 'File  |
+|                     | already exists' will be displayed. If the       |
+|                     | report 'Missing address mark' is displayed,     |
+|                     | then it is likely that the destination disk     |
+|                     | has not been formatted.                         |
+|                     |                                                 |
+| COPY u TO SCREEN$   | Displays the contents of a disk file on the     |
+|                     | screen. Control characters (tabs, line feeds,   |
+|                     | etc.) are replaced by spaces. This command can  |
+|                     | only sensibly be used to inspect ASCII files    |
+|                     | (though BASIC programs will be displayed,       |
+|                     | albeit without the correct formatting).         |
+|                     |                                                 |
+| COPY u TO LPRINT    | The contents of the named disk file are sent    |
+|                     | to the printer. No character translations are   |
+|                     | made. If the command 'FORMAT LPRINT "r"' has    |
+|                     | been issued (to divert printer output to the    |
+|                     | serial (RS232 socket), then this form of the    |
+|                     | COPY command may be used as a method of         |
+|                     | exporting programs to an external machine.      |
+|                     |                                                 |
+| COPY u to SPECTRUM  | This allows a +3DOS file header to be added to  |
+|       FORMAT        | a binary file created on a different type of    |
+|                     | machine. A new file with the name: u.HED is     |
+|                     | created.                                        |
+|                     |                                                 |
+| DATA e1,e2,e3,...   | Part of the DATA list. Must be in a program;    |
+|                     | otherwise has no effect.                        |
+|                     |                                                 |
+| DEF FN l(l1,...lk)=e| User-defined function definition. Must be in a  |
+|                     | program, otherwise has no effect. Each of l     |
+|                     | and l1,...lk is either a single letter or a     |
+|                     | single letter followed by '$' for string        |
+|                     | argument or result.                             |
+|                     | Takes the form 'DEF FN l()=e' if no arguments.  |
+|                     |                                                 |
+| DIM l(n1,...nk)     | Deletes any array with the name l, and sets up  |
+|                     | an array l of numbers with k dimensions         |
+|                     | n1,...nk.                                       |
+|                     | Initialises all the values to 0.                |
+|                     |                                                 |
+| DIM l$(n1,...nk)    | Deletes any array or string with the name l$,   |
+|                     | and sets up an array l$ of characters with k    |
+|                     | dimensions n1,...nk. Initialises all the        |
+|                     | values to "". This can be considered as an      |
+|                     | array of strings of fixed length nk, with k-1   |
+|                     | dimensions (n1,...n(k-1)). An array is          |
+|                     | undefined until it is dimensioned by DIM.       |
+|                     | Error '4' if there is no room to fit the array  |
+|                     | in.                                             |
+|                     |                                                 |
+| DRAW x,y            | DRAW x,y,0                                      |
+|                     |                                                 |
+| DRAW x,y,z          | Draws a line from the current plot position,    |
+|                     | moving x horizontally and y vertically          |
+|                     | relative to it, while turning through angle z.  |
+|                     | Error 'B' if line runs off the screen.          |
+|                     |                                                 |
+| ERASE a             | If a single file is specified, then that file   |
+| ERASE d             | will be erased from either the default drive    |
+|                     | or the drive identified in the filename. If an  |
+|                     | ambiguous file name is specified, a message     |
+|                     | asking for confirmation will appear. If 'Y' is  |
+|                     | pressed, then all files that match the          |
+|                     | specification will be erased. If ERASE is       |
+|                     | followed by a drive letter only, then all       |
+|                     | files on that drive will be erased without      |
+|                     | confirmation being sought.                      |
+|                     |                                                 |
+| FLASH               | Defines whether characters will be flashing or  |
+|                     | steady; n=0 or steady, n=1 for flash, n=8 for   |
+|                     | no change.                                      |
+|                     |                                                 |
+| FOR l=x TO y        | FOR l=x TO y STEP 1                             |
+|                     |                                                 |
+| FOR l=x TO y STEP z | Deletes any simple variable l and sets up a     |
+|                     | control variable with value x, limit y, step    |
+|                     | z, and looping address referring to the         |
+|                     | statement after the FOR statement. Checks if    |
+|                     | the initial value is greater (if z>=0) or less  |
+|                     | (if z<0) than the limit, and if so then skips   |
+|                     | to statement 'NEXT l', giving error '1' if      |
+|                     | there is none. See NEXT.                        |
+|                     | Error '4' if there is no room for the control   |
+|                     | variable.                                       |
+|                     |                                                 |
+| FORMAT d            | Prepares the disk in the specified drive ('A:'  |
+|                     | or 'B:') to be used. If the disk has already    |
+|                     | been formatted on a +3, a message allowing the  |
+|                     | operation to be abandoned will produced. Disks  |
+|                     | formatted on other machines (except the         |
+|                     | AMSTRAD PCW range (CF-2) format) will not be    |
+|                     | recognised.                                     |
+|                     |                                                 |
+| FORMAT LINE n       | Sets the baud rate of the RS232 interface to    |
+|                     | n. Valid baud rates are in the range            |
+|                     | 75...19200.                                     |
+|                     |                                                 |
+| FORMAT LPRINT       | Allows printer output to be redirected and      |
+|       f1[;f2]       | token expansion to be switched on or off. If    |
+|                     | string f1 is "C", then subsequent printer       |
+|                     | output will be via the Centronics interface     |
+|                     | (the PRINTER socket). If string f1 is "R",      |
+|                     | then printer output will be directed to the     |
+|                     | RS232 socket. String f1 can also be "E" (for    |
+|                     | expanded), in which case characters below       |
+|                     | 'CHR$ 32' are not sent to the printer, and      |
+|                     | those above 'CHR$ 127' are converted to the     |
+|                     | letters of the appropriate BASIC token. When    |
+|                     | string f1 is "U" (for unexpanded), all          |
+|                     | characters that follow are sent to the printer  |
+|                     | without translation. This allows ESC (escape)   |
+|                     | sequences to be sent. If f1 is either "C" or    |
+|                     | "R", a second string, f2, may be specified,     |
+|                     | this can be either "E" or "U" (described        |
+|                     | above).                                         |
+|                     |                                                 |
+| GO SUB n            | Pushes the line number of the GO SUB statement  |
+|                     | onto a stack, then operates as per GO TO n.     |
+|                     | Error '4' may occur if there are not enough     |
+|                     | RETURNs.                                        |
+|                     |                                                 |
+| GO TO n             | Jumps to line n (or, if there is none, the      |
+|                     | first line after that).                         |
+|                     |                                                 |
+| IF x THEN s         | If x is true (non-zero), then s is executed.    |
+|                     | Note that s comprises all the statements until  |
+|                     | the end of the line. The form IF x THEN line    |
+|                     | number is not allowed.                          |
+|                     |                                                 |
+| INK n               | Sets the ink (foreground) colour of characters  |
+|                     | subsequently printed; n is in the range 0...7   |
+|                     | for a colour, 8 for transparent, 9 for          |
+|                     | contrast.                                       |
+|                     | Error 'K' unless 0<=n<=9.                       |
+|                     |                                                 |
+| INPUT [#n,]...      | The '...' is a sequence of INPUT items,         |
+|                     | separated (as in a PRINT statement) by          |
+|                     | commas, semicolons or apostrophes. An INPUT     |
+|                     | item can be any of the following:               |
+|                     |                                                 |
+|                     | (i) Any PRINT item not beginning with a         |
+|                     |         letter.                                 |
+|                     | (ii) A variable name.                           |
+|                     | (iii) LINE, then a string type variable name.   |
+|                     |                                                 |
+|                     | The PRINT items and separators in (i) are       |
+|                     | treated exactly as in PRINT, except that        |
+|                     | everything is printed in the lower part of the  |
+|                     | screen. For (ii) the computer stops and waits   |
+|                     | for input of an expression from the keyboard -  |
+|                     | the value of this is assigned to the variable.  |
+|                     | The input is echoed in the usual way and        |
+|                     | syntax errors give the flashing [?]. For        |
+|                     | string type expressions, the input buffer is    |
+|                     | initialised to contain two string quotes        |
+|                     | (which can be erased if necessary). If the      |
+|                     | first character in the input is STOP (SYMB      |
+|                     | SHIFT and A), then the program stops with       |
+|                     | error 'H'. (iii) is like (ii) except that the   |
+|                     | input is treated as a string literal without    |
+|                     | quotes, and the STOP mechanism won't work; to   |
+|                     | stop it you must press cursor down instead.     |
+|                     |                                                 |
+| INVERSE n           | Controls inversion of characters subsequently   |
+|                     | printed. If n=0, then characters are printed    |
+|                     | in normal video, i.e. as ink colour on paper    |
+|                     | colour. If n=1, then characters are printed in  |
+|                     | inverse video, i.e. paper colour on ink         |
+|                     | colour.                                         |
+|                     | Error 'K' unless n=0 or 1.                      |
+|                     | Note that in 48 BASIC, pressing the INV VIDEO   |
+|                     | key is equivalent to 'INVERSE 1'; pressing the  |
+|                     | TRUE VIDEO key is equivalent to 'INVERSE 0'.    |
+|                     |                                                 |
+| LET v=e             | Assigns the value of e to the variable v. LET   |
+|                     | cannot be omitted. A simple variable is         |
+|                     | undefined until it is assigned to in either a   |
+|                     | LET, READ or INPUT statement. If v is a         |
+|                     | subscripted string variable, or a sliced        |
+|                     | string variable (substring), then the           |
+|                     | assignment is Procrustean (fixed length), i.e.  |
+|                     | the string value of e is either truncated or    |
+|                     | filled out with spaces on the right, to make    |
+|                     | it the same length as specified in v.           |
+|                     |                                                 |
+| LIST [#m]           | LIST [#m,] 0                                    |
+|                     |                                                 |
+| LIST [#m,] n        | Lists the program to the upper part of the      |
+|                     | screen, starting at the first line whose        |
+|                     | number is at least n, and makes n the current   |
+|                     | line. If #m is included, the output is sent to  |
+|                     | the channel currently assigned to stream m.     |
+|                     |                                                 |
+| LLIST               | LLIST 0                                         |
+|                     |                                                 |
+|                     | Like LIST, but using the printer. By default,   |
+|                     | output will be to the Centronics (PRINTER)      |
+|                     | socket; however, printer output can be          |
+|                     | directed to the RS232 socket using the command  |
+|                     | 'FORMAT LPRINT "R"'.                            |
+|                     | In order that BASIC listings appear correctly,  |
+|                     | token codes are expanded to the relevant        |
+|                     | letters of each token, (codes below 32 are not  |
+|                     | printed). The command 'FORMAT LPRINT "E"' can   |
+|                     | be used to restore this state if it has been    |
+|                     | changed (by 'FORMAT LPRINT "U"').               |
+|                     |                                                 |
+| LOAD d              | Makes the named drive the current default       |
+|                     | input device for all subsequent disk            |
+|                     | operations (COPY, ERASE, MOVE etc.). If the     |
+|                     | drive letter specified is 'T:', then all        |
+|                     | subsequent LOADs will default to tape.          |
+|                     |                                                 |
+| LOAD f              | Loads the program and variables from disk (or   |
+|                     | tape). The string f that specifies the file to  |
+|                     | be loaded may optionally include a drive        |
+|                     | letter and user number when operating from      |
+|                     | disk. If a drive letter is not specified, then  |
+|                     | the default drive is used.                      |
+|                     | If the string f contains just an asterisk,      |
+|                     | i.e. 'LOAD "*"', an attempt is made to boot     |
+|                     | the disk in drive A:. This may be used to load  |
+|                     | alternative operating systems or some games     |
+|                     | disks.                                          |
+|                     |                                                 |
+| LOAD f DATA l()     | Loads a numeric array l() from file f.          |
+|                     |                                                 |
+| LOAD f DATA l$()    | Loads character array l$() from file f.         |
+|                     |                                                 |
+| LOAD f CODE m,n     | Loads (at most) n bytes, starting at address    |
+|                     | m.                                              |
+|                     |                                                 |
+| LOAD f CODE m       | Loads bytes starting at address m. If a file    |
+|                     | from another machine has been converted to      |
+|                     | Spectrum format (using the command 'COPY u TO   |
+|                     | SPECTRUM FORMAT'), then this is the form of     |
+|                     | LOAD command to use (as the header will not     |
+|                     | contain a load address).                        |
+|                     |                                                 |
+| LOAD f CODE         | Loads bytes back to the address from where      |
+|                     | they were saved.                                |
+|                     |                                                 |
+| LOAD f SCREEN$      | LOAD f CODE 16384,6912                          |
+|                     |                                                 |
+| LPRINT              | Like PRINT, but using the printer. Use the      |
+|                     | 'FORMAT LPRINT' command to direct output to     |
+|                     | the Centronics (PRINTER) or RS232 socket and    |
+|                     | to set expansion of tokens on or off. By        |
+|                     | default, output will be sent to the PRINTER     |
+|                     | socket with tokens expanded and codes below 32  |
+|                     | not printed. If ESC (escape) sequences are to   |
+|                     | be printed (for print formatting), issue the    |
+|                     | command 'FORMAT LPRINT "U"' before using        |
+|                     | LPRINT. If printer output has been set to       |
+|                     | RS232 (using the command 'FORMAT LPRINT "R"'),  |
+|                     | then LPRINT can be used to send strings of      |
+|                     | characters to a remote computer/terminal.       |
+|                     |                                                 |
+| MERGE f             | Like LOAD f, but does not delete old program    |
+|                     | lines or variables, except to make way for new  |
+|                     | ones with the same line number or name. Like    |
+|                     | LOAD, the filename may include a drive letter   |
+|                     | and user number. If a drive letter is not       |
+|                     | specified, the default drive will be used.      |
+|                     |                                                 |
+| MOVE f1 TO f2       | This will rename file f1 to f2. Both files f1   |
+|                     | and f2 must be on the same drive.               |
+|                     |                                                 |
+| MOVE u TO f         | The string f may be "+P", "+S", "+A", "-P",     |
+|                     | "-S" or "-A". This allows the attributes of     |
+|                     | the file specified by u to be set (+) or unset  |
+|                     | (-). The attribute letters in the string f      |
+|                     | control write protection ('P'), system status   |
+|                     | ('S'), or archive status ('A'). The CAT...EXP   |
+|                     | command can be used to display current          |
+|                     | settings. Protected files cannot be erased,     |
+|                     | saved over, or have any operation that would    |
+|                     | change them in any way performed upon them.     |
+|                     | System files are hidden from the normal         |
+|                     | catalog display and are only shown by the       |
+|                     | CAT...EXP command. Archive status is provided   |
+|                     | for compatibility with CP/M based machines,     |
+|                     | and has no other relevance to the +3.           |
+|                     |                                                 |
+| NEW                 | Starts the BASIC system afresh, deleting any    |
+|                     | program and variables, and using the memory up  |
+|                     | to and including the byte whose address is in   |
+|                     | the system variable RAMTOP. The system          |
+|                     | variables UDG, P RAMT, RASP and PIP are         |
+|                     | preserved. Returns control to the opening       |
+|                     | menu, but does not erase files held on drive    |
+|                     | M: (the RAMdisk).                               |
+|                     |                                                 |
+| NEXT l              | (i) Finds the control variable l.               |
+|                     | (ii) Adds its step to its value.                |
+|                     | (iii) If the step >=0 and the value > the       |
+|                     | limit; or if the step <0 and the value < the    |
+|                     | limit, then jumps to the looping statement.     |
+|                     |                                                 |
+|                     | Error '2' if there is no variable l.            |
+|                     | Error '1' if variable l does not match control  |
+|                     | variable in FOR statement.                      |
+|                     |                                                 |
+| OPEN #n,f           | Allows stream number to be attached to the      |
+|                     | channel identified by string f. Stream numbers  |
+|                     | may be in the range 0...15, however the system  |
+|                     | itself makes use of 0...3 (so their use is not  |
+|                     | advised). Possible strings are "S" (for the     |
+|                     | screen channel), "K" (for the keyboard          |
+|                     | channel) and "P" (for the printer channel).     |
+|                     | The printer channel may be further re-directed  |
+|                     | to the Centronics (PRINTER) or RS232 sockets    |
+|                     | using the FORMAT...LPRINT command. Trying to    |
+|                     | input from a stream that is set to a channel    |
+|                     | that only supports output, or vice versa, will  |
+|                     | cause an 'Invalid I/O device' report.           |
+|                     |                                                 |
+| OUT m,n             | Outputs byte n at port m at processor level.    |
+|                     | (Loads the BC register pair with m, the A       |
+|                     | register with n, and executes the assembly      |
+|                     | language instruction out (c),a.)                |
+|                     | Error 'B' unless 0<=m<=65535 and -255<=n<=255.  |
+|                     |                                                 |
+| OVER n              | Controls overprinting for characters            |
+|                     | subsequently printed. If n=0, characters        |
+|                     | obliterate previous characters at that          |
+|                     | position. If n=1, then new characters are       |
+|                     | mixed in with old characters to give ink        |
+|                     | colour wherever either (but not both) has ink   |
+|                     | colour, and paper colour where they were both   |
+|                     | paper or both ink.                              |
+|                     | Error 'K' unless n is 0 or 1.                   |
+|                     |                                                 |
+| PAPER n             | Like INK, but controlling the paper             |
+|                     | (background) colour.                            |
+|                     |                                                 |
+| PAUSE n             | Stops computing and displays the display file   |
+|                     | for n frames (there are 50 frames per second),  |
+|                     | or until a key is pressed. If n=0 then the      |
+|                     | pause is not timed, but lasts until a key is    |
+|                     | pressed.                                        |
+|                     | Error 'B' unless 0<=n<=255.                     |
+|                     |                                                 |
+| PLAY f1[,f2,...f8]  | Interpret up to eight strings and play them     |
+|                     | simultaneously. The first three strings play    |
+|                     | via the TV speaker and (optionally) via the     |
+|                     | MIDI socket; and subsequent strings can be      |
+|                     | output only via MIDI.                           |
+|                     |                                                 |
+| PLOT c;m,n          | Prints an ink dot (subject to OVER and          |
+|                     | INVERSE) at the pixel (m,n), moving the PLOT    |
+|                     | position thereto. Unless the colour items c     |
+|                     | specify otherwise, the ink colour at the        |
+|                     | character position containing the pixel is      |
+|                     | changed to the current permanent ink colour,    |
+|                     | and the others (paper colour, flashing and      |
+|                     | brightness) are left unchanged.                 |
+|                     | Error 'B' unless 0<=m<=255 and 0<=n<=175.       |
+|                     |                                                 |
+| POKE m,n            | Writes the value n to the byte in store with    |
+|                     | address m.                                      |
+|                     | Error 'B' unless 0<=m<=65535 and -255<=n<=255.  |
+|                     |                                                 |
+| PRINT [#n,]...      | The '...' is a sequence of PRINT items,         |
+|                     | separated by commas, semicolons or              |
+|                     | apostrophes, and they are written to the        |
+|                     | display file for output to the screen. When     |
+|                     | used in the form 'PRINT #n,...' output is       |
+|                     | directed to stream n rather than the screen     |
+|                     | (unless that stream has been opened to the      |
+|                     | screen channel "S"). A semicolon between two    |
+|                     | items has no effect - it is used purely to      |
+|                     | delimit the items. A comma shifts printing      |
+|                     | forward to the next print zone, while an        |
+|                     | apostrophe generates a carriage return/line     |
+|                     | feed (which is generated by default if a PRINT  |
+|                     | statement is not terminated by a semicolon,     |
+|                     | comma or apostrophe).                           |
+|                     | A PRINT item can be:                            |
+|                     |                                                 |
+|                     | (i)     Empty, i.e. nothing.                    |
+|                     | (ii)    A numerical expression. First a minus   |
+|                     |         sign is printed if the value is         |
+|                     |         negative. Now let x be the modulus of   |
+|                     |         value - If x<=10^-5 or x>=10^13, then   |
+|                     |         it is printed using scientific          |
+|                     |         notation. The mantissa part has up to   |
+|                     |         eight digits (with no trailing          |
+|                     |         zeroes), and the decimal point (absent  |
+|                     |         if only one digit) is after the first.  |
+|                     |         The exponent part is 'E', followed by   |
+|                     |         '+' or '-', followed by one or two      |
+|                     |         digits. Otherwise x is printed in       |
+|                     |         ordinary decimal notation with up to    |
+|                     |         eight significant digits, and no        |
+|                     |         trailing zeroes after the decimal       |
+|                     |         point. A decimal point right at the     |
+|                     |         beginning is always followed by a       |
+|                     |         zero, so for instance '.03' and '0.3'   |
+|                     |         are printed as such. Zero is printed    |
+|                     |         as a single digit '0'.                  |
+|                     | (iii)   A string expression. The tokens in the  |
+|                     |         string are expanded, possibly with a    |
+|                     |         space before or after. Control          |
+|                     |         characters have their control effect.   |
+|                     |         Unrecognised characters print as '?'.   |
+|                     | (iv)    AT m,n. Outputs an AT control           |
+|                     |         character followed by a byte for m      |
+|                     |         (the line number) and a byte for n      |
+|                     |         (the column number).                    |
+|                     | (v)     TAB n. Outputs a tab control character  |
+|                     |         followed by two bytes for n (least      |
+|                     |         significant byte first) - the tab       |
+|                     |         stop.                                   |
+|                     | (vi)    A colour item, which takes the form of  |
+|                     |         a PAPER, INK, FLASH, BRIGHT, INVERSE    |
+|                     |         or OVER statement.                      |
+|                     |                                                 |
+| RANDOMIZE           | RANDOMIZE 0                                     |
+|                     |                                                 |
+| RANDOMIZE n         | Sets the system variable (called SEED) used to  |
+|                     | generate the next value of RND. If n<>0, then   |
+|                     | SEED is given the value n. If n=0 then SEED is  |
+|                     | given the value of another system variable      |
+|                     | (called FRAMES) that counts the frames so far   |
+|                     | displayed on the screen, and so should be       |
+|                     | fairly random.                                  |
+|                     | Error 'B' unless 0<=n<=65535.                   |
+|                     |                                                 |
+| READ v1,v2,...vk    | Assigns to the variable using successive        |
+|                     | expressions in the DATA list.                   |
+|                     | Error 'C' if an expression is the wrong type.   |
+|                     | Error 'E' if there are variables left to be     |
+|                     | read when the DATA list is exhausted.           |
+|                     |                                                 |
+| REM...              | No effect. The '...' can be any sequence of     |
+|                     | characters terminated by ENTER. No statements   |
+|                     | in the line will be acted upon after the REM,   |
+|                     | and colons will not be treated as separators.   |
+|                     |                                                 |
+| RESTORE             | RESTORE 0                                       |
+|                     |                                                 |
+| RESTORE n           | Restores the DATA pointer to the first DATA     |
+|                     | statement in line n. If line n doesn't exist    |
+|                     | (or is not a DATA statement), then the first    |
+|                     | DATA statement after line n is restored, and    |
+|                     | the next READ statement will start reading      |
+|                     | from there.                                     |
+|                     |                                                 |
+| RETURN              | Takes a reference to a statement off the GO     |
+|                     | SUB stack, and jumps to the line after it.      |
+|                     | Error '7' when there is no statement reference  |
+|                     | on the stack - (this probably means that there  |
+|                     | is some mistake in your program - ensure that   |
+|                     | all GO SUBs are balanced by RETURNs).           |
+|                     |                                                 |
+| RUN                 | RUN 0                                           |
+|                     |                                                 |
+| RUN n               | CLEAR, and then GO TO n.                        |
+|                     |                                                 |
+| SAVE d              | Makes the named drive the current default       |
+|                     | output device for all subsequent disk           |
+|                     | operations (COPY, ERASE, MOVE, etc.). If the    |
+|                     | drive letter specified is 'T:', then all        |
+|                     | subsequent SAVEs will default to tape.          |
+|                     |                                                 |
+| SAVE f              | Saves the program and variables to disk (or     |
+|                     | tape), giving it the name f. The filename may   |
+|                     | optionally include a drive letter and user      |
+|                     | number when operating with disks. If a drive    |
+|                     | letter is not specified, then the default       |
+|                     | drive is used.                                  |
+|                     | Error 'F' if f is empty, or is greater than     |
+|                     | ten characters in length (on tape).             |
+|                     |                                                 |
+| SAVE f LINE m       | Saves the program and variables so that if      |
+|                     | they are loaded, there is an automatic jump to  |
+|                     | line m.                                         |
+|                     |                                                 |
+| SAVE f DATA l()     | Saves the numeric array l() to the file f.      |
+|                     |                                                 |
+| SAVE f DATA l$()    | Saves the character array l$() to the file f.   |
+|                     |                                                 |
+| SAVE f CODE m,n     | Saves n bytes starting at address m.            |
+|                     |                                                 |
+| SAVE f SCREEN$      | SAVE f CODE 16384,6912. Saves the current       |
+|                     | screen display.                                 |
+|                     |                                                 |
+| SPECTRUM            | Switches from +3 BASIC into 48 BASIC,           |
+|                     | maintaining any program in RAM. There is no     |
+|                     | switch back to +3 BASIC. Note that ROM/RAM      |
+|                     | switching is not disabled when entering 48      |
+|                     | BASIC using this command; (this is not the      |
+|                     | case when the option '48 BASIC' is selected     |
+|                     | from the opening menu).                         |
+|                     |                                                 |
+| STOP                | Stops the program with report '9'. The          |
+|                     | CONTINUE command will resume the program from   |
+|                     | the following statement.                        |
+|                     |                                                 |
+| VERIFY f            | Like LOAD (from tape), but the tape             |
+|                     | information is not loaded into RAM - instead,   |
+|                     | it is just compared against what is already in  |
+|                     | RAM.                                            |
+|                     | If the filename specifies a disk file (or if    |
+|                     | the current default drive is A: or B:), then    |
+|                     | no action is taken.                             |
+|                     | Error 'R' if the comparison shows different     |
+|                     | bytes.                                          |
+|                     |                                                 |
+`-----------------------------------------------------------------------'
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt30.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt32.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

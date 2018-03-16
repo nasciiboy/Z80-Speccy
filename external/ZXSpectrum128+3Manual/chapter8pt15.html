@@ -1,0 +1,341 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 15</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 15
+More about PRINT and INPUT
+
+Subjects covered...
+
+	CLS
+	PRINT items
+	Expressions (numeric or string type)
+	TAB numeric expression
+	AT numeric expression
+	PRINT separators , ; '
+	INPUT items
+	Variables (numeric or string type)
+	LINE string variable
+	Scrolling
+	SCREEN$
+
+You have already seen PRINT used quite a lot, so you will have a rough
+idea of how it is used. Expressions whose values are printed are
+called PRINT items. They may be separated by commas, semicolons or
+apostrophes, which are called PRINT separators. A PRINT item can also
+be nothing at all, which is a way of explaining what happens when you
+use PRINT on its own.
+
+There are two more kinds of PRINT items, which are used to tell the +3
+not what, but where to print. For example, the instruction...
+
+	10 PRINT AT 11,16;"*"
+
+...prints an asterisk '*' in the centre of the screen. This is
+because...
+
+	AT line,column
+
+...moves the PRINT position (the place where the next item is to be
+printed) to the line and column specified. Lines are numbered from 0
+(at the top) to 21; columns are numbered from 0 (on the left) to 31.
+
+SCREEN$ is the reverse function to PRINT AT, and will (within limits)
+'read' the character which is located at a particular position on the
+screen. It uses line and column numbers in the same way as PRINT AT,
+but enclosed in brackets. For example, the instruction...
+
+	20 PRINT AT 0,0; SCREEN$ (11,16)
+
+...will read the asterisk printed in the centre of the screen, then
+print it at location 0,0 (the top left-hand corner).
+
+Characters from tokens are read normally (as single characters), and
+spaces are read as spaces. However, attempting to read user-defined
+characters, graphics characters, or lines drawn by PLOT, DRAW and
+CIRCLE, result in a null (empty) string being returned. The same
+applies if OVER has been used to create a composite character. (The
+keywords PLOT, DRAW, CIRCLE and OVER are described in parts 16 and 17
+of this chapter.)
+
+
+               __ You cannot normally PRINT or PLOT
+              |   on the bottom two lines
+              |
+              |  2 2 1 1 1 1 1 1 1 1 1 1                        
+             _|_ 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0    
+            '___`___________________________________________    
+     P    0 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  0  C
+     i    8 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  1  o
+     x   16 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  2  l
+     e   24 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  3  u
+     l   32 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  4  m
+         40 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  5  n
+     x   48 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  6  s
+         56 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  7   
+     c   64 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  8  |
+     o   72 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|  9  |
+     o   80 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 10  v  
+     r   88 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 11  
+     d   96 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 12
+     i  104 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 13
+     n  112 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 14
+     a  120 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 15
+     t  128 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 16
+     e  136 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 17
+     s  144 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 18
+        152 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 19
+     |  160 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 20
+     |  168 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 21
+     v  176 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 22
+        184 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 23
+        192 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 24
+        200 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 25
+        208 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 26
+        216 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 27
+        224 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 28
+        232 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 29
+        240 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 30 
+        248 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_| 31 
+                                          1 1 1 1 1 1 1 1 1   
+                    1 2 3 4 4 5 6 7 8 8 9 0 1 2 2 3 4 5 6 6
+                0 8 6 4 2 0 8 6 4 2 0 8 6 4 2 0 8 6 4 2 0 8
+                                                          
+                Pixel y coordinates -->
+
+
+The function...
+
+	TAB column
+
+...prints enough spaces to move the PRINT position to the column
+specified. It stays on the same line, or, if this would involve
+backspacing, moves to the next line. Note that the +3 reduces the
+column number 'modulo 32' (i.e. it divides by 32 and takes the
+remainder) - so 'TAB 33' means the same as 'TAB 1'.
+
+As an example...
+
+	PRINT TAB 30;1; TAB 12;"Contents"; AT 3,1;"Chapter"; TAB
+		24;"Page"
+
+...is how you might want to print out the heading on the contents page
+(page 1) of a book.
+
+Try running this...
+
+	10 FOR n=0 TO 20
+	20 PRINT TAB 8*n;n;
+	30 NEXT n
+
+This shows what is meant by the TAB numbers being reduced modulo 32.
+
+For a more elegant example, change the 8 in line 20 to a 6.
+
+Note the following points...
+
+(i) TABs and print items are best terminated with semicolons, as we
+have done above. You can use commas (or nothing, at the end of the
+statement), but this means that after having carefully set up the
+PRINT position, you immediately move it on again - not terribly
+useful!
+
+(ii) You cannot print on the bottom two lines (22 and 23) on the
+screen because they are reserved for commands, INPUT data, reports,
+error messages and so on. References to 'the bottom line' usually mean
+line 21.
+
+(iii) You can use AT to locate the PRINT position even where these is
+already something printed - the new print item will simply overwrite
+the old.
+
+Another statement connected with PRINT is CLS. This clears the whole
+screen.
+
+When printing reaches the bottom of the screen, it starts to scroll
+upwards rather like a typewriter. You can see this if you go into the
+small screen using the edit menu option 'Screen' (described in chapter
+6), and then type...
+
+	CLS: FOR n=1 TO 30: PRINT n: NEXT n
+
+When it has printed a screen full, the +3 will stop with the message
+'scroll?' at the bottom of the screen. You can now inspect the first
+22 numbers at your leisure. When you have finished with them, press Y
+(for yes) and the +3 will give you the next screen full of numbers.
+Actually, any key will make the +3 carry on except N (for no), the
+BREAK key or the space bar. These will make the +3 stop running the
+program with the report 'D BREAK - CONT repeats'.
+
+The INPUT statement can do much more than we have told you so far. You
+have already seen INPUT statements like...
+
+	INPUT "How old are you?",age
+
+...in which the +3 prints the caption 'How old are you?' at the bottom
+of the screen, and then you have to type in your age. In fact though,
+an INPUT statement can be made up of items and separators in exactly
+the same way as a PRINT statement, so 'How old are you?' and 'age' are
+both INPUT items. INPUT items are generally the same as PRINT items,
+however, there are some very important differences.
+
+First, an obvious extra INPUT item is the variable whose value you
+require to be typed in - 'age' in our example above. The rule is that
+if an INPUT item begins with a letter, then it must be a variable
+whose value is to be input.
+
+This would seem to mean that you can't print out the values of
+variables as part of a caption. However, you can get round this by
+putting brackets around the variable. Any expression that starts with
+a letter must be enclosed in brackets if it is to be printed as part
+of a caption.
+
+Any kind of PRINT item that is not affected by these rules is also an
+INPUT item. Here is an example to illustrate what's going on...
+
+	LET my age = INT ( RND * 100): INPUT ("I am ";my age;".");
+		" How old are you?", your age
+
+'my age' is contained in brackets, so its value gets printed out.
+'your age' is not contained in brackets, so you have to type its value
+in.
+
+Everything that an INPUT statement writes goes to the bottom part of
+the screen, which acts somewhat independently of the top part. In
+particular, lines are numbered relative to the top line of the bottom
+half, even if this has moved up the actual TV screen (which it does if
+you type lots of INPUT data). Whatever the small screen does during
+INPUT, however, it will always revert to being two lines in size when
+the program stops, and you start editing.
+
+To see how AT works in INPUT statements, try this...
+
+	10 INPUT "This is line 1.", a$; AT 0,0;"This is line 0.",a$;
+		AT 2,0;"This is line 2."; AT 1,0;"This is still line
+		1.",a$
+
+Run the program (just press ENTER each time it stops). When 'This is
+line 2' is printed, the lower part of the screen moves up to make room
+for it; but the numbering moves up as well, so that the lines of text
+keep their same numbers.
+
+Now try this...
+
+	10 FOR n=0 TO 19: PRINT AT n, 0;n;: NEXT n
+	20 INPUT AT 0, 0;a$; AT 1, 0;a$; AT 2, 0;a$; AT 3, 0;a$; AT 4,
+		0;a$; AT 5, 0;a$;
+
+As the lower part of the screen goes up and up, the upper part remains
+undisturbed until the lower part threatens to write on the same line
+as the PRINT position. Then the upper part starts scrolling up to
+avoid this.
+
+Another refinement to the INPUT statement that we haven't seen yet is
+called LINE input and is a different way of inputting string
+variables. If you use LINE before the name of a string variable to be
+input, as in...
+
+	INPUT LINE a$
+
+...then the +3 will not give you the string quotes that it normally
+does for a string variable (though it will pretend to itself that they
+are there). So if you type in...
+
+	bugs
+
+...as the INPUT data, 'a$' will be given the value 'bugs'. Because the
+string quotes do not appear with the string, you cannot delete them
+and type in a different sort of string expression for the INPUT data.
+Remember that you cannot use LINE for numeric variables.
+
+There's an interesting side effect to INPUT. Whilst typing into an
+INPUT request, the old Spectrum single-key entry system enjoys a brief
+moment of freedom before being locked away again when you press ENTER.
+Run this program if you're interested...
+
+	10 INPUT numbers
+	20 PRINT numbers
+	30 GO TO 10
+
+Input a few numbers, and they'll be printed faithfully onto the
+screen. Now press EXTEND MODE followed by the M key. The word PI
+appears, and if you press ENTER, then '3.1415927' will appear as if
+by magic. However, if you type PI as two letters without the aid of
+EXTEND MODE then the +3 will stop with the report '2 Variable not
+found, 10:1'.
+
+There's no simple explanation for this behaviour, and it's best just
+to be aware that it can happen if you press some combinations of keys
+during INPUT. If for some reason you're keen to experiment, chapter 7
+(Using 48 BASIC) will tell you which keys produce which effects.
+
+The control characters 'CHR$ 22' and 'CHR$ 23' have effects rather
+like AT and TAB. Whenever the +3 is instructed to print one of them,
+the character must be followed by two more characters that do not have
+their usual effect, but that are treated instead as numbers (their
+codes) to specify the line and column (for AT) or the tab position
+(for TAB). You will almost always find it easier to use AT and TAB in
+the usual way rather than use control characters, however, they might
+be useful in some circumstances. The AT control character is 'CHR$
+22'. The first character after it specified the line number and the
+second specifies the column number, so that...
+
+	PRINT CHR$ 22+ CHR$ 1+ CHR$ c;
+
+...has exactly the same effect as...
+
+	PRINT AT 1, c;
+
+This is so that even if 'CHR$ 1' or 'CHR$ c' would normally have a
+different meaning (for instance if 'c=13'); the 'CHR$ 22' before them
+overrides that.
+
+The TAB control character is 'CHR$ 23' and the two characters after it
+combine to give a number between 0 and 65535, specifying the number
+you would have in a TAB item. The statement...
+
+	PRINT CHR$ 23+ CHR$ a+CHR$ b;
+
+...has the same effect as...
+
+	PRINT TAB a+256*b;
+
+You can use POKE to stop the computer asking if you wish to 'scroll?'
+by typing...
+
+	POKE 23692,255
+
+...every so often. After this it will scroll u p255 times before
+stopping with 'scroll?'. As an example, try...
+
+	10 FOR n=0 TO 1000
+	20 PRINT n: POKE 23692,255
+	30 NEXT n
+
+...and watch everything whizz off the screen!
+
+
+Exercise...
+
+1. Try this program on some children, to test their multiplication
+tables...
+
+	 10 LET m$=""
+	 20 LET a= INT (RND*12)+1: LET b= INT (RND*12)+1
+	 30 INPUT (m$) ' ' "what is ";(a);" x ";(b);"?";c
+	100 IF c=a*b THEN LET m$="Right.": GO TO 20
+	110 LET m$="Wrong. Try again.": GO TO 30
+
+If they are perceptive, they might manage to work out that they do not
+have to do the calculation themselves. For instance, if the +3 asks
+them to type the answer to 2 x 3, then all they have to do is type in
+'2*3' literally.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt14.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt16.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

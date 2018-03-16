@@ -1,0 +1,333 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 21</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 21
+Printer operations
+
+Subjects covered...
+
+	Parallel printers
+	Serial printers
+	LPRINT, LLIST
+	FORMAT
+	COPY
+
+The +3 comes with an 8-bit Centronics parallel port and an RS232
+serial port. Both are supported by built-in software enabling you to
+use virtually any printer. These features are usable only in +3 BASIC
+mode.
+
+The printer must have either a Centronics compatible (parallel) or an
+RS232 (serial) interface, and if you want to reproduce pictures of the
+screen, then the printer must have an Epson compatible
+quadruple-density bit-image graphics mode (ESC L n n).
+
+Make sure you have the correct lead to connect the printer to the +3 -
+if in doubt, consult your Sinclair dealer.
+
+For further information about which printer and connecting lead to
+purchase, together with details of the +3's PRINTER and RS232 socket
+connections, see chapter 10 (Peripherals for your +3).
+
+
+Parallel printers
+
+When the +3 is first switched on it will assume that, if a printer is
+present, it will be connected to the (parallel) PRINTER socket. The
+hardware connection between computer and printer is relatively
+straightforward - though you must make sure that you don't connect the
+cable the wrong way up at the computer end (if the cable doesn't have
+a locating 'key').
+
+Once the connection has been made, the command...
+
+	LPRINT "hello"
+
+...should produce some printed output. If not, check the connection
+and make sure that your printer is set to 'on line'.
+
+Once you have got your printer to print, you may skip to the section
+ahead entitled 'General printing'.
+
+
+Serial printers
+
+Unlike parallel printers, the connections between the +3 and a serial
+(or RS232) printer will vary for different manufacturers' printers.
+Make sure that your dealer has provided a lead suitable for connecting
+your particular printer to the +3. A serial printer must be connected
+to the +3's RS232 socket, and details of connections can be found in
+chapter 10 (Peripherals for your +3).
+
+The +3 always uses what is known as hardware flow control, or hardware
+handshaking. This means that it will not transmit characters until
+certain control signals from the printer have the right values. It is
+therefore very important that connections are made to the control
+lines of the +3 as well as the transmit and receive data lines. If
+your printer does not support hardware handshaking then connect pins 4
+and 5 of the +3's RS232 connector socket together. The drawback of not
+using hardware handshaking is that the odd character may be lost when
+transmitting a lot of data at high speed.
+
+To get the +3 and the printer communicating with each other, they must
+both use the same baud rate. The baud rate is the speed at which data
+is transferred between computer and printer. Although it is possible
+that your printer can be set to different baud rates, it'll probably
+be easier to change the rate at the computer end. Somewhere in the
+printer's operating manual, the baud rate will be specified - find
+this out and then set the +3 to this rate, using the command...
+
+	FORMAT LINE baud rate
+
+For example...
+
+	FORMAT LINE 300
+
+(You won't need to do this if your printer normally uses 9600 baud, as
+the +3 will assume this rate by default.)
+
+As the +3 usually expects to be operating with a parallel printer, it
+will be necessary to use the command...
+
+	FORMAT LPRINT "R"
+
+...before the +3 will successfully operate with a serial printer. (The
+'R' in the above command is short for RS232.)
+
+The command to set the +3 back to parallel (Centronics) mode is...
+
+	FORMAT LPRINT "C"
+
+
+General printing
+
+Once you have everything set up, you can use three BASIC commands to
+print things out. The first two, LPRINT and LLIST, are just like PRINT
+and LIST except that they use the printer instead of the TV screen.
+Note that the 'Print' option from +3 BASIC's edit menu has the same
+effect as LLIST, but is included as an easier method of getting a
+listing.
+
+Try this program for example...
+
+	10 LPRINT "This program..."'
+	20 LLIST 40
+	30 LPRINT '"...prints out the character set, ie..."'
+	40 FOR n=32 TO 255
+	50 LPRINT CHR$ n;
+	60 NEXT n
+	70 LPRINT
+
+It's important to note that LPRINT and LLIST normally take care to
+screen out any embedded colour codes (and their parameters) before
+printing or listing anything. Embedded colour codes are a bit of a
+hangover from the old 48K Spectrum - when included in a string they
+set INK, PAPER and so on. Printers on the whole tend to use these
+codes for completely different things like setting italics, underline,
+etc., so it would be quite dangerous to send colour codes to the
+printer and hope that nothing untoward happens. A side effect of this
+is that the +3 will normally not be able to send escape control
+sequences to the printer. For example, support your printer expects an
+escape character (character 27) followed by '"x"; CHR$ (1)' to switch to
+its NLQ mode; you would normally use the command...
+
+	LPRINT CHR$ (27);"x"; CHR$ (1);
+		"This is in Near Letter Quality"
+
+However, in +3 BASIC, you must first issue the command...
+
+	FORMAT LPRINT "U"
+
+This command tells the +3 not to interpret characters as 'Spectrum
+codes', but as ordinary unexpanded characters (the 'U' is short for
+unexpanded). If the above command is not issued, then everything above
+code 165 (see part 28 of this chapter) will be translated as one of
+the +3's special words, or tokens. Likewise, almost everything below
+code 32 will be screened out.
+
+If you wish, you can instruct the +3 to interpret characters as
+Spectrum codes by using...
+
+	FORMAT LPRINT "E"
+
+...(where 'E' stands for unexpanded). You'll need to do this if you're
+going to use LLIST. The +3 starts off in expanded mode anyway, so
+unless you've issued a 'FORMAT LPRINT "U"' command, you won't need to
+use 'FORMAT LPRINT "E"'.
+
+So, to summarise:
+
+* If you want to send special characters (such as ESC) to your printer
+(in order to use different styles of printing), issue the command....
+
+	FORMAT LPRINT "U"
+
+...before printing.
+
+* If you are writing or modifying a program, and want to get a listing
+on the printer, issue the command...
+
+	FORMAT LPRINT "E"
+
+...before listing the program.
+
+The third BASIC statement used with a printer - COPY, prints out a
+copy of the TV screen. To demonstrate, go into the small screen (by
+selecting the 'Screen' option from the edit menu) and type in the
+following command.
+
+	FOR n=1 TO 20: PRINT n,: NEXT n
+
+The numbers 1 to 20 will be printed in the top part of the screen. Now
+type...
+
+	COPY
+
+The COPY command takes about 15-20 seconds to get started, so don't
+panic if nothing appears to happen immediately. After a while, you'll
+see a copy of the screen reproduced on the printer. (If all you get
+from COPY is a lot of random characters on the printer, then it's
+likely that your printer isn't fully compatible.)
+
+You can always stop printing at any time by pressing the BREAK key.
+Many printers have what's known as a buffer, which stores text before
+printing. If your printer has a buffer, then pressing BREAK will not
+stop the printer immediately (although the +3 will register the break
+at once).
+
+Note that if the COPY command is stopped by pressing the BREAK key,
+the printer may be left in graphics mode (this will be indicated by
+subsequent LPRINT statements) producing a mass of meaningless dots, or
+printing each line of text partly over the previous line). In these
+circumstances, switching the printer off then on again is the easiest
+way to get things back to normal.
+
+As well as the rather simple COPY command, which just produces a black
+dot on the printer for each dot on the screen (whatever its colour may
+be), there is an expanded version ('COPY EXP') which prints differing
+combinations of dots depending on the colour of ink that was used on
+the screen. To demonstrate, type in the following new program...
+
+	10 FOR b=0 TO 1
+	20 BRIGHT b
+	30 FOR i=0 TO 6
+	40 FOR c=0 TO 31
+	50 PRINT INK i; i;
+	60 NEXT c
+	70 NEXT i
+	80 NEXT b
+
+...then switch to the bottom part of the screen (using the edit menu's
+'Screen' option). Run the program (which displays twelve lines of
+coloured numbers on the screen), then type in...
+
+	COPY EXP
+
+The printed output (or dump) from this command is slightly larger than
+that from the standard COPY command - (EXP is short for expanded). The
+command reproduces the coloured areas of the screen as different
+densities of black dots on the printer. (All 24 lines of the screen
+are reproduced.) Areas that have been printed with 'BRIGHT 1' will
+appear lighter than areas printed normally (just as happens on the
+screen).
+
+The drawback of the 'COPY EXP' command is that it takes a longer time
+to print (about 10 minutes), but is ideally suited to dumping graphic
+pictures. The quicker COPY command, on the other hand, is a better bet
+if you wish to dump text only.
+
+If the screen display to be dumped is predominantly black, then it
+will not only wear out your printer ribbon rather quickly, but also
+will probably take longer to dump than a screen that has large areas
+of white. To prevent this, the 'COPY EXP' command can be followed by
+the word INVERSE, i.e....
+
+	COPY EXP INVERSE
+
+As the command suggests, the dump is printed in INVERSE (like a
+photographic negative) so that all the dark areas of the screen are
+printed-out light, and vice versa.
+
+Note that INVERSE cannot be used after the simple COPY command - it
+only works with 'COPY EXP'.
+
+The dump produced by 'COPY EXP' and 'COPY EXP INVERSE' is designed to
+fit a sheet of A4 paper; however, some printers will not print within
+about an inch at either end of a sheet. If this problem occurs, then
+it is possible to reduce the size of the dump slightly by using the
+command...
+
+	POKE 23419,8
+
+This sets the number of 216ths inch used as a line feed at the end of
+each pass of the print head. It is set to 9 when the +3 is first
+switched on. Once set, it will not be changed even if the NEW command
+is used. By reducing this value, each pass of the print head will
+fractionally overlay the previous pass. As a consequence, the quality
+of the dump reproduced will be degraded slightly.
+
+If you try to use any of the printer commands when there isn't a
+printer attached (or if the printer is off line), then the +3 will
+stop dead while it patiently waits for the (non-existent) printer to
+respond. In such a case, pressing BREAK twice will bring the +3 back
+to life.
+
+Try this...
+
+	10 FOR n=31 TO 0 STEP -1
+	20 PRINT AT 31-n,n; CHR$ ( CODE "0"+n);
+	30 NEXT n
+
+You will see a pattern of characters working down diagonally from the
+top right-hand corner until it reaches the bottom of the screen, at
+which point the program asks if you want to scroll.
+
+Now change 'AT 31-n,n' in line 20 to 'TAB n'. The program will have
+exactly the same effect as before.
+
+Now change PRINT in line 20 to LPRINT. This time there will be no
+pause to scroll (this does not occur with the printer).
+
+Now change 'TAB n' back to 'AT 31-n,n' still using LPRINT. This time
+you will get just a single line of symbols. The reason for the
+difference is that the output from LPRINT is not printed straight
+away, but is stored in the buffer until either one line's worth of
+printer output has accumulated, or something else 'flushes' the
+buffer. Hence, printing only takes place:
+
+	1. When the buffer is full.
+
+	2. After an LPRINT statement that does not end in a comma or
+	   semicolon.
+
+	3. When a comma, apostrophe or TAB item requires a new line.
+
+	4. At the end of a program, if there is anything left
+	   unprinted.
+
+	5. When you set the printer off line (this depends on your
+	   particular printer).
+
+Number 3 above explains why our program with TAB works the way it
+does. As for AT, the line number is ignored, and the LPRINT position
+(like the PRINT position) is moved to the column number. An AT item
+can never cause a line to be sent to the printer.
+
+
+Exercises...
+
+1. Make a printed graph of a sine wave by running the first (3 line)
+program in part 17 of this chapter, then using COPY.
+
+2. Run the program at the beginning of part 16 of this chapter and try
+both a 'COPY EXP' and a 'COPY EXP INVERSE'.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt20.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt22.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

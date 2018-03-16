@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 22</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 22
+Streams
+
+Subjects covered...
+
+	Streams
+	Channels
+	FORMAT, OPEN, CLOSE
+
+The +3 can 'read' data from the keyboard by using INPUT and INKEY$,
+and it can 'write' data onto the TV screen or a printer by using PRINT
+and LPRINT. However, these commands are really a form of shorthand
+designed to protect the user from some of the computer's more complex
+features.
+
+To the BASIC PRINT command, for example, the screen and the printer
+are no different. 'PRINT "Roseanne"' really means 'take the characters
+which make up the word 'Roseanne' and send them somewhere else'. It's
+just convenient to use the screen most of the time. Likewise, LPRINT
+usually sends data to the printer. In fact, what these commands really
+do is to send data to one of a number of channels.
+
+A channel is the way in which the computer communicates with its input
+and output devices. There are three channels normally available to
+BASIC. These are...
+
+	* The screen (called S)
+	* The keyboard (called K)
+	* The printer (called P)
+
+Of these, the screen is an output-only device, the keyboard is both an
+input and output device, and the printer is either an output-only
+device (if it uses the parallel PRINTER socket), or an input and
+output device (if it uses the serial RS232 socket). Outputting data to
+the keyboard might seem a funny idea, but the computer uses the lower
+screen (like INPUT does) to display the characters.
+
+To access a channel, it has to be open. Opening a channel makes it
+ready to receive or produce data. A channel is opened by connecting it
+to a stream. From BASIC, you would use a command like...
+
+	OPEN #4,"p"
+
+...which means 'connect stream 4 to the printer channel'. Streams are
+convenient ways for the computer to switch between channels by
+referring to them as numbers. This idea makes it possible to write
+programs that can send information to any device without having to use
+different commands. (This is known as redirectable (or
+device-independent) I/O.)
+
+This might seem over-complicated, and you may well wish to stick to
+the standard PRINT and LPRINT commands - that's why they're there,
+after all.
+
+PRINT and LPRINT are really the same command. When BASIC is running,
+it has three streams normally open. Stream #1 is connected to the
+keyboard device (K), and is used by INPUT and INKEY$. Stream #2 is
+connected to the screen (S), and is used by PRINT and LIST. Stream #3
+is connected to the printer (P), and is used by LPRINT and LLIST. All
+of these commands can be redirected to use another device by including
+a '#' followed by a current stream number, so...
+
+	PRINT #1;"This is the lower screen"
+
+...will print the message on the lower screen. Similarly...
+
+	PRINT #3;"Who needs LPRINT, Gladys?"
+
+...will use the printer. Conversely, LPRINT can behave like PRINT...
+
+	LPRINT #2;"Confusing, or what?"
+
+...behaves just as if the 'LPRINT #2' were PRINT.
+
+As they stand, these examples are fairly useless but serve to
+demonstrate a point. This sort of thing becomes useful if you want to
+write a program where the results might go either to the printer or
+the screen, like so...
+
+	10 REM squares program for printer
+	20 INPUT "do you want to print the results?";a$
+	30 LET stream=2
+	40 IF a$="y" OR a$="Y" THEN LET stream=3
+	50 FOR n=0 TO 10
+	60 PRINT #stream;n,n*n
+	70 NEXT n
+
+The +3 can cope with 16 streams. As 3 are used by BASIC, and 1 is used
+internally, this leaves you with 12. You can use these by...
+
+	10 REM program to read data from RS232
+	20 FORMAT LINE 9600
+	30 FORMAT LPRINT "r"
+	40 OPEN #4,"p"
+	50 PRINT INKEY$ #4;
+	60 GO TO 50
+
+...which takes characters in from the RS232 interface and prints them
+onto the screen.
+
+If you want to read in data from the RS232 into memory directly, you
+can replace line 50 with...
+
+	POKE address, CODE (INKEY$ #4)
+
+As we mentioned before, the screen and the paralle PRINTER socket can
+only be used by the +3 for output. They cannot be used for input, and
+if you try 'PRINT INKEY$ #2', for example, you'll receive an error
+report.
+
+It is theoretically possible to redirect BASIC's normal output
+streams, so by using...
+
+	10 CLOSE #2
+	20 OPEN #2,"p"
+
+...all the PRINT output will go to the printer instead of the screen.
+(If you try to do this during editing, the results will be
+unpredictable, so it's best left alone.)
+
+On the standard +3 system, streams and channels are of mostly academic
+interest. However, certain peripherals and BASIC language extensions
+do use the stream system for more complex functions.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt21.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt23.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

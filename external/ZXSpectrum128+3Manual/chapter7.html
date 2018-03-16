@@ -1,0 +1,333 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 7</TITLE>
+</HEAD>
+<BODY>
+<PRE>Chapter 7
+Using 48 BASIC
+
+Subjects covered...
+
+	Using the +3 as a 48K Spectrum
+	Entering 48 BASIC mode
+	The keyboard under 48 BASIC
+	Program entry
+	Editing the current line
+
+The +3 has the ability to act exactly like a 48K Spectrum (or Spectrum
++). This achieved by selecting the option 48 BASIC from the opening
+menu. In 48 BASIC mode, many of the enhanced features of the +3 (such
+as the disk drive, extra memory, full screen editor, multi-channel
+sound, RS232/MIDI/AUX interfaces and RAMdisk) cannot be used. The
+JOYSTICK 1 and JOYSTICK 2 sockets will still operate, however.
+
+The 48 BASIC mode is included for compatibility reasons only - there
+is no advantage in using 48 BASIC (instead of +3 BASIC mode) to write
+programs, and it is not recommended. The following information is
+included for reference only, or for anybody who is used to the old 48K
+Spectrum and wants to use the machine immediately without having to
+learn about the +3 BASIC editor.
+
+There are, in fact, two methods of entering the 48 BASIC mode: the
+first is by selecting the 48 BASIC option from the opening menu (if
+you don't know how to select a menu option, refer back to chapter 2).
+When 48 BASIC starts up, you will see the following on the screen...
+
+    +-------------------------------------------------------------+
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    |                                                             |
+    | (C) 1982 Amstrad                                            |
+    +-------------------------------------------------------------+
+
+The second method allows you to enter the 48 BASIC mode while editing
+a +3 BASIC program. To do this (while in +3 BASIC mode), type...
+
+	spectrum
+
+...and press ENTER. The +3 will respond with an OK message [not on any
++3 I've ever used...] and will have changed to 48 BASIC mode,
+retaining any program that you had in memory. Once in 48 BASIC mode,
+there is no way back to +3 BASIC mode apart from resetting the +3 (or
+switching off, then on again).
+
+One major difference between 48 BASIC and +3 BASIC is in the entering
+and editing of programs. (Note also that in +3 BASIC the tokens
+SPECTRUM and PLAY have replaced the user defined graphics characters
+for the keys T and U under 48 BASIC (values 163 and 164).)
+
+Once in 48 BASIC mode, the keyboard performs as follows:
+
+All the BASIC commands, functions and operators are available directly
+from the keyboard rather than needing to be spelled out. In order to
+accommodate all these functions and commands, some keys have five or
+more distinct meanings, obtained partly by 'shifting' the keys (i.e.
+pressing either CAPS SHIFT or SYMB SHIFT together with the required
+key); and partly by having the machine in different modes. The
+flashing cursor contains a letter (K, L, C, E or G) to indicate which
+mode you are operating in.
+
+K (for Keywords) mode automatically replaces L (for Letters mode when
+the machine is expecting a command or program line (rather than input
+data), and from its position on the line the +3 knows that it should
+expect either a line number or a keyword. K mode occurs at the
+beginning of a line, or after a colon ':' (except in a string), or
+after the keyword THEN. Whenever the K cursor appears, the next key
+pressed will be interpreted as either a keyword or a line number, as
+follows...
+
++-----------------------------------------------------------------------------+
+|TRUE |INV. |     |     |     |     |     |     |     |     |     |     |     |
+|VIDEO|VIDEO|    1|    2|    3|    4|    5|    6|    7|    8|    9|    0|SPACE|
+|-----------------------------------------------------------------------------|
+|       |     |PLOT |DRAW |REM  |RUN  |RAND.|RETRN|IF   |INPUT|POKE |PRINT|   |
+| DELETE|     |    Q|    W|    E|    R|    T|    Y|    U|    I|    O|    P|   |
+|-------------------------------------------------------------------------+   |
+|         |     |NEW  |SAVE |DIM  |FOR  |GOTO |GOSUB|LOAD |LIST |LET  |       |
+|         | EDIT|    A|    S|    D|    F|    G|    H|    J|    K|    L| ENTER |
+|-----------------------------------------------------------------------------|
+|            |     |COPY |CLEAR|CONT.|CLS  |BORDR|NEXT |PAUSE|     |          |
+|            |     |    Z|    X|    C|    V|    B|    N|    M|    .|          |
+|-----------------------------------------------------------------------------|
+|     |     |     | /-- | --\ |                       | ||  | /\  |     |     |
+|     |    ;|    "| \-- | --/ |                 SPACE | \/  | ||  |    ,|     |
++-----------------------------------------------------------------------------+
+
+                            The keyboard in K mode
+
+
+L (for Letters) mode normally occurs at all times (other than K mode,
+described above). Whenever the L cursor appears, the next key pressed
+will be interpreted as per the legends on the key-tops themselves,
+i.e....
+
++-----------------------------------------------------------------------------+
+|TRUE |INV. |     |     |     |     |     |     |     |     |     |     |     |
+|VIDEO|VIDEO|    1|    2|    3|    4|    5|    6|    7|    8|    9|    0|SPACE|
+|-----------------------------------------------------------------------------|
+|       |     |     |     |     |     |     |     |     |     |     |     |   |
+| DELETE|GRAPH|    Q|    W|    E|    R|    T|    Y|    U|    I|    O|    P|   |
+|-------------------------------------------------------------------------+   |
+| EXTEND  |     |     |     |     |     |     |     |     |     |     |       |
+|  MODE   | EDIT|    A|    S|    D|    F|    G|    H|    J|    K|    L| ENTER |
+|-----------------------------------------------------------------------------|
+|            |CAPS |     |     |     |     |     |     |     |     |          |
+| CAPS SHIFT | LOCK|    Z|    X|    C|    V|    B|    N|    M|    .|CAPS SHIFT|
+|-----------------------------------------------------------------------------|
+|SYMB |     |     | /-- | --\ |                       | ||  | /\  |     |SYMB |
+|SHIFT|    ;|    "| \-- | --/ |                 SPACE | \/  | ||  |    ,|SHIFT|
++-----------------------------------------------------------------------------+
+
+                            The keyboard in L mode
+
+
+In both K and L modes, pressing SYMB SHIFT together with a key will be
+interpreted as follows...
+
++-----------------------------------------------------------------------------+
+|     |     | !   | @   | #   | $   | %   | &   | '   | (   | )   | _   |     |
+|     |     |    1|    2|    3|    4|    5|    6|    7|    8|    9|    0|     |
+|-----------------------------------------------------------------------------|
+|       |     | <=  | <>  | >=  | <   | >   |AND  |OR   |AT   | ;   | "   |   |
+|       |     |    Q|    W|    E|    R|    T|    Y|    U|    I|    O|    P|   |
+|-------------------------------------------------------------------------+   |
+|         |     |STOP |NOT  |STEP |TO   |THEN | ^   | -   | +   | =   |       |
+|         |     |    A|    S|    D|    F|    G|    H|    J|    K|    L| ENTER |
+|-----------------------------------------------------------------------------|
+|            |     | :   |pound| ?   | /   | *   | ,   | .   | .   |          |
+|            |     |    Z|signX|    C|    V|    B|    N|    M|    .|          |
+=======-----------------------------------------------------------------=======
+=SYMB== ;   | "   | /-- | --\ |                       | ||  | /\  | ,   =SYMB==
+=SHIFT=    ;|    "| \-- | --/ |                 SPACE | \/  | ||  |    ,=SHIFT=
+=======-----------------------------------------------------------------=======
+
+                The keyboard using SYMB SHIFT in K or L mode
+
+
+Using CAPS SHIFT in L mode simply converts small letters to capitals.
+In K mode, however, CAPS SHIFT does not affect the keywords.
+
+C (for Capitals) mode is a variant of L mode whereby all letters
+appear as capitals. The CAPS LOCK key is used to change from L mode to
+C mode, and back again.
+
+E (for Extended) mode is used to obtain further characters, mostly
+tokens. It is entered by pressing the EXTEND MODE key, and lasts for
+only one character (or key depression) thereafter. Whenever the E
+cursor appears, the next key pressed will be interpreted as follows...
+
+
+             <--------- all number keys change PAPER colour ----------->
+
++-----------------------------------------------------------------------------+
+|     |     |blue |red  |mgnta|green|cyan |yellw|white|brght|brght|black|     |
+|     |     |    1|    2|    3|    4|    5|    6|    7|off 8|on  9|    0|SPACE|
+|-----------------------------------------------------------------------------|
+|       |     |SIN  |COS  |TAN  |INT  |RND  |STR$ |CHR$ |CODE |PEEK |TAB  |   |
+|       |     |    Q|    W|    E|    R|    T|    Y|    U|    I|    O|    P|   |
+===========---------------------------------------------------------------+   |
+= EXTEND ==     |READ |RESTR|DATA |SGN  |ABS  |SQR  |VAL  |LEN  |USR  |       |
+== MODE ===     |    A|    S|    D|    F|    G|    H|    J|    K|    L| ENTER |
+===========-------------------------------------------------------------------|
+|            |     |LN   |EXP  |LPRNT|LLIST|RUN  |INKY$|PI   |     |          |
+|            |     |    Z|    X|    C|    V|    B|    N|    M|     |          |
+|-----------------------------------------------------------------------------|
+|     |     |     |     |     |                       |     |     |     |     |
+|     |     |     |     |     |                 SPACE |     |     |     |     |
++-----------------------------------------------------------------------------+
+
+                              The keyboard in E mode
+
+
+Applying CAPS SHIFT while in E mode, the next key pressed will be
+interpreted as follows...
+
+
+             <--------- all number keys change INK colour ------------->
+
++-----------------------------------------------------------------------------+
+|     |     |blue |red  |mgnta|green|cyan |yellw|white|flash|flash|black|     |
+|     |     |    1|    2|    3|    4|    5|    6|    7|off 8|on  9|    0|SPACE|
+|-----------------------------------------------------------------------------|
+|       |     |ASN  |ACS  |ATN  |VERFY|MERGE| [   | ]   |IN   |OUT  |(C)  |   |
+|       |     |    Q|    W|    E|    R|    T|    Y|    U|    I|    O|    P|   |
+===========---------------------------------------------------------------+   |
+= EXTEND ==     | ~   | |   | \   | {   | }   |CIRCL|VAL$ |SCRN$|ATTR |       |
+== MODE ===     |    A|    S|    D|    F|    G|    H|    J|    K|    L| ENTER |
+==============-----------------------------------------------------============
+==============     |BEEP |INK  |PAPER|FLASH|BRGHT|OVER |INVRS|     ============
+= CAPS SHIFT =     |    Z|    X|    C|    V|    B|    N|    M|     =CAPS SHIFT=
+==============-----------------------------------------------------============
+|     |     |     |     |     |                       |     |     |     |     |
+|     |     |     |     |     |                 SPACE |     |     |     |     |
++-----------------------------------------------------------------------------+
+
+                    The keyboard using CAPS SHIFT in E mode
+
+
+Applying SYMB SHIFT while in E mode, the next key pressed will be
+interpreted as follows...
+
++-----------------------------------------------------------------------------+
+|     |     |DEFFN|FN   |LINE |OPEN#|CLOS#|MOVE |ERASE|POINT|CAT  |FORMT|     |
+|     |     |    1|    2|    3|    4|    5|    6|    7|    8|    9|    0|SPACE|
+|-----------------------------------------------------------------------------|
+|       |     |ASN  |ACS  |ATN  |VERFY|MERGE| [   | ]   |IN   |OUT  |(C)  |   |
+|       |     |    Q|    W|    E|    R|    T|    Y|    U|    I|    O|    P|   |
+===========---------------------------------------------------------------+   |
+= EXTEND ==     | ~   | |   | \   | {   | }   |CIRCL|VAL$ |SCRN$|ATTR |       |
+== MODE ===     |    A|    S|    D|    F|    G|    H|    J|    K|    L| ENTER |
+===========-------------------------------------------------------------------|
+|            |     |BEEP |INK  |PAPER|FLASH|BRGHT|OVER |INVRS|     |          |
+|            |     |    Z|    X|    C|    V|    B|    N|    M|     |          |
+=======-----------------------------------------------------------------=======
+=SYMB==     |     |     |     |                       |     |     |     =SYMB==
+=SHIFT=     |     |     |     |                 SPACE |     |     |     =SHIFT=
+=======-----------------------------------------------------------------=======
+
+                    The keyboard using SYMB SHIFT in E mode
+
+
+G (for Graphics) mode occurs when GRAPH is pressed, and lasts until it
+is pressed again (or 9 is pressed on its own). A number key will give
+a mosaic graphics, and each of the letter keys (apart from V, W, X, Y
+and Z) will give a user-defined graphics which, until it is defined,
+will look identical to a capital letter. Whenever the G cursor
+appears, the next key pressed will be interpreted as follows...
+
++-----------------------------------------------------------------------------+
+|     |     |..## |##.. |#### |.... |..## |##.. |#### |.... |graph|     |     |
+|     |     |....1|....2|....3|..##4|..##5|..##6|..##7|....8|off 9|     |SPACE|
+|-----------------------------------------------------------------------------|
+|       |     | Q   |     | E   | R   | T   |     | U   | I   | O   | P   |   |
+| DELETE|GRAPH|     |     |     |     |     |     |     |     |     |     |   |
+|-------------------------------------------------------------------------+   |
+|         |     | A   | S   | D   | F   | G   | H   | J   | K   | L   |       |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+|-----------------------------------------------------------------------------|
+|            |     |     |     | C   |     | B   | N   | M   |     |          |
+|            |     |     |     |     |     |     |     |     |     |          |
+|-----------------------------------------------------------------------------|
+|     |     |     |     |     |                       |     |     |     |     |
+|     |     |     |     |     |                 SPACE |     |     |     |     |
++-----------------------------------------------------------------------------+
+
+                             The keyboard in G mode
+
+
+Applying CAPS SHIFT while in G mode inverts the mosaic graphics (i.e.
+the ink colour becomes the paper colour, and the paper becomes the ink
+colour). Hence, the next key pressed will be interpreted as follows...
+
++-----------------------------------------------------------------------------+
+|     |     |##.. |..## |.... |#### |##.. |..## |.... |#### |graph|     |     |
+|     |     |####1|####2|####3|##..4|##..5|##..6|##..7|####8|off 9|     |SPACE|
+|-----------------------------------------------------------------------------|
+|       |     | Q   |     | E   | R   | T   |     | U   | I   | O   | P   |   |
+| DELETE|GRAPH|     |     |     |     |     |     |     |     |     |     |   |
+|-------------------------------------------------------------------------+   |
+|         |     | A   | S   | D   | F   | G   | H   | J   | K   | L   |       |
+|         |     |     |     |     |     |     |     |     |     |     |       |
+==============-----------------------------------------------------============
+==============     |     |     | C   |     | B   | N   | M   |     ============
+==CAPS SHIFT==     |     |     |     |     |     |     |     |     =CAPS SHIFT=
+==============-----------------------------------------------------============
+|     |     |     |     |     |                       |     |     |     |     |
+|     |     |     |     |     |                 SPACE |     |     |     |     |
++-----------------------------------------------------------------------------+
+
+                    The keyboard using CAPS SHIFT in G mode
+
+
+General keyboard notes
+
+If any key is held down for more than 2 or 3 seconds, it will start
+repeating. Keyboard input appears in the bottom half of the screen as
+it is typed, each character (single symbol or compound token) being
+inserted just before the cursor. The cursor can be moved left and
+right using the cursor control keys left and right (to the left of the
+space bar). The character to the left of the cursor can be removed
+using DELETE.
+
+When ENTER is pressed, the line is either executed, entered into the
+program, or used as input data. If the line contains a syntax error,
+however, a flashing question mark '?' appears next to the error.
+
+As program lines are entered, a listing is displayed in the top half
+of the screen. The last line entered is called the current line and is
+indicated by the symbol '>' after the line number. Any line in the
+program may be selected as the current line (for editing purposes) by
+using the up and down cursor keys (to the right of the space bar). To
+then edit the select current line, press the EDIT key. (Editing takes
+place at the bottom of the screen.)
+
+When a command is executed or a program is run, output is displayed in
+th top half of the screen and remains there until either ENTER or the
+cursor up or down key is pressed. At the bottom of the screen appears
+a report giving a code (digit or letter) referred to in part 29 of
+chapter 8. This report remains on the screen until a key is pressed
+and the +3 returns to K mode.
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter6.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt1.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

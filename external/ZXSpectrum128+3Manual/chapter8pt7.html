@@ -1,0 +1,188 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 7</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 7
+Expressions
+
+Subjects covered...
+
+	Operations: +, -, *, /
+	Expressions, scientific notation, variable names
+
+You have already seen some of the ways in which the +3 can calculate
+with numbers. It can perform the four arithmetic operations '+', '-',
+'*' and '/' (remember that '*' is used for multiplication, and '/' is
+used for division), and it can find the value of a variable, given its
+name.
+
+The example...
+
+	LET tax=sum*15/100
+
+...illustrates that calculations can be combined. Such a combination,
+like 'sum*15/100', is called an expression - so an expression is just
+a short-hand way of telling the +3 to do several calculations, one
+after the other. In our example, the expression 'sum*15/100' means
+'look up the value of the variable called 'sum', multiply it by 15,
+and divide by 100'.
+
+In expressions containing '*', '/', '+', '-', multiplication and
+division are carried out first - they have a higher priority than
+addition and subtraction. Multiplication and division have the same
+priority as each other, which means that they are carried out in
+whichever order they appear in the expression (from left to
+right). The next operations to be carried out are addition and
+subtraction - these again have the same priority as each other and so,
+again, are carried out in order from left to right.
+
+Hence in the expression '8-12/4+2*2', the first operation to be
+carried out is the division '12/4' which equals 3, so we can then
+represent the expression as '8-3+2*2'.
+
+The next operation to be carried out is the multiplication '2*2' which
+equals 4, so the expression then becomes '8-3+4'.
+
+Next to be carried out is the subtraction '8-3' which equals 5, so the
+expression becomes '5+4'. Finally, the addition is carried out leaving
+the result 9.
+
+Try this out for yourself. Type in...
+
+	PRINT 8-12/4+2*2
+
+A full list of the priorities of mathematical (and logical) operations
+will be found in part 31 of this chapter.
+
+You may, however, change the priority of calculations within an
+expression by the use of brackets. Calculations within brackets are
+carried out first, so if in the above expression, you required the
+addition 4+2 to be carried out first, you would enclose it in
+brackets. To see this, type in...
+
+	PRINT 8-12/(4+2)*2
+
+...and the result this time is 4 instead of 9.
+
+Expressions are useful because, whenever the +3 is expecting a number
+from you, you can give it an expression instead and it will work out
+the answer.
+
+You can also add together strings (or string variables) in a single
+expression. For example...
+
+	10 LET a$="large "
+	20 LET b$="and puffy"
+	30 LET c$=a$+b$
+	40 PRINT c$
+
+We really ought to tell you what you can and cannot use as the names
+of variables. As we have already said, the name of a string variable
+has to be a single letter followed by '$', and the name of the control
+variable in a FOR...NEXT loop must be a single letter; however, the
+names of ordinary numeric variables are less restricted - they can use
+any letters or digits as long as the first one is a letter. You can
+put spaces in as well to make it easier to read, but they won't count
+as part of the name. Also, it doesn't make any difference to the name
+whether you type it in upper or lower case letters. There are some
+restrictions about variable names which are the same as commands,
+however. In general, if the variable contains a BASIC keyword in it
+(with spaces around it) then it won't be accepted.
+
+Here are some examples of the names of variables that are allowed...
+
+	x
+	any old thing
+	t42
+	this name is impractical because it is too long
+	tobeornottobe
+	mixed cases spaces
+	MixEdCAsEsSpAcES
+
+(Note that these last two names ('mixed cases spaces' and
+'MixEdCAsEsSpAcES') are considered the same, and refer to the same
+variable.)
+
+The following are not allowed as the names of variables...
+
+	pi                      ('PI' is a keyword)
+	any new thing           (contains the separated keyword 'NEW')
+	42t                     (begins with a digit)
+	2001                    (contains digits only)
+	to be or not to be      (contains 'TO', 'OR' and 'NOT' as
+                                 separated keywords)
+	3 bears                 (begins with a digit)
+	M*A*S*H                 ('*' is not a letter or a digit)
+	Lloyd-Webber            ('-' is not a letter or a digit)
+
+Numerical expressions can be represented by a number and exponent. Try
+the following to prove the point...
+
+	PRINT 2.34e0
+	PRINT 2.34e1
+	PRINT 2.34e2
+
+...and so on up to...
+
+	PRINT 2.34e15
+
+PRINT gives only eight significant digits of a number. Try...
+
+	PRINT 4294967295, 4294967295-429e7
+
+This proves that the computer can hold the digits of 4294967295, even
+though it is not prepared to display them all at once.
+
+The +3 uses floating point arithmetic, which means that it keeps
+separate the digits of a number (its mantissa) and the position of the
+point (the exponent). This is not always exact, even for whole
+numbers. Type...
+
+	PRINT 1e10+1-1e10,1e10-1e10+1
+
+Numbers are held to about nine and a half digits accuracy, so 1e10 is
+too big to be held exactly right. The inaccuracy (actually about 2) is
+more than 1, so the numbers 1e10 and 1e10+1 appear to the computer to
+be equal.
+
+For an even more peculiar example, type...
+
+	PRINT 5e9+1-5e9
+
+Here the inaccuracy in 5e9 is only about 1, and the 1 to be added on
+in fact gets rounded up to 2. The numbers 5e9+1 and 5e9+2 appear to
+the computer to be equal. The largest integer (whole number) that can
+be held completely accurately is 4,294,967,294.
+
+The string "" with no character at all is called the empty or null
+string. Remember that spaces are significant and an empty string is
+not the same as one containing nothing but spaces.
+
+Try...
+
+	PRINT "Did you read "The Times" yesterday?"
+
+When you press ENTER you will get the flashing red cursor that shows
+there is a mistake somewhere in the line. When the +3 finds the double
+quotes at the beginning of the '"The Times"' it imagines that these
+mark the end of the string '"Did you read "', and it then can't work
+out what 'The Times' means.
+
+There is a special device to get over this - whenever you wish to
+write a string quote symbol in the middle of a string, you must write
+it twice, like this...
+
+	PRINT "Did you read ""The Times"" yesterday?"
+
+As you can see from what is printed on the screen, each double quote
+is only really there once - you just have to type it twice to get it
+recognised.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt6.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt8.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

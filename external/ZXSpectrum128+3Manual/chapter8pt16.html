@@ -1,0 +1,378 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 16</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 16
+Colours
+
+Subjects covered...
+
+	INK, PAPER, FLASH, BRIGHT, INVERSE, OVER
+	BORDER
+
+Run this program...
+
+	 10 FOR m=0 TO 1: BRIGHT m
+	 20 FOR n=1 TO 10
+	 30 FOR c=0 TO 7
+	 40 PAPER c: PRINT "    ";: REM 4 coloured spaces
+	 50 NEXT c: NEXT n: NEXT m
+	 60 FOR m=0 TO 1: BRIGHT m: PAPER 7
+	 70 FOR c=0 TO 3
+	 80 INK c: PRINT c;"  ":
+	 90 NEXT c: PAPER 0
+	100 FOR c=4 TO 7
+	110 INK c: PRINT c;"  ";
+	120 NEXT c: NEXT m
+	130 PAPER 7: INK 0: BRIGHT 0
+
+This shows the eight colours (including white and black) and the two
+levels of brightness that the +3 can produce on a colour TV. (If your
+TV is black-and-white, then you will see just various shades of grey.)
+A quicker way to achieve a similar result is to RESET the +3 whilst
+holding down BREAK - but that's a little drastic. Here is a list of
+which numbers produce which colours (for your reference)...
+
+	0 - black
+	1 - blue
+	2 - red
+	3 - magenta
+	4 - green
+	5 - cyan
+	6 - yellow
+	7 - white
+
+On a black-and-white TV, these numbers are in order of brightness. To
+use these colours properly, you will need to understand a bit about
+how the picture is arranged.
+
+The picture is divided up into 768 (24 lines of 32) positions (cells)
+where characters can be printed.
+
+
+                    _______________________________
+                   |   |   |   |   |   |   |   |   |
+                   |___|___|___|___|___|___|___|___|
+                   |   |   |   |   |   |   |   |   |
+                   |___|___|___|___|___|___|___|___|
+                   |   |   |###|###|###|   |   |   |
+                   |___|___|###|###|###|___|___|___|
+                   |   |   |   |   |   |###|   |   |
+                   |___|___|___|___|___|###|___|___|
+                   |   |   |###|###|###|###|   |   |
+                   |___|___|###|###|###|###|___|___|
+                   |   |###|   |   |   |###|   |   |
+                   |___|###|___|___|___|###|___|___|
+                   |   |   |###|###|###|###|   |   |
+                   |___|___|###|###|###|###|___|___|
+                   |   |   |   |   |   |   |   |   |
+                   |___|___|___|___|___|___|___|___|
+
+                       A typical character cell
+
+
+Each character cell consists of an 8 x 8 grid (such as above). This
+should remind you of the user-defined graphics in part 14, where we
+had 0s for the white dots and 1s for the black dots.
+
+The character has two colours associated with it: the ink, or
+foreground colour, which is the colour for the black dots in our
+square, and the paper, or background colour, which is used for the
+white dots. To start off with, every cell has black ink and white
+paper so writing appears as black on white.
+
+The character also has a brightness (normal or extra bright), and
+something to say whether it flashes or not. Flashing is done by
+continuously swapping the ink and paper colours. All this information
+can be coded into numbers, so a character then has the following...
+
+(i)	An 8 x 8 grid of 0s and 1s to define the shape of the
+	character, with 0 for paper and 1 for ink.
+
+(ii)	Ink and paper colours, each coded into a number between 0 and
+	7.
+
+(iii)	A brightness - 0 for normal, 1 for extra bright.
+
+(iv)	A flash number - 0 for steady, 1 for flashing.
+
+Note that since the ink and paper colours cover a whole character
+cell, you cannot possibly have more than two colours in a given block
+of 64 dots. The same goes for the brightness and flash numbers - they
+refer to the whole character cell, not individual dots within the
+cell. The colour, brightness and flash number for a given character
+cell are called attributes.
+
+When you print something on the screen, you change the dot pattern for
+that character cell. It is less obvious, but still true, that you also
+change the cell's attributes. To start off with you do not notice this
+because everything is printed with black ink on white paper (at normal
+brightness and no flashing); however, you can vary this with the INK,
+PAPER, BRIGHT and FLASH statements. Using the edit menu's 'Screen'
+option, go to the bottom screen, and try...
+
+	PAPER 5
+
+...and then PRINT a few items on the screen - they will appear on cyan
+paper, because as they are printed, the paper colour for the cells
+they occupy are set to cyan (which has code 5).
+
+The others work the same way, so you may use the settings...
+
+	PAPER	(whole number between 0 and 7)
+	INK	(whole number between 0 and 7)
+	BRIGHT	(whole number between 0 and 1)
+	FLASH	(whole number between 0 and 1)
+
+...and any printing will set the corresponding attributes for all the
+character cells it subsequently uses.
+
+Try some of these out. You should now be able to see how the program
+at the beginning of this section worked (remember that a space is a
+character that has its ink and paper the same colour).
+
+There are some ore numbers you can use in these statements that have
+less direct effects.
+
+8 can be used in all four statements, and means 'transparent' in the
+same sense that the old attribute shows through. Suppose, for
+instance, that you do...
+
+	PAPER 8
+
+No character position will ever have its paper colour set to 8 because
+there is no such colour; what happens is that when a position is
+printed on, its paper colour is left the same as it was before.
+However, INK 8, BRIGHT 8 and FLASH 8 work the same way as for the
+other attribute numbers.
+
+9 can be used only with PAPER and INK, and means 'contrast'. The
+colour (ink or paper) that you use it with is made to contrast with
+the other by being made white if the other is a dark colour (black,
+blue, red or magenta), or being made black if the other is a light
+colour (green, cyan, yellow or white).
+
+Try this by doing...
+
+	INK 9: FOR c=0 TO 7: PAPER c: PRINT c: NEXT c
+
+A more impressive display of its power is to run the program at the
+beginning to make coloured stripes (again, making sure that you are in
+the lower screen when you type RUN), and then doing...
+
+	INK 9: PAPER 8: PRINT AT 0, 0;:
+	FOR n=1 TO 1000: PRINT n;:NEXT n
+
+The ink colour here is always made to contrast with the old paper
+colour for each character cell.
+
+Colour TV relies on the fact that the human eye need see only three
+colours of light (red, green and blue) in various combinations and
+intensities in order to perceive all the colours of the spectrum. The
++3 also displays its spectrum of colours by using mixtures of red,
+green and blue. For instance, yellow is made by mixing red with green
+- which is why the code, 6, is the sum of the codes for red and green.
+
+To see how all eight colours fit together, imagine three rectangular
+spotlights, coloured red, green and blue shining at not quite the same
+place on a piece of white paper in the dark. Where they overlap you
+will see mixtures of colours, as shown by the following program (note
+that solid ink spaces are obtained by entering graphics mode (pressing
+GRAPH) then holding down CAPS SHIFT while pressing '8'. To exit from
+graphics mode, press '9'.)...
+
+	  10 BORDER 0: PAPER 0: INK 7: CLS
+	  20 FOR a=1 TO 6
+	  30 PRINT TAB 6; INK 1;"##################": REM 18 ink
+		squares
+	  40 NEXT a
+	  50 LET dataline=200
+	  60 GO SUB 1000
+	  70 LET dataline=210
+	  80 GO SUB 1000
+	  90 STOP
+	 200 DATA 2,3,7,5,4
+	 210 DATA 2,2,6,4,4
+	1000 FOR a=1 TO 6
+	1010 RESTORE dataline
+	1020 FOR b=1 TO 5
+	1030 READ c: PRINT INK c;"######";: REM 6 ink squares
+	1040 NEXT b: PRINT: NEXT a
+	1050 RETURN
+
+There is a function called ATTR that finds out what the attributes ate
+at a given position on the screen. It is a fairly complicated
+function, so it has been relegated to the end of this section.
+
+There are two more statements, INVERSE and OVER, which control not the
+attributes, but the dot pattern that is printed on the screen. They
+use the numbers 0 for off, and 1 for on. If you use 'INVERSE 1', then
+each character cell's dot pattern will be the inverse of its usual
+form, i.e. paper dots will be replaced by ink dots and vice
+versa. Thus the character cell containing 'a' (shown previously) would
+be printed as follow...
+
+                    _______________________________
+                   |###|###|###|###|###|###|###|###|
+                   |###|###|###|###|###|###|###|###|
+                   |###|###|###|###|###|###|###|###|
+                   |###|###|###|###|###|###|###|###|
+                   |###|###|   |   |   |###|###|###|
+                   |###|###|___|___|___|###|###|###|
+                   |###|###|###|###|###|   |###|###|
+                   |###|###|###|###|###|___|###|###|
+                   |###|###|   |   |   |   |###|###|
+                   |###|###|___|___|___|___|###|###|
+                   |###|   |###|###|###|   |###|###|
+                   |###|___|###|###|###|___|###|###|
+                   |###|###|   |   |   |   |###|###|
+                   |###|###|___|___|___|___|###|###|
+                   |###|###|###|###|###|###|###|###|
+                   |###|###|###|###|###|###|###|###|
+
+
+If (as at switch on) we have black ink on white paper, then the 'a'
+will appear as white on black.
+
+The statement...
+
+	OVER 1
+
+...sets into action a particular sort of overprinting. Normally when
+something is written into a character position, it completely
+obliterates what was there before; however, using 'OVER 1', the new
+character is simply added on top of the old one. This can be
+particularly useful for writing composite characters, like an
+underlined letter, as in the following program. (Reset the computer
+and select '+3 BASIC'. Note that the underline character is obtained
+by pressing SYMB SHIFT together with '0'.)...
+
+	10 OVER 1
+	20 PRINT "w"; CHR$ 8;"_";
+
+(Notice we have used the control character 'CHR$ 8' (backspace) before
+overprinting the 'w' with '_'.)
+
+There is another way of using INK, PAPER and so on which you will
+probably find more useful than having them as statements. You can put
+them as items in a PRINT statement (followed by ';'), and they then do
+exactly the same as they would have done if they had been used as
+statements on their own, except that their effect is only temporary,
+lasting as far as the end of the PRINT statement that contains
+them. Thus if you type...
+
+	PRINT PAPER 6;"x";: PRINT "y"
+
+...then only the 'x' will be on yellow paper.
+
+PAPER, INK, etc. when used as statements do not affect the colour in
+the bottom part of the screen (where INPUT data is typed in and
+reports are displayed). The bottom screen uses the colour of the
+border for its paper colour, code 9 (for contrast) for its ink colour,
+has flashing off, and everything at normal brightness. You can change
+the border colour to any of the eight normal colours (not 8 or 9)
+using the statement...
+
+	BORDER colour
+
+When you type in INPUT data, it follows this rule of using contrasting
+ink on border coloured paper, but you can change the colour of the
+captions written by the +3 by using PAPER, INK, etc. items in the
+INPUT statement, just as you would in a PRINT statement. Their effect
+lasts either to the end of the statement, or until some INPUT data is
+typed in, whichever comes soonest. Try...
+
+	INPUT FLASH 1; INK 4;"Enter a number?";n
+
+The +3 has a high regard for your sanity - no matter what combination
+of effects and colours you manage to produce from a BASIC program, the
+editor will always use black ink on white paper.
+
+There is one more way of changing the colours by using control
+characters - rather like the control characters for AT and TAB in part
+15.
+
+	CHR$ 16 corresponds to INK
+	CHR$ 17 corresponds to PAPER
+	CHR$ 18 corresponds to FLASH
+	CHR$ 19 corresponds to BRIGHT
+	CHR$ 20 corresponds to INVERSE
+	CHR$ 21 corresponds to OVER
+
+These are each followed by one character that shows a colour by its
+code; so that (for instance)...
+
+	PRINT CHR$ 16+ CHR$ 9;"item"
+
+...has the same effect as...
+
+	PRINT INK 9;"item"
+
+On the whole, you would not bother to use these control characters
+because you might just as well use the statements PAPER, INK,
+etc. However, if you have some old 48K BASIC programs on cassette, you
+may find such control characters embedded in the listing. In general,
+the editor will actively ignore them, and remove them at the first
+opportunity. It is not possible to insert them into listings as with
+the old 48K Spectrum.
+
+The ATTR function has the form...
+
+	ATTR(line,column)
+
+Its two arguments are the line and column numbers that you would use
+in an AT item, and its result is a number that shows the colours and
+so on at the corresponding character position on the TV screen. You
+can use this as freely in expressions as you can any other function.
+
+The number that is the result is the sum of four other numbers as
+follows...
+
+	128 - if the character cell is flashing, 0 if it is steady.
+	64  - if the character cell is bright, 0 if it is normal.
+	8   - multiplied by the code for the paper colour.
+	1   - multiplied by the code for the ink colour.
+
+For instance, if the character cell is flashing, normal brightness,
+yellow paper and blue ink, then the four numbers that we have to add
+together are 128, 0, 8x6=48 and 1, making 177 altogether. Test this
+with...
+
+	PRINT AT 0,0; FLASH 1; PAPER 6; INK 1;" "; ATTR (0,0)
+
+
+Exercises...
+
+1. Try...
+
+	PRINT "B"; CHR$ 8; OVER 1;"/";
+
+Where the '/' has cut through the 'B', it has left a white dot. This
+is the way that overprinting works on the +3 - two papers or two inks
+give a paper, one of each gives an ink. This has the interesting
+property that if you overprint with the same thing twice you end up
+with what you had at the beginning. If you now type...
+
+	PRINT CHR$ 8; OVER 1;"/"
+
+...why do you recover an unblemished 'B'?
+
+2. Run this program...
+
+	10 POKE 22528+ RND *704, RND *127
+	20 GO TO 10
+
+(Never mind how this program works.) The program is changing the
+colours of squares on the TV screen and the RND should ensure that
+this happens randomly. (The diagonal stripes that you eventually see
+are a manifestation of the hidden pattern in RND, i.e. pseudo-random
+instead of truly random.)
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt15.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt17.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

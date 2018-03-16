@@ -1,0 +1,313 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 25</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 25
+The system variables
+
+Subjects covered...
+
+        POKE, PEEK
+
+The bytes in memory from 5B00h (23296) to 5CB6h (23734) are set aside 
+for specific uses by the system. There are a few routine (used to keep 
+the paging in order), and some locations called system variables. You 
+can peek these to find out various things about the system, and some 
+of them can be usefully poked. They are listed here with their uses.
+
+There is quite a difference, as you might expect, between the system
+variables' area in 48 BASIC mode and in +3 BASIC mode. In 48 BASIC
+mode, all the variables and routines below 5C00h (23552) do not exist;
+instead there is a buffer between 5B00h (23296) and 5C00h (23552)
+which is used for controlling the printer. This was quite a popular
+location for small machine code programs on the old 48K Spectrum, and
+if any of these routines are tried in +3 BASIC, the computer will
+invariably crash. Any old program that uses PEEK, POKE and USR is
+therefore a safer bet if it is run in 48 BASIC mode (although it can
+be entered in +3 BASIC mode and transferred using the SPECTRUM
+command). If there is a chance that a program might inadvertently
+address the added I/O ports of the +3, then 'OUT 32765,48' will set
+bit 5 in port 7FFDh to disable further use of the added ROM/RAM
+switching.
+
+Although system variables have names, you should not confuse them with
+the words and names used in BASIC. The computer will not recognise the
+names as referring to system variables; they are given solely as
+mnemonics for humans.
+
+The abbreviations in column 1 of the table have the following 
+meanings:
+
+X - The variables should not be poked because the system might crash.
+
+N - Poking the variables will have no lasting effect.
+
+R - Routine entry point. Not a variable.
+
+
+The number in column 1 is the number of bytes in the variable or 
+routine. For a two-byte word, the first byte is the least significant 
+- the reverse of what you might expect. So, to poke a value 'v' into a 
+two-byte variable at address 'n', use...
+
+        POKE n,v-256* INT (v/256)
+        POKE n+1, INT (v/256)
+
+...and to peek its value, use the expression...
+
+        PRINT PEEK n+256* PEEK (n+1)
+
+
+NOTES   ADDRESS         NAME    CONTENTS
+        HEX (DECIMAL)
+--------------------------------------------------------------------
+
+R16     5B00h (23296)   SWAP    Paging subroutine.
+R17     5B10h (23312)   STOO    Paging subroutine. Entered with 
+                                interrupts already disabled and AF, BC 
+                                on the stack.
+R9      5B21h (23329)   YOUNGER Paging subroutine.
+R16     5B2Ah (23338)   REGNUOY Paging subroutine.
+R24     5B3Ah (23354)   ONERR   Paging subroutine.
+X2      5B52h (23378)   OLDHL   Temporary register store while 
+                                switching ROMs.
+X2      5B54h (23380)   OLDBC   Temporary register store while 
+                                switching ROMs.
+X2      5B56h (23382)   OLDAF   Temporary register store while 
+                                switching ROMs.
+N2      5B58h (23384)   TARGET  Subroutine address in ROM 3.
+X2      5B5Ah (23386)   RETADDR Return address in ROM 1.
+X1      5B5Ch (23388)   BANKM   Copy of last byte output to I/O port 
+                                7FFDh (32765). This port is used to 
+                                control the RAM paging (bits 0...2), 
+                                the 'horizontal' ROM switch (0<->1 and 
+                                2<->3 - bit 4), screen selection (bit 
+                                3) and added I/O disabling (bit 5). 
+                                This byte must be kept up to date with 
+                                the last value output to the port if 
+                                interrupts are enabled.
+X1      5B5Dh (23389)   RAMRST  RST 8 instruction. Used by ROM 1 to 
+                                report old errors to ROM 3.
+N1      5B5Eh (23390)   RAMERR  Error number passed from ROM 1 to ROM 
+                                3. Also used by SAVE/LOAD as temporary 
+                                drive store.
+2       5B5Fh (23391)   BAUD    RS232 bit period in T states/26. Set 
+                                by FORMAT LINE.
+N2      5B61h (23393)   SERFL   Second-character-received-flag, and 
+                                data.
+N1      5B63h (23395)   COL     Current column from 1 to width.
+1       5B64h (23396)   WIDTH   Paper column width. Defaults to 80.
+1       5B65h (23397)   TVPARS  Number of inline parameters expected 
+                                by RS232.
+1       5B66h (23398)   FLAGS3  Various flags. Bits 0, 1, 6 and 7 
+                                unlikely to be useful. Bit 2 is set 
+                                when tokens are to be expanded on 
+                                printing. Bit 3 is set if print output 
+                                is RS232. The default (at reset) is 
+                                Centronics. Bit 4 is set if a disk 
+                                interface is present. Bit 5 is set if 
+                                drive B: is present.
+X1	5B67h (23399)	BANK678	Copy of last byte output to I/O port
+				1FFDh (8189). This port is used to
+				control the +3 extended RAM and ROM
+				switching (bits 0..2 - if bit 0 is 0
+				then bit 2 controls the 'vertical' ROM
+				switch 0<->2 and 1<->3), the disk
+				motor (bit 3) and Centronics strobe
+				(bit 4). This byte must be kept up to
+				date with the last value output to the
+				port if interrupts are enabled.
+N1	5B68h (23400)	XLOC	Holds X location when using the
+				unexpanded COPY command.
+N1	5B69h (23401)	YLOC	Holds Y location when using the
+				unexpanded COPY command.
+X2	5B6Ah (23402)	OLDSP	Old SP (stack pointer) when TSTACK is
+				in use.
+X2	5B6Ch (23404)	SYNRET	Return address for ONERR.
+5	5B6Eh (23406)	LASTV	Last value printed by calculator.
+2	5B73h (23411)	RCLINE	Current line being renumbered.
+2	5B75h (23413)	RCSTART	Starting line number for
+				renumbering. The default value is 10.
+2	5B77h (23415)	RCSTEP	Incremental value for renumbering. The
+				default is 10.
+1	5B79h (23417)	LODDRV	Holds 'T' if LOAD, VERIFY, MERGE are
+				from tape, otherwise holds 'A', 'B'
+				or 'M'.
+1	5B7Ah (23418)	SAVDRV	Holds 'T' if SAVE is to tape,
+				otherwise holds 'A', 'B' or 'M'.
+1	5B7Bh (23419)	DUMPLF	Holds the number of 1/216ths user for
+				line feeds in 'COPY EXP'. This is
+				normally set to 9. If problems are
+				experienced fitting a dump onto a
+				sheet of A4 paper, POKE this
+				location with 8. This will reduce the
+				size of the dump and improve the
+				aspect ratio slightly. (The quality of
+				the dump will be marginally degraded,
+				however.)
+N8	5B7Ch (23420)	STRIP1	Stripe one bitmap.
+N8	5B84h (23428)	STRIP2	Stripe two bitmap. This extends to
+				5B8Bh (23436).
+X115	5BFFh (23551)	TSTACK	Temporary stack grows down from
+				here. Used when RAM page 7 is switched
+				in at top of memory (while executing
+				the editor or calling +3DOS). it may
+				safely go down to 5B8Ch (and across
+				STRIP1 and STRIP2 if necessary). This
+				guarantees at least 115 bytes of stack
+				when BASIC calls +3DOS.
+N8	5C00h (23552)	KSTATE	Used in reading the keyboard.
+N1	5C08h (23560)	LASTK	Stores newly pressed key.
+1	5C09h (23561)	REPDEL	Time (in 50ths of a second) that a key
+				must be held down before it
+				repeats. This starts off at 35, but
+				you can POKE in other values.
+1	5C0Ah (23562)	REPPER	Delay (in 50ths of a second) between
+				successive repeats of a key held down
+				- initially 5.
+N2	5C0Bh (23563)	DEFADD	Address of arguments of user defined
+				function (if one is being evaluated),
+				otherwise 0.
+Nl      5C0dh (23565)   K DATA  Stores 2nd byte of colour controls entered from keyboard . 
+N1	5C0Dh (23566)	TVDATA	Stores bytes of colour, AT and TAB
+				controls going to TV.
+X38	5C10h (23568)	STRMS	Addresses of channels attached to
+				streams.
+2	5C36h (23606)	CHARS	256 less than address of character set
+				(which starts with space and carries
+				on to (C)). Normally in ROM, but you
+				can set up your down in RAM and make
+				CHARS point to it.
+1	5C38h (23608)	RASP	Length of warning buzz.
+1	5C39h (23609)	PIP	Length of keyboard click.
+1	5C3Ah (23610)	ERRNR	1 less than the report code. Starts
+				off at 255 (for -1) so 'PEEK 23610'
+				gives 255.
+X1	5C3Bh (23611)	FLAGS	Various flags to control the BASIC
+				system.
+X1	5C3Ch (23612)	TVFLAG	Flags associated with the TV.
+X2	5C3Dh (23613)	ERRSP	Address of item on machine stack to be
+				used as error return.
+N2	5C3Fh (23615)	LISTSP	Address of return address from
+				automatic listing.
+N1	5C41h (23617)	MODE	Specifies 'K', 'L', 'C', 'E' or 'G'
+				cursor.
+2	5C42h (23618)	NEWPPC	Line to be jumped to.
+1	5C44h (23620)	NSPPC	Statement number in line to be jumped
+				to. Poking first NEWPPC and then NSPPC
+				forces a jump to a specified statement
+				in a line.
+2	5C45h (23621)	PPC	Line number of statement currently
+				being executed.
+1	5C47h (23623)	SUBPPC	Number within line of statement
+				currently being executed.
+1	5C48h (23624)	BORDCR	Border colour multiplied by 8; also
+				contains the attributes normally used
+				for the lower half of the screen.
+2	5C49h (23625)	E PPC	Number of current line (with program
+				cursor).
+X2	5C4Bh (23627)	VARS	Address of variables.
+N2	5C4Dh (23629)	DEST	Address of variable in assignment.
+X2	5C4Fh (23631)	CHANS	Address of channel data.
+X2	5C51h (23633)	CURCHL	Address of information currently being
+				used for input and output.
+X2	5C53h (23635)	PROG	Address of BASIC program.
+X2	5C57h (23637)	NXTLIN	Address of next line in program.
+X2	5C57h (23639)	DATADD	Address of terminator of last DATA
+				item.
+X2	5C59h (23641)	E LINE	Address of command being typed in.
+2	5C5Bh (23643)	K CUR	Address of cursor.
+X2	5C5Dh (23645)	CH ADD	Address of the next character to be
+				interpreted - the character after the
+				argument of PEEK, or the NEWLINE at
+				the end of a POKE statement.
+2	5C5Fh (23647)	X PTR	Address of the character after the []
+				marker.
+X2	5C61h (23649)	WORKSP	Address of temporary work space.
+X2	5C63h (23651)	STKBOT	Address of bottom of calculator stack.
+X2	5C65h (23653)	STKEND	Address of start of spare space.
+N1	5C67h (23655)	BREG	Calculator's B register.
+N2	5C68h (23656)	MEM	Address of area used for calculator's
+				memory (usually MEMBOT, but not
+				always).
+1	5C6Ah (23658)	FLAGS2	More flags. (Bit 3 set when CAPS SHIFT
+				or CAPS LOCK is on.)
+X1	5C6Bh (23659)	DF SZ	The number of lines (including one
+				blank line) in the lower part of the
+				screen.
+2	5C6Ch (23660)	S TOP	The number of the top program line in
+				automatic listings.
+2	5C6Eh (23662)	OLDPPC	Line number to which CONTINUE jumps.
+1	5C70h (23664)	OSPPC	Number within line of statement to
+				which CONTINUE jumps.
+N1	5C71h (23665)	FLAGX	Various flags.
+N2	5C72h (23666)	STRLEN	Length of string type destination in
+				assignment.
+N2	5C74h (23668)	T ADDR	Address of next item in syntax table
+				(very unlikely to be useful).
+2	5C76h (23670)	SEED	The seed for RND. This is the variable
+				that is set by RANDOMIZE.
+3	5C78h (23672)	FRAMES	3 byte (least significant byte first),
+				frame counter incremented every 20ms.
+2	5C7Bh (23675)	UDG	Address of first user-defined
+				graphic. You can change this, for
+				instance, to save space by having
+				fewer user-defined characters.
+1	5C7Dh (23677)	COORDS	X-coordinate of last point plotted.
+1	5C7Eh (23678)		Y-coordinate of last point plotted.
+1	5C7Fh (23679)	P POSN	33-column number of printer position.
+X2 	5C80h (23680)   PRCC    Full address of next position for LPRINT to
+		                print at (in ZX printer buffer).
+                		Legal values 5B00 - 5B1F.
+		                [Not used in 128K mode or when certain peripherals 
+        		         are attached]
+2	5C82h (23682)	ECHO E	33-column number and 24-line number
+				(in lower half) of end of input
+				buffer.
+2	5C84h (23684)	DF CC	Address in display file of PRINT
+				position.
+2	5C86h (23686)	DF CCL	Like DF CC for lower part of screen.
+X1	5C88h (23688)	S POSN	33-column number for PRINT position.
+X1	5C89h (23689)		24-line number for PRINT position.
+X2	5C8Ah (23690)	SPOSNL	Like S POSN for lower part.
+1	5C8Ch (23692)	SCR CT	Counts scrolls - it is always 1 more
+				than the number of scrolls that will
+				be done before stopping with
+				'scroll?'. If you keep poking this
+				with a number bigger than 1 (say 255),
+				the screen will scroll on and on
+				without asking you.
+1	5C8Dh (23692)	ATTR P	Permanent current colours, etc., (as
+				set up by colour statements).
+1	5C8Eh (23693)	MASK P	Used for transparent colours, etc. Any
+				bit that is 1 shows that the
+				corresponding attribute bit is taken
+				not from ATTR P, but from what is
+				already on the screen.
+N1	5C8Fh (23694)	ATTR T	Temporary current colours, etc., (as
+				set up by colour items).
+N1	5C90h (23696)	MASK T	Like MASK P, but temporary.
+1	5C91h (23697)	P FLAG	More flags.
+N30	5C92h (23698)	MEMBOT	Calculator's memory area - used to
+				store numbers that cannot conveniently
+				be put on the calculator stack.
+2	5CB0h (23728)	NMIADD	Holds the address of the users NMI
+				service routine.
+				NOTE - On previous machines, this did
+				not work correctly and these two bytes
+				were documented as 'Not used.'
+				Programs that user these two bytes for
+				passing values may need to be
+				modified.
+2	5CB2h (23730)	RAMTOP	Address of last byte of BASIC system
+				area.
+2	5CB4h (23732)	P RAMT	Address of last byte of physical RAM.
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt24.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt26.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

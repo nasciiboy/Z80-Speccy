@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 5</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 5
+Subroutines
+
+Subjects covered...
+
+	GO SUB, RETURN
+
+Sometimes, different parts of the program will have rather similar
+jobs to do, and you will find yourself typing in the same lines two or
+more times; however, this is not necessary. Instead, you need only
+type in the lines once (in what's called a subroutine) and then call
+the subroutine into action whenever you need it in the program.
+
+To do this, you use the statements GO SUB (go to subroutine) and
+RETURN. This takes the form...
+
+	GO SUB xxx
+
+...where 'xxx' is the line number of the first line in the subroutine.
+It is just like 'GO TO xxx' except that the +3 remembers where the GO
+SUB statement was, so that it can come back again after carrying out
+the subroutine.
+
+(In case you're interested, the +3 does this by remembering at which
+point in the program the GO SUB command was issued (in other words
+where it should continue from afterwards) and storing this return
+address on top of a pile called the GO SUB stack.)
+
+When the command...
+
+	RETURN
+
+...is met (at the end of the subroutine itself), the +3 takes the top
+return address off the GO SUB stack, and continues from the next
+statement.
+
+As an example, let's look at the number guessing program again. Retype
+it as follows...
+
+	 10 REM "A rearranged guessing game"
+	 20 INPUT "Enter a secret number",a: CLS
+	 30 INPUT "Guess the number",b
+	 40 IF b=a THEN PRINT "Correct": STOP
+	 50 IF b<a THEN GO SUB 100 60 IF b>a THEN GO SUB 100
+	 70 GO TO 30
+	100 PRINT "Try again"
+	110 RETURN
+
+The GO TO 30 statement in line 70 (and the STOP statement in line 60
+of the next program) are very important because otherwise the programs
+will run on into their subroutines and cause an error ('7 RETURN
+without GO SUB') when the RETURN statement is reached.
+
+The following program uses a subroutine (from line 100 to 150) which
+prints a 'times table' corresponding to the value of parameter 'n'.
+The command 'GO SUB 100' may be issued from any point in the program
+to call the subroutine. When the RETURN command in line 150 of the
+subroutine is reached, control returns to the main program, which
+continues running from the statement after the GO SUB call. Like GO
+TO, GO SUB may be typed in as GOSUB.
+
+	 10 REM times tables for 2, 5, 10 and 11
+	 20 LET n=2: GO SUB 100
+	 30 LET n=5: GO SUB 100
+	 40 LET n=10: GO SUB 100
+	 50 LET n=11: GO SUB 100
+	 60 STOP
+	 70 REM end of main program, start of subroutine
+	100 PRINT n;" times table"
+	110 FOR t=1 TO 9
+	120 PRINT t;" x ";n;" = ";t*b
+	130 NEXT t
+	140 PRINT
+	150 RETURN
+
+One subroutine can happily call another, or even itself (a subroutine
+that calls itself is known as recursive).
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt4.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt6.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

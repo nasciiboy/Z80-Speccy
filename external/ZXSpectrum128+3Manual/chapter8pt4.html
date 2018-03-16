@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 4</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 4
+Looping
+
+Subjects covered...
+
+	FOR, NEXT
+	TO, STEP
+
+Suppose you wish to input five numbers and add them together.
+
+One way (don't type this in unless you are feeling dutiful) [like me]
+is as follows...
+
+	 10 LET total=0
+	 20 INPUT a
+	 30 LET total=total+a
+	 40 INPUT a
+	 50 LET total=total+a
+	 60 INPUT a
+	 70 LET total=total+a
+	 80 INPUT a
+	 90 LET total=total+a
+	100 INPUT a
+	110 LET total=total+a
+	120 PRINT total
+
+This method is not good programming practice. It may be just about
+controllable for five numbers, but you can imagine how tedious a
+program like this to add twenty numbers would be, and to add a hundred
+or more would be out of the question.
+
+Much better is to set up a variable to count up to 5 and then stop the
+program, like this (which you should type in)...
+
+	10 LET total=0
+	20 LET count=1
+	30 INPUT a
+	40 REM count is number of times that a has been input so far
+	50 LET total=total+a
+	60 LET count=count+1
+	70 IF count <= 5 THEN GO TO 30
+	80 PRINT total
+
+Notice how easy it would be to change line 70 so that this program
+adds ten numbers, or even a hundred.
+
+This sort of thing is so useful that there are two special commands to
+make it easier - the FOR command and the NEXT command. They are always
+used together. Using these, the program you have just typed in does
+exactly the same as...
+
+	10 LET total=0
+	20 FOR c=1 TO 5
+	30 INPUT a
+	40 REM c is number of times that a has been input so far
+	50 LET total=total+a
+	60 NEXT c
+	80 PRINT total
+
+(To get this program from the previous one, you just have to edit
+lines 20, 40 and 60, then delete line 70.)
+
+Note that we have changed 'count' to 'c'. This is because the control
+variable of a FOR...NEXT loop must have a single letter as its name.
+
+The effect of this program is that 'c' runs through the values 1 (the
+initial value), 2, 3, 4 and 5 (the limit), and each time, lines 30, 40
+and 50 are executed. Then, when 'c' has finished its five values, line
+80 is executed.
+
+At this point, attempt exercise 2 (which refers to the above program),
+at the end of this section.
+
+An extra subtlety to the FOR...NEXT structure is that the control
+variable does not have to go up by 1 each time - you can change this 1
+to anything you like by using a STEP part in the FOR command. The most
+general form of a FOR command is...
+
+	FOR control variable = initial value TO limit STEP step
+
+...where the control variable is a single letter, and where the
+initial value, the limit and the step are all things that the +3 can
+calculate as numbers - like the actual numbers themselves, or sums, or
+the names of numeric variables. So, if you replace line 20 in the
+program by...
+
+	20 FOR c=1 TO 5 STEP 3/2
+
+...this will step the control variable by the amount 3/2 each time the
+FOR loop is executed. Note that we could have simply said 'STEP 1.5',
+or we could have assigned the step value to a variable, say 's', and
+then said 'STEP s'.
+
+With the above modification, 'c' will run through the values 1, 2.5 and
+4. Notice that you don't have to restrict yourself to whole numbers,
+and also that the control value does not have to hit the limit
+exactly; it carries on looping as long as it is less than or equal to
+the limit.
+
+At this point, attempt exercise 3 at the end of this section (which
+refers to the above program).
+
+Step values can be negative instead of positive. Try this program
+which prints out the numbers from 1 to 10 in reverse order.
+(Remember, use the command NEW before typing in a new program.)
+
+	10 FOR n=10 to 1 STEP -1
+	20 PRINT n
+	30 NEXT n
+
+We said before that the program carries on looping as long as the
+control variable is less than or equal to the limit. If you consider
+what that would mean in this case, you'll see that it now doesn't hold
+true. Hence, the rule has to be modified to say that when the step is
+negative, the program carries on looping as long as the control
+variable is greater than or equal to the limit.
+
+At this point, attempt exercises 4 and 5 at the end of this section
+(which refer to the above program).
+
+You must be careful if you are running two FOR...NEXT loops together,
+one inside the other. Try this program, which prints out the numbers
+for a complete set of six dot dominoes.
+
+	10 FOR m=0 TO 6				}
+	20 FOR n=0 TO m		}		}
+	30 PRINT m;":";n;" ";	}- 'n' loop	} - 'm' loop
+	40 NEXT n		}		}
+	50 PRINT				}
+	60 NEXT m				}
+
+You can see that the 'n' loop is entirely inside the 'm' loop. This
+means that they are properly nested.
+
+However, what must be avoided is having two FOR...NEXT loops that
+overlap without either being entirely inside the other, like this...
+
+	 5 REM this program is wrong
+	10 FOR m=0 TO 6		}
+	20 FOR n=0 TO m		}		}
+	30 PRINT m;":";n;" ";	}- 'm' loop	} - 'n' loop
+	40 NEXT m		}		}
+	50 PRINT				}
+	60 NEXT n				}
+
+Two FOR...NEXT loops must either be one inside the other, or
+completely separate.
+
+Another thing to avoid is jumping into the middle of a FOR...NEXT loop
+from the outside. The control variable is only set up properly when
+its FOR statement is executed, and if you miss this out, then the NEXT
+statement will confuse the +3. You will probably get an error report
+saying 'NEXT without FOR' or 'Variable not found'.
+
+There is nothing to stop you using a FOR...NEXT loop in a direct
+command. For example, try...
+
+	FOR m=0 TO 10: PRINT m: NEXT m
+
+You can sometimes use this as a (somewhat artificial) way of getting
+around the restriction that you cannot GO TO anywhere inside a command
+- because a command has no line number. For instance...
+
+	FOR m=0 TO 1 STEP 0: INPUT a: PRINT a: NEXT m
+
+The step size of zero here makes the command repeat itself forever.
+
+This sort of thing is not really recommended, because if an error
+crops up then you have lost the command and will have to type it in
+again; moreover, CONTINUE will not work.
+
+
+Exercises...
+
+1. Make sure that you understand that a control variable not only has
+a name and a value (like an ordinary variable), but also a limit, a
+step, and a reference to the statement after the corresponding FOR
+statement. Ensure that when the FOR statement is executed all this
+information is available (using the initial value as the first value
+the variable takes), and also that this information is enough for the
+NEXT statement to know by how much to increase the value, whether to
+jump back, and if so where to jump back to.
+
+2. Run the third program in this section, then type...
+
+	PRINT c
+
+Why is the answer 6, and not 5?
+
+(Answer: The NEXT command in line 60 is executed five times, each
+time 1 being added to 'c'. On the last time, 'c' becomes 6 so the
+NEXT command decides not to loop back but to carry on, 'c' now being
+part its limit.)
+
+3. What happens if you put 'STEP 2' at the end of line 20 of the third
+program? Try 'STEP 10'.
+
+Now change the third program so that instead of automatically adding
+five numbers, it asks you to input the amount of numbers you wish to
+add. When you run this program, what happens if you input '0' (meaning
+that you don't wish to add any numbers)? Why would you expect this to
+cause problems for the +3, even though it is clear what you mean?
+
+4. In line 10 of the fourth program in this section, change '10' to
+'100' and run the program. It will print the numbers from 100 down to
+79 on the screen, and then say 'scroll?' at the bottom. This is to
+give you a chance to see the numbers that are about to be scrolled off
+the top. If you press N, BREAK or the space bar, the program will stop
+with the report 'D BREAK - CONT repeats'. If you press any other key,
+then it will print another 22 lines and ask you again if you wish to
+scroll.
+
+5. Delete line 30 from the fourth program. When you run the new
+curtailed program, it will print the first number and stop with the
+message '0 OK'. If you then type...
+
+	NEXT n
+
+...the program will go once round the loop, printing out the next
+number.
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt3.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt5.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

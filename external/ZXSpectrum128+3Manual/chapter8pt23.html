@@ -1,0 +1,185 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 23</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 23
+IN and OUT
+
+Subjects covered...
+
+	IN
+	OUT
+
+The processor can read from (ROM and RAM) and write to (RAM) memory by
+using PEEK and POKE. The processor itself does not really care whether
+memory is ROM or RAM - it just thinks there are 65536 memory
+addresses, and it can read a byte from each one (even if it's
+nonsense), and write a byte to each one (even if it gets lost). In a
+completely analogous way, there are 65536 of what are called I/O ports
+(standing for input/output ports). These are used by the processor for
+communicating with things like the keyboard or the printer, and also
+for controlling the extra memory and the sound chip. Some of them can
+be safely controlled from BASIC by using the IN function and the OUT
+command, but there are locations to which you must not write from
+BASIC as you will probably cause the system to crash, losing any
+program and data.
+
+IN is a function like PEEK. Its form is...
+
+	IN address
+
+It has one argument - the port address, and its result is a byte read
+from that port.
+
+OUT is a statement like POKE. Its form is...
+
+	OUT address,value
+
+...which writes the given value to the port with the given address.
+How the address is interpreted depends very much upon the rest of the
+computer. Quite often, many different addresses will mean the same. On
+the +3 it is most sensible to imagine the address being written in
+binary, because the individual bits (each of which can have the value
+either 0 or 1) tend to work independently. There are 16 bits, which we
+shall refer to (using A for address) as...
+
+	A15, A14, A13, A12, A11, A10, A9, A8,
+	A7, A6, A5, A4, A3, A2, A1, A0
+
+Here, A0 is the 1s bit, A1 is the 2s bit, A2 is the 4s bit, and so on.
+Bits A0, A1, A2, A3 and A4 are the important ones. They are normally
+1, but if any one of them is 0, then this tells the computer to do
+something specific. The computer cannot cope with more than one thing
+at a time, so no more than one of these five bits should 0. Bits A6
+and A7 are ignored, so if you are a wizard with electronics you can
+use them yourself. The best addresses to use are those that are 1 less
+than a multiple of 32, so that A0 to A4 are all 1. Bits A8, A9, and so
+on are sometimes used to give extra information, but mostly for the
+extra memory and sound.
+
+The byte being written or read has 8 bits, and these are often
+referred to (using D for data) as...
+
+	D7, D6, D5, D4, D3, D2, D1, D0
+
+Here follows a list of the port addresses used...
+
+There is a set of input addresses that read the keyboard and the tape
+interface.
+
+The keyboard is divided up into 8 half-rows of 5 keys each, viz:
+
+	IN 65278 (FEFEh)	reads the half-row CAPS SHIFT to V
+	IN 65022 (FDFEh)	reads the half-row A to G
+	IN 64510 (FBFEh)	reads the half-row Q to T
+	IN 63486 (F7FEh)	reads the half-row 1 to 5 (and JOYSTICK 1)
+	IN 61438 (EFFEh)	reads the half-row 6 to 0 (and JOYSTICK 2)
+	IN 57342 (DFFEh)	reads the half-row P to Y
+	IN 49150 (BFFEh)	reads the half-row ENTER to H
+	IN 32766 (7FFEh)	reads the half-row (space) to B
+
+(These addresses are 254+256x(255-2^n) as n goes from 0 to 7.)
+
+Remember that digits followed by h signify hexadecimal numbers. If you
+don't understand hexadecimal numbers, refer to part 32 of this
+chapter.
+
+In the byte read in, bits D0 to D4 stand for the five keys in the
+given half-row. D0 is for the outside key, and D4 is for the one
+nearest the middle. The bit is 0 if the key is pressed, 1 if it is
+not. D6 is set by the tape interface, and is effectively random if no
+tape data is present.
+
+For JOYSTICK 1, bit 0 is fire, bit 1 is up, bit 2 is down, bit 3 is
+right and bit 4 is left. For JOYSTICK 2, bit 0 is left, bit 1 is
+right, bit 2 is down, bit 3 is up and bit 4 is fire. From BASIC, these
+read as the number keys.
+
+Port address 00FEh (254 decimal) in output drives the sound (D4) and
+the save signal to the tape interface (D3), and also sets the border
+colour (D2, D1 and D0).
+
+Port addresses 00FEh (254), 00F7h (247) and 00EFh (239) are reserved.
+
+Port address 7FFDh (32765) drives the extra memory. Executing an OUT
+to this port from BASIC will nearly always cause the computer to
+crash, losing any program and data. There is a fuller description of
+this port in part 24 of this chapter (under the heading `Memory
+management'). This port is write only, i.e. you cannot determine the
+current state of the paging by an IN instruction. This is why the
+BANKM system variable is always kept up to date with the last value
+output to this port.
+
+Port address BFFDh (49149) drives the sound chip's data registers.
+Port address FFFDh (65533) in output writes a register address, and in
+input reads a register. Judicious use of these two registers can allow
+sounds to be generated whilst BASIC gets on with something else, but
+you should be aware that they also control RS232/MIDI and AUX
+interfaces.
+
+Port address 0FFDh (4093) is used for the parallel (Centronics)
+interface (i.e. PRINTER). When read using an IN instruction bit 0
+shows the state of the BUSY signal produced by the printer. If the
+printer is off line or non-existent, then this bit will be 1. When
+this port is written to using OUT, it acts as the parallel port data
+register. In order to print a character it is necessary to wait until
+BUSY is 0, write the character code to port 0FFDh (4093), and finally,
+take the STROBE bit in port 1FFDh (8189) low than back high again.
+
+Port address 1FFDh (8189) controls several aspects of the +3. Amongst
+other things, this port controls the ROM that is switched into the
+memory area from 0000h...3FFFh (0...16383). As the port is write only,
+the +3 BASIC maintains a variable, BANK678, that holds the value last
+output to this port. It is therefore very unwise to OUT values
+directly to this port without first checking on the current state
+(which holds its current state in BANKM). The bottom three bits (0..2)
+of this port (1FFDh) are used to switch RAM/ROM - further details can
+be found in part 24 of this chapter (under the heading `Memory
+management'). Bit 3 controls the disk motor (0 is off, 1 is on),
+though it should not be necessary to control the motor by writing to
+this port as there are +3DOS routines that will achieve the desired
+effect. Bit 4 is the parallel port STROBE which is active low - this
+means that to print the character that has been output to port 0FFDh
+(4093), the STROBE bit should be brought low and then returned to its
+normally high state.
+
+Port address 2FFDh (12285) can be used to read the disk controller
+(uPD765A) chip's main status register. This is unlikely to be very
+useful without an in-depth knowledge of how the chip operates.
+
+Port address 3FFDh (16381) is the disk controller's data register.
+This can be both read from and written to, but once again it is
+unlikely to be useful to the BASIC programmer. Random OUTputting to
+this port will probably confuse the poor disk controller chip to such
+an extent that subsequent disk operations (like LOAD and SAVE) will be
+unreliable. It is entirely possible that ill-informed experiments will
+corrupt your disks and lose your data - you have been warned!
+
+Run this program to see how the keyboard works...
+
+	10 FOR n=0 TO 7: REM half-row number
+	20 LET a=254+256*(255-2^n)
+	30 PRINT AT 20,0; IN a: GO TO 30
+
+...and play around by pressing keys (start with the half-row from CAPS
+SHIFT to V). When you are finished with each half-row, press BREAK and
+then type...
+
+	NEXT n
+
+The control, data and address busses are all exposed at the back of
+the +3 on the EXPANSION I/O socket. This means that you can do almost
+anything with a +3 that you could with a raw Z80 chip (although
+sometimes, the computer's internal workings may get in the way).
+
+See chapter 10 for a diagram and pin-out of the EXPANSION I/O socket.
+
+</PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt22.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt24.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>

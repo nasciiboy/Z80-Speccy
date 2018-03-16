@@ -1,0 +1,106 @@
+<HTML>
+<HEAD>
+<TITLE>World of Spectrum - Documentation - ZX Spectrum +3 - Chapter 8, Part 3</TITLE>
+</HEAD>
+<BODY>
+<PRE>Part 3
+Decisions
+
+Subjects covered...
+
+	CLS, IF, STOP
+	=, <, >, <=, >=, <>
+
+All the programs we have seen so far have been pretty predictable -
+they went straight through the instructions, and then went back to
+the beginning again. This is not very useful, as in practice, we would
+want the +3 to make decisions and act accordingly. The instruction to
+do this in BASIC takes the form...
+
+	IF something is true (or not true) THEN do something
+
+Let's look at an example of this. Use NEW to clear the previous
+program from the +3, select +3 BASIC, then type in and run this
+program. (This is clearly meant for two people to play!)...
+
+	10 REM Guess the number
+	20 INPUT "Enter a secret number",a: CLS
+	30 INPUT "Guess the number",b
+	40 IF b=a THEN PRINT "That is correct": STOP
+	50 IF b<a THEN PRINT "That is too small, try again" 60 IF b>a THEN PRINT "That is too big, try again"
+	70 GO TO 30
+
+Note that the CLS command (at the end of line 20) means 'clear the
+screen'. We have used it in this program to stop the other person
+seeing the secret number after it is entered.
+
+You can see that the IF statement takes the form...
+
+	IF condition THEN xxx
+
+...where 'xxx' stands for a command (or a sequence of commands
+separated by colons). The condition is something that is going to be
+worked out as either true or false - if it comes out as true then the
+statements in the reset of the line (after THEN) are executed;
+otherwise they are skipped over, and the program executes the next
+instruction.
+
+The simplest conditions compare two numbers or two strings; they can
+test whether two numbers are equal or whether one is bigger than the
+other. They can also test whether two strings are equal, or whether
+one comes before the other in alphanumerical order. They use the
+symbols '=', '<', '>', '<=', '>=' and '<>' (these are known as
+relational operators).
+
+	=	means is equal to.
+	< 	means is less than.
+	>	means is greater than.
+	<=	means is less than or equal to.
+	>=	means is greater than or equal to.
+	<>	means is not equal to.
+
+(If you keep getting mixed up about the meanings of '<' and '>', it
+may help you to remember that the thin end of the symbol points to the
+number which is supposed to be smaller.)
+
+In the program we have just typed in, line 40 compares 'a' and 'b'. If
+they are equal, then the program is halted by the STOP command. The
+report at the bottom of the screen...
+
+	9 STOP statement, 40:3
+
+...shows that the 3rd statement (i.e. the STOP command) in line 40
+caused the program to halt.
+
+Line 50 determines whether 'b' is less than 'a', and line 60 whether
+'b' is greater than 'a'. If one of these conditions is true then the
+appropriate comment is printer, and the program works its way down to
+line 70 which jumps back to line 30 and starts all over again.
+
+Finally, note that in some versions of BASIC (not +3 BASIC) the IF
+statement can have the form...
+
+	IF condition THEN line number
+
+This means the same as...
+
+	IF condition THEN GO TO line number
+
+...in +3 BASIC.
+
+
+Exercise...
+
+1. Try this program...
+
+	10 LET a=1
+	20 LET b=1
+	30 IF a>b THEN PRINT a;" is higher"
+	40 IF a<b THEN PRINT b;" is higher" [Yes, this is how the program actually reads in the manual. Of course, the contents of the PRINT statements don't really matter much.] Before you run it, try to work out what will be printed on the screen. < PRE>
+<CENTER><H5>
+<A HREF="./chapter8pt2.html">[Back]</A>
+<A HREF="./index.html">[Contents]</A>
+<A HREF="./chapter8pt4.html">[Next]</A>
+</H5></CENTER>
+</BODY>
+</HTML>
