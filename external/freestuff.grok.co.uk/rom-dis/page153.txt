@@ -1,0 +1,66 @@
+		JR 	Z,2B4F,L-SINGLE 	Jump forward if dealing with
+				a variable with a 'short name'.
+
+The 'extra' codes of a long name are passed to the variables area.
+
+2B3E 	L-CHAR 	INC 	HL 	Point to each 'extra' code.
+		LD 	A,(HL) 	Fetch the code.
+		CP 	+21 	Accept codes from +21 to +FF;
+		JR 	C,2B3E,L-CHAR 	ignore codes +00 to +20.
+		OR 	+20 	Set bit 5, as for lower case
+				letters.
+		INC 	DE 	Transfer the codes in turn
+		LD 	(DE),A 	to the 2nd 'new' byte
+				onwards.
+		DJNZ 	2B3E,L-CHAR 	Go round the loop for all the
+				'extra' codes.
+
+The last code of a 'long' name has to be ORed with +80.
+
+		OR 	+80 	Mark the code as required
+		LD 	(DE),A 	and overwrite the last code.
+
+The first letter of the name of the variable being handled is now considered.
+
+		LD 	A,+C0 	Prepare the mark the letter
+				of a 'long' name.
+2B4F 	L-SINGLE 	LD 	HL,(DEST) 	Fetch the pointer to the letter.
+		XOR 	(HL) 	A holds +00 for a 'short'
+				name and +C0 for a 'long' name.
+		OR 	+20 	Set bit 5, as for lower case
+				letters.
+		POP 	HL 	Drop the pointer now.
+
+
+The subroutine L-FIRST is now called to enter the 'letter' into its appropriate location.
+
+		CALL 	2BEA,L-FIRST 	Enter the letter and return
+				with HL pointing to 'new
+				80-byte'.
+
+The 'last value' can now be transferred to the variables area. Note that at this point HL always points to the location after the five locations allotted to the number.
+A 'RST 0028' instruction is used to call the CALCULATOR and the 'last value' is deleted. However this value is not overwritten.
+
+2B59 	L-NUMERIC 	PUSH 	HL 	Save the 'destination' pointer.
+		RST 	0028,FP-CALC 	Use the calculator.
+		DEFB 	+02,delete 	This moves STKEND back five
+		DEFB 	+38,end-calc 	bytes.
+		POP 	HL 	Restore the pointer.
+		LD 	BC,+0005 	Give the number a 'length'
+				of five bytes.
+		AND 	A 	Make HL point to the first
+		SBC 	HL,BC 	of the five locations and
+		JR 	2BA6,L-ENTER 	jump forward to make the
+				actual transfer.
+
+Come here if considering a variable that 'exists already'. First bit 6 of FLAGS is tested so as to separate numeric variables from string or array of string variables.
+
+2B66 	L-EXISTS 	BIT 	6,(FLAGS) 	Jump forward if handling any
+		JR 	Z,2B72,L-DELETES 	kind of string variable.
+
+For numeric variables the 'new' number overwrites the 'old' number. So first HL has to be made to point to the Icoation after the five bytes of the existing entry. At present HL points to the location before the five bytes.
+
+		LD 	DE,+0006 	The five bytes of a number +'1'.
+		ADD 	HL,DE 	HL now points 'after'.
+		JR 	2B59,L-NUMERIC 	Jump back to make the actual
+				transfer.

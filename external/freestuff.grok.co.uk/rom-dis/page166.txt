@@ -1,0 +1,53 @@
+		LD	(HL),A	Store the byte.
+		INC	HL	Point to the fifth location.
+		LD	(HL),+00	The fifth byte is set to zero.
+		POP	HL	Return with HL pointing to the
+		RET	first byte on n on the stack
+
+THE 'FLOATING-POINT TO BC' SUBROUTINE
+This subroutine is called from four different places for various purposes and is used to compress the floating-point 'last value' into the BC register pair. If the result is too large, i.e. greater than 65536 decimal, then the subroutine returns with the carry flag set. If the 'last value' is negative then the zero flag is reset. The low byte of the result is also copied to the A register.
+2DA2	FP-TO-BC	RST	0028,FP-CALC	Use the calculator to make HL
+		DEFB	+38,end-calc	point to STKEND-5
+		LD	A,(HL)	Collect the exponent byte of
+		AND 	A	the 'last value'; jump if it is
+		JR	Z,2DAD,FP-DELETE zero, indicating a 'small integer'.
+		RST	0028,FP-CALC	Now use the calculator to round
+		DEFB	+A2,stk-half	the 'last value' to the nearest
+		DEFB	+0F,addition	integer, which also changes it to
+		DEFB	+27,int	'small integer' form on the
+		DEFB	+38,end-calc	calculator stack if that is pos-
+				sible, i.e. if -65535.5 <=
+				x <65535.3
+2DAD	FP-DELETE	RST	0028,FP-CALC	Use the calculator to delete the
+		DEFB	+92,delete	integer from the stack; DE still
+		DEFB	+38,end-calc	points to iit in memory (at
+				STKEND).
+		PUSH	HL	Save both stack pointers.
+		PUSH	DE	
+		EX	DE,HL	HL now points to the number.
+		LD	B,(HL)	Copy the first byte to B.
+		CALL	2D7F,INT-FETCH	Copy bytes 2, 3 and 4 to C, E
+				and D.
+		XOR	A	Clear the A register.
+		SUB	B	This sets the carry unless B is
+				zero.
+		BIT	7,C	This sets the zero flag if the
+				number is positive (NZ denotes
+				negative).
+		LD	B,D	Copy the high byte to B.
+		LD	C,E	And the low byte to C.
+		LD	A,E	Copy the low byte to A too.
+		POP	DE	Restore the stack pointers.
+		POP	HL
+		RET		Finished.
+
+THE 'LOG (2^A)' SUBROUTINE
+This subroutine is called by the 'PRINT-FP' subroutine to calculate the approximate number of digits before the decimal in x, the number to be printed, or, if there are no digits before the decimal, then the approximate number of leading zeros after the decimal. It is entered with the A register containing e', the true exponent of x, or e'-2, and calculates z=log to the base 10 of (2^A). It then sets A equal to ABS INT (Z + 0.5), as required, using FP-TO-A for this purpose.
+2DC1	LOG (2^A)	LD	D,A	The integer A is stacked, either
+		RLA		as 00 00 A 00 00 (for positive
+		SBC	A,A	A) or as 00 FF A FF 00 (for 
+				negative A).
+		LD	E,A	These bytes are first loaded into
+		LD	C,A	A, E, D, C, B and then STK-
+		XOR	A	STORE is called to put the
+		LD	B,A	number on the calculator stack.

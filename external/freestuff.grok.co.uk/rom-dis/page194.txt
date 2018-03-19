@@ -1,0 +1,44 @@
+THE 'DELETE' SUBROUTINE
+(Offset 02: 'delete)
+
+This subroutine contains only the single RET instruction at 33A1, above. The literal '02' results in this subrouting being considered as a binary operation that is to be entered with a first number addressed by the HL register pair and a second number addressed by the DE register pair, and the result produced again addressed by the HL register pair.
+The single RET instruction thereby leads to the first number being considered as the resulting 'last value' and the second number considered as being deleted. Of course the number has not been deleted from the memory but remains inactive and will probably soon be overwritten.
+
+
+THE 'SINGLE OPERATION' SUBROUTINE
+(Offset 3B:  'fp-calc-2')
+
+This subroutine is only called from SCANNING at 2757 hex and is used to perform a single arithmetic operation. The offset that specifies which operation is to be performed is supplied to the calculator in the B register and subsequently transferred to the system variable BREG.
+
+The effect of calling this subroutine is essentially to make a jump to the appropriate subroutine for the single operation.
+
+33A2	fp-calc-2	POP	AF	Discard the RE-ENTRY address.
+		LD	A,(BREG)	Transfer the offset to A.
+		EXX		Enter the alternate register set.
+		JR	336C,SCAN-ENT	Jump back to find the required
+				address; stack the RE-ENTRY
+				address and jump to the
+				subroutine for the operation.
+
+
+THE 'TEST 5-SPACES' SUBROUTINE
+This subroutine tests whether there is sufficient room in memory for another 5-byte floating-point number to be added to the calculator stack.
+
+33A9	TEST-5-SP	PUSH	DE	Save DE briefly.
+		PUSH	HL	SAve HL briefly.
+		LD	BC,+0005	Specify the test is for 5 bytes.
+		CALL	1F05,TEST-ROOM	Make the test.
+		POP	HL	Restore HL.
+		POP	DE	Restore DE.
+		RET		Finished.
+
+
+THE 'STACK NUMBER' SUBROUTINE
+This subroutine is called by BEEP and SCANNING twice to copy STKEND to DE, move a floating-point number to the calculator stack, and reset STKEND from DE. It calls 'MOVE-FP' to do the actual move.
+
+33B4	STACK-NUM	LD	DE,(STKEND)	Copy STKEND to DE as
+				destination address.
+		CALL	33C0,MOVE-FP	Move the number.
+		LD	(STKEND),DE	Reset STKEND from DE.
+		RET		Finished.
+

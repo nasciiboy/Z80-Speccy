@@ -1,0 +1,59 @@
+THE ARITHMETIC ROUTINES
+
+THE 'E-FORMAT TO FLOATING-POINT' SUBROUTINE
+(Offset 3C - see CALCULATE below: 'e-to-fp')
+
+This subroutine gives a 'last value' on the top of the calculator stack that is the result of converting a number given in the form xEm, where m is a positive or negative integer. The subroutine is entered with x at the top of the calculator stack and m in the A register.
+
+The method used is to find the absolute value of m, say p, and to multiply or divide x by 10^p according to whether m is positive or negative.
+
+To achieve this, p is shifted right until it is zero, and x is multiplied or divided by 10^(2^n) for each set bit b(n) of p. Since p is never much more than decimal 39, bits 6 and 7 of p will not normally be set.
+
+2D4F	E-TO-FP	RLCA		Test the sign of m by rotating
+		RRCA		bit 7 of A into the carry
+				without changing A.
+		JR	NC,2D55,E-SAVE	Jump if m is positive.
+		CPL		Negate m in A without
+		INC	A	disturbing the carry flag.
+2D55	E-SAVE	PUSH	AF	Save m in A briefly.
+		LD	HL,+5C92	This is MEMBOT: a sign flag is
+		CALL	350B,FP-0/1	now stored in the first byte of
+				mem-0, i.e. 0 for '+' and 1 for
+		RST	0028,FP-CALC	The stack holds x.
+		DEFB	+A4,stk-ten	x,10 (decimal)
+		DEFB	+38,end-calc	x,10
+		POP	AF	Restore m in A.
+2D60	E-LOOP	SRL	A	In the loop, shift out the next
+				bit of m, modifying the carry
+				and zero flags appropriately;
+		JR	NC,2D71,E-TST-END	jump if carry reset.
+		PUSH	AF	Save the rest of m and the flags.
+		RST	0028,FP-CALC	The stack holds x' and
+				10^(2^n), where x' is an
+				interim stage in the multiplica-
+				tion of x by 10^m, and n=
+				0,1,2,3,4 or 5.
+		DEFB	+C1,st-mem-1	(10^(2^n) is copied to mem-1).
+		DEFB	+E0,get-mem-0	x', 10^(2^n), (1/0)
+		DEFB	+00,jump-true	x', 10^(2^n)
+		DEFB	+04,to E-DIVSN	x', 10^(2^n)
+		DEFB	+04,multiply	x'*10^(2^n)= x"
+		DEFB	+33,jump	x''
+		DEFB	+02,to E-FETCH	x''
+2D6D	E-DIVSN	DEFB	+05,division	x/10^(2^n)=x'' (x'' is N'*10^
+				(2^n) or x'/10^(2^n)
+				according as m is '+' ot '-').
+2D6E	E-FETCH	DEFB	+E1,get-mem-1	x'', 10^(2^n)
+		DEFB	+38,end-calc	x'', 10^(2^n)
+		POP	AF	Restore the rest of m in A, and
+				the flags.
+2D71	E-TST-END	JR	Z,2D7B,E-END	Jump if m has been reduced to
+				zero.
+		PUSH	AF	Save the rest of m in A.
+		RST	0028,FP-CALC	x'', 10^(2^n)
+		DEFB	+31,duplicate	x'', 10^(2^n), 10^(2^n)
+		DEFB	+04,multiply	x'', 10^(2^(n+1))
+		DEFB	+38,end-calc	x'', 10^(2^(n+1))
+		POP	AF	Restore the rest of m in A.
+		JR	2D60,E-LOOP	Jump back for all bits of m.
+2D7B	E-END	RST	0028,FP-CALC	Use the calculator to delete the

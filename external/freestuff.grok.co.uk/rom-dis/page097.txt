@@ -1,0 +1,62 @@
+		RST	0020,NEXT-CHAR	Advance past the NEXT that
+				was found.
+		OR	+20	Allow for upper and lower
+		CP	B	case letters before the new
+				variable name is tested.
+		JR	Z,1D7C,F-FOUND	Jump forward if it matches.
+		RST	0020,NEXT-CHAR	Advance CH-ADD again and
+		JR	1D64,F-LOOP	jump back if not the correct
+				variable.
+
+NEWPPC holds the line number of the line in which the correct NEXT was found. Now the statement number has to be found and stored in NSPPC.
+
+1D7C	F-FOUND	RST	0020,NEXT-CHAR	Advance CH-ADD.
+		LD	A,+01	The statement counter in the
+		SUB	D	D register counted statements
+				back from zero so it has to
+				be subtracted from '1'.
+		LD	(NSPPC),A	The result is stored.
+		RET		Now return - to STMT-RET.
+
+REPORT I - FOR without NEXT
+
+1D84	REPORT-I	RST	0008,ERROR-1	Call the error handling
+		DEFB	+11	routine.
+
+THE 'LOOK-PROG' SUBROUTINE
+This subroutine is used to find occurrences of either DATA, DEF FN or NEXT. On entry the appropriate token code is in the E register and the HL register pair points to the start of the search area.
+
+1D86	LOOK-PROG	LD	A,(HL)	Fetch the present character.
+		CP	+3A	Jump forward if it is a ' : '
+		JR	Z,1DA3,LOOK-P-2	which will indicate there are
+				more statements in the present
+				line.
+
+Now a loop is entered to examine each further line in the program.
+
+1D8B	LOOK-P-1	INC	HL	Fetch the high byte of the
+		LD	A,(HL)	line number and return with
+		AND	+CO	carry set if there are no
+		SCF		further lines in the program.
+		RET	NZ
+		LD	B,(HL)	The line number is fetched
+		INC	HL	and passed to NEWPPC.
+		LD	C,(HL)
+		LD	(NEWPPC),BC
+		INC	HL	Then the length is collected.
+		LD	C,(HL)
+		INC	HL
+		LD	B,(HL)
+		PUSH	HL	The pointer is saved whilst
+		ADD	HL,BC	the address of the end of the
+		LD	B,H	line is formed in the BC
+		LD	C,L	register pair.
+		POP	HL	The pointer is restored.
+		LD	D,+00	Set the statement counter to
+				zero.
+1DA3	LOOK-P-2	PUSH	BC	The end-of-line pointer is
+		CALL	198B,EACH-STMT	saved whilst the statements
+		POP	BC	of the line are examined.
+		RET	NC	Make a return if there was
+		JR	1D8B,LOOK-P-1	an 'occurrence'; otherwise
+				consider the next line.

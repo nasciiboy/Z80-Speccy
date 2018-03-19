@@ -1,0 +1,64 @@
+THE STATEMENT LOOP.
+Each statement is considered in turn until the end of the line is reached.
+
+1B28	STMT-LOOP	RST	0020,NEXT-CHAR	Advance CH-ADD along the line.
+1B29	STMT-L-1	CALL	16BF,SET-WORK	The work space is cleared.
+		INC	(SUBPPC)	Increase SUBPPC on each
+				passage around the loop.
+		JP	M,1C8A,REPORT-C	But only '127' statements are
+				allowed in a single line.
+		RST	0018,GET-CHAR	Fetch a character.
+		LD	B,+00	Clear the register for later.
+		CP	+0D	Is the character a 'carriage
+		JR	Z,1BB3,LINE-END	return'; jump if it is.
+		CP	+3A	Go around the loop again if
+		JR	Z,1B28,STMT-LOOP	it is a ':'.
+
+A statement has been identified so, first, its initial command is considered.
+
+		LD	HL,+1 B76	Pre-load the machine stack
+		PUSH	HL	with the return address
+				- STMT-RET.
+		LD	C,A	Save the command temporarily
+		RST	0020,NEXT-CHAR	in the C register whilst
+		LD	A,C	CH-ADD is advanced again.
+		SUB	+CE	Reduce the command's code by
+				+CE; giving the range +00 to
+				+31 for the fifty commands.
+		JP	C,18CA,REPORT-C	Give the appropriate error if
+				not a command code.
+		LD	C,A	Move the command code to the
+				BC register pair (B holds +00).
+		LD	HL,+1A48	The base address of the syntax
+				offset table.
+		ADD	HL,BC	The required offset is passed to
+		LD	C,(HL)	the C register and used to
+		ADD	HL,BC	compute the base address for
+				the command's entries in the
+				parameter table.
+		JR	1B55,GET-PARAM	Jump forward into the scanning
+				loop with this address.
+
+Each of the command class routines applicable to the present command are executed in turn. Any required separators are also considered.
+
+1B52	SCAN-LOOP	LD	HL,(T-ADDR)	The temporary pointer to the
+				entries in the parameter table.
+1B55	GET-PARAM	LD	A,(HL)	Fetch each entry in turn.
+		INC	HL	Update the pointer to the
+		LD	(T-ADDR),HL	entries for the next pass.
+		LD	BC,+1B52	Pre-load the machine stack
+		PUSH	BC	with the return address -
+				SCAN-LOOP.
+		LD	C,A	Copy the entry to the C register
+				for later.
+		CP	+20	Jump forward if the entry is
+		JR	NC,1B6F,SEPARATOR	a 'separator'.
+		LD	HL,+1C01	The base address of the
+				'command class' table.
+		LD	B,+00	Clear the B register and
+		ADD	HL,BC	index into the table.
+		LD	C,(HL)	Fetch the offset and compute
+		ADD	HL,BC	the starting address of the
+				required command class routine
+		PUSH	HL	Push the address on to the
+				machine stack.

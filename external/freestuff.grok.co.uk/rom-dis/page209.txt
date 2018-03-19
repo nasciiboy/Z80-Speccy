@@ -1,0 +1,61 @@
+		CALL	15E6,INPUT-AD	The signal is now accepted, like
+				a 'key-value'.
+		LD	BC,+0000	The default length of the
+				resulting string is zero.
+		JR	NC,365F,R-I-STORE	Jump if there was no signal.
+		INC	C	Set the length to 1 now.
+		RST	0030,BC-SPACES	Make a space in the work space.
+		LD	(DE),A	Put the string into it.
+365F	R-I-STORE	CALL	2AB2,STK-STO-$	Pass the parameters of the string
+				to the calculator stack.
+		POP	HL	Restore CURCHL and the
+		CALL	1615,CHAN-FLAG	appropriate flags.
+		JP	35BF,STK-PNTRS	Exit, setting the pointers.
+
+THE 'CODE' FUNCTION
+(Offset 1C: 'code')
+
+This subroutine handles the function CODE A$ and returns the Spectrum code of the first character in A$, or zero if A$ should be null.
+
+3669	code	CALL	2BF1,STK-FETCH	The parameters of the string are
+				fetched.
+		LD	A,B	The length is tested and the A
+		OR	C	register holding zero is carried
+		JR	Z,3671,STK-CODE	forward is A$ is a null string.
+		LD	A,(DE)	The code of the first character is
+				put into A otherwise.
+3671	STK-CODE	JP	2D28,STACK-A	The subroutine exits via
+				STACK-A which gives the
+				correct 'last value'.
+
+THE 'LEN' FUNCTION
+(Offset 1E: 'len')
+
+This subroutine handles the function LEN A$ and returns a 'last value' that is equal to the legnth of the string.
+
+3674	len	CALL	2BF1,STK-FETCH	The parameters of the string are
+				fetched.
+		JP	2D2B,STACK-BC	The subroutine exits via
+				STACK-BC which gives the
+				correct 'last value'.
+
+THE 'DECREASE THE COUNTER' SUBROUTINE
+(Offset 35: 'dec-jr-nz')
+
+This subroutine is only called by the SERIES GENERATOR subroutine and in effect is a 'DJNZ' operation but the counter is the system variable, BREG, rather than the B register.
+
+367A	dec-jr-nz	EXX		Go to the alternative register set
+		PUSH	HL	and save the next literal pointer
+				on the machine stack.
+		LD	HL,+5C67	Make HL point to BREG.
+		DEC	(HL)	Decreae BREG.
+		POP	HL	Restore the next literal pointer.
+		JR	NZ,3687,JUMP-2	The jump is made on non-zero.
+		INC	HL	The next literal is passed over.
+		EXX		Return to the main register set.
+		RET		Finished.
+
+THE 'JUMP' SUBROUTINE
+(Offset 33: 'jump')
+
+This subroutine executes an unconditional jump when called by the literal '33'. It is also used by the subroutines DECREASE THE COUNTER and JUMP ON TRUE.

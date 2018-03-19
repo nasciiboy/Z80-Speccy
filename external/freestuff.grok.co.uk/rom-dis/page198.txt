@@ -1,0 +1,49 @@
+Note that the pointers HL and DE remain as they were, pointing to STKEND-5 and STKEND respectively, so that the 'last value' remains on the calculator stack. If required it can be removed by using 'delete'.
+
+THE 'EXCHANGE' SUBROUTINE
+(Offset 01: 'exchange')
+
+This binary operation 'exchanges' the first number with the second number, i.e. the topmost two numbers on the calculator stack are exchanged.
+
+343C	EXCHANGE	LD	B,+05	There are five bytes involved.
+343E	SWAP-BYTE	LD	A,(DE)	Each byte of the second number.
+		LD	C,(HL)	Each byte of the first number.
+		EX	DE,HL	Switch source and destination.
+		LD	(DE),A	Now to the first number.
+		LD	(HL),C	Now to the second number
+		INC	HL	Move to consider the next pair
+		INC	DE	of bytes.
+		DJNZ	343E,SWAP-BYTE	Exchange the five bytes.
+		EX	DE,HL	Get the pointers correct as the
+				number 5 is an odd number.
+		RET		Finished.
+
+THE 'SERIES GENERATOR' SUBROUTINE
+(Offsets 86,88 & 8C: 'series-06','series-08' & 'series-0C')
+
+This important subroutine generates the series of Chebyshev polynomials which are used to approximate to SIN, ATN, LN and EXP and hence to derive the other arithmetic functions which depend on these (COS, TAN, ASN, ACS, ** and SQR).
+The polynomials are generated, for n=1,2,..., by the recurrence relation:
+
+Tn+1(z) = 2zTn(z) - Tn-1(z), where Tn(z) is the nth Chebyshev polynomial in z.
+The series in fact generates:
+T0, 2T1, 2T2,.... , 2Tn-1, where n is 6 for SIN, 8 for EXP and 12 decimal, for LN and ATN.
+The coefficients of the powers of z in these polynomials may be found in the Handbook of Mathematical Functions by M. Abramowitz and I.A. Stegun (Dover 1965), page 795.
+BASIC programs showing the generation of each of the four functions are given here in the Appendix.
+In simple terms this subroutine is called with the 'last value' on the calculator stack, say Z, being a number that bears a simple relationship to the argument, say X, when the task is to evaluate, for instance, SIN X. The calling subroutine also supplies the list of constants that are to be required (six constants for SIN). The SERIES GENERATOR then manipulates its data and returns to the calling routine a 'last value' that bears a simple relationship to the requested function, for instance, SIN X.
+This subroutine can be considered to have four major parts:
+
+   i. The setting of the loop counter:
+The calling subroutine passes its parameters in the A register for use as a counter. The calculator is entered at GEN-ENT-1 so that the counter can be set.
+
+3449	series-06	LD	B,A	Move the parameter to B.
+	etc.	CALL	335E,GEN-ENT-1	In effect a RST 0028
+				instruction but sets the counter.
+
+  ii. The handling of the 'last value', Z:
+The loop of the generator requires 2*Z to be placed in mem-0, zero to be placed in mem-2 and the 'last value' to be zero.
+				calculator stack
+		DEFB	+31,duplicate	Z,Z
+		DEFB	+0F,addition	2*Z
+		DEFB	+C0,st-mem-0	2*Z	mem-0 holds 2*Z
+		DEFB	+02,delete	-
+

@@ -1,0 +1,66 @@
+		LD	(HL),A	The letter, suitably marked,
+				is entered first.
+		POP	BC	The overall length is fetched
+		DEC	BC	and decreased by '3'.
+		DEC	BC	
+		DEC	BC	
+		INC	HL	Advance HL.
+		LD	(HL),C	Enter the low length.
+		INC	HL	Advance HL.
+		LD	(HL),B	Enter the high length.
+		POP	BC	Fetch the dimension counter.
+		LD	A,B	Move it to the A register.
+		INC	HL	Advance HL.
+		LD	(HL),A	Enter the dimension count.
+
+The elements of the new array are noe 'cleared'.
+
+		LD	H,D	HL is made to point to the
+		LD	L,E	last location of the array
+		DEC	DE	and DE to the location before
+				that one.
+		LD	(HL),+00	Enter a zero into the last
+		BIT	6,C	location but overwrite it
+		JR	Z,2C7C,DIM-CLEAR	with 'space' if dealing
+		LD	(HL),+20	with an array of strings.
+2C7C	DIM-CLEAR	POP	BC	Fetch the element byte total.
+		LDDR	Clear the array + one extra
+				location.
+
+The 'dimension-sizes' are now entered.
+
+2C7F	DIM-SIZES	POP	BC	Get a dimension-size.
+		LD	(HL),B	Enter the high byte.
+		DEC	HL	Back one.
+		LD	(HL),C	Enter the low byte.
+		DEC	HL	Back one.
+		DEC	A	Decrease the dimension
+				counter.
+		JR	NZ,2C7F,DIM-SIZES	Repeat the operation untill all
+				the dimensions have been
+		RET	considered; then return.
+
+THE 'ALPHANUM' SUBROUTINE
+This subroutine returns with the carry flag set if the present value of the A register denotes a valid digit or letter.
+
+2C88	ALPHANUM	CALL	2D1B,NUMERIC	Test for a digit; carry will be
+				reset for a digit.
+		CCF		Complement the carry flag.
+		RET	C	Return if a digit; otherwise
+				continue on into 'ALPHA'.
+
+THE 'ALPHA' SUBROUTINE
+This subroutine returns with the carry flag set if the present value of the A register denotes a valid letter of the alphabet.
+
+2C8D	ALPHA	CP	+41	Test againts 41 hex, the code
+				for 'A'
+		CCF		Complement the carry flag.
+		RET	NC	Return if not a valid character
+				code.
+		CP	+5B	Test against 5B hex, 1 more
+				than code for 'Z'.
+		RET	C	Return if an upper case letter.
+		CP	+61	Test against 61 hex, the code
+				for 'a'.
+
+

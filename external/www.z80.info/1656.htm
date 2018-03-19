@@ -1,0 +1,597 @@
+<HTML>
+<HEAD>
+<TITLE>Serial Communication Using RS-232</TITLE>
+</HEAD>
+<BODY>
+<P ALIGN="CENTER"><img src="gfx/barle.gif">
+<FONT SIZE=6><P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P ALIGN="CENTER">Serial Communication Using RS-232</P>
+</FONT><FONT SIZE=5><P ALIGN="CENTER">&nbsp;</P>
+<P ALIGN="CENTER">by</P>
+<P ALIGN="CENTER">Christian Blum</P>
+<P ALIGN="CENTER">&nbsp;</P>
+I (Thomas Scherrer) have permission to convert this document to HTML and put it online at my site, thanks to Barlewood and Mike Moore.
+This original page is available in word format from this link
+
+<P ALIGN="CENTER">&nbsp;</P>
+<P ALIGN="CENTER">&nbsp;</P>
+<P ALIGN="CENTER">&nbsp;</P>
+<P ALIGN="CENTER">&nbsp;</P>
+Barleywood<br>
+13 Greenacre<br>
+Windsor, SL4 5LW<br>
+United Kingdom<br>
+<A HREF="http://web.archive.org/web/*/www.barleywood.com">http://barleywood.com</A><P>
+</FONT>
+<FONT SIZE=6><P>Serial Communication Using RS-232</P>
+</FONT><P>&nbsp;</P>
+<P>This is a summary on serial communication using the TTY protocol. It contains information on the TTY protocol and hardware and software implementations for IBM PCs which has been derived from National Semiconductor data sheets and practical experience of the author and his supporters.</P>
+<P>&nbsp;</P>
+<P>If you want to contribute to this file in any way, please email me. My email address is: chbl@stud.uni-sb.de or chris@phil15.uni-sb.de</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<B><P>Acknowledgements</P>
+</B><P>&nbsp;</P>
+<P>The following persons have contributed to this summary by providing information or making suggestions/reporting errors:</P>
+<P>&nbsp;</P>
+<P>      Madis Kaal &lt;mast@anubis.kbfi.ee&gt;</P>
+<P>      Steve Poulsen &lt;stevep@ims.com&gt;</P>
+<P>      Scott C. Sadow &lt;NS16550A@mycro.UUCP&gt;</P>
+<P>      Dan Norstedt &lt;?&gt;</P>
+<P>      Alan J. Brumbaugh &lt;brumba@maize.rtsg.mot.com&gt;</P>
+<P>      Mike Surikov &lt;surikov@adonis.iasnet.com&gt;</P>
+<P>      Varol Kaptan &lt;E66964%trmetu.bitnet@relay.EU.net&gt;</P>
+<P>      Richard F. Drushel &lt;rfd@po.CWRU.Edu&gt;</P>
+<P>      John A. Limpert &lt;johnl@n3dmc.svr.md.us&gt;</P>
+<P>      Brent Beach &lt;ub359@freenet.victoria.bc.ca&gt;</P>
+<P>      Torbjoern (sp?) Lindgren &lt;tl@etek.chalmers.se&gt;</P>
+<P>      Stephen Warner &lt;ee_d316@dcs.kingston.ac.uk&gt;</P>
+<P>      Kristian Koehntopp &lt;kris@black.toppoint.de&gt;</P>
+<P>      Angelo Haritsis &lt;ah@doc.ic.ac.uk&gt;</P>
+<P>      Jim Graham &lt;jim@n5ial.mythical.com&gt;</P>
+<P>      Ralf Brown &lt;ralf@cs.cmu.edu&gt;</P>
+<P>      Alfred Arnold &lt;zam036@zam112.zam.kfa-juelich.de&gt;</P>
+<P>      Andrew M. Langmead &lt;aml@world.std.com&gt;</P>
+<P>      Richard Clayton &lt;richard@locomotive.com&gt;</P>
+<P>      Christof Baumgaertner &lt;baumg@rhrk.uni-kl.de&gt;</P>
+<P>      Goran Bostrom &lt;GORAN@infovox.se&gt;</P>
+<P>      Brian Mork &lt;bmork@opus-ovh.spk.wa.us&gt;</P>
+<P>&nbsp;</P>
+<B><P>Introduction</P>
+</B><P>&nbsp;</P>
+<P>One of the most universal parts of the PC is its serial port. You can connect a mouse, a modem, a printer, a plotter, another PC, dongles, etc.  But its usage (both software and hardware) is one of the best-kept secrets for most users, besides that it is not difficult to understand how to connect devices to it and how to program it.  This document as a manual for the serial port of your PC for both hardware and software.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<B><P>Historical summary</P>
+</B><P>&nbsp;</P>
+<P>In early days of telecommunication, errand-boys and optical signals (flags, lights, clouds of smoke) were the only methods of transmitting information across long distances. With increasing requirements on speed and growing amount of information, more practical methods were developed. One milestone was the first wire-bound transmission on May 24th, 1844 ("What hath God wrought", using the famous Morse alphabet). Well, technology improved a bit, and soon there were machines that could be used like typewriters, except that you typed not only on your own sheet of paper but also on somebody elses.  The only thing that has changed on the step from the teletype to your PC regarding serial communications is speed.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<I><P>The TTY (teletyping) protocol</P>
+</I><P>&nbsp;</P><DIR>
+<DIR>
+
+<B><FONT COLOR="#ff0000"><P><FONT FACE="Symbol">&#222;</FONT>
+</B></FONT> A protocol is a clear description of the <I>logical</I> method of transmitting information. This does not include the physical realization.</P>
+<P>&nbsp;</P></DIR>
+</DIR>
+
+<P>There is a difference between bits per second and baud (named after J. M. E. Baudot, one of those guys who gave a real push to teletyping): <I>baud</I> means &quot;state changes of the line per second&quot; while <I>bits per second</I> ... well, bits per second means bits per second.</P>
+<P>&nbsp;</P>
+<P>You may find this a bit weird; there's only a difference if the line has more than two states. Since this is not the case with the RS232C (EIA232) port of your PC, most people don't differentiate between baud and bits per second, while I do. For your convenience, I've replaced baud with bps even in copied material without special note. Where you still find baud, it should read bps in most cases (I didn't change labels in source codes, pin names in data sheet information etc.).</P>
+<P>&nbsp;</P>
+<P>To illustrate the difference I give you some figures: 2400 bps at 8n1 carry 1920 bits of information per second, and modems send them at 600 baud through the phone wires, while 1200 bps at 7e1 carry 840 bits of information per second that modems send at 600 baud. I know it's confusing... that's why I quote this from a letter I received from Brent Beach. He explained it more clearly than I did (I've added some information):</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&quot;Perhaps a small diagram might help, showing the relationship among the players:</P>
+<P>
+<center>
+<img src="gfx/1656a.gif"></center>
+</FONT><P>&nbsp;</P>
+<P>The serial port accepts bytes from the CPU data bus and passes bits to the modem. In doing this, the serial port can add or delete bits, depending on the coding scheme in use.</P>
+<P>&nbsp;</P>
+<P>At (1) we are concerned with bytes per second. At (2) we are concerned with bits per second, and at (3) it's baud. We distinguish because the number of bits at (2) need not be equal to the number of bits (that is, bytes times 8) at (1), and the number of state changes at (3) is not necessarily the same as the number of bits before.</P>
+<P>&nbsp;</P>
+<P>Bits can be stripped going from (1) to (2): the serial port may transmit only 6 or 7 of the 8 bits in the byte. Bits can be added going from (1) to (2): the serial port can add a parity bit and stop bits. From (2) to (3), bits may be clustered to groups that are transmitted using different encoding schemes like <I>Frequency Shift Keying</I> or <I>Quadrature Amplitude Modulation</I>, to name just two.</P>
+<P>&nbsp;</P>
+<P>You can determine the transfer rate in bytes per second depending on the serial port speed and the coding system. For example,</P>
+<P>&nbsp;</P>
+<B><P>8n1</B>: 1 start bit + 8 data bits + 1 stop bit per byte = 10 bits per byte.</P>
+<P>&nbsp;</P><DIR>
+<DIR>
+
+<P>At 2400 bps, this is 240 bytes/characters per second. 2400 bps are normally transmitted using QAM where 4 bits are clustered, and hence encoded to 600 baud.</P>
+<P>&nbsp;</P>
+<B><P>7e1</B>: 1 start bit, 7 data bits, 1 parity bit, 1 stop bit = 10 bits per byte.</P>
+<P>&nbsp;</P>
+<P>At 1200 bps, this is 120 bytes/characters per second. 1200 bps are encoded using DPSK ('Differential Phase Shift Keying', twobits are clustered), and this results again in 600 baud.&quot;</P>
+<P>&nbsp;</P></DIR>
+</DIR>
+
+<P>Now let's leave modems for a while and have a look at the serial port itself.</P>
+<P>&nbsp;</P>
+<P>The TTYp uses two different line states called <FONT FACE="Courier New">MARK</FONT> and <FONT FACE="Courier New">SPACE</FONT>. (For the sake of clearness I name the line states <FONT FACE="Courier New">HIGH</FONT> for positive and <FONT FACE="Courier New">LOW</FONT> for negative voltages).</P>
+<P>&nbsp;</P>
+<P>If no data is transmitted, the line is in its quiescent <FONT FACE="Courier New">LOW</FONT> (<FONT FACE="Courier New">MARK</FONT>) state or in the <FONT FACE="Courier New">BREAK</FONT> state (<FONT FACE="Courier New">HIGH</FONT>). Data looks like</P>
+<P>&nbsp;</P>
+<center><img src="gfx/1656b.gif"></center>
+<P>&nbsp;</P>
+
+<P>Both transmitter (<FONT FACE="Courier New">TX</FONT>) and receiver (<FONT FACE="Courier New">RX</FONT>) use the same data rate (measured in bps, see above), which is the reciprocal value of the smallest time interval between two changes of the line state.  <FONT FACE="Courier New">TX</FONT> and <FONT FACE="Courier New">RX </FONT>know about the number of data bits (probably with a parity bit added), and both know about the size of the stop step (called the stop bit or the stop bits, depending on the size of the stop step; normally 1, 1.5 or 2 times the size of a data bit). Data is transmitted bit-synchronously and word-asynchronously, which means that the size of the bits, the length of the words etc., is clearly defined while the time between two words is undefined.</P>
+<P>&nbsp;</P>
+<P>The start bit indicates the beginning of a new data word. It is used to synchronize transmitter and receiver and is always a logical 0 (so the line goes <FONT FACE="Courier New">HIGH</FONT>).</P>
+<P>&nbsp;</P>
+<P>Data is transmitted <FONT FACE="Courier New">LSB</FONT> to <FONT FACE="Courier New">MSB</FONT>, which means that the least significant bit (<FONT FACE="Courier New">LSB</FONT>, Bit 0) is transmitted first with 4 to 7 bits of data following, resulting in 5 to 8 bits of data. A logical 0 is transmitted by the <FONT FACE="Courier New">HIGH</FONT> state of the line, a logical 1 by <FONT FACE="Courier New">LOW</FONT>.</P>
+<P>&nbsp;</P>
+<P>A parity bit can be added to the data bits to allow error detection.  There are two (well, actually five) kinds of parity: odd and even (plus none, mark and space). Odd parity means that the number of <FONT FACE="Courier New">LOW</FONT> steps in the data word (including parity bit) is always odd, so the parity bit is set accordingly (I don't have to explain even parity, must I?). It is also possible to set the parity bit to a fixed state or to omit it.</P>
+<P>&nbsp;</P>
+<P>The stop bit does not indicate the end of the word (as it could be derived from its name); it rather separates two consecutive words by putting the line into the <FONT FACE="Courier New" SIZE=2>LOW</FONT> state for a minimum time (that means the stop bit is a logical 1).</P>
+<P>&nbsp;</P>
+<P>The protocol is usually described by a sequence of numbers and letters, eg. 8n1 means 1 start bit (always), 8 bits of data, no parity bit, 1 stop bit. 7e2 would indicate 7 bits of data, even parity, 2 stop bits (but I've never seen this one...). The usual thing is 8n1 or 7e1.</P>
+<P>&nbsp;</P>
+<P>Your PC is capable of serial transmission at up to 115,200 bps (step size of 8.68 microseconds!). Typical rates are 300 bps, 1200 bps, 2400 bps and 9600 bps.</P>
+<P>&nbsp;</P>
+<P>This is what John A. Limpert told me about teletypes.</P>
+<P>&nbsp;</P>
+<P>&quot;Real (mechanical) teletypes used 1 start bit, 5 data bits and 1.42 stop bits.  Support for 1.5 stop bits in UARTs was a compromise to make the UART timing simpler.  Normal speeds were 60 WPM (word per minute), 66 WPM, 75 WPM and 100 WPM.  A word was defined as 6.1 characters.  The odd stop bit size was a result of the mechanical nature of the machine.  It was the time that the printer needed to finish the current character and get ready for the next character.  Most teletypes used a 60 mA loop with a 130 V battery.  20 mA loops and lower battery voltages became common when 8 level ASCII teletypes were introduced.  The typical ASCII teletype ran at 110 bps with 2 stop bits (11 bits per character).&quot;</P>
+<P>&nbsp;</P>
+<P>It's surely more exact than what I wrote in previous releases. I've just got to add that at least in Germany 50 bps was a familiar speed. And I think the lower voltage he's talking about was 24 volts.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<B><P>The Physical Transmission</P>
+</B><P>&nbsp;</P>
+<P>Teletypes use a closed-loop line with a quiescent current of 20 mA and a space current of 0 mA (typically), which allows to detect a <I>broken line</I>.  The RS232C port of your PC uses voltages rather than currents to indicate logical states: <FONT FACE="Courier New">MARK</FONT>/<FONT FACE="Courier New">LOW</FONT> is signaled by -3 V to -15 V (typically -12 V) and represents a logical 1.  <FONT FACE="Courier New">SPACE</FONT>/<FONT FACE="Courier New">HIGH</FONT> is signaled by +3 V to +15V (typically +12 V) and represents a logical 0. The typical output impedance of the serial port of a PC is 2&nbsp;k<FONT FACE="Symbol">&#87;</FONT>
+ (resulting in about 5 mA @ 10 V), the typical input impedance is about 4.3 k<FONT FACE="Symbol">&#87;</FONT>
+, so there should be a maximum fan-out of 5 (5 inputs can be connected to 1 output). Please don't rely on this, it may differ from PC to PC.</P>
+<P>&nbsp;</P>
+<P>Three lines (<FONT FACE="Courier New">RX</FONT>, <FONT FACE="Courier New">TX</FONT> &amp; <FONT FACE="Courier New">GND</FONT>) are at least needed.</P>
+<P>&nbsp;</P><DIR>
+<DIR>
+
+<P>Q. Why does my PC have a 25pin/9pin connector if there are only 3 lines needed?</P>
+<P>A. There are several status lines that are only used with modems etc. See the <B>Hardware</B> section.</P>
+<P>&nbsp;</P>
+<P>Q. How can I easily connect two PCs by a three-wire lead?</P>
+<P>A. This connection is called a <I>null-modem</I> connection. <FONT FACE="Courier New">RX<SUB>1</SUB></FONT> is connected to <FONT FACE="Courier New">TX<SUB>2</SUB> </FONT>and vice versa, <FONT FACE="Courier New">GND<SUB>1</SUB> </FONT>to <FONT FACE="Courier New">GND<SUB>2</SUB></FONT>. In addition to this, connect <FONT FACE="Courier New">RTS </FONT>to <FONT FACE="Courier New">CTS </FONT>and <FONT FACE="Courier New">DCD </FONT>and connect <FONT FACE="Courier New">DTR </FONT>to <FONT FACE="Courier New">DSR </FONT>(modem software often relies on that). See the <B>Hardware</B> section for further details.</P>
+<P>&nbsp;</P></DIR>
+</DIR>
+
+<P>Please be aware that at 115,200 bps (i.e. c.115 kHz, but we need the harmonics up to at least 806 kHz) lines can no longer be regarded as ideal transmission lines.  They are low-pass filters and tend to reflect and mutilate the signals, but some metres of twisted wire should always be OK (I use 3m of screened audio cable for file transfer purposes, and it works fine.  Not that other kinds of wire wouldn't do; I took what I found). See a good book on transmission lines if you're interested in why long lines can be a problem.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>This following was posted to comp.os.msdos.programmer by Andrew M. Langmead:</P>
+<P>&nbsp;</P>
+<P>&quot;The RS-232 spec. has an official limit of 50 ft for RS-232 cables.  Realistically they can be much longer.  The book <I>Managing UUCP and Usenet</I> by O'Reilly and Associates has a table that they credit to <I>Technical Aspects of Data Comminications</I> by McNamara (Digital Press, 1992). It lists the maximum distances for an RS-232 connection.</P>
+<P>&nbsp;</P>
+<TABLE BORDER CELLSPACING=2 CELLPADDING=7 WIDTH=358 ALIGN="LEFT" HSPACE=12>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Baud Rate</B></TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Max Distance</B></TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Max Distance</B></TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">&nbsp;</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Shielded Cable</B></TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Unshielded Cable</B></TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<P ALIGN="CENTER">110</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P ALIGN="CENTER">5000ft</TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<P ALIGN="CENTER">3000ft</TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<P ALIGN="CENTER">300</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P ALIGN="CENTER">5000ft</TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<P ALIGN="CENTER">3000ft</TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<P ALIGN="CENTER">1200</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P ALIGN="CENTER">3000ft</TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<P ALIGN="CENTER">3000ft</TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<P ALIGN="CENTER">2400</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P ALIGN="CENTER">1000ft</TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<P ALIGN="CENTER">500ft</TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<P ALIGN="CENTER">4800</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P ALIGN="CENTER">1000ft</TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<P ALIGN="CENTER">250ft</TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<P ALIGN="CENTER">9600</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P ALIGN="CENTER">250ft</TD>
+<TD WIDTH="40%" VALIGN="TOP">
+<P ALIGN="CENTER">250ft</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<P ALIGN="RIGHT">(1 ft <FONT FACE="Symbol">&#187;</FONT>
+ 30 cm)&quot;</P>
+<P>&nbsp;</P>
+<P>Please note that <I>baud</I> is correct in this case, because we're speaking of the transmission line itself.</P>
+<P>&nbsp;</P>
+<P>This is what Torbjoern Lindgren told me:</P>
+<P>&nbsp;</P>
+<P>&quot;I have successfully transmitted at 115,200 with over 30 m long cables!  And it wasn't especially good wires. I had some old telecables with 20 individual wires, and used 7 of them for transfer, and left the others unconnected.</P>
+<P>&nbsp;</P>
+<P>I don't remember the exact length, but I know it was something over 30 m, and it probably was closer to 40 m than 30 m. The unused lines probably shielded the lines from each other or something like that.  The computers used were two PC-compatibles with off-the-shelf COM-ports. Nothing fancy.&quot;</P>
+<P>&nbsp;</P>
+<P>Note that some serial ports are more critical with mutilated signals than others, so you just have to try and find out yourself.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<B><P>&nbsp;</P>
+<P>Hardware</P>
+</B><P>&nbsp;</P>
+<I><U><P>Connectors</P>
+</I></U><P>&nbsp;</P>
+<P>PCs have 9pin/25pin male SUB-D connectors. The pin layout is as follows (seen from outside your PC):</P>
+<P>&nbsp;</P>
+<center><img src="gfx/1656c.gif"></center>
+
+<P>&nbsp;</P>
+<P> </P>
+<TABLE BORDER CELLSPACING=2 CELLPADDING=7 WIDTH=568 ALIGN="LEFT" HSPACE=12>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Name (V24)</B></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<B><P ALIGN="CENTER">25 pin</B></TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<B><P ALIGN="CENTER">9 pin</B></TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Direction</B></TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Full name</B></TD>
+<TD WIDTH="22%" VALIGN="TOP">
+<B><P ALIGN="CENTER">Remarks</B></TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">TxD</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">2</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">3</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Output</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Transmit Data</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">RxD</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">3</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">2</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Input</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Receive Data</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">RTS</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">4</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">7</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Output</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Request To Send</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">CTS</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">5</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">8</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Input</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Clear To Send</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">DTR</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">20</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">4</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Output</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Data Terminal Ready</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">DSR</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">6</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">6</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Input</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Data Set Ready</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">RI</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">22</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">9</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Input</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Ring Indicator</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">DCD</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">8</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">1</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">Input</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Data Carrier Detect</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">GND</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">7</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">5</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">-</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Signal ground</TD>
+<TD WIDTH="22%" VALIGN="TOP">&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P ALIGN="CENTER">-</TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<P ALIGN="CENTER">1</TD>
+<TD WIDTH="9%" VALIGN="TOP">
+<P ALIGN="CENTER">-</TD>
+<TD WIDTH="14%" VALIGN="TOP">
+<P ALIGN="CENTER">-</TD>
+<TD WIDTH="27%" VALIGN="TOP">
+<P>Protective ground</TD>
+<TD WIDTH="22%" VALIGN="TOP">
+<P>Don't use this one for signal ground!</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>The most important lines are <FONT FACE="Courier New">RxD</FONT>, <FONT FACE="Courier New">TxD</FONT>, and <FONT FACE="Courier New">GND</FONT>. Others are used with modems, printers and plotters to indicate internal states.</P>
+<P>&nbsp;</P>
+<P>1 (<FONT FACE="Courier New">MARK</FONT>, <FONT FACE="Courier New">LOW</FONT>) means -3 V to -15 V; 0 (<FONT FACE="Courier New">SPACE</FONT>, <FONT FACE="Courier New">HIGH</FONT>) means +3 V to +15 V.  On status lines, <FONT FACE="Courier New">HIGH </FONT>is the active state: status lines go to the <FONT FACE="Courier New">HIGH </FONT>state to signal events.</P>
+<P>&nbsp;</P>
+<P>The lines are:</P>
+<P>&nbsp;</P>
+<FONT FACE="Courier New"><P>RxD</FONT>, <FONT FACE="Courier New">TxD</FONT>: These lines carry the data; 1 is transmitted as LOW and 0 is transmitted as <FONT FACE="Courier New">HIGH</FONT>.</P>
+<P>&nbsp;</P>
+<FONT FACE="Courier New"><P>RTS</FONT>, <FONT FACE="Courier New">CTS</FONT>: Are used by the PC and the modem/printer/whatsoever (further on referred to as the <I>data set</I>) to start/stop a communication. The PC sets <FONT FACE="Courier New">RTS </FONT>to <FONT FACE="Courier New">HIGH</FONT>, and the data set responds with <FONT FACE="Courier New">CTS HIGH</FONT>. (always in this order). If the data set wants to stop/interrupt the communication (eg. buffer overflow), it drops <FONT FACE="Courier New">CTS </FONT>to <FONT FACE="Courier New">LOW</FONT>; the PC uses <FONT FACE="Courier New">RTS </FONT>to control the data flow.</P>
+<P>&nbsp;</P>
+<FONT FACE="Courier New"><P>DTR</FONT>, <FONT FACE="Courier New">DSR</FONT>: Are used to establish a connection at the very beginning, i.e. the PC and the data set &quot;shake hands&quot; first to ensure they are both present and active.  The PC sets <FONT FACE="Courier New">DTR </FONT>to <FONT FACE="Courier New">HIGH</FONT>, and the data set answers with <FONT FACE="Courier New">DSR HIGH</FONT>.  Modems often indicate hang-up by resetting <FONT FACE="Courier New">DSR </FONT>to <FONT FACE="Courier New">LOW</FONT>.</P>
+<P>&nbsp;</P>
+<P>These six lines plus <FONT FACE="Courier New">GND </FONT>are often referred to as the &quot;7-wire connection&quot; or &quot;hand-shake connection.&quot;</P>
+<P>&nbsp;</P>
+<FONT FACE="Courier New"><P>DCD</FONT>: The modem uses this line to indicate that it has detected the carrier of the modem on the other side of the phone line.</P>
+<P>&nbsp;</P>
+<FONT FACE="Courier New"><P>RI</FONT>: The modem uses this line to signal that &quot;the phone rings&quot; (even if there is neither a bell fitted to your modem nor a phone connected.</P>
+<P>&nbsp;</P>
+<FONT FACE="Courier New"><P>GND</FONT>: The <I>signal ground</I>, ie. the reference level for all signals.</P>
+<P>&nbsp;</P>
+<P>Protective ground: This line is connected to the power ground of the serial adapter.  It should not be used as a signal ground, and it must not be connected to <FONT FACE="Courier New">GND </FONT>(even if your multi-meter shows up an ohmic connection!).  Connect this line to the screen of the lead (if there is one). Connecting protective ground on both sides makes sure that no large currents flow through <FONT FACE="Courier New">GND </FONT>in case of an insulation defect on one side (hence the name).</P>
+<P>&nbsp;</P>
+<P>Technical data (typical):</P>
+<P>&nbsp;</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=319 ALIGN="LEFT" HSPACE=12>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<P>Signal level</TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<P>-10.5 V/+11 V</TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<P>Short circuit current</TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<P>6.8 mA</TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<P>Output impedance</TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<P>c. 2 k<FONT FACE="Symbol">&#87;</FONT>
+ (non-linear!)</TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<P>Input impedance</TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<P>c. 4.3 k<FONT FACE="Symbol">&#87;</FONT>
+ (non-linear!)</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<I><U><P>Other Asynchronous Hardware</P>
+</I></U><P>&nbsp;</P>
+<P>There are several other standards that use the same chipset and protocol as RS232. RS422 and the more robust (but compatible) version RS485 (to name just two) use two wires for every signal.  The transmitters can usually be disabled and enabled by software, which makes it possible to use such equipment in a bus system (<FONT FACE="Courier New">RX</FONT> and <FONT FACE="Courier New">TX</FONT> part share the same lines).  Despite the possibility to enable and disable the receiver/transmitter section of the port, they are fully compatible to existing RS232 software if a compatible chipset is used.</P>
+<P>&nbsp;</P>
+<P>It's not possible to physically connect these devices eg. RS232 to RS485 without an appropriate interface.</P>
+<P>&nbsp;</P>
+<hr>
+<I><U>Connecting devices (or computers)<P>
+</I></U>
+<P>When you connect a data set (eg. a modem), use this connection:</P>
+<pre>
+GND<sub>1</sub>  to  GND<SUB>2</SUB><br>
+RxD<SUB>1</SUB>  to  RxD<SUB>2</SUB><br>
+TxD<SUB>1</SUB>  to  TxD<SUB>2</SUB><br>
+DTR<SUB>1</SUB>  to  DTR<SUB>2</SUB><br>
+DSR<SUB>1</SUB>  to  DSR<SUB>2</SUB><br>
+RTS<SUB>1</SUB>  to  RTS<SUB>2</SUB><br>
+CTS<SUB>1</SUB>  to  CTS<SUB>2</SUB><br>
+RI<SUB>1</SUB>   to  RI<SUB>2</SUB><br>
+DCD<SUB>1</SUB>  to  DCD<SUB>2</SUB><br>
+</pre>
+
+<P>In other words, simply connect each pin of the first plug with the corresponding pin of the other.  This can easily be done using a 25-wire ribbon cable and two crimp connectors.</P>
+<P>&nbsp;</P>
+<P>When you connect another computer, this is the wiring you need:</P>
+<pre>
+GND<sub>1</sub>  to  GND<SUB>2</SUB><br>
+RxD<SUB>1</SUB>  to  TxD<SUB>2</SUB><br>
+TxD<SUB>1</SUB>  to  RxD<SUB>2</SUB><br>
+DTR<SUB>1</SUB>  to  DSR<SUB>2</SUB><br>
+DSR<SUB>1</SUB>  to  DTR<SUB>2</SUB><br>
+RTS<SUB>1</SUB>  to  CTS<SUB>2</SUB><br>
+CTS<SUB>1</SUB>  to  RTS<SUB>2</SUB><br>
+</pre>
+
+<P>If software wants it, connect <FONT FACE="Courier New">DCD<SUB>1</SUB> </FONT>to <FONT FACE="Courier New">CTS<SUB>1</SUB> </FONT>and <FONT FACE="Courier New">DCD<SUB>2</SUB> </FONT>to <FONT FACE="Courier New">CTS<SUB>2</SUB></FONT>.</P>
+<P>&nbsp;</P>
+<P>If hardware handshaking is not needed, a so-called <I>null-modem</I> connection can be used. Connect:</P>
+<pre>
+GND<sub>1</sub>  to  GND<SUB>2</SUB><br>
+RxD<SUB>1</SUB>  to  TxD<SUB>2</SUB><br>
+TxD<SUB>1</SUB>  to  RxD<SUB>2</SUB><br>
+</pre>
+
+<P>Additionally, connect (if software needs it):</P>
+<pre>
+DTR<SUB>1</SUB>  to  DSR<SUB>1</SUB><br>
+DTR<SUB>2</SUB>  to  DSR<SUB>2</SUB><br>
+RTS<SUB>1</SUB>  to  CTS<SUB>1</SUB> and DCD<SUB>1</SUB><br>
+RTS<SUB>2</SUB>  to  CTS<SUB>2</SUB> and DCD<SUB>2</SUB><br>
+</pre>
+
+<P>You won't need long wires for these!</P>
+<P>&nbsp;</P>
+<P>The null-modem connection is used to establish an <FONT FACE="Courier New">XON</FONT>/<FONT FACE="Courier New">XOFF</FONT>-connection between two PCs (see the <B>Handshaking</B> section for details about <FONT FACE="Courier New">XON</FONT>/<FONT FACE="Courier New">XOFF</FONT>).</P>
+<P>&nbsp;</P>
+<P>Remember: the names <FONT FACE="Courier New">DTR</FONT>, <FONT FACE="Courier New">DSR</FONT>, <FONT FACE="Courier New">CTS </FONT>and <FONT FACE="Courier New">RTS </FONT>refer to the lines as seen from the PC. This means that for your data set <FONT FACE="Courier New">DTR </FONT>and <FONT FACE="Courier New">RTS </FONT>are incoming signals and <FONT FACE="Courier New">DSR </FONT>and <FONT FACE="Courier New">CTS </FONT>are outputs!  Modems, printers, plotters etc. are connected 1:1, ie. pin <I>x</I> to pin <I>x</I>.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<B><P>Handshaking</P>
+</B><P>&nbsp;</P>
+<P>The method of exchanging signals for data flow control between computers and data sets is called handshaking.  The most popular and most often used handshaking variant is called XON/XOFF; it's done by software, while other methods are hardware-based.</P>
+<P>&nbsp;</P>
+<I><U><P>XON/XOFF</P>
+</I></U><P>&nbsp;</P>
+<P>Two bytes that are not mapped to normal characters in the ASCII charset are called <FONT FACE="Courier New">XON</FONT> (<FONT FACE="Courier New">DC1</FONT>, Ctrl-Q, ASCII 17) and <FONT FACE="Courier New">XOFF </FONT>(<FONT FACE="Courier New">DC3</FONT>, Ctrl-S, ASCII 19).  Whenever either one of the sides wants to interrupt the data flow from the other (eg. full buffers), it sends an <FONT FACE="Courier New">XOFF </FONT><I>Transmission Off</I>.  When its buffers have been purged again, it sends an <FONT FACE="Courier New">XON</FONT> <I>Transmission On</I> to signal that data can be sent again.  With some implementations, this can be any character.</P>
+<P>&nbsp;</P>
+<FONT FACE="Courier New"><P>XON</FONT>/<FONT FACE="Courier New">XOFF </FONT>is of course limited to text transmission. It cannot be used with binary data since binary files tend to contain every single one of the 256 characters.  That's why hardware handshaking is normally used with modems, while <FONT FACE="Courier New">XON</FONT>/<FONT FACE="Courier New">XOFF </FONT>is often used with printers and plotters and terminals.</P>
+<P>&nbsp;</P>
+<I><U><P>DTR/DSR</P>
+</I></U><P>&nbsp;</P>
+<P>The <I>Data Terminal Ready</I> and <I>Data Set Ready</I> signals of the serial port can be used for handshaking purposes, too.  Their names express what they do: the computer signals with <FONT FACE="Courier New">DTR</FONT> that it's ready to send and receive data, while the data set sets <FONT FACE="Courier New">DSR</FONT>. With most modems, the meaning of these signals is slightly different: <FONT FACE="Courier New">DTR</FONT> is ignored or causes the modem to hang up if it is dropped, while <FONT FACE="Courier New">DSR</FONT> signals that a connection has been established.</P>
+<P>&nbsp;</P>
+<I><U><P>RTS/CTS</P>
+</I></U><P>&nbsp;</P>
+<P>While <FONT FACE="Courier New">DTR</FONT> and <FONT FACE="Courier New">DSR </FONT>are mostly used to establish a connection, <FONT FACE="Courier New">RTS </FONT>and <FONT FACE="Courier New">CTS </FONT>have been specially designed for data flow control.  The computer signals with <FONT FACE="Courier New">RTS </FONT><I>Request To Send</I> that it wishes to send data to the data set, while the data set (modem) sets <FONT FACE="Courier New">CTS </FONT><I>Clear To Send</I> when it's ready to do one part of its job: to send data through the phone wires.</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>A normal handshaking protocol between a computer and a modem looks like this:</P>
+<P>&nbsp;</P>
+<center><img src="gfx/1656d.gif"></center>
+
+<P>&nbsp;</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=568 ALIGN="LEFT" HSPACE=12>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>1</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The computer sets DTR to indicate that it wants to make use of the modem.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>2</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The modem signals that it is ready and that a connection has been established.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>3</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The computer requests permission to send.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>4</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The modem informs the computer that it is now ready to receive data from the computer and send it through the phone wires.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>5</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The modem drops CTS to signal to the computer that its internal buffers are full; the computer stops sending characters to the modem.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>6</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The buffers of the modem have been purged, so the computer may continue to send data.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>7</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>This situation is not clear; either the computer's buffers are full and it wants to inform the modem of this, or it doesn't have any more data to be send to the modem. Normally, modems are configured to stop any transmission between the computer and the modem when RTS is dropped.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>8</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The modem acknowledges RTS by dropping CTS.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>9</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>RTS is again raised by the computer to re-establish data transmission.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>10</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The modem shows that it is ready to do its job.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>11</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>No more data is to be sent.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>12</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>The modem acknowledges this.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>13</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<P>DTR is dropped by the computer; this causes most modems to hang up.  After hang-up, the modem acknowledges with DSR low. If the connection breaks, the modem also drops DSR to inform the computer about it.</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P></BODY>
+</HTML>
+

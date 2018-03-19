@@ -1,0 +1,390 @@
+<HTML><Head>
+<TITLE>Z80 Multitask system</TITLE>
+<META name="title" content="Z80 multitask system">
+<META name="keywords" content="Z80,Programming,Software,assembler,multitask">
+<META name="description" content="Z80,Programming,multitask">
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<hr>
+<B><FONT SIZE=6>Multi-Tasking in the Real World</FONT></B><BR>
+By Rick Chalfant<p>
+This page is located at <a href="http://www.geocities.com/SiliconValley/Peaks/3938/">http://www.geocities.com/SiliconValley/Peaks/3938/</a><br>
+<HR>
+<pre>
+
+
+When most of us hear the term multi-tasking, we think of large
+operating systems with more man-hours of development time than
+we can imagine.  We have been told that multi-tasking requires
+a very fast processor (80386, minimum) and gobs of memory.  We
+also know that multi-tasking is only useful when there are
+multiple users sharing the system.
+
+Perhaps you'll change your mind once you see how simple it is
+to implement a reasonably sophisticated multi-tasking system.
+"Implement" does not mean run an install program; it means get
+out your coding pencils and limber up your typing fingers.
+
+What is multi-tasking anyway?  It is basically a way to execute
+several programs concurrently on one CPU.  Concurrent execution
+is not the same as simultaneous execution.  Simultaneous
+execution means two or more programs are executing at the same
+instant.  Concurrent execution means two or more programs are
+executing alternately.  They are taking turns using the CPU.
+
+Remember the nursery rhyme about Jack Sprat who could eat no
+fat, whose wife could eat no lean?  The purpose of a multi-
+tasking system is to bring programs like Mr. and Mrs. Sprat
+together.  PROGRAM-X runs for ten minutes and spends one minute
+executing instructions and nine minutes waiting for disk I/O.
+PROGRAM-Y spends nine minutes executing instructions and only
+one minute waiting for I/O.  PROGRAM-X is said to be I/O-bound,
+while PROGRAM-Y is CPU-bound.  Both programs could execute in
+the same ten minutes if they were executed concurrently, since
+one program's I/O can be overlapped with the other program's
+execution.  Two copies of PROGRAM-X will take 18 minutes since
+they will spend much of the time waiting for the other
+program's disk I/O to complete.
+
+(This last statement assumes that only one program can use the
+disks simultaneously.  This is the case in most, if not all
+small systems today.  In order to change this situation, each
+disk must have a separate controller and DMA channel.  As
+multi-tasking becomes more popular, we can expect to see this
+happen.)
+
+There are two philosophically different ways to decide which
+program gets the next turn to use the CPU, and how long the
+turn will last.  The conceptually simpler way is called time-
+slicing.  A timer controls the dispatching of programs. Each
+program gets one time period, or time-slice, then it must wait
+while each of the other programs get their time-slices.
+
+Like everything else, time-slicing has its strengths and
+weaknesses.  On the strengths side, time-slicing is simpler
+to understand.  It is best suited to situations where all of
+the programs are somewhat I/O-bound and of equal importance.
+Each program must be using a separate, independently
+controlled device.  The trick here is to make the time-slice
+interval just long enough for each program to complete its
+CPU processing and issue another I/O request.  Ideally, by
+the time it gets its next time-slice, the I/O will have
+completed.  If some of the programs are using the same disk
+or disk controller, however, they will spend many time-slices
+waiting for their I/O to complete, thereby wasting CPU time.
+
+If there are both I/O-bound and CPU-bound programs, it is
+necessary to dynamically change the time-slice intervals so
+that I/O-bound programs get shorter intervals and CPU-bound
+programs get longer intervals.  This adds to the complexity
+of the code and adds CPU overhead to monitor the programs
+and change the intervals.
+
+The other way of approaching the situation is called event-
+driven or interrupt-driven multi-tasking.  In an interrupt-
+driven multi-tasking system, a program is given control of
+the CPU for as long as it wants or until it gets suspended
+by an interrupt of some kind.  When the program must wait
+for I/O or some other external event, it returns to the
+supervisor, or dispatcher, who gives control to the next
+program that is ready to use the CPU.  When the I/O or
+other external event completes, it causes an interrupt.
+The interrupt handler routine informs the supervisor that
+PROGRAM- X is ready to use the CPU again.  The supervisor
+can give control to PROGRAM-X, or it can elect to return
+control to the program that was active at the time of the
+interrupt.
+
+The major benefit of the interrupt-driven multi-tasking scheme
+is that the CPU is never idle while there is a program waiting
+to use it.  A mix of CPU-bound and I/O-bound programs can be
+handled very efficiently.  The drawbacks are the conceptual
+complexity of the system and the necessity for insuring that
+the I/O-bound programs run at a higher priority than the CPU-
+bound programs.  If a CPU-bound program were allowed to run at
+a higher priority than I/O-bound programs, the I/O-bound
+programs would never get any CPU time.
+
+At this point the author is supposed to introduce his company's
+latest whiz-bang system.  The rest of the article is then spent
+describing what it can do instead of how it does it.  We'll
+deviate slightly from the standard format here and describe how
+an interrupt-driven multi-tasking system could be made to do
+what it's supposed to do.
+
+(You may have noticed a slight bias against time-slicing
+systems in the previous discussion.  If you happen to prefer
+the time-slicing approach, perhaps you could write an article
+about it.)
+
+First we must include a few definitions.  A TASK is a
+function such as "put messages on the display" or "monitor
+limit switches and turn off an actuator if it reaches its
+limit".  It could be a single program or group of programs
+chained together.  A task can run pretty much independently
+of other tasks.  The "message display" task may have to
+wait for display timing or for another message to display,
+but it doesn't care what the "limit switch" task is doing.
+
+The DISPATCHER is the system routine that decides which task
+should run next, and gives control to that task ("dispatches"
+the task).  WAIT is the system function that makes a task
+non-dispatchable.  Wait is typically invoked by a task that
+must wait for I/O, console input, or some other external
+event.  POST is the opposite of WAIT.  Post makes a task
+dispatchable again.  Post is typically used by interrupt
+handlers to signal that an event has completed.  An INTERRUPT
+HANDLER is a routine that gets control when the CPU accepts
+an interrupt.  A separate interrupt handler is usually
+provided for each type of interrupt or device.
+
+The first thing we need is a way to define a task to the
+system. Let's call this thing a TCB (task control block).
+This is an area in RAM that will be used to store all of the
+information about the task.  Next we will need a dispatcher.
+The dispatcher will need to examine all of the TCB's to
+determine which ones are dispatchable, so we'll put a
+dispatchability flag and a forward chain pointer in each TCB.
+A pointer to the first TCB will be kept somewhere in common
+system memory.  Notice that we've just defined the priority
+scheme for our system.  If the dispatcher loads a pointer to
+the first TCB and then chains through them looking for one
+that is dispatchable, the first TCB has the highest priority
+since it always gets checked first.
+
+We'll also need a place to save a task's registers and status
+during the time when it is not dispatched.  There are two
+simple ways to do this on a stack-oriented CPU.  One way is to
+define a register-save stack area within the TCB.  The task's
+registers are pushed onto this stack and the task's original
+SP (stack pointer) address is saved in the TCB SP field.  (Add
+another field to the TCB.)  The second way is to let each task
+define its own stack wherever it pleases.  We still push the
+registers onto the task's stack and save the SP in the TCB.
+The restriction here is that each task must allow sufficient
+stack space for system use at any time.  If the CPU does not
+support the stack concept, we define a register save area in
+the TCB and store all the registers there, one by one if
+necessary.
+
+Now that we've defined how the registers will be saved,
+actually dispatching a task is easy - we just load up the
+registers from the stack/save area, reload the task's SP,
+and issue a return instruction.  (And you thought this was
+going to be hard!)
+
+OK, we know how to dispatch a task, but how do we suspend it
+once it's running?  There are two ways.  The task can
+voluntarily suspend itself by calling the WAIT routine, or it
+can be suspended by an interrupt.  The wait routine's job is
+easy.  It saves the task's registers, as defined above, turns
+off the TCB dispatchability flag, and branches to the
+dispatcher.  The interrupt handler routine's job is not so
+simple.  If you've chosen to use each task's stack for the
+save area, the interrupt handler can just push all the
+registers onto the current stack, wherever it may be.  When
+it's finished, the task's registers are all nicely saved.  If
+you've chosen to save the registers in a separate non-stack
+area in the TCB, things are not so easy.  In this case a
+special stack or save area must be defined for interrupt
+handler use.  Each interrupt handler must save the current
+registers there, determine which TCB was interrupted, and move
+the contents of the save area to the TCB register save area.
+
+When the interrupt handler is finished, a decision must be
+made whether to return to the interrupted task or branch to
+the dispatcher to dispatch a new task.  This decision is
+based on whether a POST has been issued since the last task
+dispatch.  If no POST has been issued, no new tasks have
+become dispatchable, so we return to the interrupted task.
+If a POST has been issued, it could have been for a higher
+or lower priority task, so we'll exit to the dispatcher and
+let him sort it out.  Let's define a flag in common system
+memory to indicate whether a POST has been issued.  The
+dispatcher turns the flag off just before it dispatches a
+task.  Whenever the post routine is called (by anyone), it
+sets the flag.  If all interrupt handler routines use a
+common exit point, the flag can be tested there.  If the
+flag is off, return to the interrupted task.  If the flag
+is on, go to the dispatcher.
+
+Well let's see, we'd better discuss task priority.  As
+mentioned before, the priority of a task is determined solely
+by its position in the TCB chain.  In order to change the
+priority, we must move the TCB to a different position in the
+chain.  Actually we don't move the whole TCB, we just alter
+the chain pointers.  Let's define another TCB field - DP
+(dispatching priority).  For simplicity, we'll make it one
+byte with a value of 1 (lowest priority) to 255 (highest
+priority).  A value of zero is reserved for later.  To change
+a task's priority, the new priority is stored in the DP
+field, then the TCB is removed from the TCB chain by copying
+its forward chain pointer to the previous TCB's forward chain
+pointer.  Looks like we need a backward chain pointer so we
+can find the previous TCB - define another TCB field.  Now we
+have to copy our TCB's backward chain pointer to the next
+TCB's backward chain pointer, and our TCB is now removed from
+the TCB chain.
+
+Starting at the head of the TCB chain, we follow the forward
+pointers until we find a TCB whose DP field is lower than
+ours. We insert our TCB into the chain in front of this lower
+priority TCB.  Inserting a TCB is just the opposite of removing
+one.  We copy the previous TCB's forward pointer to our forward
+pointer, copy the next TCB's backward pointer to our backward
+pointer, and put our TCB address in the previous TCB's forward
+pointer and also in the next TCB's backward pointer.  Got that?
+(Not to worry, the quiz will be open book.)
+
+Btw, what happens if we take an interrupt while we're
+manipulating the TCB chain?  Call it anything you like, but
+it WON'T be pretty!  Interrupts must be disabled while
+updating system queues.
+
+Why do we need priority, anyway?  We have to ensure that CPU-
+bound tasks do not lock out I/O-bound tasks, so we give the
+I/O-bound tasks a higher priority.  But how do we know which
+tasks are I/O-bound?  They are the ones that issue WAITs.
+CPU-bound tasks usually lose control of the CPU by getting
+interrupted.  Let's add another flag to the TCB - the WAIT
+flag.  The WAIT routine turns on this flag whenever a task
+calls WAIT.  Now we need a timer-driven routine that gets
+control at one (or five) second intervals.  It scans the TCB
+chain and increments the DP (dispatching priority) field for
+any task that has the wait flag on.  It decrements the DP
+field of tasks whose wait flag is off.  It never increments
+past 254 or decrements past 1.  After it is finished checking
+the wait flags (and resetting them), it re-orders the TCB
+chain based on the DP fields.  I/O-bound tasks will migrate to
+higher priorities, and CPU-bound tasks will migrate to lower
+priorities.
+
+What happens if a task suddenly switches from I/O-bound to
+CPU-bound and locks out all of the I/O-bound tasks below it?
+They will not get dispatched, so they will not call WAIT, and
+they will not get their WAIT flags turned on.  Therefore they
+will be considered CPU-bound and their DP fields will get
+decremented and they will always stay at a lower priority than
+the CPU-bound task.  Add another TCB flag - DISPATCH - which
+gets set by the dispatcher when the task is dispatched.  Now
+change the timer-driven routine to increment the DP of a task
+that has not been dispatched during the interval.  This has
+the added benefit of switching the priorities of the CPU-bound
+tasks occasionally, so that they all get some time.
+
+I guess we're almost done, but we still need to tie up a few
+loose ends.  What happens if the dispatcher chains through all
+of the TCB's and none of them are dispatchable?  Enter the
+DUMMY WAIT TASK.  This task's purpose is to bring up the rear,
+so to speak, of the TCB chain.  The dummy wait task is always
+dispatchable, since it never calls the WAIT routine.  It can
+issue a HALT, WAIT, SLEEP, or some other CPU instruction that
+causes the CPU to enter an idle state.  If no such instruction
+is available on your favorite CPU, it can just enter a one
+instruction loop to kill time until an interrupt occurs.  The
+priority of the dummy wait task is zero, so that no other task
+will be inserted behind it on the TCB chain.
+
+We haven't talked about where tasks come from and where they
+go when they're finished, but then this is not supposed to be
+a theology article.  Task creation and task termination
+require a storage management scheme to acquire and free
+storage blocks, and this is not supposed to be a storage
+management article, either.  One easy way out is to pre-define
+all the tasks you need and never create any new ones.  This
+works well for specific, dedicated tasks, but what about
+general-purpose use?  It still works well.  Just define one or
+more "loader" tasks whose job is to wait for a user command,
+load the required program into memory, and pass control to it.
+When the program is finished, it returns to the loader, who
+waits for the next command.  All of the loader tasks can
+execute the same piece of re-entrant code, by the way.  Oops,
+this isn't supposed to be a re-entrancy article, either.
+
+One additional area that we will talk about is called multi-
+threading.  Consider a fast-food restaurant.  Each customer
+order is a THREAD, or series of tasks that must be completed.
+Each employee has a task to perform.  Some have several
+devices that they can use (French fryers), and some have only
+one device (a cash register).  Imagine a restaurant where you
+place your order and the cashier fries your burgers, one at a
+time, then makes your French fries, one order at a time, then
+pours your drinks, one at a time, then takes your money and
+demands that you have a nice day.  Pretty slow.  Let's speed
+things up by having twenty cashiers.  Voila!  We are now
+multi-tasking!  But are we efficient?  Hardly.  Let's redefine
+the tasks along traditional lines: cashier, burger maker,
+French fryer, drink pourer.  All but the cashier control
+multiple devices.
+
+The drink pourer can be filling several cups at once.  How
+does he know what to pour?  He has an order list or order
+queue.  When the diet-cola pouring station becomes idle, he
+checks the diet-cola queue to see if there are any more diet-
+cola requests.  If so, he starts another diet-cola.  He
+doesn't care about burgers or fries or customers.  He gets
+drink orders from cashiers and delivers the drinks to the
+proper cashier.  He's multi-threading - handling multiple
+customer orders (threads), but from the perspective of
+maximizing the efficiency of his pouring device.
+
+In a computer control system, multi-threading might involve a
+task that handles stepper motors.  This task has say, eight
+motors to keep track of.  It doesn't care what the motors do,
+it just knows how to make 'em go and make 'em stop.  It gets
+requests from other tasks to move motor x at speed y for z
+steps.  It puts this request on the queue for motor x.  When
+motor x becomes idle, this request is removed from the queue
+and executed.  When it's complete, the request is returned to
+its sender with some status that indicates that the request
+was performed or that there was some error.  Maybe this task
+also gets status requests (What is the current position of
+motor x?) which can be answered immediately without being
+placed on a queue.
+
+In a nutshell, multi-threading is implemented by associating
+a task with a group of similar devices and a request queue.
+The task removes requests from its input queue and either
+processes them immediately (as in a status request) or puts
+them on the device queue for the proper device.  When the
+device is available the operation is started.  After
+completion, the request is returned to the requestor with
+status information.
+
+An interrupt handler routine must be defined for the device
+group.  It will signal the completion of device activity by
+setting a flag in the device control block and issuing a POST
+to wake up the device's task.
+
+Just as in our restaurant scenario, if we define our tasks
+around the resources they control and multi-thread the
+requests, system efficiency will take a giant leap forward.
+
+OK, now it's time for the author to put in a plug for his own
+whiz-bang system.  (It was inevitable.)  It's designed to run
+on a (surprise!) 4-MHz Z80 with 16K of memory (6K ROM, 10K
+RAM). So much for the 4-meg 80386 requirement.  The complete
+Z80 assembly source code and some additional documentation
+(about 125K total) are available from the author for non-
+commercial use.  The system's purpose is to control a robot
+vehicle base.  It does things like control the drive motors
+and stepper motors, and figure out which direction sounds are
+coming from.  Seven tasks are defined with fixed priorities.
+It is not expected that you would want to use this system as-
+is, since it's not totally finished yet.  It is only provided
+to fill in the details of the ideas presented in this article.
+(Currently it suffers from a design flaw in the way the system
+timer is managed, so don't expect plug-n-play code.)
+
+Perhaps you will feel moved to write your own general purpose
+multi-tasking system.  If so, I hope to see it posted here
+some day.
+
+Rick.C
+
+<a href="z80robot.htm">More Z80 robot</a> Download the Docs and sources
+</pre>
+<hr><center>
+</center> 
+</body></html>

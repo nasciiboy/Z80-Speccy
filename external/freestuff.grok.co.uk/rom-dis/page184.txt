@@ -1,0 +1,55 @@
+		POP	BC
+		LD	A,B	The sign bit is retrieved from
+		RLA		its temporary store and trans-
+		RL	(HL)	ferred to its correct position of
+		RRA		bit 7 of the first byte of the
+				mantissa.
+		LD	(HL),A	The first byte is stored.
+		INC	HL	Next.
+		LD	(HL),C	The second byte is stored.
+		INC	HL	Next.
+		LD	(HL),D	The third byte is stored.
+		INC	HL	Next.
+		LD	(HL),E	The fourth byte is stored.
+		POP	HL	Restore the pointer to the
+				result.
+		POP	DE	Restore the pointer to second
+				number.
+		EXX		Exchange the register.
+		POP	HL	Restore the next literal address.
+		EXX		Exchange the registers.
+		RET		Finished.
+Report 6 - Arithmetic overflow
+31AD	REPORT-6	RST	0008,ERROR-1	Call the error handling
+		DEFB	+05	routine.
+
+THE 'DIVISION' OPERATION
+(Offset 05 - see CALCULATE below: 'division')
+This subroutine first prepared the divisor by calling PREP-M/D, reporting arithmetic overflow if it is zero; then it prepares the dividend again calling PREP-M/D, returning if it is zero. Next fetches the two numbers from the calculator stack and divides their mantissa by means of the usual restoring division, trial subtracting the divisor from the dividend and restoring if there is carry, otherwise adding 1 to the quotient. The maximum precision is obtained for a 4-byte division, and after subtracting the exponents the subroutine exits by joining the later part of MULTIPLICATION.
+31AF	division	CALL	3293,RE-ST-TWO	Use full floating-point forms.
+		EX	DE,HL	Exchange the pointers.
+		XOR	A	A is set to Hex.00, so that the
+				sign of the first number will go
+				into A.
+		CALL	30C0,PREP-M/D	Prepare the divisor and give the
+		JR	C,31AD,REPORT-6	report for arithmetic overflow if
+				it is zero.
+		EX	DE,HL	Exchange the pointers.
+		CALL	30C0,PREP-M/D	Prepare the dividend and return
+		RET	C	if it is zero (result already zero).
+		EXX		Exchange the pointers.
+		PUSH	HL	Save the next literal address.
+		EXX		Exchange the registers.
+		PUSH	DE	Save pointer to divisor.
+		PUSH	HL	Save pointer to dividend.
+		CALL	2FBA,FETCH-TWO	Get the two numbers from the
+				stack.
+		EXX		Exchange the registers.
+		PUSH	HL	Save M1 & N1 on the machine
+				stack.
+		LD	H,B	Copy the four bytes of the
+		LD	L,C	dividend from registers B'C'CB
+		EXX		(i.e. M2, M3, M4 & M5; see
+		LD	H,C	FETCH-TWO) to the registers
+				H'L'HL.
+		LD	L,B

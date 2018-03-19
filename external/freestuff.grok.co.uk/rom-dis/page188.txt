@@ -1,0 +1,48 @@
+Now the bits of the mantissa can be cleared.
+3272	NIL-BYTES	PUSH	DE	Save the current value of DE
+				(STKEND).
+		EX	DE,HL	Make HL point one past the fifth
+				byte.
+		DEC	HL	HL now points to the fifth byte
+				of x.
+		LD	B,A	Get the number of bits to be set
+		SRL	B	to zero in B and divide it by B
+		SRL	B	to give the number of whole
+		SRL	B	bytes implied.
+		JR	Z,3283,BITS-ZERO	Jump forward if the result is
+				zero.
+327E	BYTE-ZERO	LD	(HL),+00	Else, set the bytes to zero;
+		DEC	HL	B counts them.
+		DJNZ	327E,BYTE-ZERO
+3283	BITS-ZERO	AND	+07	Get A (mod 8); this is the num-
+				ber of bits still to be set to zero.
+		JR	Z,3290,IX-END	Jump to the end if nothing
+				more to do.
+		LD	B,A	B will count the bits now.
+		LD	A,+FF	Prepare the mask.
+328A	LESS-MASK	SLA	A	With each loop a zero enters the
+		DJNZ	328A,LESS-MASK	mask from the right and thereby
+				a mask of the correct length is
+				produced.
+		AND	(HL)	The unwanted bits of (HL) are
+		LD	(HL),A	lost as the masking is performed.
+3290	IX-END	EX	DE,HL	Return the pointer to HL.
+		POP	DE	Return STKEND to DE.
+		RET		Finished.
+
+THE 'RE-STACK TWO' SUBROUTINE
+(Offset 3D - see CALCULATE below: 're-stack')
+This subroutine is called to re-stack one number (which could be a 'small integer') in full five byte floating-point form. It is used for a single number by ARCTAN and also, through the calculator offset, by EXP, LN and 'get-argt'.
+3297	RE-STACK	LD	A,(HL)	If the first byte is not zero,
+		AND	A	return - the number cannot be
+		RET	NZ	a 'small integer'.
+		PUSH	DE	Save the 'other' pointer in DE.
+		CALL	2D7F,INT-FETCH	Fetch the sign in C and the
+				number in DE.
+		XOR	A	Clear the A register.
+		INC	HL	Point to the fifth location.
+		LD	(HL),A	Set the fifth byte to zero.
+		DEC	HL	Point to the fourth location.
+		LD	(HL),A	Set the fourth byte to zero:
+				bytes 2 and 3 will hold the man-
+				tissa.

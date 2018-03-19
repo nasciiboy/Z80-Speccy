@@ -1,0 +1,57 @@
+		DEFB	+32,exponent +82
+		DEFB	+00,(+00,+00,+00)
+		DEFB	+01,exchange	Z, 2, SQR Z
+		DEFB	+05,division	Z, 2/SQR Z
+		DEFB	+E5,get-mem-5	Z, 2/SQR Z, G
+		DEFB	+01,exchange	Z, G, 2/SQR Z
+		DEFB	+05,division	Z, G*SQR Z/2
+		DEFB	+2A,abs	Z, G'*SQR Z/2 (G' = mod G)
+		DEFB	+38,end-calc	Z, G'*SQR Z/2 = A1, say
+		CALL	2DD5,FP-TO-A	A1 to A from the stack, if
+				possible.
+		JR	C,2495,USE-252	If A1 rounds to 256 or more,
+				use 252.
+		AND	+FC	4*INT (A1/4) to A.
+		ADD	A,+04	Add 4, giving the arc-count A.
+		JR	NC,2497,DRAW-SAVE	Jump if still under 256.
+2495	USE-252	LD	A,+FC	Here, just use 252 decimal.
+		PUSH	AF	Now save the arc-count.
+		CALL	2D28,STACK-A	Copy it to calculator stack too.
+		RST	0028,FP-CALC	Z, A
+		DEFB	+E5,get-mem-5	Z, A, G
+		DEFB	+01,exchange	Z, G, A
+		DEFB	+05,division	Z, G/A
+		DEFB	+31,duplicate	Z,G/A, G/A
+		DEFB	+1F,sin	Z, G/A, SIN (G/A)
+		DEFB	+C4,st-mem-4	(SIN (G/A) is copied to mem-4).
+		DEFB	+02,delete	Z, G/A
+		DEFB	+31,duplicate	Z, G/A, G/A
+		DEFB	+A2,stk-half	Z, G/A, G/A, 0.5
+		DEFB	+04,multiply	Z, G/A, G/2*A
+		DEFB	+1F,sin	Z, G/A, SIN (G/2*A)
+		DEFB	+C1,st-mem-1	(SIN (G/2*A) is copied to
+				mem-1).
+		DEFB	+01,exchange	Z, SIN (G/2*A), G/A
+		DEFB	+C0,st-mem-0	(G/A is copied to mem-0).
+		DEFB	+02,delete	Z, SIN (G/2*A) = S
+		DEFB	+31,duplicate	Z, S, S
+		DEFB	+04,multiply	Z, S*S
+		DEFB	+31,duplicate	Z, S*S, S*S
+		DEFB	+0F,addition	Z, 2*S*S
+		DEFB	+A1,stk-one	Z, 2*S*S, 1
+		DEFB	+03,subtract	Z, 2*S*S - 1
+		DEFB	+1B,negate	Z, 1 - 2*S*S = COS (G/A)
+		DEFB	+C3,st-mem-3	(COS (G/A) is copied to mem-4).
+		DEFB	+02,delete	Z
+		DEFB	+38,end-calc
+		POP	BC	Restore the arc-count to B.
+		RET		Finished.
+
+THE LINE-DRAWING SUBROUTINE
+This subroutine is called by DRAW to draw an approximation to a straight line from the point X0, Y0 held in COORDS to the point X0+X, Y0+Y, where the increments X and Y are on the top of the calculator stack. The subroutine was originally intended for the ZX80 and ZX81 8K ROM, and it is described in a BASIC program on page 121 of the ZX81 manual. It is also illustrated here in the Circle program in the appendix.
+The method is to intersperse as many horizontal or vertical steps as are needed among a basic set of diagonal steps, using an algorithm that spaces the horizontal or vertical steps as evenly as possible.
+
+24B7	DRAW-LINE	CALL	2307,STK-TO-BC	ABS Y to B; ABS X to C;
+				SGN Y to D; SGN X to E.
+		LD	A,C	Jump if ABS X is greater than
+		CP	B	or equal to ABS Y, so that the

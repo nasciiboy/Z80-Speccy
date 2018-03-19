@@ -1,0 +1,62 @@
+3686	JUMP	EXX		Go to the next alternate register set.
+3687	JUMP-2	LD	E,(HL)	The next literal (jump length) is
+				put in the E' register.
+		LD	A,E	The number 00 hex or FF hex
+		RLA		is formed in A according as E'
+		SBC	A,A	is positive or negative, and is
+		LD	D,A	then copied to D'.
+		ADD	HL,DE	The registers H' & L' now hold
+		EXX		the next literal pointer.
+		RET		Finished.
+
+THE 'JUMP ON TRUE' SUBROUTINE
+(Offset 00: 'jump-true')
+
+This subroutine executes a conditional jump if the 'last value' on the calculator stack, or more precisely the number addressed currently by the DE register pair, is true.
+
+368F	jump-true	INC	DE	Point to the third byte, which is
+		INC	DE	zero or one.
+		LD	A,(DE)	Collect this byte in the A
+				register.
+		DEC	DE	Point to the first byte once
+		DEC	DE	again.
+		AND	A	Test the third byte: is it zero?
+		JR	NZ,3686,JUMP	Make the jump if the byte is
+				non-zero, i.e. if the number is
+				not-false.
+		EXX		Go to the alternate register set.
+		INC	HL	Pass over the jump length.
+		EXX		Back to the main set of
+				registers.
+		RET		Finished.
+
+THE 'END-CALC' SUBROUTINE
+(Offset 38: 'end-calc')
+
+This subroutine ends a RST 0028 operation.
+
+369B	end-calc	POP	AF	The return address to the
+				calculator ('RE-ENTRY') is
+				discarded.
+		EXX		Instead, the address in H'L' is
+		EX	(SP).HL	put on the machine stack and
+		EXX		an indirect jump is made to it.
+				H'L' will now hold any earlier
+				address in the calculator chain
+				of addresses.
+		RET		Finished.
+
+THE 'MODULUS' SUBROUTINE
+(Offset 32: 'n-mod-m')
+
+This subroutine calculates M (mod M), where M is a positive integer held at the top of the calculator stack, the 'last value', and N is the integer held on the stack beneath M.
+The subroutine returns the integer quotient INT (N/M) at the top of the calculator stack, the 'last value', and the remainder N-INT (N/M) in the second place on the stack.
+This subroutine is called during the calculation of a random number to reduce N mod 65537 decimal.
+
+36A0	n-mod-m	RST	0028,FP-CALC	N,M
+		DEFB	+C0,st-mem-0	N,M	mem-0 holds M
+		DEFB	+02,delete	N
+		DEFB	+31,duplicate	N, N
+		DEFB	+E0,get-mem-0	N, N, M
+		DEFB	+05,division	N, N/M
+		DEFB	+27,int	N, INT (N/M)

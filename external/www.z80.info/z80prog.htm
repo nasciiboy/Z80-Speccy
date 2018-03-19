@@ -1,0 +1,589 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.03 [ja] (Win95; I) [Netscape]">
+   <META NAME="Author" CONTENT="kobaya robocom, John Connolly">
+   <TITLE>Z80 Programming</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF"> 
+
+<CENTER><B><FONT SIZE=+3>Z80 Programming</FONT></B></CENTER>
+
+<CENTER><B><I><FONT SIZE=+1>For Mechatronics</FONT></I></B></CENTER>
+
+<CENTER>
+<HR></CENTER>
+
+<CENTER><PRE><B><I><FONT SIZE=+3>Z80 5seconds Timer for 10 MHz</FONT></I></B></PRE></CENTER>
+
+<BLOCKQUOTE>Point: Use 3 Loops
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ORG
+0000H
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LD SP,0FFFFH
+<BR>&nbsp;MAIN:&nbsp;&nbsp; CALL TIMER5
+<BR>TIMER5:LD E,35H
+<BR>J60:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LD B,0FFH
+<BR>J61:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LD D,0FFH
+<BR>J62:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEC D
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JP NZ,J62
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DEC B
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JP NZ,J61
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DEC E
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JP NZ,J60
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RET
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+END</BLOCKQUOTE>
+note: If your system has CTC, it's better to use CTC timer interrupt. Z80
+Mode 2 interrupt reduces CPU's load.&nbsp;
+<HR>
+<CENTER><B><I><FONT SIZE=+3>Z80 Multi Vibrator</FONT></I></B></CENTER>
+
+<BLOCKQUOTE>Point: Use Loop "output&nbsp; 00H and FFH at 1 second interval".
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ORG
+0000H
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LD SP,0FFFFH
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PPI1 EQU 37H
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PORTB1 EQU 35H
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LD A,90H
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+OUT (PPI1),A
+<BR>LOOP:&nbsp;&nbsp; LD A,0
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+OUT (PORTB1),A
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CALL TIMER1
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LD A,0FFH
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+OUT (PORTB1),A
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CALL TIMER1
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JP LOOP
+<BR>TIMER1:LD E,0AH
+<BR>J50:&nbsp;&nbsp;&nbsp;&nbsp; LD B,0FFH
+<BR>J51:&nbsp;&nbsp;&nbsp;&nbsp; LD D,0FFH
+<BR>J52:&nbsp;&nbsp;&nbsp;&nbsp; DEC D
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JP NZ,J52
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEC B
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JP NZ,J51
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEC E
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JP NZ,J50
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RET
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END</BLOCKQUOTE>
+
+<HR>
+<CENTER><B><I><FONT SIZE=+3>Z80 Bad Coding</FONT></I></B></CENTER>
+
+
+<P><B><FONT SIZE=+2>Z-80's ADD</FONT></B>
+
+<P>When you write Z80 source code, remember...
+<BR>You can't write this.
+<UL><B>ADC B,C</B></UL>
+Because Z-80's ADC(or ADD) is used by A or HL register only.
+<UL>LD A,B
+<BR>ADC A,C
+<BR>LD B,A</UL>
+This is OK.
+
+<P>
+<HR WIDTH="100%">
+<BR><B><FONT SIZE=+2>Infinite Loop</FONT></B>
+
+<P><B>Example code</B>
+<UL><B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</B>............................</UL>
+
+<UL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LD BC,0FFFFH
+<BR>LOOP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEC BC
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JP NZ,LOOP
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.............................
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.............................
+<BR>&nbsp;</UL>
+After this operation "<B>DEC BC</B>(or INC BC)" does <B>not set Z flag</B>
+even BC is 0.
+<BR>So this example code can't escape from infinite loop forever.
+<BR>&nbsp;
+
+<P>note:BC, DE and HL are 16bits pair registers.
+<BR>
+<HR WIDTH="100%">
+<BR><B><FONT SIZE=+2>How to work "PUSH"</FONT></B>
+
+<P><B>This example is very short program...</B>
+
+<P><B>&nbsp;</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ORG&nbsp;&nbsp;&nbsp;&nbsp; 0000H
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LD&nbsp;&nbsp;&nbsp; SP,0FFFFH
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LD&nbsp;&nbsp;&nbsp; BC,0FFFFH
+<BR>LOOP:&nbsp;&nbsp;&nbsp; PUSH BC
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JP LOOP
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+END
+<BR>&nbsp;
+
+<P><B>STARTING MEMORY STATUS</B>
+
+<P>0000&nbsp;&nbsp;&nbsp; 31 50 00&nbsp;&nbsp;&nbsp; LD&nbsp;&nbsp;&nbsp;
+SP,FFFF
+<BR>0003&nbsp;&nbsp;&nbsp; 01 FF FF&nbsp;&nbsp;&nbsp; LD&nbsp;&nbsp;&nbsp;
+BC,FFFF
+<BR>0006&nbsp;&nbsp;&nbsp; C5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PUSH BC
+<BR>0007&nbsp;&nbsp;&nbsp; C3 06 00&nbsp;&nbsp; JP&nbsp;&nbsp;&nbsp; LOOP
+<BR>000A&nbsp;&nbsp;&nbsp; 00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOP
+<BR>000B&nbsp;&nbsp;&nbsp; 00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOP
+<BR>-------------------
+<BR>-------------------
+<BR>-------------------
+<BR>FFFF&nbsp;&nbsp;&nbsp; 00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOP
+<BR>&nbsp;
+
+<P><B>MEMORY STATUS AFTER EXECUTION</B>
+
+<P>0000&nbsp;&nbsp;&nbsp; 31 50 00&nbsp;&nbsp;&nbsp; LD&nbsp;&nbsp;&nbsp;
+SP,FFFF
+<BR>0003&nbsp;&nbsp;&nbsp; 01 FF FF&nbsp;&nbsp;&nbsp; LD&nbsp;&nbsp;&nbsp;
+BC,FFFF
+<BR>0006&nbsp;&nbsp;&nbsp; C5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PUSH BC
+<BR>0007&nbsp;&nbsp;&nbsp; C3 FF FF&nbsp;&nbsp; <B>JP&nbsp;&nbsp;&nbsp;
+FFFF </B>; Changed!
+<BR>000A&nbsp;&nbsp;&nbsp; FF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RST&nbsp;&nbsp;&nbsp; 38
+<BR>000B&nbsp;&nbsp;&nbsp; FF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RST&nbsp;&nbsp;&nbsp; 38
+<BR>------------------------
+<BR>------------------------
+<BR>------------------------
+<BR>FFFF&nbsp;&nbsp;&nbsp; FF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RST&nbsp;&nbsp;&nbsp; 38
+<BR>&nbsp;
+<BR><B>note:</B>
+<BR><B>"LD BC,FFFF";Register BC is set FFFF.</B>
+<BR><B>By "PUSH BC"top stack becomes FFFF.</B>
+<BR><B>Stack area moves to smaller memory address.</B>
+<BR><B>After all, the endless PUSH destroyed even program area.</B>
+
+<P><B>This program is meaningless.</B>
+<BR><B>But you will learn how to work "PUSH" of Z-80's CPU.</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Sat,3/7/1998)
+<BR>
+<HR WIDTH="100%">
+<BR>&nbsp;<FONT SIZE=+2>Brunei's homework of Z-80</FONT>
+<BR>We got a brunei student's homework of Z-80 by e-mail...
+<BR>Let's challenge this test!
+
+<P><B>Section A ( 40 marks)</B>
+
+<P><B>Answer all questions.</B>
+<BR>&nbsp;
+
+<P><B>1. Comment on the Z80 instruction LD HL, SP. [1]</B>
+
+<P><B>2. What is the effect of LD HL, 0 followed immediately by ADD HL,
+SP? [2]</B>
+
+<P><B>3. What does the instruction EX DE, HL do? [1]</B>
+
+<P><B>4. What arithmetic “trick” is associated with the instruction ADD
+A, A? [2]</B>
+
+<P><B>5. Is LD BC, HL a valid Z80 instruction? [1]</B>
+
+<P><B>6. What instruction(s) would be needed to copy HL into BC? [2]</B>
+
+<P><B>7. Comment on the instruction LD A, (DE) and LD B, (DE)? [2]</B>
+
+<P><B>8. What happens when JP (HL) is executed? [3]</B>
+
+<P><B>9. Briefly explain the actions taken by the Z80 on executing a CALL
+instruction. [4]</B>
+
+<P><B>10. What does RET instruction do?</B>
+
+<P><B>11. How will the instruction OR L affect the Z80 flags? [3]</B>
+
+<P><B>12. With the aid of a diagram, show how RCLA works. [2]&nbsp; *</B>
+
+<P><B>13. What condition is required for XOR B to make the sign flag 1
+after it is ran? [2]</B>
+
+<P><B>14. If IX = 2000h what does the instruction LD (IX ? 7), A do? [3]</B>
+
+<P><B>15. Briefly explain the operation of LDDR. [3]</B>
+
+<P><B>16. Explain the effects of the NOP instruction. [1]</B>
+
+<P><B>17. Comment on the instruction CPL A. [2]</B>
+
+<P><B>18. Is SUB A, B a valid Z80 instruction? [1]</B>
+
+<P><B>19. Explain the operation of LD A, (HL). [2]</B>
+
+<P><B>20. What does LD IX, IY do? [1]</B>
+
+<P><B>* </B>RCLA is RLCA?
+<BR>
+<HR WIDTH="100%">
+<BR><B>Hints</B>
+<BR><B>2.</B> is the solution of <B>1.</B> .
+<BR><B>3.</B> DE &lt;--> HL (Exchange with no flag change)
+<BR><B>4. </B>2*A
+<BR><B>5.</B>,<B> 6. </B>and<B> 20. </B>No instructions in Z80.<B> </B>It
+is<B> </B>easy code to use stack.
+<BR><B>8.</B> Jump to memory address HL shown.
+<BR><B>10.Ret </B>is Return from subroutine. What's in the top stack?
+<BR><B>12.</B>Rotate left circular accumulator
+<BR><B>13.</B>Check MSB of A and MSB of B&nbsp; (1-0 or 0-1)
+<BR><B>15. </B>Instruction of memory block transfer
+<BR>&nbsp;&nbsp;&nbsp; Set register before this instruction <B>LDDR</B>.
+<BR>&nbsp;&nbsp;&nbsp; HL&lt;-Start memory address
+<BR>&nbsp;&nbsp;&nbsp; DE&lt;-Destination address
+<BR>&nbsp;&nbsp;&nbsp; BC&lt;-Data amount
+<BR><B>16.</B> Nop is often used as debug of timing coordination.
+<BR><B>17.</B> Same instruction of <B>XOR</B>
+<BR><B>18.</B> <B>SUB B</B> or <B>SBC A,B</B>
+<CENTER>06/01/1998</CENTER>
+
+<HR WIDTH="100%">
+
+<P><B>Z-80's Registers</B>
+
+<P><B>Z-80 Primary registers</B>
+<TABLE BORDER CELLPADDING=6 WIDTH="214" BGCOLOR="#999999" >
+<TR>
+<TD VALIGN=TOP WIDTH="46%"><B><FONT SIZE=+0>A</FONT></B>(8bits);&nbsp;
+<BR>Accumulator</TD>
+
+<TD VALIGN=TOP WIDTH="54%"><FONT SIZE=+0><B>PSW</B>(8bits);&nbsp;</FONT>&nbsp;
+<BR><FONT SIZE=+0>Flag register</FONT></TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP WIDTH="46%"><FONT SIZE=+0><B>B</B>(8bits)</FONT></TD>
+
+<TD VALIGN=TOP WIDTH="54%"><FONT SIZE=+0><B>C</B>(8bits)</FONT></TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP WIDTH="46%"><FONT SIZE=+0><B>D</B>(8bits)</FONT></TD>
+
+<TD VALIGN=TOP WIDTH="54%"><FONT SIZE=+0><B>E</B>(8bits)</FONT></TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP WIDTH="46%"><FONT SIZE=+0><B>H</B>(8bits)</FONT></TD>
+
+<TD VALIGN=TOP WIDTH="54%"><FONT SIZE=+0><B>L</B>(8bits)</FONT></TD>
+</TR>
+</TABLE>
+<B>Z-80 <FONT SIZE=+0>Alternate registers</FONT></B>
+<TABLE BORDER CELLPADDING=6 WIDTH="216" BGCOLOR="#999999" >
+<TR>
+<TD VALIGN=TOP WIDTH="48%"><FONT SIZE=+0><B>A'</B>(8bits)</FONT></TD>
+
+<TD VALIGN=TOP WIDTH="52%"><FONT SIZE=+0><B>PSW'</B>(8bits)</FONT></TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP WIDTH="48%"><FONT SIZE=+0><B>B'</B>(8bits)&nbsp;</FONT></TD>
+
+<TD VALIGN=TOP WIDTH="52%"><FONT SIZE=+0><B>C'</B>(8bits)</FONT></TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP WIDTH="48%"><FONT SIZE=+0><B>D'</B>(8bits)</FONT></TD>
+
+<TD VALIGN=TOP WIDTH="52%"><FONT SIZE=+0><B>E'</B>(8bits)</FONT></TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP WIDTH="48%"><FONT SIZE=+0><B>H'</B>(8bits)</FONT></TD>
+
+<TD VALIGN=TOP WIDTH="52%"><FONT SIZE=+0><B>L'</B>(8bits)</FONT></TD>
+</TR>
+</TABLE>
+<B><FONT SIZE=+0>&nbsp;Z-80 Index registers</FONT></B>
+<TABLE BORDER CELLPADDING=6 WIDTH="220" BGCOLOR="#999999" >
+<TR>
+<TD VALIGN=TOP>
+<CENTER><B><FONT SIZE=+0>IX</FONT></B>(16bits)</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP>
+<CENTER><B><FONT SIZE=+0>IY</FONT></B>(16bits)</CENTER>
+</TD>
+</TR>
+</TABLE>
+<B><FONT SIZE=+0>&nbsp;Z-80 Other registers</FONT></B>
+<TABLE BORDER CELLPADDING=6 WIDTH="203" BGCOLOR="#999999" >
+<TR>
+<TD VALIGN=TOP WIDTH="51%"><B><FONT SIZE=+0>I</FONT></B>(8bits);Interrupt
+register&nbsp;</TD>
+
+<TD VALIGN=TOP WIDTH="49%"><B><FONT SIZE=+0>R</FONT></B>(8bits);Refresh
+register</TD>
+</TR>
+</TABLE>
+<B>&nbsp;&nbsp;&nbsp;&nbsp; Z-80 Flag registers</B>
+
+<P><B>&nbsp;&nbsp;&nbsp; S</B>(1bit) "sign flag" ;+ - of data with sign
+
+<P><B>&nbsp;&nbsp;&nbsp; Z</B>(1bit) "zero flag"
+
+<P><B>&nbsp;&nbsp;&nbsp; H</B>(1bit) "half carry";used at BCD calculation
+
+<P><B>&nbsp;&nbsp;&nbsp; P</B>(1bit) "parity flag" ;even or odd
+
+<P><B>&nbsp;&nbsp;&nbsp; V</B> (1bit)"overflow flag"
+
+<P><B>&nbsp;&nbsp;&nbsp; N</B>(1bit) "negative flag" add or dec
+
+<P><B>&nbsp;&nbsp;&nbsp; C</B>(1bit) "carry flag"
+<BR>
+<HR>
+
+<P><B><FONT SIZE=+0>&nbsp;&nbsp;&nbsp;&nbsp; Pseudo instructions</FONT></B>
+
+<P><FONT SIZE=+0><B>&nbsp;&nbsp;&nbsp;&nbsp; ORG </B>"origin"</FONT>
+
+<P><FONT SIZE=+0><B>&nbsp;&nbsp;&nbsp;&nbsp; DEFB </B>or<B> DB </B>"define
+byte"</FONT>
+
+<P><FONT SIZE=+0><B>&nbsp;&nbsp;&nbsp;&nbsp; DW </B>"define word"</FONT>
+
+<P><FONT SIZE=+0><B>&nbsp;&nbsp;&nbsp;&nbsp; EQU </B>"equal to"</FONT>
+
+<P><FONT SIZE=+0><B>&nbsp;&nbsp;&nbsp;&nbsp; END </B>"end of program"</FONT>
+<BR>
+<HR WIDTH="100%">
+
+<P><B>&nbsp;IBM-PC Parallel Port Assignment</B>
+<TABLE BORDER COLS=2 WIDTH="52%" BGCOLOR="#999999" >
+<TR>
+<TD>
+<CENTER>Pin #</CENTER>
+</TD>
+
+<TD>
+<CENTER>Function</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>1</CENTER>
+</TD>
+
+<TD>Strobe (Data Set Signal from PC)</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>2</CENTER>
+</TD>
+
+<TD>Data bit 0</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>3</CENTER>
+</TD>
+
+<TD>Data bit 1</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>4</CENTER>
+</TD>
+
+<TD>Data bit 2</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>5</CENTER>
+</TD>
+
+<TD>Data bit 3</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>6</CENTER>
+</TD>
+
+<TD>Data bit 4</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>7</CENTER>
+</TD>
+
+<TD>Data bit 5</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>8</CENTER>
+</TD>
+
+<TD>Data bit 6</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>9</CENTER>
+</TD>
+
+<TD>Data bit 7</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>10</CENTER>
+</TD>
+
+<TD>Acknowledge(Printer to PC)</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>11</CENTER>
+</TD>
+
+<TD>Busy</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>12</CENTER>
+</TD>
+
+<TD>Paper end</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>13</CENTER>
+</TD>
+
+<TD>Select</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>14</CENTER>
+</TD>
+
+<TD>Auto feed</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>15</CENTER>
+</TD>
+
+<TD>Error</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>16</CENTER>
+</TD>
+
+<TD>Initialize-Input</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>17</CENTER>
+</TD>
+
+<TD>Select-Input</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>18-25</CENTER>
+</TD>
+
+<TD>Ground</TD>
+</TR>
+</TABLE>
+&nbsp;
+<BR>&nbsp;
+<BR>&nbsp;
+<CENTER><B><I><FONT SIZE=+1>Copyright 1997, kobaya robocom</FONT></I>&nbsp;</B>&nbsp;
+</CENTER>
+
+<ADDRESS>
+<A HREF="mailto:robocom@interlink.or.jp">E-Mail:robocom@interlink.or.jp</A>
+
+<BR><A HREF="http://home.interlink.or.jp/~robocom/indexe.htm">kobaya
+robocom home page</A></ADDRESS>
+
+<HR>
+<CENTER><B><I><FONT SIZE=+3>Generating pseudo-random numbers</FONT></I></B></CENTER>
+<P><PRE>
+
+LD A,R			; Load the A register with the refresh register
+LD L,A			; Copy register A into register L
+AND %00111111		; This masking prevents the address we are forming from accessing RAM
+LD H,A			; Copy register A into register H
+LD A,(HL)		; Load the pseudo-random value into A
+
+; HOW THIS WORKS
+
+; The refresh register in the Z80 is highly unpredictable since it is incremented every cycle.
+; Because it may be at any value when this routine is called, it is very good for random numbers.
+; This routine increases the randomness of the number since it forms an address based on the
+; refresh counter's current status and accesses the memory at that address.
+
+; It can also be modified to get a sixteen-bit pseudo-random number by changing line 5 to LD D,(HL)
+; and adding these two lines to the end:
+; INC L
+; LD E,(HL)
+
+; This routine was written for the ZX Spectrum which has a 16KB ROM. If you plan to use this routine
+; on another Z80 system, change the binary value at the AND instruction. For example, if you had a
+; Z80 computer with an 8KB ROM, you would change the binary value to %00011111.
+
+</PRE>
+<BR><I>by John Connolly</I>
+</P>
+
+</BODY>
+</HTML>

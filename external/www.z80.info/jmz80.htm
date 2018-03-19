@@ -1,0 +1,149 @@
+<HTML>
+<HEAD>
+<TITLE>More Simple than Sinclair</TITLE>
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<BODY>
+
+<H2>More Simple than Sinclair</H2>
+
+<H3>Running unknown look-up's with Z80.</H3>
+
+This page shows how it is possible to connect a SRAM and an
+
+EPROM in series for a Z80 processor system. It is intended
+
+for easy CRT systems. Contens of memory is unknown, and the
+
+code executes unknown look-up's in the EPROM.
+
+<P>
+
+To run code in EPROM will RAM need to contain a pattern with
+
+RAM[adress] = 7..0(adress).
+
+<P>
+
+The EPROM is stored with typical 0FFh in bank 0, or RST 38h.
+
+It means that the processor begins to execute a RST 38h. The
+
+typical value at 0038h is RST 38h too, and a 0039 pattern is
+
+now stored into memory due to the recursive process.
+
+<PRE>
+
+
+
+ORG 0h                  ; Rom bank 0, unused typical 0FFh
+
+        NOP
+
+        JR      0FF88h  ; Jump to entering code.
+
+ORG 38h
+
+        RST     38h
+
+ORG 39h
+
+        EX      (SP),HL
+
+ORG 400h                ; Rom bank 1, other adr. free.
+
+        LD      (HL),L
+
+ORG 439h
+
+        DEC     HL
+
+ORG 839h                ; Rom bank 2, other adr. free
+
+        RST     0h
+
+ORG 0FF88h              ; Rom bank 63.
+
+        ; Code here to initialize RAM, and begin execution of
+
+        ; EPROM code.
+
+
+
+</PRE>
+
+The process continues until RAM is filled with 0039 downto
+
+address 0038h. At this address is stored a EX (SP),HL in
+
+EPROM, and this instruction loads HL with 0039, and store a
+
+random instruction at 0038h. This is look'ed up and replaced
+
+by a RST 38h too. Again is RST 38h executing until next time
+
+0038h is reach, and EX (SP),HL executed again.
+
+<P>
+
+This time is 0039h stored into 0038h, and instructions at 0h
+
+and 39h in EPROM is executing. These are NOP and the EX
+
+(SP),HL. These two instructions continues until next EPROM
+
+bank is reached.
+
+<P>
+
+The next rom bank, located at 4xxh, contain a DEC HL, and
+
+LD (HL),L instructions at 400h and 439h. Now is memory from
+
+0039 and down initialized with RAM[adr]:=7..0(adr). Addresses
+
+at high memory is initialized too.
+
+<P>
+
+This continues until next rom bank (1024 instructions). Next
+
+bank is entered in 839h and this address contains a RST 0h.
+
+After RST 0h will processor execute instructions at 0h. It
+
+begins with a NOP and then a JR to 0FF88h where code is to
+
+initialize memory.
+
+<P>
+
+The RAM is now initialized, and execution of EPROM is ready
+
+to begin.
+
+<P>
+
+<IMG SRC="gfx/jmz80.gif">
+
+<P>
+
+<Center>
+
+<A HREF='jmnomem.htm'>Processor System Without Memory.</A>
+
+</Center>
+
+<P>
+
+<HR>
+This page is made by:<br>
+E-Mail address: <A HREF="mailto:Jens.Madsen@post3.tele.dk">Jens.Madsen@post3.tele.dk</A>
+<br><a href="http://www.ebar.dtu.dk/~c888600/">Homepage of Jens Madsen</a>
+</BODY>
+
+</HTML>
+
+

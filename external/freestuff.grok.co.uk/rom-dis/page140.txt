@@ -1,0 +1,60 @@
+		LD	(STKEND),HL	so deleting the 'last value' from
+				the stack.
+		LDIR		Copy the 5 bytes into the spaces
+				in DEF FN.
+		EX	DE,HL	Point HL at the next code.
+		DEC	HL	Ensure that HL points to the
+		CALL	28AB,FN-SKPOVR	character after the 5 bytes.
+		CP	+29	Is it a ')'?
+		JR	Z,2885,SF-R-BR-2	Jump if it is: no more
+				arguments in the DEF FN
+				statement.
+		PUSH	HL	It is a ',': save the pointer to it.
+		RST	0018,GET-CHAR	Get the character after the last
+				argument that was evaluated
+				from FN.
+		CP	+2C	If it is not a ',' jump: mis-
+		JR	NZ,288B,REPORT-Q	matched arguments of FN and
+				DEF FN.
+		RST	0020,NEXT-CHAR	Point CH-ADD to the next
+				argument of FN.
+		POP	HL	Point HL to the ',' in DEF FN
+				again.
+		CALL	28AB,FN-SKPOVR	Move HL on to the next argu-
+				ment in DEF FN.
+		JR	2843,SF-ARG-LP	Jump back to consider this
+				argument.
+2885	SF-R-BR-2	PUSH	HL	Save the pointer to the ')' in
+				DEF FN.
+		RST	0018,GET-CMAR	Get the character after the last
+				argument in FN.
+		CP	+29	Is it a ')'?
+		JR	Z,288D,SF-VALUE	If so, jump to evaluate the
+				function; but if not, give report
+				Q.
+
+REPORT Q - Parameter error.
+288B	REPORT-Q	RST	0008,ERROR-1	Call the error handling
+		DEFB	+19	routine.
+
+iv. Finally, the function itself is evaluated by calling SCANNING, after first setting DEFADD to hold the address of the arguments as they occur in the DEF FN statement.  This ensures that LOOK-VARS, when called by SCANNING, will first search these arguments for the required values, before making a search of the variables area.
+
+2880	SF-VALUE	POP	DE	Restore pointer to ')' in DEF
+				FN.
+		EX	DE,HL	Get this pointer into HL.
+		LD	(CH-ADD),HL	Insert it into CH-ADD.
+		LD	HL,(DEFADD)	Get the old value of DEFADD.
+		EX	(SP),HL	Stack it, and get the start
+		LD	(DEFADD),HL	address of the arguments area of
+				DEF FN into DEFADD.
+		PUSH	DE	Save address of ')' in FN.
+		RST	0020,NEXT-CMAR	Move CH-ADD on past ')' and
+		RST	0020,NEXT-CMAR	'=' to the start of the expression
+				for the function in DEF FN.
+		CALL	24FB,SCANNING	Now evaluate the function.
+		POP	HL	Restore the address of ')' in
+				FN.
+		LD	(CH-ADD),HL	Store it in CH-ADD.
+		POP	HL	Restore original value of
+				DEFADD.
+		LD	(DEFADD),HL	Put it back into DEFADD.

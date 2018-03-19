@@ -1,0 +1,51 @@
+		CP	+81	Test whether radius less than 1.
+		JR	NC,233B,C-R-GRE-1	If not, jump.
+		RST	0028,FP-CALC	If less, delete it from the stack.
+		DEFB	+02,delete	The stack holds X, Y.
+		DEFB	+38,end-calc	
+		JR	22DC,PLOT	Just plot the point X, Y.
+
+ii.  233B-2346 and the call to CD-PRMS1. 2*PI is stored in mem-5 and CD-PRMS1 is called. This subroutine stores in the B register the number of arcs required for the circle, viz. A=4*INT (PI*SQR Z/4)+4, hence 4, 8, 12 ..., up to a maximum of 32. It also stores in mem-0 to mem-4 the quantities 2*PI/A, SIN(PI/A), 0, COS (2*PI/A) and SIN (2*PI/A).
+
+223B	C-R-GRE-1	RST	0028,FP-CALC
+		DEFB	+A3,stk-pi/2	X, Y, Z, PI/2.
+		DEFB	+38,end-calc	Now increase exponent to 83
+		LD	(HL),+83	hex, changing PI/2 into 2*PI.
+		RST	0028,FP-CALC	X, Y, Z, 2*PI.
+		DEFB	+C5,st-mem-5	(2*PI is copied to mem-5).
+		DEFB	+02,delete	X, Y, Z
+		DEFB	+38,end-calc
+		CALL	247D,CD-PRMS1	Set the initial parameters.
+
+iii. 2347-2381: the remaining parameters and the jump to DRAW. A test is made to see whether the initial 'arc' length is less than 1. If it is, a jump is made simply to plot X, Y. Otherwise, the parameters are set: X+Z and X-Z*SIN (PI/A) are stacked twice as start and end point, and copied to COORDS as well; zero and 2*Z*SIN (PI/A) are stored in mem-1 and mem-2 as initial increments, giving as first 'arc' the vertical straight line joining X+Z, y-Z*SIN (PI/A) and X+Z, Y+Z*SIN (PI/A). The arc-drawing loop of DRAW will ensure that all subsequent points remain on the same circle as these two points, with incremental angle 2*PI/A. But it is clear that these 2 points in fact subtend this angle at the point X+Z*(1-COS (PI/A)), Y not at X, Y. Hence the end points of each arc of the circle are displaced right by an amount 2*(1-COS (PI/A)), which is less than half a pixel, and rounds to one pixel at most.
+
+2347		PUSH 	BC	Save the arc-count in B.
+		RST	0028,FP-CALC	X,Y,Z
+		DEFB	+31,duplicate	X,Y,Z,Z
+		DEFB	+E1,get-mem-1	X,Y,Z,Z,SIN (PI/A)
+		DEFB	+04,multiply	X,Y,Z,Z*SIN (PI/A)
+		DEFB	+38,end-calc	Z*SIN (PI/A) is half the initial
+		LD 	A,(HL)	'arc' length; it is tested to see
+		CP	+80	whether it is less than 0.5.
+		JR	NC,235A,C-ARC-GE1	If not, the jump is made.
+		RST	0028,FP-CALC	Otherwise, Z is deleted from the 
+		DEFB	+02,delete	stack, with the half-arc too; the
+		DEFB	+02,delete	machine stack is cleared; and a
+		DEFB	+38,end-calc	jump is made to plot X, Y.
+		POP	BC
+		JP	22DC,PLOT
+235A		RST	0028,FP-CALC	X,Y,Z,Z*SIN (PI/A)
+		DEFB	+C2,st-mem-2	(Z*SIN (PI/A) to mem-2 for
+				now).
+		DEFB	+01,exchange	X,Y,Z*SIN (PI/A),Z
+		DEFB	+C0,st-mem-0	X,Y,Z*SIN (PI/A),Z
+		DEFB	+02,delete  X,Y,Z*SIN (PI/A)
+		DEFB	+03,subtract	X, Y - Z*SIN (PI/A)
+		DEFB	+01,exchange	Y - Z*SIN (PI/A), X
+		DEFB	+E0,get-mem-0	Y - Z*SIN (PI/A), X, Z
+		DEFB	+0F,addition	Y - Z*SIN (PI/A), X+Z
+		DEFB	+CO,st-mem-0	(X+Z is copied to mem-0)
+		DEFB 	+01,exchange	X+Z, Y - Z*SIN (PI/A)
+		DEFB	+31,duplicate	X+Z, Y-Z*SIN (PI/A), Y-Z*SIN
+				(PI/A)
+		DEFB	+E0,get-mem-0	sa,sb,sb,sa

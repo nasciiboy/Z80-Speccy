@@ -1,0 +1,52 @@
+<HTML><Head>
+<TITLE>My First Z80 system</TITLE>
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<hr>
+<B><FONT SIZE=6>My first Z80 system</FONT></B><BR>
+Yes, this system is made by me <a href="contact.htm">Thomas Scherrer</a><br>
+<HR>
+<center>
+<img src="gfx/z80first.jpg" border=0 witdh=712 height=512 alt="Z80 system">
+<br>
+My First Z80 system</center>
+<p>
+1: 7493, clock divider<br>
+2: 7493, clock divider<br>
+3: 7493, clock divider<br>
+4: 7493, clock divider, the CPU runs a 1KHz, so I did not require any delay loops :-)<br>
+<br>
+A1: 74138, CE RAM.<br>
+A2: 74138, CE both PIO'S.<br>
+A3: 74138, WR clock pulse to O1 and O2, with 7414 and 7432<br>
+74123: is a reset timer, used to give reset in a specified time after power-up or reset-button<br>
+<br>
+O1: AM2952, Output Latch for the Display Address and control.<br>
+O1: AM2952, Output Latch for the Display Data Bus, 7bit.<br>
+<br>
+RAM: 8 Kb, A special one made of 4 SMD 6116 (2 more at the bottom of the IC) and a decoder, nice eh?<br>
+EPROM: 2732, 4Kb I will rip the data from this soon..<br>
+Z80 CPU:  A special military temperature range type<br>
+PIO: a pair of 8255' are used, one for the PARALLEL port, the other is for future use.<br> 
+DISPLAY: LED ASCII DL2416 from HP, they look really cool.<br>
+<br>
+The DIP-Switch are connected to the first PIO.<br>
+<br>
+I'm sorry but I don't have the schematics for this system (yet), I did this back in 1990 at that time I started my education.<p>
+<hr>
+Some of my first assembler programs for this system, was written and assembled by hand !! here is my old original papers<br>
+All hex data was then programmed into an EPROM 2732 bit for bit in my own homemade EPROM programmer.<br>
+<a href="gfx/firstram1.gif">RAM TEST 1</A> A memory test program that works<br>
+<a href="gfx/firstram2.gif">RAM TEST 2</A> Display write routine for ram test "RAM IS 100% OK !"<br>
+<a href="gfx/firstram3.gif">RAM TEST 3</A> Display write routine for ram test "RAM FAIL *FEJL* "<br>
+<a href="gfx/firstram4.gif">RAM TEST 4</A> Display write routine for ram test "RAM-TEST RUNNING"<br>
+<hr>
+Another program called "Pulser" it uses both INT and NMI interrupts for inputs<br>
+<a href="gfx/firstpuls1.gif">PULSER 1</A> Main program 1<br>
+this program has also the display write routine like ram test placed at:<br>
+100H writing "CENTRONIKS PORT "<BR>
+200H writing "EPROMER +128 ADR"<BR>
+300H writing "STOP,PRESS RESET"<br>
+<hr>
+</body></html>

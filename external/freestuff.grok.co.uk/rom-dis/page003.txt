@@ -1,0 +1,62 @@
+		RET	C	but with carry set.
+		CP	+18	Return with codes +18 to +20
+		CCF		again with carry set.
+		RET	C
+		INC	HL	Skip-over once.
+		CP	+16	Jump forward with codes +10
+		JR	C,0090,SKIPS	to +15 (INK to OVER).
+		INC	HL	Skip-over once more (AT &
+				TAB).
+0090	SKIPS	SCF		Return with the carry flag set
+		LD	(CH-ADD),HL	and CH-ADD holding the
+		RET		appropriate address.
+
+THE TOKEN TABLE
+All the tokens used by the Spectrum are expanded by reference to this table. The last code of each token is 'inverted' by having its bit 7 set.
+
+0095	BF 52 4E C4 49 4E 4B 45	'?' R  N 'D' I  N  K  E 
+009D	59 A4 50 C9 46 CE 50 4F	 Y '$' P 'I' F 'N' P  O 
+00A5	49 4E D4 53 43 52 45 45	 I  N 'T' S  C  R  E  E 
+00AD	4E A4 41 54 54 D2 41 D4	 N '$' A  T  T 'R' A 'T'
+00B5	54 41 C2 56 41 4C A4 43	 T  A 'B' V  A  L '$' C 
+00BD	4F 44 C5 56 41 CC 4C 45	 O  D 'E' V  A 'L' L  E 
+00C5	CE 53 49 CE 43 4F D3 54	'N' S  I 'N' C  O 'S' T 
+00CD	41 CE 41 53 CE 41 43 D3	 A 'N' A  S 'N' A  C 'S'
+00D5	41 54 CE 4C CE 45 58 D0	 A  T 'N' L 'N' E  X 'P'
+00DD	49 4E D4 53 51 D2 53 47	 I  N 'T' S  Q 'R' S  G 
+00E5	CE 41 42 D3 50 45 45 CB	'N' A  B 'S' P  E  E 'K'
+00ED	49 CE 55 53 D2 53 54 52	 I 'N' U  S 'R' S  T  R 
+00F5	A4 43 48 52 A4 4E 4F D4	'$' C  H  R '$' N  O 'T'
+00FD	42 49 CE 4F D2 41 4E C4	 B  I 'N' O 'R' A  N 'D'
+0105	3C BD 3E BD 3C BE 4C 49	 < '=' > '=' < '>' L  I 
+010D	4E C5 54 48 45 CE 54 CF	 N 'E' T  H  E 'N' T 'O'
+0115	53 54 45 D0 44 45 46 20	 S  T  E 'P' D  E  F    
+011D	46 CE 43 41 D4 46 4F 52	 F 'N' C  A 'T' F  O  R 
+0125	4D 41 D4 4D 4F 56 C5 45	 M  A 'T' M  O  V 'E' E 
+012D	52 41 53 C5 4F 50 45 4E	 R  A  S 'E' O  P  E  N 
+0135	20 A3 43 4C 4F 53 45 20	   '#' C  L  O  S  E    
+013D	A3 4D 45 52 47 C5 56 45	'#' M  E  R  G 'E' V  E 
+0145	52 49 46 D9 42 45 45 D0	 R  I  F 'Y' B  E  E 'P'
+014D	43 49 52 43 4C C5 49 4E	 C  I  R  C  L 'E' I  N 
+0155	CB 50 41 50 45 D2 46 4C	'K' P  A  P  E 'R' F  L 
+015D	41 53 C8 42 52 49 47 48	 A  S 'H' B  R  I  G  H 
+0165	D4 49 4E 56 45 52 53 C5	'T' I  N  V  E  R  S 'E'
+016D	4F 56 45 D2 4F 55 D4 4C	 O  V  E 'R' O  U 'T' L 
+0175	50 52 49 4E D4 4C 4C 49	 P  R  I  N 'T' L  L  I 
+017D	53 D4 53 54 4F D0 52 45	 S 'T' S  T  O 'P' R  E 
+0185	41 C4 44 41 54 C1 52 45	 A 'D' D  A  T 'A' R  E 
+018D	53 54 4F 52 C5 4E 45 D7	 S  T  O  R 'E' N  E 'W'
+0195	42 4F 52 44 45 D2 43 4F	 B  O  R  D  E 'R' C  O 
+019D	4E 54 49 4E 55 C5 44 49	 N  T  I  N  U 'E' D  I 
+01A5	CD 52 45 CD 46 4F D2 47	'M' R  E 'M' F  O 'R' G 
+01AD	4F 20 54 CF 47 4F 20 53	 O     T 'O' G  O     S 
+01B5	55 C2 49 4E 50 55 D4 4C	 U 'B' I  N  P  U 'T' L 
+01BD	4F 41 C4 4C 49 53 D4 4C	 O  A 'D' L  I  S 'T' L 
+01C5	45 D4 50 41 55 53 C5 4E	 E 'T' P  A  U  S 'E' N 
+01CD	45 58 D4 50 4F 4B C5 50	 E  X 'T' P  O  K 'E' P 
+01D5	52 49 4E D4 50 4C 4F D4	 R  I  N 'T' P  L  O 'T'
+01DD	52 55 CE 53 41 56 C5 52	 R  U 'N' S  A  V 'E' R 
+01E5	41 4E 44 4F 4D 49 5A C5	 A  N  D  O  M  I  Z 'E'
+01ED	49 C6 43 4C D3 44 52 41	 I 'F' C  L 'S' D  R  A 
+01F5	D7 43 4C 45 41 D2 52 45	'W' C  L  E  A 'R' R  E 
+01FD	54 55 52 CE 43 4F 50 D9	 T  U  R 'N' C  O  P 'Y'

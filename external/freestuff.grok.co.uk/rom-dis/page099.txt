@@ -1,0 +1,60 @@
+		DEFB	+04,to NEXT-2	-
+		DEFB	+38,end-calc	-
+		AND	A	Clear the carry flag and
+		RET		return - loop is possible.
+
+However if the loop is impossible the carry flag has to be set.
+
+1DE9	NEXT-2	DEFB	+38,end-calc	-
+		SCF		Set the carry flag and
+		RET		return.
+
+THE 'READ' COMMAND ROUTINE
+The READ command allows for the reading of a DATA list and has an effect similar to a series of LET statements.
+	Each assignment within a single READ statement is dealt with in turn. The system variable X-PTR is used as a storage location for the pointer to the READ statement whilst CH-ADD is used to step along the DATA list.
+
+1DEC	READ-3	RST	0020,NEXT-CHAR	Come here on each pass, after
+				the first, to move along the
+				READ statement.
+1DED	READ	CALL	1C1F,CLASS-01	Consider whether the variable
+				has been used before; find
+				the existing entry if it has.
+		CALL	2530,SYNTAX-Z	Jump forward if checking
+		JR	Z,1E1E,READ-2	syntax.
+		RST	0018,GET-CHAR	Save the current pointer
+		LD	(X-PTR),HL	CH-ADD in X-PTR.
+		LD	HL,(DATADD)	Fetch the current DATA list
+		LD	A,(HL)	pointer and jump forward
+		CP	+2C	unless a new DATA statement
+		JR	Z,1E0A,READ-1	has to be found.
+		LD	E,+E4	The search is for 'DATA'.
+		CALL	1D86,LOOK-PROG	Jump forward if the search is
+		JR	NC,1E0A,READ-1	successful.
+
+Report E - Out of DATA
+
+1E08	REPORT-E	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0D	routine.
+
+Continue - picking up a value from the DATA list.
+
+1E0A	READ-1	CALL	0077,TEMP-PTR1	Advance the pointer along the
+				DATA list and set CH-ADD.
+		CALL	1C56,VAL-FET-1	Fetch the value and assign it
+				to the variable.
+		RST	0018,GET-CHAR	Fetch the current calue of
+		LD	(DATADD),HL	CH-ADD and store it in
+				DATADD.
+		LD	HL,(X-PTR)	Fetch the pointer to the
+		LD	(X-PTR-hi),+00	READ statement and clear
+				X-PTR.
+		CALL	0078,TEMP-PTR2	Make CH-ADD once again point
+				to the READ statement.
+1E1E	READ-2	RST	0018,GET-CHAR	GET the present character and
+		CP	+2C	see if it is a ' , '.
+		JR	Z,1DEC,READ-3	If it is then jump back as
+				there are further items;
+		CALL	1BEE,CHECK-END	otherwise return either via
+		RET		CHECK-END (if checking
+				syntax) or the RET instruction
+				(to STMT-RET).

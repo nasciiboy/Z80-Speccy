@@ -1,0 +1,62 @@
+		INC	HL	Move the pointer on to address
+		INC	HL	the first command code in
+		INC	HL	the line.
+		RES	0,(FLAGS)	Signal 'leading space allowed'
+		LD	A,D	Fetch the cursor code and
+		AND	A	jump forward unless the
+		JR	Z,1881,OUT-LINE3	cursor is to be printed.
+		RST	0010,PRINT-A-1	So print the cursor now.
+187D	OUT-LINE2	SET	0,(FLAGS)	Signal 'no leading space now'.
+1881	OUT-LINE3	PUSH	DE	Save the registers.
+		EX	DE,HL	Move the pointer to DE.
+		RES	2,(FLAGS2)	Signal 'not in quotes'.
+		LD	HL,+5C3B	This is FLAGS.
+		RES	2,(HL)	Signal 'print in K-mode'.
+		BIT	5,(FLAGX)	Jump forward unless in
+		JR	1894,OUT-LINE4	INPUT mode.
+		SET	2,(HL)	Signal 'print in L-mode'.
+
+Now enter a loop to print all the codes in the rest of the BASIC line - jumping over floating-point forms as necessary.
+
+1894	OUT-LINE4	LD	HL,(X-PTR)	Fetch the syntax error
+		AND	A	pointer and jump forward
+		SBC	HL,DE	unless it is time to print
+		JR	NZ,18A1,OUT-LINE5	the error marker.
+		LD	A,+3F	Print the error marker now.
+		CALL	18C1,OUT-FLASH	It is a flashing '?'.
+18A1	OUT-LINE5	CALL	18E1,OUT-CURS	Consider whether to print the
+				cursor.
+		EX	DE,HL	Move the pointer to HL now.
+		LD	A,(HL)	Fetch each character in turn.
+		CALL	18B6,NUMBER	If the character is a 'number
+				marker' then the hidden floating-
+				point form is not to be printed.
+		INC	HL	Update the pointer for the next
+				pass.
+		CP	+0D	Is the character a 'carriage
+				return'.
+		JR	Z,18B4,OUT-LINE6	Jump if it is.
+		EX	DE,HL	Switch the pointer to DE.
+		CALL	1937,OUT-CHAR	Print the character.
+		JR	1894,OUT-LINE4	Go around the loop for at least
+				one further pass.
+
+The line has now been printed.
+
+18B4	OUT-LINE6	POP	DE	Restore the DE register pair
+		RET		and return.
+
+THE 'NUMBER' SUBROUTINE
+If the A register holds the 'number marker' then the HL register pair is advanced past the floating-point form.
+
+18B6	NUMBER	CP	+0E	Is the character a 'number
+		RET	NZ	marker'.  Return if not.
+		INC	HL	Advance the pointer six
+		INC	HL	times so as to step past the
+		INC	HL	'number marker' and the five
+		INC	HL	locations holding the
+		INC	HL	floating-point form.
+		INC	HL
+		LD	A,(HL)	Fetch the current code before
+		RET		returning.
+

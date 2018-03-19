@@ -1,0 +1,59 @@
+		CP	+19	Accept the key value for a pair
+		RET	Z	of keys if the 'D' key is SYMBOL
+				SHIFT.
+		LD	A,E	It is however possibe for the 'E'
+		LD 	E,D	key of a pair to be SYMBOL
+		LD	D,A	SHIFT - so this has to be
+		CP	+18	considered.
+		RET		Return with the zero flag set if
+				it was SYMBOL SHIFT and
+				'another key'; otherwise reset.
+
+THE 'KEYBOARD' SUBROUTINE
+This subroutine is called on every occassion that a maskable interrupt occurs. In normal operation this will happen once every 20 ms. The purpose of this subroutine is to scan the keyboard and decode the key value. The code produced will, if the 'repeat' status allows it, be passed to the system variable LAST-K. When a code is put into this system variable bit 5 of FLAGS is set to show that a 'new' key has been pressed.
+
+02BF	KEYBOARD	CALL	028E,KEY-SCAN	Fetch a key value in the DE
+		RET	NZ	register pair but return immedi-
+				ately if the zero pair flag is reset.
+
+A double system of 'KSTATE system variables' (KSTATE0 - KSTATE 3 and KSTATE4 - KSTATE7) is used from now on.
+The two sets allow for the detection of a new key being pressed (using one set) whilst still within the 'repeat period' of the previous key to have been pressed (details in the other set).
+A set will only become free to handle a new key if the key is held down for about 1/10 th. of a second. i.e. Five calls to KEYBOARD.
+
+		LD	HL,KSTATE0	Start with KSTATE0.
+02C6	K-ST-LOOP	BIT	7,(HL)	Jump forward if a 'set is free';
+		JR	NZ,02D1,K-CH-SET	i.e. KSTATE0/4 holds +FF.
+		INC	HL	However if the set is not free
+		DEC	(HL)	decrease its '5 call counter'
+		DEC	HL	and when it reaches zero signal
+		JR	NZ,02D1,K-CH-SET	the set as free.
+		LD	(HL),+FF
+
+After considering the first set change the pointer and consider the second set.
+
+02D1	K-CH-SET	LD	A,L	Fetch the low byte of the
+		LD	HL,+KSTATE4	address and jump back if the
+		CP	L	second set has still to be
+		JR	NZ,02C6,K-ST-LOOP	considered.
+
+Return now if the key value indicates 'no-key' or a shift key only.
+
+		CALL	031E,K-TEST	Make the necessary tests and
+		RET	NC	return if needed. Also change
+				the key value to a 'main code'.
+
+A key stroke that is being repeated (held down) is now separated from a new key stroke.
+
+		LD	HL,+KSTATE0	Look first at KSTATE0.
+		CP	(HL)	Jump forward if the codes
+		JR	Z,0310,K-REPEAT	match - indicating a repeat.
+		EX	DE,HL	Save the address of KSTATE0.
+		LD	HL,+KSTATE4	Now look at KSTATE4.
+		CP	(HL)	Jump forward if the codes
+		JR	Z,0310,K-REPEAT	match - indicating a repeat.
+
+But a new key will not be accepted unless one of the sets of KSTATE system variables is 'free'.
+
+		BIT	7,(HL)	Consider the second set.
+		JR	NZ,02F1,K-NEW	Jump forward if 'free'.
+		EX	DE,HL	Now consider the first set.

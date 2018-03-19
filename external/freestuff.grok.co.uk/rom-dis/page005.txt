@@ -1,0 +1,51 @@
+THE KEYBOARD ROUTINES
+
+THE 'KEYBOARD SCANNING' SUBROUTINE
+This very important subroutine is called by both the main keyboard subroutine and the INKEY$ routine (in SCANNING).
+In all instances the E register is returned with a value in the range of +00 to +27, the value being different for each of the forty keys of the keyboard, or the value +FF, the no-key.
+The D register is returned with a value that indicates which single shift ket is being pressed. If both shift keys are being pressed then the D and E registers are returned with the values for the CAPS SHIFT and SYMBOL SHIFT keys respectively.
+If no keys is being pressed then the DE register pair is returned holding +FFFF.
+The zero flas is returned reset if more than two keys are being pressed, or neither key of a pair of keys is a shift key.
+
+028E	KEY-SCAN	LD	L,+2F	The initial key value for each
+				line will be +2F, +2E,...,+28.
+				(Eight lines.)
+		LD	DE,+FFFF	Initialise DE to 'no-key'.
+		LD	BC,+FEFE	C = port address, B = counter.
+
+Now enter a loop. Eight passes are made with each pass having a different initial key value and scanning a different line of five keys. (The first line is CAPS SHIFT, Z, X, C, V.)
+
+0296	KEY-LINE	IN	A,(C)	Read from the port specified.
+		CPL		A pressed key in the line will set
+		AND	+1F	its respective bit (from bit 0 - 
+				outer key, to bit 4 - inner key).
+		JR	Z,02AB,KEY-DONE	Jump forward if none of the
+				five keys in the line are being
+				pressed.
+		LD	H,A	The key-bits go to the H register
+		LD	A,L	whilst the initial key value is
+				fetched.
+029F	KEY-3KEYS	INC	D	If three keys are being pressed
+		RET	NZ	on the keyboard then the D
+				register will no longer hold +FF
+				- so return if this happens.
+02A1	KEY-BITS	SUB	+08	Repeatedly subtract '8' from
+		SRL	H	the preset key value until a
+		JR	NC,02A1,KEY-BITS	key-bit is found.
+		LD	D,E	Copy any earlier key value to
+				the D register.
+		LD	E,A	Pass the new key value to the
+				E register.
+		JR	NZ,029F,KEY-3KEYS	If there is a second, or possibly
+				a third, pressed key in this line
+				then jump back.
+02AB	KEY-DONE	DEC	L	The line has been scanned so the
+				initial key value is reduced for
+				the next pass.
+		RLC	B	The counter is shifted and the
+		JR	C,0296,KEY-LINE	jump taken if there are still lines
+				to be scanned.
+Four tests are now made.
+		LD	A,D	Accept any key value for a pair
+		RET	Z	of keys if the 'D' key is CAPS
+				SHIFT.

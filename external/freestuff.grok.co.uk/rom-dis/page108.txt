@@ -1,0 +1,59 @@
+A loop is now set up to deal with each character in turn of the string.
+203C	PR-STRING	LD	A,B	Return now if there are
+		OR	C	no characters remaining
+		DEC	BC	in the string; otherwise
+		RET	Z	decease the counter.
+		LD	A,(DE)	Fetch the code and increment
+		INC	DE	the pointer.
+		RST	0010,PRINT-A-1	The code is printed and a jump
+		JR	203C,PR-STRING	taken to consider any further
+				characters.
+
+THE 'END OF PRINTING' SUBROUTINE
+The zero flag will be set if no further printing is to be done.
+2045	PR-END-Z	CP	+29	Return now if the character
+		RET	Z	is a ')'.
+2048	PR-ST-END	CP	+0D	Return now if the character is
+		RET	Z	a 'carriage return'.
+		CP	+3A	Make a final test against ':'
+		RET		before returning.
+
+THE 'PRINT POSITION' SUBROUTINE
+The various position controlling characters are considered by this subroutine.
+204E	PR-POSN-1	RST	0018,GET-CHAR	Get the present character.
+		CP	+3B	Jump forward if it is
+		JR	Z,2067,PR-POSN-3	a ';'.
+		CP	+2C	Also jump forward with a
+		JR	NZ,2061,PR-POSN-2	character other than a ',';
+		CALL	2530,SYNTAX-Z	but do not actually print the
+		JR	Z,2067,PR-POSN-3	character if checking syntax.
+		LD	A,+06	Load the A register with
+		RST	0010,PRINT-A-1	the 'comma' control code and
+		JR	2067,PR-POSN-3	print it; then jump forward.
+2061	PR-POSN-2	CP	+27	Is it a '''?
+		RET	NZ	Return now if not any of the
+				position controllers.
+		CALL	1FF5,PR-CR	Print 'carriage return' unless
+				checking syntax.
+2067	PR-POSN-3	RST	0020,NEXT-CHAR	Fetch the next character.
+		CALL	2045,PR-END-Z	If not at the end of a print
+		JR	NZ,206E,PR-POSN-4	statement then jump forward;
+		POP	BC	otherwise return to the
+206E	PR-POSN-4	CP	A	calling routine.
+		RET		The zero flag will be reset if the
+				end of the print statement has
+				not been reached.
+
+THE 'ALTER STREAM' SUBROUTINE
+This subroutine is called whenever there is the need to consider whether the user wishes to use a different stream.
+2070	STR-ALTER	CP	+23	Unless the present character
+		SCF		is a '#' return with the
+		RET	NZ	carry flag set.
+		RST	0020,NEXT-CHAR	Advance CH-ADD.
+		CALL	1C82,EXPT-1NUM	Pass the parameter to the
+				calculator stack.
+		AND	A	Clear the carry flag.
+		CALL	1FC3,UNSTACK-Z	Return now if checking syntax.
+		CALL	1E94,FIND-INT1	The value is passed to the A
+				register.
+		CP	+10	Give report O if the value is

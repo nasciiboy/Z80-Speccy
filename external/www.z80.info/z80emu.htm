@@ -1,0 +1,932 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>Thomas Scherrer Z80 Emulators</TITLE>
+
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+
+<META name="description" content="Thomas Scherrer Z80 Emulators">
+
+</HEAD>
+
+<body bgcolor="#FFFFFF">
+
+<A HREF="index.htm">
+
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT="98" WIDTH="198" border="0"></A>
+
+<A NAME="TOP">
+
+<H2>Emulators for Z80 and Z80 based Products</H2>
+
+<P>
+
+If there are emulators for Z80 family, 
+you know of or you would like to point to, please tell me,
+or - even better - contact me if you are ready to maintain 
+any "z80emu*" sub page not yet existing, nicely fitting into 
+my Z80 series of documents.
+
+</P>
+
+
+
+<HR>
+
+
+
+
+<A NAME="TOC">
+
+<B>Table-of-Contents</B>
+
+<UL>
+
+<LI><A HREF="z80emu.htm#EMU_ICE">In-Circuit-Emulators</A>
+
+<LI><A HREF="z80emu.htm#EMU">Emulators</A>
+
+<LI><B>CPU-Emulators:</B>
+
+<UL>
+
+
+<LI><A HREF="z80emu.htm#EMU_CPU_AMIGAOS">for AmigaOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPU_PCDOS">for PC-DOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPU_W32">for 32bit Windows</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPU_UNIX">for UNIX</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPU__C">C Source</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPU_VAR">for various platforms</A>
+
+
+</UL>
+
+<LI><B>CP/M-Emulators:</B>
+
+<UL>
+
+<LI><A HREF="z80emu.htm#EMU_CPM_MAC">for MacOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPM_OS2">for OS/2</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPM_PCDOS">for PC-DOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPM_W32">for 32bit Windows</A>
+
+
+<LI><A HREF="z80emu.htm#EMU_CPM_UNIX">for UNIX</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPM__C">C Source</A>
+
+<LI><A HREF="z80emu.htm#EMU_CPM_VAR">for various platforms</A>
+
+</UL>
+
+<LI><B>ADAM-Emulators:</B>
+
+<UL>
+
+<LI><A HREF="z80emu.htm#EMU_COLECO_MSXDOS">for MSX-DOS</A>
+
+</UL>
+
+<LI><B>CPC-Emulators:</B>
+
+<UL>
+
+<LI><A HREF="z80emu.htm#EMU_CPC_PCDOS">for PC-DOS</A>
+
+</UL>
+
+<LI><B>ZX-Spectrum-Emulators:</B>
+
+<UL>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_ACORNOS">for AcornRiscOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_AMIGAOS">for AmigaOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_C64">for C64</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_MAC">for MacOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_MSXDOS">for MSX-DOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_OS2">for OS/2</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_PCDOS">for PC-DOS</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_UNIX">for UNIX, Linux</A>
+
+<LI><A HREF="z80emu.htm#EMU_ZX_WIN">for Windows</A>
+
+</UL>
+
+<LI><B><A HREF="z80emu.htm#EMU_MSX">MSX-Emulators</B></A>
+
+<LI><B><A HREF="z80emu.htm#EMU_SAM">SAM Emulator</B></A>
+
+<UL>
+
+<LI><A HREF="z80emu.htm#EMU_SAM_UNIX">for UNIX</A>
+
+</UL>
+
+<LI><B><A HREF="z80emu.htm#EMU_MISC">Miscellaneous Emulators</B></A>
+
+</UL>
+
+
+<HR>
+<HR>
+
+
+<A NAME="EMU_ICE">
+
+<H3><B>In-Circuit-Emulators</B></H3>
+
+<UL>
+
+<LI>
+<A HREF="http://www.avocetsystems.com/company/techshee/hsheets/200%20Sheets/HMI200_Z80.htm">
+
+	HMI Z80 200 Series Emulator ($)</A>
+
+<LI><A HREF="http://www.softools.com/icecube.htm#ICE-Cube">
+
+	Softools's ICE-Cube ($)</A>
+
+<LI><A HREF="http://xi6.com/em-180/">EM 180</A>, by Applied Microsystems.
+
+<LI><A HREF="http://www.lauterbach.com/frames.html?ice80.html">ICE 80</A> by Lauterbach.
+
+<LI><A HREF="http://tech.quarterarcade.com/tech/Fluke/9010A/">Fluke 9010A</A> Z80 system troubleshooter.
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU">
+
+<H3><B>Emulators</B></H3>
+
+<UL>
+
+<LI><A HREF="http://fangz.com/~aladdin/">Michael's Home Page!</A> Arcade Machine Z80 emulator  ???WRONG URL???
+
+<LI><A HREF="http://www.netaxis.com/~petebuilt/videogames/emulate.html">Video Game / Computer EMULATOR PAGE</A>
+
+<LI><A HREF="http://www.komkon.org/fms/">Z80 GameBoy Info and Emulators</A> by 
+<A HREF="mailto:fms@cs.umd.edu">Marat Fayzullin</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_CPU">
+
+<A NAME="EMU_CPU_AMIGAOS">
+
+<H3><B>Emulators (running on AmigaOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="ftp://wuarchive.wustl.edu/pub/aminet/misc/emu/z80emulator103.lzh">
+
+	Z80-CPU-Emulator (V 1.03)</A> 
+
+	<B><blink>???</blink></B>
+
+        and complete Z80 cross development system
+
+<LI><A HREF="zip/simcpm.lha">SimCPM</A> 
+CP/M emulator originally written by Charlie Gibbs, updated by
+Willi Kusche and re-updated by Charlie Gibbs.
+
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_CPU_PCDOS">
+
+<H3><B>Emulators (running on PC-DOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulate/z80mu52b.zip">Z80-CPU-Emulator (V 5.2b)</A> Full version, Z80 and/or CP/M 2.2 Emulator, By : Joan Riff
+
+<LI><A HREF="zip/z80mu52b.zip">Z80-CPU-Emulator (V 5.2b)</A> the file above, download it from my site
+
+<LI><A HREF="http://www.jwi.de/zsim/">ZSIM
+Z80-CPU-Emulator + BIOS to run CP/M (V 2.42)</A> 
+Full version, Z80 and/or CP/M 80 PC-Simulator, By: J&uuml;rgen G. Weber
+
+<LI><A HREF="zip/zsim241.zip">ZSIM Z80-CPU-Emulator + BIOS to run CP/M (V 2.41)</A> 
+download it from my site
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulate/myz80111.zip">
+
+	MYZ80 Z80-Emulator (V 1.11)</A>
+
+	<BR>by <A HREF="mailto:simeon@myz80.brisnet.org.au">
+
+	Simeon Cran</A>
+
+	<BR>by <A HREF="mailto:simeon@b022.aone.net.au">
+
+	Simeon Cran (Business)</A>
+
+	<BR>by <A HREF="mailto:s373718@student.uq.edu.au">
+
+	Simeon Cran (Student)</A>
+
+-- He also has a homepage - do a search on his name in one of the search engines --
+
+<LI>
+<A HREF="http://www.cpm.z80.de/download/z80em86-1.0.1.tar.gz">z80em86 sources</A><BR>
+<A HREF="http://www.cpm.z80.de/download/z80em86-1.0.1-dos.zip">z80em86 binaries</A><BR>
+z80em86 is a Z80 CPU emulator with hardware emulation coded in Intel 86 assembly language designed to run under DOS.
+
+</UL>
+
+<HR>
+<A NAME="EMU_CPU_W32">
+
+<H3><B>Emulators (running on 32bit Windows)</B></H3>
+<UL>
+<LI><A HREF="zip/zemu.zip">ZEMU - Z80 Emulator by Joe Moore</A>.
+This is the Z80 Emulator for 32 bit Windows Version 1.0.40
+<BR><BR>
+The Z80 Emulator is a full featured emulator designed to run CPM, Intended for Hobbyists.
+<BR><BR>
+Features include:
+<BR>
+ Z80, Z180, I8080 Instruction sets. <BR>
+ Disassembler for Zilog and/or Intel/TDL nmemonics<BR>
+ Instruction and Data Breakpoinits, Single Step, Trace, IO intercept, Debug Console.<BR>
+ Simple TTY, Timers, Interrupt ability<BR>
+ CRT emulator that can simulate many CRTS<BR>
+ Simulated Printer that produces RTF output.<BR>
+ Can access COM ports, Windows SPL for RAW printer files. <BR>
+ Disk Controller capable of accessing disk images availible for this and other emulators.
+   (runs CPM 1.4, CPM 2.2, CPM 3, MPM 2, read and writes IMD files.)<BR>
+ Also, supports a subset of the simulated features of Z80SIM.(runs uscd pascal, CPM 2, CPM 3 and MPM 2)
+ <BR><BR>
+ Simulates some real hardware:
+<BR>
+ Simulates WD17xx FDC (can Write track(Format))<BR>
+ Cromemco 16/64FDC, Seven KZ64-II, TUART, PRI, 3102 (runs CDOS and CROMIX)<BR>
+ SD Sales VersaFloppy-II (runs SDOS)<BR>
+ Tarbel Single and Double Density FDC (runs CPM 1.4)<BR>
+ MIO, ACR, HSR, PIO<BR>
+<BR>
+Can make network connections as client or server to allow multiple users simultaneously. This feature augments the serial port feature, which due to the obsolecence of serial ports is fading. Instead of terminals, you can connect with TelNet.
+<BR><BR>
+Drag-n-Drop Windows to CPM file transfers.
+<BR><BR>
+
+<A HREF="zip/imagebuild.zip">Disk Image Builder,</A> <FONT COLOR="red">New tool!</FONT><BR>
+This is Version 2.0.4 of Disk Image Builder.
+<BR><BR>
+Disk Image builder is for Building Disk Images. While it also has several nice support features, the main purpose is to build Images, not edit disks. 
+<BR><BR>
+Image Builder supports raw access to the System tracks and data tracks of various Z80 Emulator Disk Images.
+<BR><BR>
+Version 2 now supports Drag-n-Drop file tranfers from windows explorer to CPM filesystems on Z80 Disk Images. 
+<BR><BR>
+Formats supported are IBM3740, PC1440, PC4104, PC8190 and 6 Jade DD image formats. These are the basic Images 
+that the Z80 Emulator was designed to use. While the Z80 Emulator also supports many other Disk Image formats, Disk Image Builder is restricted to these.
+<BR><BR>
+The Z80 Emulator also supports Drag-n-Drop windows to CPM file transfers, so using the Z80 Emulator, 
+you can transfer to any Disk Image Format that the Z80 Emulator can access. 
+<BR><BR>
+Also, included are two programs to read VME10 formated VersaDOS and SYSV68 IMD disk images.
+<BR><BR><I>
+<FONT COLOR="red">Important info: bug fix for the Disc Configure program</FONT>:<BR>
+<PRE>
+Program affected---- Disc Configure program (version 2.24.2) 
+
+Symptom---- when attempting to access a VME10 640k disc, the emulator
+displays an error message that the Track requested is greater than max
+tracks per disk...
+
+Problem-- Disc Configure program does  NOT configure the CPM DPB 
+properly for  VME10 96 tpi discs (640k)
+		the Extent Mask is 1 ...this is wrong... Extent Mask should be 0...
+
+Fix-- edit source code for the DC program , changing the VME10 640k DPB
+...then re-assemble with AS8080, and download (DLOAD) on to a disk
+</PRE></I>
+<BR>
+A couple of CP/M disk images are also available separately for the emulator:<BR>
+<A HREF="zip/diskimages.zip">Disk Images, 3.6M</A>.<BR>
+Contains bootable CPM2.2, bootable CPM3.0 banked and non-banked, bootable
+8 user MPM2 and several work disks with bios source for the ZEMU
+emulator.
+<P>
+Sample disks for ZEMU:<P>
+<UL>
+<LI><A HREF="sample_disks/HardDisk.zip">hard disk images</A> from unix4fun.org</LI>
+<LI><A HREF="sample_disks/IBM3740.zip">IBM3740 package</A></LI>
+<LI><A HREF="sample_disks/JadeDD.zip">JadeDD</A> - disk images for both old 48SPT single sided systems and for newer 
+50SPT Double sided Systems</LI>
+<LI><A HREF="sample_disks/PC1440.zip">PC1440 package</A></LI>
+<LI><A HREF="sample_disks/ucsd.zip">UCSD Pascal</A>, disks from UDO MONK's site</LI>
+<LI><A HREF="sample_disks/adventure.zip">Adventure games</A>: Adventure, source and binary, 4
+pc1440 disks.</LI>
+<LI><A HREF="sample_disks/Cromemco.zip">Cromemco CDOS disks</A> - Cromemco CDOS/CROMIX Disks- for use with the Z80 Emulator</LI>
+<LI><A HREF="sample_disks/Tarbell.zip">Tarbell CPM 1.4 disks</A> - they run unmodified using
+an emulated Tarbell disk controller</LI>
+<LI><A HREF="sample_disks/Intellec.zip">Intellec disks</A> - un-modified disks for ISIS 4.x and CPM 2.2 that run on the 
+Z80 Emulators implementation of the Intellec Series II and MDS-800 FDCs. 
+Includes replacement PROMs specifically modified to use the Z80 Emulators I/O.
+Includes IO maps to map Intel hardware to the Z80 Emulator, DLOAD for downloading files onto an ISIS disk image, and 
+ULOAD for uploading files to host.</LI>
+<LI><A HREF="sample_disks/IMSAI.zip">IMDOS disks</A> - bootable IMDOS and CPM 1.31 disk for IMSAI.</A>
+<LI><A HREF="sample_disks/DSFDC1.zip">DSFDC1 disks</A>, bootable proto-CPM 1975 compiled
+from original DRI sources.</LI>
+<LI><A HREF="sample_disks/TurboDOS.zip">TurboDOS 1.43</A> - Contains TurboDOS 1.43, ported to Z80 Emulator. 
+Also, contains Mario Viaro's TurboDOS 1.30 for z80 SIM (will also run on Z80 EMU)- <FONT COLOR="red">New and improved version</FONT></LI>
+</UL>
+<P><BR>
+NOTE! <B>Please find Joe's Z80 ASM <A HREF="z80sdt.htm#SDT_ASM_W32">here</A>.</B>
+</P>
+</LI>
+</P>
+<P>
+
+<LI><A HREF="http://cef.sourceforge.net" TARGET="_new">CEF32</A>.
+The Computer Emulation Framework (CEF) is an application framework specification 
+for the purposes of emulating various computer hardware configurations in software.
+</LI>
+
+<LI><A HREF="http://www.shaels.net/index.php/z80emu/" TARGET="_new">Z80Emu</A>. 
+Z80Emu is a Windows based program to emulate a Z80 based computer system including serial I/O, 
+terminal display, and printer plus much more.</LI>
+
+<LI><A HREF="http://www.ship-in-a-bottle.de/" TARGET="_new">Ship in a bottle z80 Emulator</A>.
+This emulator runs under Windows and needs Framework 4.6.2 to run. Comes with CP/M 2.2.</LI>
+
+</UL>
+
+
+<HR>
+
+<A NAME="EMU_CPU_UNIX">
+
+
+<A NAME="EMU_CPU__C">
+
+<H3><B>Emulators (running on UNIX, Linux platforms)</B></H3>
+
+<UL>
+
+<LI><A HREF="ftp://ftp.ping.de/pub/misc/emulators/">
+YAZE Z80 + CP/M Emulator for UNIX</A> by 
+Frank D. Cringle</A> C Source included
+
+<LI><A HREF="http://www.mathematik.uni-ulm.de/users/ag/yaze-ag/">
+YAZE-AG - Yet Another Z80 Emulator</A> by Andreas Gerlich
+
+<LI><A HREF="http://www.komkon.org/fms/">Z80 Emulator C source</A> by 
+Marat Fayzullin
+
+<LI><A HREF="ftp://ftp.cs.uni-sb.de/pub/others/z80pack.tgz">
+Z80PACK Z80 Emulator for COHERENT</A> C Source included
+
+<LI><A HREF="http://www.autometer.de/unix4fun/z80pack/">
+Z80pack - Z80 Emulator and Crossassembler for UNIX</A>,
+by Udo Munk.
+
+<LI><A HREF="http://nanochess.110mb.com/emulator.html">
+Toledo 8080 emulator</A>,
+This program emulates a complete Intel(r) 8080 processor, 
+along with a teletype and a disk controller, just like at the start of the personal 
+computers revolution (circa 1975).
+
+<LI><A HREF="http://sourceforge.net/projects/zilogz80/">
+Z80 shared lib including some nice test projects</A>,
+Another Zilog Z80 emulation made as C++ class on a shared library.
+
+</UL>
+
+<HR>
+<A NAME="EMU_CPU_VAR">
+<H3><B>Emulators (running on various platforms)</B></H3>
+
+<UL>
+<LI>
+<A HREF="http://www.tramm.li/i8080/"> Intel 8080 CPU Emulator</A> by Stefan Tramm,
+in JavaScript. It supports 4*8'SSSD drives, paper tape reader &amp; puncher, line printer
+and VT100 Terminal.<BR><BR>
+<A HREF="http://virtuallyfun.blogspot.com/2010/10/cpm-zork-in-java-script.html">Some hints
+on using the above emulator</A>.
+
+
+
+</UL>
+
+<HR>
+
+
+
+<A NAME="EMU_CPM">
+
+
+
+<A NAME="EMU_CPM_MAC">
+
+<H3><B>CP/M-Emulators (running on MacOS platform)</B></H3>
+
+<UL>
+
+<LI>
+
+	Z80MULE (CP/M-Emulator)
+
+	<B><blink> unknown URL </blink></B>
+
+        by Joan Riff</A>
+
+	ask 
+	<A HREF="mailto:wcs@transit.nyser.net">
+
+	Steve Johnson</A>
+
+<LI><A HREF="http://www.komkon.org/~stiles/emulation/index.html">
+
+	???</A>
+
+	<BR>ask <A HREF="mailto:kawahara@leland.stanford.edu">
+
+	Hugh Kawahara</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_CPM_PCDOS">
+
+<H3><B>CP/M-Emulators (running on PC-DOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulate/22nce142.zip">
+
+	22NICE CP/M-Emulator (V 1.42)</A>
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulate/myz80111.zip">
+
+	MYZ80 CP/M-Emulator (V 1.11)</A>
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulate/zrun321.zip">
+
+	ZRUN CP/M-Emulator (V 3.21)</A>
+
+</UL>
+
+
+
+
+<HR>
+<A NAME="EMU_CPM_W32">
+
+<H3><B>CP/M Emulators (running on 32bit Windows)</B></H3>
+<UL>
+<LI><A HREF="http://sourceforge.net/projects/runcpm/" TARGET=_new">RunCPM</A>.
+Emulates the CP/M 2.2 BIOS and BDOS calls inside the command prompt. Up to Windows 8.1 64bits.
+</LI>
+
+</UL>
+<HR>
+
+
+
+<A NAME="EMU_CPM_OS/2">
+
+<H3><B>CP/M-Emulators (running on OS/2 platform)</B></H3>
+
+<UL>
+
+<LI>  CPMEMU (CP/M-Emulator)
+
+	<B><blink>???</blink></B>
+
+	You may ask <A HREF="mailto:Chwolka@alterechner.de">
+
+	Fritz Chwolka</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_CPM_UNIX">
+
+<H3><B>CP/M-Emulators (running on UNIX platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="ftp://ftp.sunsite.unc.edu/pub/Linux/system/emulators/cpm-0.2.tar.gz">CP/M Emulator (V 0.2)</A> 
+
+<A NAME="EMU_CPM__C">
+
+<LI><A HREF="http://www.codegen.com/freesoft/z80/z80.tgz">CP/M Emulator</A> by Parag Patel, Source included
+
+<LI><A HREF="http://cantor.informatik.rwth-aachen.de/pub/unix/cpmtools.tar.gz">
+
+	CPMTOOLS</A> By <A HREF="mailto:michael@cantor.informatik.rwth-aachen.de">
+
+	Michael Haardt</A>
+
+</UL>
+
+<HR>
+
+<A NAME="EMU_CPM_VAR">
+
+<H3><B>CP/M-Emulators (running on various platforms)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.viara.cn/en/j80.htm">Z80 extendible system with emulation 
+for CP/M 2.2,3 and ZX Spectrum</A> in Java, by Mario Viara
+</LI>
+</UL>
+
+
+<HR>
+
+
+
+<A NAME="EMU_COLECO">
+
+<A NAME="EMU_COLECO_MSXDOS">
+
+<H3><B>ADAM-Emulators (running on MSX-DOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.komkon/fms">ColecoVision ADAM-Emulator</A> by 
+<A HREF="mailto:fms@cs.umd.edu">Marat Fayzullin</A>
+
+<LI><A HREF="http://www.komkon.org/~dekogel/mission.html">ADAM-Emulator</A> by 
+<A HREF="mailto:m.dekogel@student.utwente.nl">Marcel de Kogel</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_CPC">
+
+<A NAME="EMU_CPC_PCDOS">
+
+<H3><B>CPC-Emulators (running on PC-DOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulator/cpcemu14.zip">Amstrad CPC-Emulator 
+(V 1.4)</A> <B><blink>???</blink></B>
+
+<LI><A HREF="ftp://ftp.ibp.fr/cpesrc51zip">
+
+	Amstrad CPC-Emulator (V 5.1)</A>
+
+	<B><blink>???</blink></B>
+
+	by Bernd Schmitt and Ulrich Doewich
+
+
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_MSX">
+
+<H3><B>MSX-Emulators</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.komkon.org/fms">MSX-Emulator</A> by 
+<A HREF="mailto:fms@cs.umd.edu">Marat Fayzullin</A>
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_SAM">
+
+<A NAME="EMU_SAM_UNIX">
+
+<H3><B>SAM-Emulators (running on UNIX platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.hep.ucl.ac.uk/~ajs/simcoupe/">SimCoupe - A SAM Coup&eacute; emulator 
+for UNIX</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX">
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/">
+
+	Speccy Emulators </A> (*)
+
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_ACORNOS">
+
+<H3><B>ZX-Spectrum-Emulators (running on AcornRiscOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_arch.html">
+
+	Speccy Emulators - Acorn</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_AMIGAOS">
+
+<H3><B>ZX-Spectrum-Emulators (running on AmigaOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_amig.html">
+
+	Speccy Emulators - Amiga</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_C64">
+
+<H3><B>ZX-Spectrum-Emulators (running on C64 platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_c64.html">
+
+	Speccy Emulators - C64</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_MAC">
+
+<H3><B>ZX-Spectrum-Emulators (running on MacOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_mac.html">
+
+	Speccy Emulators - MAC</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_MSXDOS">
+
+<H3><B>ZX-Spectrum-Emulators (running on MSX-DOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_msx.html">
+
+	Speccy Emulator - MSX</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_OS2">
+
+<H3><B>ZX-Spectrum-Emulators (running on OS/2 platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_os2.html">
+
+	Speccy Emulators - OS/2</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_PCDOS">
+
+<H3><B>ZX-Spectrum-Emulators (running on PC-DOS platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_pc.html">
+
+	Speccy Emulators - PC-DOS</A>
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulator/jpp.zip">
+
+ZX Spectrum Emulator</A> <B><blink>???</blink></B>
+
+<LI><A HREF="ftp://ftp.simtel.net/pub/simtelnet/msdos/emulator/z80-303.zip">
+
+ZX Spectrum Emulator (V 3.03)</A> <B><blink>???</blink></B>
+
+<LI><A HREF="ftp://ftp.nvg.ntnu.no/pub/sinclair/emulators/spectrum/pc/dos/z80-305.zip">
+
+	Z80 (V 3.05, Shareware)</A>
+
+	<BR>Most user-friendly emulator; very good menu-interface 
+
+	and documentation.
+
+	<BR>Considered by many to be the best emulator available for any 
+
+	platform; certainly one of the best DOS-based ones with features 
+
+	unavailable in other emulators
+
+	<BR>by <A HREF="mailto:gerton@math.rug.nl.no.junk.mail">
+
+	Gerton Lunter</A>
+
+<LI><A HREF="http://www.spectrum.lovely.net/Elite.html">
+
+Java ZX Spectrum Emulator</A> It really looks like the original one :-)
+
+
+<LI><A HREF="http://www.geocities.com/SiliconValley/Bay/9932/">
+
+ZX Spectrum Emulator Home</A>
+
+<LI><A HREF="http://www.euronet.nl/users/idi_mart/spectrum.html">
+
+        ZX Spectrum Emulators</A>
+
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_UNIX">
+
+<H3><B>ZX-Spectrum-Emulators (running on UNIX platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_unix.html">
+
+	Speccy Emulators - UNIX/LINUX</A>
+
+<LI><A HREF="http://www.comlab.ox.ac.uk/oucl/users/ian.collier/Spectrum">XZ80</A> by Ian Collier
+
+<LI><A HREF="http://www.philosys.de/~kunze/xzx/">
+
+	The XZX Home Page</A>
+
+</UL>
+
+
+
+<HR>
+
+
+
+<A NAME="EMU_ZX_WIN">
+
+<H3><B>ZX-Spectrum-Emulators (running on Windows platform)</B></H3>
+
+<UL>
+
+<LI><A HREF="http://www.nvg.ntnu.no/sinclair/faq/emu_pc.html">
+
+	Speccy Emulators - WIN</A>
+
+</UL>
+
+
+<HR>
+
+
+<A NAME="EMU_ZX88">
+
+
+<A NAME="EMU_MISC">
+
+<H3><B>Misc (Z80) Emulators (running on various platforms)</B></H3>
+
+<UL>
+
+-- once in a while these links should be placed accordingly as well: --
+<BR>
+
+<LI><A HREF="http://www.komkon.org/~dekogel/">Marcel de Kogel's Homepage</A> - a variety
+of different emulators, including a portable z80 emulator.</LI>
+
+<LI><A HREF="http://www.emulation.net/samcoupe/index.html">MAC - Spectrum/Sam Coupe emulator</A>
+
+<LI><A HREF="http://www.emulation.net/ql/index.html">MAC - Sinclair QL emulator</A>
+
+<LI><A HREF="http://www.emulation.net/sinclair/index.html">MAC - Sinclair ZX81 emulator</A>
+
+<LI><A HREF="http://www.emulation.net/zx/index.html">MAC - ZX Spectrum emulator</A>
+
+<LI><A HREF="http://www.jens-mueller.org/jkcemu/index.html">JKCEMU - DDR-Kleincomputer-Emulator</A>
+
+<LI><A HREF="http://sebhc.lesbird.com/">Heathkit H-19 and H-89 emulators</A>, by Les Bird.
+
+
+</UL>
+
+
+
+</body></html>
+

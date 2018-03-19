@@ -1,0 +1,52 @@
+THE 'CONTINUE'COMMAND ROUTINE
+The required line number and statement number within that line are made the object of a jump.
+1E5F	CONTINUE	LD	HL,(OLDPPC)	The line number.
+		LD	D,(OSPPC)	The statement number.
+		JR	1E73,GO-TO-2	Jump forward.
+
+THE 'GO TO' COMMAND ROUTINE
+The operand of a GO TO ought to be a line number in the range '1' to '9999' but the actual test is against an upper value of '61439'.
+1E67	GO-TO	CALL	1E99,FIND-INT2	Fetch the operand and transfer
+		LD	H,B	it to the HL register pair.
+		LD	L,C
+		LD	D,+00	Set the statement number to
+				zero.
+		LD	A,H	Give the error message
+		CP	+F0	- Integer out of range -
+		JR	NC,1E9F,REPORT-B	with lines over '614139'
+The entry point GO-TO-2 is used to determine the line number of the next line to be handled in several instances.
+1E73	GO-TO-2	LD	(NEWPPC),HL	Enter the line number and
+		LD	(NSPPC),D	then the statement number.
+		RET	Return; - to STMT-RET.
+
+THE 'OUT' COMMAND ROUTINE
+The two parameters for the OUT instruction are fetched from the calculator stack and used as directed.
+1E7A	OUT	CALL	1E85,TWO-PARAM	The operands are fetched.
+		OUT	(C),A	The actual OUT instruction.
+		RET	Return; - to STMT-RET.
+
+THE 'POKE' COMMAND ROUTINE
+In a similar manner the POKE operation is performed.
+1E80	POKE	CALL	1E85,TWO-PARAM	The operands are fetched.
+		LD	(BC),A	The actual POKE operation.
+		RET	Return; - to STMT-RET.
+
+THE 'TWO-PARAM' SUBROUTINE
+The topmost parameter on the calculator stack must be compressible into a single register. It is two's complemented if it is negative. The second parameter must be compressible into a register pair.
+1E85	TWO-PARAM	CALL	2DD5,FP-TO-A	The parameter is fetched.
+		JR	C,1E9F,REPORT-B	Give an error if it is too high
+				a number.
+		JR	Z,1E8E,TWO-P-1	Jump forward with positive
+		NEG		numbers but two's complement
+				negative numbers.
+1E8E	TWO-P-1	PUSH	AF	Save the first parameter
+		CALL	1E99,FIND-INT2	whilst the second is fetched.
+		POP	AF	The first parameter is
+		RET		restored before returning.
+
+THE 'FIND INTEGERS' SUBROUTINE
+The 'last value' on the calculator stack is fetched and compressed into a single register or a register pair by entering at FIND-INT1 AND FIND-INT2 respectively.
+1E94	FIND-INT1	CALL	2DD5,FP-TO-A	Fetch the 'last value'.
+		JR	1E9C,FIND-I-1	Jump forward.
+1E99	FIND-INT2	CALL	2DA2,FP-TO-BC	Fetch the 'last value'.
+1E9C	FIND-I-1	JR	C,1E9F,REPORT-B	In both cases overflow is

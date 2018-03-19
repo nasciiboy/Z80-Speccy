@@ -1,0 +1,65 @@
+		LD	D,(HL)
+		PUSH	HL	The pointer is saved.
+		EX	DE,HL	The line number is moved to the
+		INC	HL	HL register pair and incremented.
+		CALL	196E,LINE-ADDR	The address of the start of this
+				line is found, or the next line
+				if the actual line number is not
+				being used.
+		CALL	1695,LINE-NO	The number of that line is
+				fetched.
+		POP	HL	The pointer to the system
+				variable is restored.
+
+The entry point LN-STORE is used by the EDITOR.
+
+191C	LN-STORE	BIT	5,(FLAGX)	Return if in 'INPUT mode';
+		RET	NZ	otherwise proceed to
+		LD	(HL),D	enter the line number into
+		DEC	HL	the two locations of the
+		LD	(HL),E	system variable.
+		RET		Return when it has been done.
+
+THE 'PRINTING CHARACTERS IN A BASIC LINE' SUBROUTINE
+All of the character/token codes in a BASIC line are printed by repeatedly calling this subroutine.
+The entry point OUT-SP-NO is used when printing line numbers which may require leading spaces.
+
+1925	OUT-SP-2	LD	A,E	The A register will hold +20 for
+				a space or +FF for no-space.
+		AND	A	Test the value and return if
+		RET	M	there is not to be a space.
+		JR	1937,OUT-CHAR	Jump forward to print a space
+192A	OUT-SP-NO	XOR	A	Clear the A register.
+
+The HL register pair holds the line number and the BC register the value for 'repeated subtraction'.  (BC holds '-1000, -100 or -10'.)
+
+192B	OUT-SP-1	ADD	HL,BC	The 'trial subtraction'.
+		INC	A	Count each 'trial'.
+		JR	C,192B,OUT-SP-1	Jump back until exhausted.
+		SBC	HL,BC	Restore last 'subtraction'
+		DEC	A	and discount it.
+		JR	Z,1925,OUT-SP-2	If no 'subtractions' were possinle
+				jump back to see if a space is to
+				be printed.
+		JP	15EF,OUT-CODE	Otherwise print the digit.
+
+The entry point OUT-CHAR is used for all characters, tokens and control characters.
+
+1937	OUT-CHAR	CALL	2D1B,NUMERIC	Return carry reset if handling a
+				digit code.
+		JR	NC,196C,OUT-CH-3	Jump forward to print the digit.
+		CP	+21	Also print the control
+		JR	C,196C,OUT-CH-3	characters and 'space'.
+		RES	2,(FLAGS)	Signal 'print in K-mode'.
+		CP	+CB	Jump forward if dealing
+		JR	Z,196C,OUT-CH-3	with the token 'THEN'.
+		CP	+3A	Jump forward unless dealing
+		JR	NZ,195A,OUT-CH-1	with ':'.
+		BIT	5,(FLAGX)	Jump forward to print the
+		JR	NZ,1968,OUT-CH-2	':' if in 'INPUT mode'.
+		BIT	2,(FLAGS2)	Jump forward if the ':'
+		JR	Z,196C,OUT-CH-3	is 'not in quotes', i.e.
+				an inter-statement marker.
+		JR	1968,OUT-CH-2	The ':' is inside quotes and can
+				now be printed.
+

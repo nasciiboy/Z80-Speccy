@@ -1,0 +1,62 @@
+		DEFB	+02,delete	X,Y
+		DEFB	+01,exchange	Y,X
+		DEFB	+31,duplicate	Y,X,X
+		DEFB	+E1,get-mem-1	Y,X,X,W
+		DEFB	+04,multiply	Y,X,X*W
+		DEFB	+C2,st-mem-2	(X*W is copied to mem-2).
+		DEFB	+02,delete	Y,X
+		DEFB	+01,exchange	X,Y
+		DEFB	+31,duplicate	X,Y,Y
+		DEFB	+E1,get-mem-1	X,Y,Y,W
+		DEFB	+04,multiply	X,Y,Y*W
+		DEFB	+E2,get-mem-2	X,Y,Y*W,X*W
+		DEFB	+E5,get-mem-5	X,Y,Y*W,X*W,G
+		DEFB	+E0,get-mem-0	X,Y,Y*W,X*W,G,G/A
+		DEFB	+03,subtract	X,Y,Y*W,X*W,G - G/A
+		DEFB	+A2,stk-half	X,Y,Y*W,X*W,G - G/A, ½
+		DEFB	+04,multiply	X,Y,Y*W,X*W, G/2 - G/2*A=F
+		DEFB	+31,duplicate	X,Y,Y*W,X*W, F, F
+		DEFB	+1F,sin	X,Y,Y*W,X*W, F, SIN F
+		DEFB	+C5,st-mem-5	(SIN F is copied to mem-5).
+		DEFB	+02,delete	X,Y,Y*W,X*W,F
+		DEFB	+20,cos	X,Y,Y*W,X*W, COS F
+		DEFB	+C0,st-mem-0	(COS F is copied to mem-0).
+		DEFB	+02,delete	X,Y,Y*W,X*W
+		DEFB	+C2,st-mem-2	(X*W is copied to mem-2).
+		DEFB	+02,delete	X,Y,Y*W
+		DEFB	+C1,st-mem-1	(Y*W is copied to mem-1).
+		DEFB	+E5,get-mem-5	X,Y,Y*W,SIN F
+		DEFB	+04,multiply	X,Y,Y*W*SIN F
+		DEFB	+E0,get-mem-0	X,Y,Y*W*SIN F,X*W
+		DEFB	+E2,get-mem-2	X,Y,Y*W*SIN F,X*W, COS F
+		DEFB	+04,multiply	X,Y,Y*W*SIN F,X*W*COS F
+		DEFB	+0F,addition	X,Y,Y*W*SIN F+X*WCOS F=U
+		DEFB	+E1,get-mem-1	X,Y,U,Y*W
+		DEFB	+01,exchange	X,Y,Y*W,U
+		DEFB	+C1,st-mem-1	(U is copied to mem-1)
+		DEFB	+02,delete	X,Y,Y*W
+		DEFB	+E0,get-mem-0	X,Y,Y*W, COS F
+		DEFB	+04,multiply	X,Y,Y*W*COS F
+		DEFB	+E2,get-mem-2	X,Y,Y*W*COS F,X*W
+		DEFB	+E5,get-mem-5	X,Y,Y*W*COS F,X*W, SIN F
+		DEFB	+04,multiply	X,Y,Y*W*COS F,X*W*SIN F
+		DEFB	+03,subtract	X,Y,Y*W*COS F - X*W*SIN
+				F = V
+		DEFB	+C2,st-mem-2	(V is copied to mem-2).
+		DEFB	+2A,abs	X, Y, V' (V' = ABS V)
+		DEFB	+E1,get-mem-1	X, Y, V', U
+		DEFB	+2A,abs	X, Y, V', U' (U' = ABS U)
+		DEFB	+0F,addition	X, Y, U' + V'
+		DEFB	+02,delete	X, Y
+		DEFB	+38,end-calc	(DE now points to U' + V').
+		LD	A,(DE)	Get exponent of U' + V'
+		CP	+81	If U' + V' is less than 1, just
+		POP	BC	tidy the stack and draw the line
+		JP	C,2477,LINE-DRAW	from X0, Y0 to X0+X, Y0+Y.
+		PUSH	BC	Otherwise, continue with the
+		RST	0028,FP-CALC	parameters: X, Y, on the stack.
+		DEFB	+01,exchange	Y, X
+		DEFB	+38,end-calc
+		LD	A,(COORDS-lo)	Get X0 into A and so
+		CALL	2D28,STACK-A	on to the stack.
+		RST	0028,FP-CALC	Y, X, X0

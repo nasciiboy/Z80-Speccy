@@ -1,0 +1,60 @@
+THE 'STACK FUNCTION ARGUMENT' SUBROUTINE
+
+This subroutine is called by LOOK-VARS when DEFADD-hi in non-zero, to make a search of the arguments area of a DEF FN statement, before searching in the variables area. If the variable is found in the DEF FN statement, then the parameters of a string variable are stacked and a signal is given that there is no need to call STK/VAR. But it is left to SCANNING to stack the value of a numerical variable at 26DA in the usual way.
+
+2951	STK-F-ARG	LD	HL,(DEFADD)	Point to the 1st character in the
+		LD	A,(HL)	arguments area and put it into A.
+		CP	+29	Is it a ')'?
+		JP	Z.28EF,V-RUN/SYN	Jump to search the variables
+				area.
+295A	SFA-LOOP	LD	A,(HL)	Get the next argument in the
+				loop.
+		OR	+60	Set bits 5 & 6, assuming a
+		LD	B,A	simple numeric variable; copy it
+				to B.
+		INC	HL	Point to the next code.
+		LD	A,(HL)	Put it into the A register.
+		CP	+0E	Is it the 'number marker' code
+				0E hex?
+		JR	Z,296B,SFA-CP-VR	Jump if so: numeric variable.
+		DEC	HL	Ensure that HL points to the
+		CALL	28AB,FN-SKPOVR	character, not to a space or
+				control code.
+		INC	HL	HL now points to the 'number
+				marker'.
+		RES	5,B	Reset bit 5 of B: string variable.
+296B	SFA-CP-VR	LD	A,B	Get the variable name into A.
+		CP	C	Is it the one we are looking for?
+		JR	Z,2981,SFA-MATCH	Jump if it matches.
+		INC	HL	Now pass over the 5 bytes of
+		INC	HL	the floating-point number or
+		INC	HL	string parameters to get to the
+		INC	HL	next argument.
+		INC	HL
+		CALL	28AB,FN-SKPOVR	Pass on to the next character.
+		CP	+29	Is it a ')'?
+		JP	Z,28EF,V-RUN/SYN	If so, jump to search the
+				variables area.
+		CALL	28AB,FN-SKPOVR	Point to the next argument.
+		JR	295A,SFA-LOOP	Jump back to consider it.
+
+A match has been found. The parameters of a string variable are stacked, avoiding the need to call the STK-VAR subroutine.
+
+2981	SFA-MATCH	BIT	5,C	Test for a numeric variable.
+		JR	NZ,2991,SFA-END	Jump if the variable is numeric;
+				SCANNING will stack it.
+		INC	HL	Point to the first of the 5
+				bytes to be stacked.
+		LD	DE,(STKEND)	Point DE to STKEND.
+		CALL	33C0,MOVE-FP	Stack the 5 bytes.
+		EX	DE,HL	Point HL to the new position
+		LD	(STKEND),HL	of STKEND, and reset the
+				system variable.
+2991	SFA-END	POP	DE	Discard the LOOK-VARS
+		POP	DE	pointers (2nd & 1st character
+				pointers).
+		XOR	A	Return from the search with
+		INC	A	both the carry and zero flags
+				reset - signalling that a call
+				STK-VAR is not required.
+		RET		Finished.

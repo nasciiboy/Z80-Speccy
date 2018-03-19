@@ -1,0 +1,64 @@
+		LD	(STKEND),HL
+		LD	A,+38	Initialise the colour system
+		LD	(ATTR-P),A	variables to : FLASH 0,
+		LD	(ATTR-T),A	BRIGHT 0, PAPER 7, & INK 0.
+		LD	(BORDCR),A
+		LD	HL,+0523	Initialise the system
+		LD	(REPDEL),HL	variables REPDEL & REPPER.
+		DEC	(KSTATE-0)	Make KSTATE-0 hold +FF
+		DEC	(KSTATE-4)	Make KSTATE-4 hold +FF
+		LD	HL,+15C6	Next move the initial stream
+		LD	DE,+5C10	data from its table to the
+		LD	BC,+000E	streams area.
+		LDIR
+		SET	1,(FLAGS)	Signal 'printer in use'
+		CALL	0EDF,CLEAR-PRB	and clear the printer buffer.
+		LD	(DF-SZ),+02	Set the size of the lower
+		CALL	0D6B,CLS	part of the display and clear
+				the whole display.
+		XOR	A	Now print the message
+		LD	DE,+1538	'(C) 1982 Sinclair Research Ltd'
+		CALL	0C0A,PO-MSG	on the bottom line.
+		SET	5,(TV-FLAG)	Signal 'the lower part will
+				required to be cleared.
+		JR	12A9,MAIN-1	Jump forward into the main
+				execution loop.
+
+THE 'MAIN EXECUTION' LOOP
+The main loop extends from location 12A2 to location 15AE and it controls the 'editing mode', the execution of direct commands and the production of reports.
+
+12A2	MAIN-EXEC	LD	(DF-SZ),+02	The lower part of the screen
+				is to be two lines in size.
+		CALL	1795,AUTO-LIST	Produce an automatic listing.
+12A9	MAIN-1	CALL	16B0,SET-MIN	All the areas from E-LINE
+				onwards are given their
+				minimum configurations.
+
+12AC	MAIN-2	LD	A,+00	Channel 'K' is opened before
+		CALL	1601,CHAN-OPEN	calling the EDITOR.
+		CALL	0F2C,EDITOR	The EDITOR is called to allow
+				the user to build up a BASIC line.
+		CALL	1B17,LINE-SCAN	The current line is scanned for
+				correct syntax.
+		BIT	7,(ERR-NR)	Jump forward if the syntax is
+		JR	NZ,12CF,MAIN-3	correct.
+		BIT	4,(FLAGS2)	Jump forward if other than
+		JR	Z,1303,MAIN-4	channel 'K' is being used.
+		LD	HL,(E-LINE)	Point to the start of the line
+				with the error.
+		CALL	11A7,REMOVE-FP	Remove the floating-point
+				forms from this line.
+		LD	(ERR-NR),+FF	Reset ERR-NR and jump back
+		JR	12AC,MAIN-2	to MAIN-2 leaving the listing
+				unchanged.
+
+The 'edit-line' has passed syntax and the three types of line that are possible have to be distinguished from each other.
+
+12CF	MAIN-3	LD	HL,(E-LINE)	Point to the start of the line.
+		LD	(CH-ADD),HL	Set CH-ADD to the start also.
+		CALL	19FB,E-LINE-NO	Fetch any line number into BC.
+		LD	A,B	Is the line number a valid
+		OR	C	one?
+		JR	NZ,155D,MAIN-ADD	Jump if it is so, and add the new
+				line to the existing program.
+

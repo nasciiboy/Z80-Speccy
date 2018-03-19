@@ -1,0 +1,48 @@
+The Number -65536.
+
+3. The number -65536 can fit into the 'small integer' format as 00 FF 00 00 00. It is
+then the 'limiting number', the one which when twos complemented overflows (cf.
+80 hex in a simple one byte or 7 bit system, i.e. -128 decimal, which when twos comple-
+mented still gives 80 hex i.e. -128 decimal since the positive number 128 decimal does
+not fit into the system).
+
+4. Some awareness of this may have inspired the abortive attempt to create 00 FF 00 00
+00 in 'truncate'. It is abortive since it does not even survive the INT routine of which
+'truncate' is a part. It just leads to the mistake INT (-65536) equals -1.
+
+5. But the main error is that this number has been allowed to arise from 'short addition'
+of two smaller negative integers and then simply put on the stack as 00 FF 00 00 00.
+The system cannot cope with this number. The solution proposed in 'addition' is to form
+the full five byte floating-point form at once; i.e. test for the number first, at about
+byte 3032, as follows:
+
+3032 		PUSH 	AF 	Save the sign byte in A.
+3033 		INC 	A 	Make any FF in A into 00.
+3034 		OR 	E 	Test all 3 bytes now for zero.
+3035 		OR 	D
+3036 		JR 	NZ,3040,ADD-STORE 	Jump if not -65536.
+3038 		POP 	AF 	Clear the stack.
+3039 		LD 	(HL),+80 	Enter 80 hex into second byte.
+303B 		DEC 	HL 	Point to the first byte.
+303C 		LD 	(HL),+91 	Enter 91 hex into the first byte.
+303E 		JR 	3049,ADD-RSTOR 	Jump to set the pointer and exit.
+3040 	ADD-STORE 	POP 	AF 	Restore the sign byte in A.
+3041 		LD 	(HL),A 	Store it on the stack.
+3042 		INC 	HL 	Point to the next location.
+3043 		LD 	(HL),E 	Store the low byte of the result.
+3044 		INC 	HL 	Point to the next location.
+3045 		LD 	(HL),D 	Store the high byte of the result.
+3046 		DEC 	HL 	Move the pointer back to
+3047 		DEC 	HL 	address the first byte of the
+3048 		DEC 	HL 	result.
+3049 	ADD-RSTOR 	POP 	DE 	Restore STKEND to DE.
+304A 		RET 		Finished.
+
+6. The above amendment (i.e. 15 extra bytes) with the ommission of bytes 3223 to
+323E inclusive from 'truncate' should solve the problems. It would be nice to be able to
+test this. The calls of INT-STORE should not lead to 00 FF 00 00 00 being stacked. In
+'multiply' the number will lead to overflow if it occurs, since 65536 will set the carry
+flag; so 'long' multiplication will be used. As noted at 30E5, the 5 bytes starting there
+could probably be omitted if the above amendments were made. 'Negate' avoids stacking
+00 FF 00 00 00 by treating zero separately and returning it unaltered. Truncate deals
+separately with -65536, as noted above. SGN stores only 1 and -1.

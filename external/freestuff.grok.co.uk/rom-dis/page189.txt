@@ -1,0 +1,36 @@
+		LD	B,+91	Set B to 145 dec for the
+				exponent i.e. for up to 16 bits
+				in the integer.
+		LD	A,D	Test whether D is zero so that
+		AND	A	at most 8 bits would be needed.
+		JR	NZ,32B1,RS-NRMLSE	Jump if more than 8 bits needed.
+		OR	E	Now test E too.
+		LD	B,D	Save the zero in B (it will give
+				zero exponent if E too is zero).
+		JR	Z,32BD,RS-STORE	Jump if E is indeed zero.
+		LD	D,E	Move E to D (D was zero, E
+				not).
+		LD	E,B	Set E to zero now.
+		LD	B,+89	Set B to 137 dec for the
+				exponent - no more than 8 bits
+				now.
+32B1	RS-NRMLSE	EX	DE,HL	Pointer to DE, number to HL.
+32B2	RSTK-LOOP	DEC	B	Decrement the exponent on
+				each shift.
+		ADD	HL,HL	Shift the number right one
+				position.
+		JR	NC,32B2,RSTK-LOOP	Until the carry is set.
+		RRC	C	Sign bit to carry flag now.
+		RR	H	Insert it in place as the number
+		RR	L	is shifted back one place -
+				normal now.
+		EX	DE,HL	Pointer to byte 4 back to HL.
+32BD	RS-STORE	DEC	HL	Point to the third location.
+		LD	(HL),E	Store the third byte.
+		DEC	HL	Point to the second location.
+		LD	(HL),D	Store the second byte.
+		DEC	HL	Point to the first location.
+		LD	(HL),B	Store the exponent byte.
+		POP	DE	Restore the 'other' pointer to
+				DE.
+		RET		Finished.

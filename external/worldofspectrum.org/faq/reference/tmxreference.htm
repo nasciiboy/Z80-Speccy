@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Timex Technical Information</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="../emulators/emulators.htm">Emulators</a> |
+<a title="Reference" href="reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">Timex Reference</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+
+<div class="pageNavigation">|
+<a href="tmxreference.htm#SCRModes">Screen Modes</a> |
+<a href="tmxreference.htm#Memory">Memory</a> |
+<a href="tmxreference.htm#Sound">Sound Chip</a> |
+<a href="tmxreference.htm#Joysticks">Joysticks</a> |</div>
+
+<p>This section, which you may want to read in conjunction with the <a href="../resources/documents.htm#Reference">Timex TS2068 Technical Manual</a>,
+discusses the three (official) Timex machines that closely resemble the ZX Spectrum; the TS2068, TC2068
+and TC2048. Timex produced a number of other machines (the <a href="hardware.htm#TS1000">TS1000</a>,
+<a href="hardware.htm#TS1500">TS1500</a>, etc.) which are closely related to the
+<a href="hardware.htm#ZX81">ZX81</a> - additional information about these can found in various sites listed in the '<a title="Links" href="../resources/links.htm">links</a>' and
+'<a href="hardware.htm">hardware</a>' sections of this document. In addition, several variants or clones of
+these machines were produced (often unofficially) - unless particularly noteworthy, these machines are not covered in
+detail here. A
+<a href="BASICReference.htm#Timex">Timex Basic</a> reference is also available.</p>
+<p><strong>The Timex Machines:</strong><br />
+The TS2068, the TC2068 and the TC2048 each share the same basic internal design, described immediately below:</p>
+<ul>
+<li>The TS2068 is an American machine operating at 60Hz on a 110v power supply and generates an NTSC television picture
+(just like the Spectrums sold by mail order in the US by Sinclair) but with a TS1000 (ZX81) compatible expansion bus.<br /><br /></li>
+<li>The TC2068 is the European version operating at 50Hz on a 230-240v power supply and generates a PAL
+television signal (used throughout Europe, except in France where SECAM is used instead) with a normal expansion bus.
+Both machines feature an <a href="pinouts.htm#AY">AY-3-8912</a> sound chip (not 128 compatible), an
+extended version of BASIC in 24K of ROM (semi-compatible), two non-standard joystick ports, a cartridge dock
+(not IF2 compatible), and a new ULA with extra video modes, but some incompatiblities. There is also a Polish clone of the
+TC2068, called the UK2086, which substitutes an RS232 port for one of the joystick ports.<br /><br /></li>
+<li>The TC2048 is a TC2068 with all the extra hardware removed, except the new ULA, but a normal BASIC ROM (only slightly
+modified), a BNC composite out (but no RGB signals on the bus), and a Kempston joystick port (but no +5v as needed by
+autofire joysticks).</li>
+</ul>
+There are also two modified versions of the TC2048; the TC2128 (Rebuiltion or similar) and the TC2144
+(by <a href="http://www.yarek.com/">Jarek Adamski</a>). The TC2128 extends the TC2048 to 128K using the
+Spectrum 128 memory scheme. The TC2144 does the same but provides an extra 16K of memory between 0x8000 and 0xc000. Both
+upgrades allow the ULA to use the shadow screen in Bank 7 giving the machine a total of four screen areas.<br /><br />
+Although the Timex machines are similar to the 48K machine there are some timing differences:
+<ul>
+<li>The main processor runs at 3.52800 MHz, as opposed to 3.50000 MHz on the 48K Spectrum.</li>
+<li>The <a href="pinouts.htm#AY">AY-3-8912</a> sound chip runs at 1.76475 Mhz.</li>
+<li>The American machines have a 60 Hz interrupt as opposed to 50 Hz on the European machines.</li>
+<li>The scanline timings are probably different.</li>
+</ul>
+There are 224 T-states on a normal 48K Spectrum, 312 scanlines per frame and 64 scanlines before the television picture.
+Theoretically, on the European models there should be 226 T-states per scanline. There are either 311 or 312 scanlines per frame and 63
+or 64 scanlines before the television picture, but this has not been accurately tested. This means that there are probably somewhere between
+70286 and 70512 T states per frame. At a guess, on European models the '50 Hz' interrupt occurs at 50.04 Hz. It is not known at precisely what
+point the '60 Hz' interrupt occurs on American models. The Spectrum's ULA bug which causes snow when I is set to point to
+<a href="48kreference.htm#Contention">conteded memory</a> is not present as the Timex machines use a different ULA.
+
+<ul>
+<li><strong><a id="SCRModes">Screen Modes</a></strong><br />
+The ULA used by the Timex machines provides a number of additional screen modes.
+These are controlled using Port 0xff. An unfortunate side effect of this is that a few games, like Arkanoid, which expect reading 0xff to
+produce screen and ATTR data bytes when the ULA is reading the screen memory, will not work, since reading 0xff on the Timex returns
+the last byte sent to the port. It is not known if this port is fully decoded but it seems likely that it is partially decoded, as on the Spectrum.
+Port 0xff is also used to enable/disable the timer interrupt and select which bank of memory to use for the horizontal MMU. The byte to
+output will be interpreted thus:
+<pre>  Bits 0-2: Screen mode. 000=screen 0, 001=screen 1, 010=hi-colour, 110=hi-res
+  Bits 3-5: Sets the screen colour in hi-res mode.
+              000 - Black on White     100 - Green on Magenta
+              001 - Blue on Yellow     101 - Cyan on Red
+              010 - Red on Cyan        110 - Yellow on Blue
+              011 - Magenta on Green   111 - White on Black
+  Bit 6:    If set disables the generation of the timer interrupt.
+  Bit 7:    Selects which bank the horizontal MMU should use. 0=DOCK, 1=EX-ROM.</pre>
+Screen 0 is the normal screen at 0x4000. Screen 1 uses the same format but at 0x6000.<br /><br />
+The hi-colour screen uses the data area of screen 0 and screen 1 to create a 512x192 pixel screen. Columns are taken alternately from
+screen 0 and screen 1. The attribute area is not used. In this mode all colurs, including the BORDER, are BRIGHT, and the BORDER colour
+is the same as the PAPER colour.<br /><br />
+The multi-colour screen uses the data area of screen 0 for its data and the data area of screen 1 for its attributes, giving 2 colours per 8x1
+pixel block. The attribute area is in the same byte order as the data area, which means MLT files, which have the attribute are in series, must
+be converted to be displayed.<br /><br />
+Bit 6 is the hardware equivalent of issuing a DI (disable interrupts) instruction in machine code, and is unaffected by the instruction EI
+(enable interrupts), so should be used with caution. Bit 6 can be useful for getting ROM routines which normally enable interrupts to
+run slightly faster.<br /><br />
+With careful timing it is possible to mix screen modes so you could have a screen where the top half is hi-colour and the bottom half is
+hi-res - perfect for text adventures with graphics. Using a similar technique it is also possible to have more than two colours on a hi-res
+screen. However, it is believed that no commercial software ever actually did this.</li>
+</ul>
+
+
+<ul>
+<li><strong><a id="Memory">Memory</a></strong><br />
+The Timex machines feature a horizontal memory management unit. In the TS2068 and TC2048 it is used to support
+the extended BASIC and cartridges plugged into the dock. It is present in the TC2048 but there is no direct way
+to connect anything to it (although the refresh signals are available to connect an additional 128K of RAM to the horizontal MMU).<br /><br />
+The memory map of these computers is:
+<pre>         EX-ROM      HOME       DOCK
+0xffff +----------+----------+----------+
+       |  Bank 7' | 32K RAM  |  Bank 7  |
+       |          |          |          |
+0xe000 +----------+          +----------+
+       |  Bank 6' |          |  Bank 6  |
+       |          |          |          |    
+0xc000 +----------+          +----------+
+       |  Bank 5' |          |  Bank 5  |
+       |          |          |          |
+0xa000 +----------+          +----------+
+       |  Bank 4' |          |  Bank 4  |
+       |          |          |          |
+0x8000 +----------+----------+----------+
+       |  Bank 3' | Screen 1 |  Bank 3  |
+       |          |          |          |
+0x6000 +----------+----------+----------+
+       |  Bank 2' | Screen 0 |  Bank 2  |
+       |          |          |          |
+0x4000 +----------+----------+----------+
+       |  Bank 1' | 16K ROM  |  Bank 1  |
+       |          |          |          |
+0x2000 +----------+          +----------+
+       |  Bank 0' |          |  Bank 0  | 
+       |          |          |          | 
+0x0000 +----------+----------+----------+</pre>
+Memory is paged in 8K banks from either the DOCK or the EX-ROM, but these banks are mutually exclusive - you cannot page in a bank
+from both simultaneously. Bit 7 of port 0xff determines which bank to use (0=DOCK, 1=EX-ROM). Port 0xf4 determines which banks are to
+be paged in with each bit referring to the relevant bank (0-7 or 0'-7'). When memory is being paged, interrupts should be disabled and the
+stack should be in an area which is not going to change.<br /><br />
+The HOME bank is the normal Spectrum memory area. The top 32K is uncontended but the 16K screen area below that is contended. Banks
+are overlaid on this bank, but paging over the screen area does not change the RAM used by the ULA. This does mean it is possible to set up
+a screen and page it out.<br /><br />
+On a TC2048, BASIC is contained in the 16K ROM area and banks 0-7 and 0'-7' are not normally available, while on a TS2068 or a TC2068
+part of the BASIC is stored in an 8K ROM in bank 0' and cartridges plugged into the dock use banks 0-7.<br /><br />
+The contended memory timings for these machines are unknown but should be similar to that for the 48K machine, except that the pattern
+starts at a different number of T-states after the interrupt, than the usual 14344.<br /><br />
+Reading this port returns the last byte sent to it.</li>
+</ul>
+
+
+<ul>
+<li><strong><a id="Sound">Sound Chip</a></strong><br />The AY-3-8912 used in the TS2068 and TC2068 is controlled by two I/O ports:
+<pre>  OUT (0xf5) - Select a register 0-14
+  IN  (0xf6) - Read the value of the selected register
+  OUT (0xf6) - Write to the selected register</pre>
+IN 0xf5 always returns 255.<br /><br />
+Most Spectrum software written to use the AY chip expects to find it at the addresses used by the Spectrum 128.<br /><br />
+Typically, the <a href="pinouts.htm#AY">AY</a> chip is written to inside 128K games using:
+<pre>  LD BC,0xfffd     01 FD FF
+  OUT (C),D        ED 51
+  LD B,0xbf        06 BF
+  OUT (C),E        ED 59</pre>
+To convert to a TS2068 or TC2068 poke a few values as follows:
+<pre>  LD BC,0xfff5     01 F5 FF
+  OUT (C),D        ED 51
+  LD C,0xf6        0E F6
+  OUT (C),E        ED 59</pre>
+If you've got a Fuller box, you can do the same mod, replacing F5 with 3F and F6 with 5F.</li>
+</ul>
+
+
+<ul>
+<li><p><strong><a id="Joysticks">Joysticks</a></strong></p>
+<p>On the 128K ZX Spectrum 128, <a href="pinouts.htm#AY">AY</a> chip is used
+to control MIDI and RS232 but on the TS2068 and TC2068 it is used to read the Timex joysticks instead, using register R14. See the <a href="peripherals.htm#Joysticks">Joystick Interfaces</a> section for technical details.</p></li>
+</ul>
+
+
+<div class="pageNavigation">|
+<a href="tmxreference.htm#SCRModes">Screen Modes</a> |
+<a href="tmxreference.htm#Memory">Memory</a> |
+<a href="tmxreference.htm#Sound">Sound Chip</a> |
+<a href="tmxreference.htm#Joysticks">Joysticks</a> |</div>
+
+</td>
+</tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: tmxreference.htm,v 1.8 2004/07/05 08:20:13 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+		INC	HL	Make H'L' point to the next
+				literal.
+336C	SCAN-ENT	PUSH	HL	This pointer is saved briefly on
+				the machine stack. SCAN-ENT
+				is used by the SINGLE CAL-
+				CULATION subroutine to find
+				the subroutine that is required.
+		AND	A	Test the A register.
+		JP	P,3380,FIRST-3D	Separate the simple literals from
+				the multi-purpose literals. Jump
+				with literals 00 - 3D.
+		LD	D,A	Save the literal in D.
+		AND	+60	Continue only with bits 5 & 6.
+		RRCA		Four right shifts make them
+		RRCA		now bits 1 & 2.
+		RRCA
+		RRCA
+		ADD	A,+7C	The offsets required are 3E-41.
+		LD	L,A	and L will now hold double the
+				required offset.
+		LD	A,D	Now produce the parameter by
+		AND	+1F	taking bits 0,1,2,3 & 4 of the
+				literal; keep the parameter in A.
+		JR	338E,ENT-TABLE	Jump forward to find the
+				address of the required sub-
+				routine.
+3380	FIRST-3D	CP	+18	Jump forward if performing a
+		JR	NC,338C,DOUBLE-A	unary operation.
+		EXX		All of the subroutines that per-
+		LD	BC,+FFFB	form binary operations require
+		LD	D,H	that HL points to the first operand
+		LD	E,L	and DE points to the second
+		ADD	HL,BC	operand (the 'last value') as they
+		EXX		appear on the calculator stack.
+338C	DOUBLE-A	RLCA		As each entry in the table of
+		LD	L,A	addresses takes up two bytes the
+				offset produced is doubled.
+338E	ENT-TABLE	LD	DE,+32D7	The base address of the table.
+		LD	H,+00	The address of the required
+		ADD	HL,DE	table entry is formed in HL; and
+		LD	E,(HL)	the required subroutine address
+		INC	HL	is loaded into the DE register
+		LD	D,(HL)	pair.
+		LD	HL,+3365	The RE-ENTRY address of 3365
+		EX	(SP),HL	is put on the machine stack
+		PUSH	DE	underneath the subroutine
+				address.
+		EXX		Return to the main set of 
+				registers.
+		LD	BC,(STKEND-hi)	The current value of BREG is
+				transferred to the B register
+				thereby returning the single
+				operation offset.
+				(See COMPARISON at 353B)
+33A1	delete	RET		An indirect jump to the
+				required subroutine.
+

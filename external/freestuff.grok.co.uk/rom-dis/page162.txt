@@ -1,0 +1,54 @@
+THE 'STK DIGIT' SUBROUTINE
+This subroutine simply returns if the current value held in the A register does not repre-
+sent a digit but if it does then the floating-point form for the digit becomes the 'last
+value' on the calculator stack.
+
+2D22	STK-DIGIT	CALL	2D1B,NUMERIC	Is the character a digit?
+		RET	C	Return if not in range.
+		SUB	+30	Replace the code by the actual
+				digit.
+
+
+
+THE 'STACK-A' SUBROUTINE
+This subroutine gives the floating-point form for the absolute binary value currently held in the A register.
+
+2D28	STACK-A	LD	C,A	Transfer the value to the C
+				register.
+		LD	B,+00	Clear the B register
+
+
+THE 'STACK-BC' SUBROUTINE
+This subroutine gives the floating-point form for the absolute binary value currently held in the BC register pair.
+
+The form used in this and hence in the two previous subroutines as well is the one reserved in the Spectrum for small integers n, where -65535 <= n <= 65535. The first and fifth bytes are zero; the third and fourth bytes are the less significant and more significant bytes of the 16 bit integer n in two's complement form (if n is negative, these two bytes hold 65536+n); and the second byte is a sign byte, 00 for '+' and FF for '-'.
+
+2D2B	STACK-BC	LD	IY,+5C3A	Re-initialise IY to ERR-NR.
+		XOR	A	Clear the A register.
+		LD	E,A	And the E register, to indicate
+				'+'.
+		LD	D,C	Copy the less significant byte to
+				D.
+		LD	C,B	And the more significant byte
+				to C.
+		LD	B,A	Clear the B register.
+		CALL	2AB6,STK-STORE	Now stack the number.
+		RST	0028,FP-CALC	Make HL point to
+		DEFB	+38,end-calc	STKEND-5.
+		AND	A	Clear the carry flag.
+		RET		Finished.
+
+
+THE 'INTEGER TO FLOATING-POINT' SUBROUTINE
+This subroutine returns a 'last value' on the calculator stack that is the result of converting an integer in a BASIC line, i.e. the integer part of the decimal number or the line number, to its floating-point form.
+
+Repeated calls to CH-ADD+1 fetch each digit of the integer in turn. An exit is made when a code that does not represent a digit has been fetched.
+
+2D3B	INT-TO-FP	PUSH	AF	Save the first digit - in A.
+		RST	0028,FP-CALC	Use the calculator.
+		DEFB	+A0,stk-zero	The 'last value' is now zero.
+		DEFB	+38,end-calc
+		POP	AF	Restore the first digit.
+
+Now a loop is set up. As long as the code represents a digit then the floating-point form is found and stacked under the 'last value'. The 'last value' is then multiplied by decimal 10 and added to the 'digit' to form a new 'last value' which is carried back to the start of the loop.
+

@@ -1,0 +1,62 @@
+THE 'STOP' COMMAND ROUTINE
+The command routine for STOP contains only a call to the error handling routine.
+
+1CEE	STOP	RST	0008,ERROR-1	Call the error handling
+	(REPORT-9)	DEFB	+08	routine.
+
+THE 'IF' COMMAND ROUTINE
+On entry the value of the expression between the IF and the THEN is the 'last value' on the calculator stack. If this is logically true then the next statement is considered; otherwise the line is considered to have been finished.
+
+1CF0	IF	POP	BC	Drop the return address
+				- STMT-RET.
+		CALL	2530,SYNTAX-Z	Jump forward if checking
+		JR	Z,1D00,IF-1	syntax.
+
+Now use the calculator to 'delete' the last value on the calculator stack but leave the DE register pair addressing the first byte of the value.
+
+		RST	0028,FP-CALC	Use the calculator.
+		DEFB	+02,delete	The present 'last value' is
+		DEFB	+38,end-calc	deleted.
+		EX	DE,HL	Make HL point to the first
+		CALL	34E9,TEST-ZERO	byte and call TEST-ZERO.
+		JP	C,1BB3,LINE-END	If the value was 'FALSE' jump
+				to the next line.
+1D00	IF-1	JP	1B29,STMT-L-1	But if 'TRUE' jump to the next
+				statement (after the THEN).
+
+THE 'FOR' COMMAND ROUTINE
+This command routine is entered with the VALUE and the LIMIT of the FOR statement already on the top of the calculator stack.
+
+1D03	FOR	CP	+CD	Jump forward unless a 'STEP'
+		JR	NZ,1D10,F-USE-1	is given.
+		RST	0020,NEXT-CHAR	Advance CH-ADD and fetch the
+		CALL	1C82,EXPT-1NUM	value of the STEP.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+		JR	1D16,F-REORDER	if checking syntax; otherwise
+				jump forward.
+
+There has not been a STEP supplied so the value '1' is to be used.
+
+1D10	F-USE-1	CALL	1BEE,CHECK-END	Move on to the next statement
+				if checking syntax; otherwise
+		RST	0028,FP-CALC	use the calculator to place a '1'
+		DEFB	+A1,stk-one	on the calculator stack.
+		DEFB	+38,end-calc
+
+The three values on the calculator stack are the VALUE (v), the LIMIT (l) and the STEP (s). These values now have to be manipulated.
+
+1D16	F-REORDER	RST	0028,FP-CALC	v, l, s
+		DEFB	+C0,st-mem-0	v, l, s (mem-0 = s)
+		DEFB	+02,delete	v, l
+		DEFB	+01,exchange	l, v
+		DEFB	+E0,get-mem-0	l, v, s
+		DEFB	+01,exchange	l, s, v
+		DEFB	+38,end-calc
+
+A FOR control variable is now established and treated as a temporary calculator memory area.
+
+		CALL	2AFF,LET	The variable is found, or created
+				if needed (v is used).
+		LD	(MEM),HL	Make it a 'memory area'.
+
+The variable that has been found may be a simple numeric variable using only six locations in which case it will need extending.

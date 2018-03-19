@@ -1,0 +1,14 @@
+The codes for the various digit keys and SYMBOL SHIFT can now be found.
+
+		SUB	+10	Reduce the range to give +20 to
+				+29.
+		CP	+22	Separate the '@' character
+		JR	Z,03B2,K-@-CHAR	from the others.
+		CP	+20	The '-' character has also to be
+				separated.
+		RET	NZ	Return now with the 'final
+				codes' +21, +23 to +29.
+		LD	A,+5F	Give the '-' character a
+		RET		code of +5F.
+03B2	K-@-CHAR	LD	A,+40	Give the '@' character a code
+		RET		of +40.

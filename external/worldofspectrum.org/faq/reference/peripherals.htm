@@ -1,0 +1,562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Peripherals</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="../emulators/emulators.htm">Emulators</a> |
+<a title="Reference" href="reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">Peripherals</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+
+<div class="pageNavigation">|
+<a href="peripherals.htm#Interfaces">Sinclair Interfaces</a> |
+<a href="peripherals.htm#Printers">Printers</a> |
+<a href="peripherals.htm#Storage">Mass Storage Devices</a> |
+<a href="peripherals.htm#Miscellaneous">Miscellaneous</a> |</div>
+
+
+<p>Some of the most popular peripherals produced for the ZX Spectrum are introduced in the sections below. Many of the items
+listed are supported by several modern <a title="Emulators" href="../emulators/emulators.htm">emulators</a>. Brief details of virtually every
+expansion developed for the original ZX Spectrum are available from the
+<a href="http://www.worldofspectrum.org/hardware/">Sinclair Hardware Index</a>.</p>
+
+<p><strong><a id="Interfaces">Sinclair Interfaces</a>:</strong><br />
+Sinclair Research produced 2 official interfaces for use with the ZX Spectrum, both of which are documented below. Of these,
+the ZX Interface II is the simpler, being essentially a Joystick interface and ROM cartridge slot. The ZX Interface I is much
+more complex, and is discussed in more detail. Please refer to the '<a href="48kreference.htm#ZXInterfaceI">48K Reference</a>'
+page for additional information.</p>
+<ul>
+
+<li><strong><a id="InterfaceI">ZX Interface I</a></strong><br />
+The ZX Interface I allows up to 8 <a href="peripherals.htm#ZXMicrodrive">ZX Microdrive</a>s to be connected to a single ZX Spectrum, features an RS-232 port, and provides
+networking facilities that allow up to 255 machines to directly communicate with each other. Sinclair BASIC includes
+commands to access the features of the ZX Interface I and the ZX Microdrive. The following system variables are used in
+addition to those specified for the standard machine:
+<pre>Notes   Address Name    Contents
+X1      23734   FLAGS3  Flags
+X2      23735   VECTOR  Address used to extend the BASIC interpreter
+X10     23737   SBRT    ROM paging subroutine
+2       23747   BAUD    Two byte number determining the baud rate
+                        calculated as follows:
+                        BAUD=(3500000 / (26 * baud rate)) - 2
+1       23749   NTSTAT  Own network station number
+1       23750   IOBORD  Border colour used during I/O. You can poke
+                        any colour you want.
+N2      23751   SER_FL  2 byte workspace used by RS232
+N2      23753   SECTOR  2 byte workspace used by Microdrive
+N2      23755   CHADD_  Temporary store for CH_ADD
+1       23757   NTRESP  Store for network response code
+1       23758   NTDEST  Beginning of network buffer contains
+                        destination station number 0-64
+1       23759   NTSRCE  Source station number
+X2      23760   NTNUMB  Network block number 0-65535
+N1      23762   NTTYPE  Header type code
+X1      23763   NTLEN   Data block length 0-255
+N1      23764   NTDCS   Data block checksum
+N1      23765   NTHCS   Header block checksum
+N2      23766   D_STR1  Start of 8 byte file specifier
+                        2 byte drive number 1-8
+N1      23768   S_STR1  Stream number 0-15   *See note.
+N1      23769   L_STR1  Device type... "M", "N", "T" or "B"
+N2      23770   N_STR1  Length of file name
+N2      23772   D_STR2  Second 8 byte file specifier
+                        used by MOVE and LOAD commands
+N1      23782   HD_00   Start of workspace for SAVE, LOAD, VERIFY and
+                        MERGE data type code
+N2      23783   HD_0B   Length of data 0-66535
+N2      23785   HD_0D   Start of data 0-65535
+N2      23787   HD_0F   Program length 0-66535
+N2      23789   HD_11   Line number
+1       23791   COPIES  Number of copies made by SAVE
+        23792   Start of Microdrive MAPs or CHANS</pre>
+<ul>
+<li><strong>Documentation</strong>:
+<ul>
+<li><a href="../resources/documents.htm#User">ZX Interface I User Manual</a></li>
+<li><a href="../resources/documents.htm#Service">ZX Interface I Service Manual</a></li></ul><br /></li>
+</ul>
+<strong>Note</strong>: The original <a href="../resources/documents.htm#User">user manual</a> differs slightly from this entry, specifying a range of 1-15.
+The command CAT #0, 7 will put the value 0 in address 23768, as will some OPEN and MOVE commands.<br /><br /></li>
+
+
+<li><p><strong><a id="InterfaceII">ZX Interface II</a></strong></p>
+<p>Intended to be a multi-purpose addition to the ZX Spectrum, the ZX Interface II provided two Joystick ports, and a ROM cartridge socket that allowed games to be loaded instantly. It met these goals very well, but was not particularly popular.</p>
+<p>The joystick interface itself was largely a success, with many games including support for the 'Sinclair' joystick types. Technical details on the joystick are available in the <a href="peripherals.htm#Joysticks">Joystick Interfaces</a> section.</p>
+<p>On the other hand, the ROM cartridge socket was not successful: only 10 titles were released on ROM cartridge, and as many of the most popular games (the Horace series, and several by Ultimate) were already available on cassette at around half the price, no market was ever developed. Sinclair had hoped to produce many more titles on cartridge, including several utilities and programming languages, but the lack of popular support for the interface saw it being withdrawn from sale within a year of release.</p>
+<ul>
+<li><strong>Documentation</strong>:
+<ul>
+<li><a href="../resources/documents.htm#User">ZX Interface II User Manual</a></li>
+<li><a href="../resources/documents.htm#Service">ZX Interface II Service Manual</a></li></ul></li>
+</ul></li>
+
+</ul>
+
+
+<p><strong><a id="Printers">Printers</a>:</strong><br />
+Adding a printer to a ZX81 or ZX Spectrum is very easy; the most popular models simply attached to the edge connector and could be
+accessed immediately using Sinclair BASIC. The most common printers are listed below, with links to additional information
+where this is available. Please see the <a title="Emulators" href="../emulators/emulators.htm">emulators</a> page
+for details of those available on your platform that include printer emulation.</p>
+<ul>
+
+<li><strong><a id="ZXPrinter">ZX Printer</a></strong><br />
+The ZX Printer was released in 1981 and is compatible with the ZX80 (with ROM upgrade),
+ZX81 and ZX Spectrum. It is an extremely compact 32 column printer which uses aluminium coated paper. The printed image is 'burned' onto
+the surface of the paper by two metal pins which travel across the paper. A voltage is passed through these pins which causes a spark
+to be produced, leaving a black dot. See the <a title="Documentation" href="../resources/documents.htm">documentation</a> section
+if you need a copy of the original <a href="../resources/documents.htm#User">manual</a> or
+<a href="../resources/documents.htm#Service">service guide</a>. The ZX Printer is addressed in the same way
+as the Alphacom 32 and Timex TS2040, with the following notes:<br /><br />
+<ul>
+<li>D0 and D7 are both latched so that they remain high until the computer writes something to the printer. So even if you don't
+make use of the information you've read in, you should output an instruction (with appropriate data) to reset the latches until the next
+signal. These bits may be in either state on switch on, and aren't affected by the feed button.<br /><br />
+The paper detect signal is also used internally by the printer to make sure that the styli stop off the paper. Note that if power is applied
+to the stylus, the paper signal will go high even if the printer is between scans, so the stylus must be turned off before attempting
+to detect the edge of the paper.</li></ul><br />
+<ul>
+<li><strong>Documentation</strong>:
+<ul>
+<li><a href="../resources/documents.htm#User">ZX Printer User Manual</a></li>
+<li><a href="../resources/documents.htm#Service">ZX Printer Service Manual</a></li></ul></li>
+</ul><br /></li>
+
+
+<li><strong><a id="Alphacom">Alphacom 32</a></strong><br />
+The Alphacom 32 was one of the leading alternatives to the ZX Printer. Slightly larger than the ZX Printer, the Alphacom 32
+uses thermal paper and features 32 column output as standard. Print speed is around 2 lines per second,
+which is considerably faster than the ZX Printer. Replacement paper rolls are still offered for sale - try
+<a href="http://www.roltech.co.uk/products/pos/pos_thermal.htm">Roltech</a>. Specifications are as the Timex TS2040,
+with a 240V adaptor being required, rather than 120V as mentioned below.<br /><br /></li>
+
+
+<li><strong><a id="QLPrinter">QL-800 Printer</a></strong><br />
+A 9-pin dot-matrix printer was introduced shortly after the release of the QL. Styled to match the QL in appearance, the
+printer attached directly to the SER1 port on the back of the machine, and was accessible using the OPEN #[n], ser command,
+followed by PRINT #[n], LIST #[n], etc. ([n] is a channel number). The technical specifications for the QL-800 printer are:<br /><br />
+<ul>
+<li><strong>Print Method</strong>: Impact Dot Matrix.</li>
+<li><strong>Print Head</strong>: 9 pin.<br /><br /></li>
+<li><strong>Print Mode</strong>: Various
+<ul>
+<li>Standard Pica: 10 cpi</li>
+<li>Standard Elite: 12 cpi</li>
+<li>Standard Condensed: 17 cpi</li>
+<li>High Quality Pica: 10 cpi</li>
+<li>High Quality Elite Pica: 12 cpi<br /><br /></li>
+</ul></li>
+</ul>
+Multiple modes per line are permitted. Bold, Double-Strike, Double-Width, Superscript/Subscript, Proportional and Italic character
+modes are also available.<br /><br />
+<ul>
+<li><strong>Paper Width</strong>: 4 - 10 inches.</li>
+<li><strong>Paper Thickness</strong>: 0.07 - 0.1 mm.<br /><br /></li>
+<li><strong>Power Supply</strong>:
+<ul>
+<li>Input: 117V AC, 220/240V AC +/- 10%, 50/60Hz +/- 3%</li>
+<li>Power Consumption: 30W (self-test), 15W (standby)<br /><br /></li>
+</ul></li>
+</ul>
+4 dip switches on the back of the printer allow various settings to be adjusted, after the initialization process:
+<pre>Switch No.      Function                On      Off     Default
+   1-1          Baud rate selection      See below        OFF
+   1-2          Baud rate selection      See below        OFF
+   1-3          Page length setting     12in    11in      OFF
+   1-4          Character zero shape     Ø       0        OFF</pre>
+Switch 1-1 and 1-2 control the baud rate:
+<pre>Switch 1-1       Switch 1-2     Baud Rate
+   OFF             OFF            9600
+   ON              OFF            4800
+   OFF             ON             2400
+   ON              ON             1200</pre>
+The RS-232C, 25 pin serial interface connector is wired as shown below:
+<pre>Pin	Signal		Purpose
+ 1	FG		Frame Ground
+ 3	RXD		Input Data
+ 7	SG		Signal Ground
+ 20	DTR		Busy/Ready state
+			On  (+3 ~ +25V) = Ready
+			Off (-3 ~ -25V) = Busy</pre>
+</li>
+
+
+<li><strong><a id="TS2040">Timex TS2040</a></strong><br />
+The original ZX Printer was not imported to the US directly, rather Timex distributed a branded version of the Alphacom 32
+(see above). The TS2040 can be used with any of the Timex or Sinclair systems. The technical specifications of the TS2040 are:<br /><br />
+<ul>
+<li><strong>Paper Type</strong>: Thermal paper, black or blue print, end-of-roll indicator.</li>
+<li><strong>Roll Size</strong>: 4.33in (110mm) Wide x 1.9in (48mm) Diameter x up to 25m (82 feet) Length.<br /><br /></li>
+<li><strong>Power Supply</strong>: DVE part no. DV-2412a
+<ul>
+<li>Input: 120V AC, 60Hz, 35W</li>
+<li>Output: 24V AC, 1.2A<br /><br /></li>
+</ul></li>
+</ul>
+A self-test mode is built-in to aid troubleshooting. This mode is accessed by pressing the [OFF] button once while
+holding down the [ON/ADVANCE]. The TS2040 will repeatedly print a line of 8's and a line of 1's.<br /><br />
+The TS2040 is wired as a z80 I/O port, selected by A2 being at low level and A7 being at high level. No other address
+lines are recognised. To send information to the printer, use: OUT (FB), A - opcode D3 FB, assuming the data is in register A.
+The data bits have the following meanings:<br /><br />
+<ul>
+<li>(D2) High level means stop the motor, low means start it.</li>
+<li>(D7) High level applies power to the print head.<br /><br /></li></ul>
+All these lines remain in the state they were last at, until new data is sent to the printer. At switch on, or after pressing
+the feed button, D7 is set low; D2 is left high once feed is finished. The other data lines are not used.<br /><br />
+To fetch information from the printer, the z80 instruction: IN A, (FB) - opcode DB FB; will put the data into the accumulator.
+The following bits are used:<br /><br />
+<ul>
+<li>(D6) Will be read as low if the printer is there, high if it is not, and is used solely to check if the printer is connected.</li>
+<li>(D0) This is high when the printer is ready for the next bit.</li>
+<li>(D7) This line is high for the start of a new line.<br /><br /></li>
+</ul>
+<ul>
+<li><strong>Documentation</strong>:
+<ul>
+<li><a href="../resources/documents.htm#User">TS2040 User Manual</a></li>
+</ul><br /></li>
+</ul>
+The TS2040 was originally introduced at a cost of $99.95.<br /><br /></li>
+
+
+<li><strong><a id="GP50S">Seikosha GP-50s</a></strong><br />
+A (relatively) expensive alternative to the Alphacom 32 and the ZX Printer, the Seikosha GP-50s provided a significantly higher quality
+output as compensation. The GP-50s is a plain paper, dot matrix printer capable of producing up to 40 characters per second, across a
+maximum of 46 columns. Tractor-fed paper may also be used if preferred.<br /><br />
+The maximum paper width that can be used is 5in, and the printer came fitted with a ZX Spectrum compatible
+cable/interface. Being a dot matrix design, it was significantly more noisy in use than the thermal alternatives, but the attached
+'flip-over' paper cover helped reduce this somewhat during use. A manual paper-feed allows paper to be finely aligned, and the printer
+is a distinctive grey/white colour.<br /><br />
+The GP-50s originally cost &pound;69.95 (ex. VAT)</li>
+
+</ul>
+
+
+<p><strong><a id="Storage">Mass Storage Devices</a>:</strong><br />
+The primary storage medium for the ZX Spectrum (and earlier models) was traditional cassette tape. As programs became more
+complex, and as both programmers and users became increasingly frustrated at the poor reliability and slow loading times associated
+with tape, several alternatives were developed. The ZX Microdrive from Sinclair Research was widely anticipated, and sold extremely
+well; the Sinclair QL (and ICL One-Per-Desk variant) has 2 microdrives built-in.<br /><br />
+Various disk-drives and improved tape-based systems were also introduced - the ZX Spectrum pre-dates affordable floppy disk
+drives, although these became increasingly popular options throughout the mid 1980s as prices fell. The ZX Spectrum +3 includes a 3in
+disk drive as standard, as do competing models from other vendors. Please refer to the <a href="diskreference.htm">disk reference</a>
+page for details of disk-based systems.</p>
+<ul>
+
+<li><strong><a id="ZXMicrodrive">ZX Microdrive</a></strong><br />
+The ZX Microdrive was a tape cartridge system, announced in April 1982 and launched in June 1983, although
+development on the system may have begun as far back as 1981.
+Used in conjunction with the <a href="peripherals.htm#InterfaceI">ZX Interface I</a> to provide
+a faster alternative to cassette tape, Microdrive cartridges contained 6 metres of 1.9mm magnetic tape
+stored in an endless loop configuration offering 85KB of storage, which could be accessed at speeds of around
+15KB/sec. Up to 8 Microdrives could be connected to a ZX Spectrum via the ZX Interface I. Later
+improvements to the Microdrive format would allow the QL to use around 100KB per cartridge, but the two
+formats were incompatible with each other.
+<br /><br />
+&raquo; <a href="http://www.nvg.ntnu.no/sinclair/computers/peripherals/microdrive.htm">ZX Microdrive</a> [nvg.ntnu.no]<br />
+&raquo; <a href="http://www.nvg.ntnu.no/sinclair/computers/peripherals/microdrive_sst.htm">Microdrive Development</a> [nvg.ntnu.no]<br /><br />
+</li>
+
+
+<li><strong><a id="WafaDrive">Rotronics Wafadrive</a></strong><br />
+The Rotronics Wafadrive is similar in concept to the ZX Interface I and Microdrive combination, although quite different in design.
+It attaches to the expansion connector of the original ZX Spectrum and is powered directly by the computer via a short ribbon cable;
+although a pass-through connector is included, further expansion is limited because of this.<br /><br />
+Two tape drives are provided, each capable of using cartridges of up to 128K in capacity (16K and 64K cartridges were also
+produced), with RS-232 and Centronics ports also included. In common with the ZX Microdrives, the cartridges were actually
+continuous loops of tape, rather than disks as might be suggested by their external appearance. Data is retrieved from tape by
+reading it as it passes over the tape head, but the loop only runs in one direction making access times a little slower than from disk.
+The whole tape must loop around if data is 'behind' the current tape position. Wafadrive and Microdrive tapes are not compatible with
+each other.<br /><br />
+The Wafadrive Operating System is copied to addresses between 23754 and 26046 when the system is connected. This can cause
+some software to fail, and cannot easily be relocated without additional software or hardware. Several commercial backup utilities
+allowed programs to be transferred between cassette and Wafadrive cartridge, in common with other mass storage systems.<br /><br />
+Although relatively popular as a bulk storage device, the Wafadrive was eventually sold off very inexpensively following the collapse
+of Rotronics in 1986, and very few commercial applications were available ('Spectral Writer', a word processing package, was
+included with the drive). See the
+<a href="../resources/documents.htm#Reference">documents</a> page for a link to the Wafadrive Command Summary.
+<a href="../resources/spares.htm">Sintech</a> can occasionally supply wafers of various different capacities.<br /><br />
+<ul>
+<li><strong>Storage capacity</strong>: Up to 128K per drive (formatted).</li>
+<li><strong>Transfer rate</strong>: 18K Baud.</li>
+<li><strong>Tape speed</strong>: 10" per second (fast search = 15" per second).<br /><br /></li>
+<li><strong>Timing</strong>: Formatting (timings are approximate).
+<ul>
+<li>16K: 47 seconds.</li>
+<li>64K: 2 minutes 30 seconds.</li>
+<li>128K: 4 minutes 42 seconds.<br /><br /></li>
+</ul></li>
+<li><strong>Timing</strong>: Cataloguing (timings are approximate).
+<ul>
+<li>16K: Up to 8.5 seconds.</li>
+<li>64K: Up to 27 seconds.</li>
+<li>128K: Up to 47 seconds.</li>
+</ul></li>
+</ul><br />
+Emulation of the Rotronics Wafadrive is provided by <a href="../emulators/msdos.htm">RealSpec</a> for MS-DOS
+and Microsoft Windows systems.<br /><br /></li>
+
+
+<li><strong><a id="TS2020">Timex TS2020 Program Recorder</a></strong><br />
+The TS2020 is a simple cassette recorder, with built-in loudspeaker, tape counter, tone control and VU meter, designed for use with any of the
+Timex systems introduced to North America. The technical specifications of the TS2020 are:<br /><br />
+<ul>
+<li><strong>Output Power</strong>: 500mw.</li>
+<li><strong>Speaker</strong>: 2in (50mm).</li>
+<li><strong>Impedance</strong>: 8 Ohms.</li>
+<li><strong>Tape Speed</strong>: 1-7/8in (4.75cm) per second.</li>
+<li><strong>Frequency Response</strong>: 200-6300Hz.<br /><br /></li>
+<li><strong>Power Supply</strong>: The TS2020 can be powered by batteries, or an (optional) AC Adaptor.
+<ul>
+<li>Input: 6V DV via 4 'AA' Batteries or 120V AC, 60Hz</li>
+</ul><br /></li>
+</ul>
+The TS2020 was originally introduced at a cost of $49.95.<br /><br /></li>
+
+</ul>
+
+
+<p><strong><a id="Miscellaneous">Miscellaneous</a>:</strong></p>
+<ul>
+
+<li><p><strong><a id="Joysticks">Joystick Interfaces</a></strong></p>
+<p>A large number of joystick interfaces were produced for use with the ZX Spectrum; the most common are documented here.</p>
+<ul>
+<li><p><strong>Kempston</strong></p>
+<p>The Kempston joystick interface differs from the other common types in that it does not map to the ZX Spectrum
+keyboard directly. Rather, it maps to a particular hardware port (0x1f) and support must therefore be 'built-in' to the
+software. Fortunately, the Kempston joystick interface was enormously popular, and support was very easy to
+provide, making Kempston control a common, almost standard, feature of most games.</p>
+<p>Assuming an appropriate interface is attached, reading from port 0x1f returns the current state of the Kempston joystick in the form 000FUDLR, with active bits high.</p></li>
+<li><p><strong>Sinclair</strong></p>
+<p>The 'left' Sinclair joystick maps the joystick directions and the fire button to the 1 (left), 2 (right), 3 (down), 4 (up) and 5 (fire) keys on the ZX Spectrum keyboard, and can thus be read via port 0xf7fe; see the <a href="48kreference.htm#PortFE">Port 0xfe</a> section for full details. For any of the joystick interfaces which map to keys, any game offering the appropriate form of joystick control can instead be played with the listed keys.</p>
+<p>The 'right' Sinclair joystick maps to keys 6 (left), 7 (right), 8 (down), 9 (up) and 0 (fire) and can therefore be read via port 0xeffe.</p></li>
+<li><p><strong>Cursor</strong></p>
+<p>A cursor joystick interfaces maps to keys 5 (left), 6 (down),
+7 (up), 8 (right) and 0 (fire). Reading a cursor joystick thus requires a combination of bit 4 of port 0xf7fe and bits 0, 2, 3 and 4 of port 0xeffe. Common interfaces offering a cursor joystick option included those produced by Protek and AGF.</p></li>
+<li><p><strong>Programmable</strong></p>
+<p>Programmable joystick interfaces allow joystick directions to be mapped to any key on the keyboard, usually
+through software. Some models used a series of 'jumpers' to program the joystick-key relationships, although
+these are relatively uncommon (eg the AGF interface).</p>
+<p>Typically, a short program is loaded that prompts for a joystick direction and corresponding key to be chosen.
+The program then exits, and a game is loaded. Choosing the 'keyboard' option will allow the joystick to be used
+instead, meaning that virtually any title can be easily controlled. Common models include those by DK'Tronics and AGF.</p></li>
+<li><p><strong>Fuller</strong></p>
+<p>The <a href="peripherals.htm#Fuller">Fuller Audio Box</a> included a joystick interface. Results were obtained by reading from port 0x7f in the form F---RLDU, with active bits low.</p></li>
+<li><p><strong>Timex</strong></p>
+<p>The Timex <a href="hardware.htm#TS2068">TS2068</a> and <a href="hardware.htm#TC2068">TC2068</a> (but not the <a href="hardware.htm#TC2048">TC2048</a>, which has a Kempston interface) have a built-in joystick interface, but reading from this is slightly more complicated as the joysticks are attached to register 14 of the <a href="pinouts.htm#AY">AY-3-8912</a> sound chip. Address bits A8 and A9 determine which joystick will be read (01=one, 10=two, 11=both OR-ed). So mainly port 0x01f6 is used to read joystick one, and mainly port 0x02f6 is used to read joystick two (with R14 as the active register). When R14 acts as an output port (bit D6=1 in register R7), the bits in register R14 have following meaning:</p>
+<p>Output:</p>
+<pre>  bits D0-D4: 'masks' for reading bits D0-D4; may also be used by third-party peripherals
+  bit D5:     If D5=0 then access to the (never released) 16MB Bus Expansion Unit is enabled.
+  bits D6-D7: may be used by third-party peripherals</pre>
+<p>Input:</p>
+<pre>  bit D0:     up (0=active)
+  bit D1:     down
+  bit D2:     left
+  bit D3:     right
+  bit D4:     fire (0=active)
+  bits D5-D7: last values sent to these bits</pre>
+<p>The bits D0-D4 when reading return valid values only if they are not masked, i.e. if corresponding mask bits is one,
+else they will return zeroes. When register R14 acts as input port (bit D6=0 in register R7, this is the only
+reliable way for joystick reading), output is ignored and the bits in register R14 have following meanings:</p>
+<p>Input:</p>
+<pre>  bit D0:     up (0=active)
+  bit D1:     down
+  bit D2:     left
+  bit D3:     right
+  bit D4:     fire (0=active)
+  bits D5-D7: always one</pre>
+In this case, bits D0-D4 are not masked. This leads to the following typical code for reading the joysticks:</p>
+<pre>  LD A,7
+  OUT (0xf5),A  ;set R7
+  IN A,(0xf6)
+  AND 0xbf      ;clear bit 6 to read from i/o port a - R14
+  OUT (0xf6),A
+  LD A,14
+  OUT (0xf5),A  ;set R14
+  LD A,3        ;(3=both joysticks, 2=left only, 1=right only)
+  IN A,(0xf6)   ;(FxxxRLDU, active low)</pre>
+<p>This method ensures other sound chip functions are not disrupted.</p>
+</ul></li>
+
+
+<li><strong><a id="Multiface">Multiface 1 / 128 / +3</a></strong><br />
+Developed by Romantic Robot, the Multiface Interface(s) connect to the edge connector of the ZX Spectrum, and provide a
+wide range of additional features, including a Kempston-compatible Joystick connector. Several different models were
+produced for use with different systems, as indicated by their names.<br /><br />
+The Multiface requires no system memory; it has 8K EPROM and 8K RAM available on-board (Multiface 1 has 2K RAM only),
+and needs no software to operate. One of the most appealing features is the ability to transfer programs to Microdrive, Disk,
+Wafadrive or Tape easily and quickly; saved programs can be compressed, and can be re-loaded without a Multiface being
+attached. In addition, it is possible to read through the contents of memory at any time, making the Multiface popular with
+games players and developers alike.<br /><br />
+<ul>
+<li><strong>Documentation</strong>:
+<ul>
+<li><a href="../resources/documents.htm#Peripherals">Multiface 1 Manual</a></li>
+</ul><br /></li>
+</ul>
+The Multiface 1 was introduced at a cost of &pound;39.95<br /><br /></li>
+
+
+<li><strong><a id="Speech">Currah µSpeech</a></strong><br />
+The ZX Spectrum is not noted for its audio quality, making the development of this speech synthesizer an even more remarkable
+accomplishment. This device attaches to the expansion port of the ZX Spectrum and reproduces a "human" voice through
+the use of allophones; essentially phonetic descriptions of words or letters. Phrases can be built up, with emphasis of 'hard' sounds
+as required. A table of allophone sets is included with the µSpeech programming manual. The µSpeech can be controlled from BASIC
+or machine language - several commercial games support the µSpeech (see the World of Spectrum and TZX Vault for lists)<br /><br />
+<ul>
+<li><strong>Documentation</strong>:
+<ul>
+<li><a href="../resources/documents.htm#Peripherals">Currah µSpeech Programming Manual</a></li>
+</ul><br /></li>
+</ul>
+The Currah µSpeech is simulated by several modern <a title="Emulators" href="../emulators/emulators.htm">emulators</a>, including
+<a href="../emulators/windows.htm#Klive">Klive</a>, <a href="../emulators/windows.htm#Spectaculator">Spectaculator</a> and
+<a href="../emulators/windows.htm#SPIN">SPIN</a>.<br /><br /></li>
+
+
+<li><strong><a id="Fuller">Fuller Audio Box</a></strong><br />
+The Fuller Audio Box used the <a href="pinouts.htm#AY">AY-3-8912</a> sound chip, found in the ZX
+Spectrum 128K and others, and could be attached to the edge connector of the ZX Spectrum. In addition to providing
+improved sound quality, a Joystick port and additional EAR/MIC sockets were included.<br /><br />
+Standard Atari-style joysticks could be connected to the interface, which is similar to the more popular Kempston design.
+The sound board works on port numbers 0x3f and 0x5f. Port 0x3f is used to select the active AY register and to receive data from the AY-3-8912, while port 0x5f is used for sending data. The
+<a href="peripherals.htm#Joysticks">joystick</a> is connected to port 0x7f.<br /><br />
+The unit also provides a pass-through connector to allow additional peripherals to be attached. An optional speech-chip
+was available. Many <a title="Emulators" href="../emulators/emulators.htm">emulators</a> provide Fuller Audio Box emulation.<br /><br /></li>
+
+
+<li><strong><a id="Mice">Mice</a></strong><br />
+Several companies produced mice for use with the ZX Spectrum, the most popular of which are quite widely
+supported by modern emulators. Of those available, the AMX and Kempston models are of particular note:<br /><br />
+<ul>
+<li><strong>AMX Mouse</strong>:<br />
+The AMX Mouse package comprises a 3-button mouse, interface and a suite of software. The interface attaches
+to the edge connector of the ZX Spectrum, and includes a parallel printer port. 3rd party application support for
+the AMX mouse was quite wide, with the emphasis on art and design packages initially. The AMX Control Language
+adds 28 commands to the original system, allowing mouse control to be easily incorporated within BASIC programs
+as required.<br /><br /></li>
+<li><strong>Kempston Mouse</strong>:<br />
+Although better known for their Joystick interfaces, Kempston also introduced many other devices. Their mouse
+is emulated by
+<a href="../emulators/windows.htm#Spectaculator">Spectaculator</a>,
+<a href="../emulators/windows.htm#vbSpec">vbSpec</a>,
+<a href="../emulators/windows.htm#SPIN">SPIN</a>, and others.<br /><br />
+The 2-button mouse can be accessed from either machine code or BASIC using the following commands:<br /><br />
+<ul>
+<li><strong>Horizontal position</strong>: IN 64479</li>
+<li><strong>Vertical postition</strong>: IN 65503</li>
+<li><strong>Buttons</strong>: IN 64223 [255 = None], [254 = Left], [253 = Right], [252 = Both]</li></ul></li>
+</ul><br /></li>
+
+
+<li><strong><a id="TS1016">Timex TS1016</a></strong><br />
+The TS1016 attaches to the expansion connector of the TS1000, increasing the memory size from 2K to 16K.
+If attached to a <a href="hardware.htm#TS1500">TS1500</a>, the memory increases from 16K to 32K.<br /><br />
+<ul>
+<li><strong>Documentation</strong>:
+<ul>
+<li><a href="../resources/documents.htm#Diagrams">ZX81 RAM Pack Schematic Diagram</a> (TS1016 equivalent)</li>
+<li><a href="../resources/documents.htm#User">TS1016 User Manual</a></li>
+</ul><br /></li></ul>
+The TS1016 was originally introduced at a cost of $49.95.<br /><br /></li>
+
+
+<li><strong><a id="Prism">Prism VTX-5000 Modem</a></strong><br />
+This modem was designed to sit underneath the original ZX Spectrum, and is styled to match this system. The device attaches
+to the expansion connector and is powered by a small external supply. Although impractical for modern use, the VTX-5000
+was very popular with users wishing to connect to Micronet (an online service provided by British Telecom) and had the
+necessary software pre-installed in memory. Alternatives included the Prestel, Dialsoft services, and a number of 'private'
+BBS operated by small user groups, individuals, etc. The VTX-5000 operates at up to 1200 baud.<br /><br /></li>
+
+
+<li><strong><a id="TS2050">Timex TS2050</a></strong><br />Timex/Sinclair
+contracted Westridge Communications to produce a modem for use with their recently introduced range of computers. Originally planned
+for a November 1983 release, the modem was delayed by the departure of Timex from the home computer market. Undeterred, Westridge
+continued with production and eventually released their design as the 'Westridge 2050' for the <a href="hardware.htm#TS1000">TS1000</a>,
+<a href="hardware.htm#TS1500">TS1500</a> and <a href="peripherals.htm#TS2068">TS2068</a> models.<br /><br />
+The modem is separately powered and attaches to the expansion connecter of these machines using a pass-through connector that allows
+one additional device to be attached. The technical specifications of the TS2050 are:<br /><br />
+<ul>
+<li><strong>Data Format</strong>: Serial, Binary, Asynchronus.</li>
+<li><strong>Data Rate</strong>: 0 to 300bps, Full Duplex.</li>
+<li><strong>Modulation</strong>: Frequency shift-keyed (FSK)</li>
+<li><strong>Line Interface</strong>: FCC Part 68 Direct Connect.<br /><br /></li>
+<li><strong>Transmit Frequency</strong>:
+<ul>
+<li>Mark: 1270Hz (Originate) and 2225Hz (Answer)</li>
+<li>Space: 1070Hz (Originate) and 2025Hz (Answer)</li>
+</ul><br /></li>
+<li><strong>Transmit Frequency Accuracy</strong>: +/- 0.01%</li>
+<li><strong>Transmit Level</strong>: -12 dBm typical.<br /><br /></li>
+<li><strong>Receive Frequency</strong>:
+<ul>
+<li>Mark: 2225Hz (Originate) and 1270Hz (Answer)</li>
+<li>Space: 2025Hz (Originate) and 1070Hz (Answer)</li>
+</ul><br /></li>
+<li><strong>Receive Frequency Tolerance</strong>: +/- 0.05%</li>
+<li><strong>Carrier Detect Threshold</strong>: - 44 dBm typical</li>
+<li><strong>Carrier Detect Delay</strong>: 250ms<br /><br /></li>
+<li><strong>Power Supply</strong>: DVE part no. DV-91a
+<ul>
+<li>Input: 120V AC, 60Hz, 16W</li>
+<li>Output: 9.75V DC, 650mA</li>
+<li>Centre Polarity: +ve</li>
+</ul><br /></li>
+</ul>
+The TS2050 was supplied with the MTERM/T Software (developed by Micro-Systems Software) on a multi-format
+cassette intended for use with the TS1000, TS1500 and TS2068 computers. Other software may be used if required.
+The TS2050 was originally introduced at a cost of $199.95.<br /><br /></li>
+
+ </ul>
+
+
+
+<div class="pageNavigation">|
+<a href="peripherals.htm#Interfaces">Sinclair Interfaces</a> |
+<a href="peripherals.htm#Printers">Printers</a> |
+<a href="peripherals.htm#Storage">Mass Storage Devices</a> |
+<a href="peripherals.htm#Miscellaneous">Miscellaneous</a> |</div>
+
+</td>
+</tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: peripherals.htm,v 1.12 2004/07/05 08:20:12 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+</body>
+</html>

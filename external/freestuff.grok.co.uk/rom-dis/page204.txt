@@ -1,0 +1,62 @@
+3524	no-&-no	EX	DE,HL	Point HL at Y, DE at X.
+		CALL	34E9,TEST-ZERO	Test whether Y is zero.
+		EX	DE,HL	Swap the pointers back.
+		RET	NC	Return with X as the 'last value'
+				if Y was non-zero.
+		AND	A	Reset the carry flag and jump
+		JR	350B,FP-0/1	back to set the 'last value' to
+				zero.
+
+THE 'STRING AND NUMBER' OPERATION
+(Offset 10: 'str-&-no')
+
+This subroutine performs the binary operation 'X$ AND Y' and returns X$ if Y is non-zero and a null string otherwise.
+
+352D	str-&-no	EX	DE,HL	Point HL at Y, DE at X$
+		CALL	34E9,TEST-ZERO	Test whether Y is zero.
+		EX	DE,HL	Swap the pointers back.
+		RET	NC	Return with X$ as the 'last
+				value' if Y was non-zero.
+		PUSH	DE	Save the pointer to the number.
+		DEC	DE	Point to the fifth byte of the
+				string parameters i.e. length-
+				high.
+		XOR	A	Clear the A register.
+		LD	(DE),A	Length-high is now set to zero.
+		DEC	DE	Point to length-low.
+		LD	(DE),A	Length-low is now set to zero.
+		POP	DE	Restore the pointer.
+		RET		Return with the string
+				parameters being the 'last value'.
+
+THE 'COMPARISON' OPERATIONS
+(Offsets 09 to 0E & 11 to 16: 'no-l-eql', 'no-gr-eq', 'nos-neql', 'no-grtr', 'no-less', 'nos-eql', 'str-l-eql', 'str-gr-eq', 'strs-neql', 'str-grtr', 'str-less' & 'strs-eql')
+
+This subroutine is used to perform the twelve possible comparison operations. The single operation offset is present in the B register at the start of the subroutine.
+
+353B	no-l-eql	LD	A,B	The single offset goes to the
+	etc.			A register.
+		SUB	+08	The range is now 01-06 &
+				09-0E.
+		BIT	2,A	This range is changed to:
+		JR	NZ,3543,EX-OR-NOT	00-02, 04-06, 08-0A &
+		DEC	A	0C-0E.
+3543	EX-OR-NOT	RRCA		Then reduced to 00-07 with
+				carry set for 'greater than or
+				equal to' & 'less than'; the
+				operations with carry set are
+		JR	NC,354E,NU-OR-STR	then treated as their
+		PUSH	AF	complementary operation once
+		PUSH	HL	their values have been exchanged.
+		CALL	343C,EXCHANGE	
+		POP	DE	
+		EX	DE,HL	
+		POP	AF	
+354E	NU-OR-STR	BIT	2,A	The numerical comparisons are
+		JR	NZ,3559,STRINGS	now separated from the string
+				comparisons by testing bit 2.
+		RRCA		The numerical operations now
+				have the range 00-01 with carry
+				set for 'equal' and 'not equal'.
+		PUSH	AF	Save the offset.
+		CALL	300F,SUBTRACT	The numbers are subtracted for

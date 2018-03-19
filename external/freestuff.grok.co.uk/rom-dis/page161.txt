@@ -1,0 +1,63 @@
+DEFB	+02,delete	save it in the memory area.
+		DEFB	+38,end-calc
+2CDA	NXT-DGT-1	RST	0018,GET-CHAR	Get the present character.
+		CALL	2D22,STK-DIGIT	If it is a digit then stack it.
+		JR	C2CEB,E-FORMAT	If not jump forward.
+		RST	0028,FP-CALC	Now use the calculator.
+		DEFB	+E0,get-mem-0	For each passage of the loop,
+		DEFB	+A4,stk-ten	the number saved in the memory
+		DEFB	+05,division	area is fetched, divided by 10
+		DEFB	+C0,st-mem-0	and restored: i.e. going from .1
+				to .01 to .001 etc.
+		DEFN	+04,multiply	The present digit is multiplied
+		DEFB	+0F,addition	by the 'saved number' and
+		DEFB	+38,end-calc	added to the 'last value'.
+		RST	0020,NEXT-CHAR	Get the next character.
+		JR	2CDA,NXT-DGT-1	Jump back (one more byte than
+				needed) to consider it.
+
+Next consider any 'E notation', i.e. the form xEm or xem where m is a positive or negative integer.			
+
+2CEB	E-FORMAT	CP	+45	Is the present character an 'E'?
+		JR	Z,2CF2,SIGN-FLAG	Jump forward if it is.
+		CP	+65	Is it an 'e'?
+		RET	NZ	Finished unless it is so.
+2CF2	SIGN-FLAG	LD	B,+FF	Use B as a sign flag, FF for '+'.
+		RST	0020,NEXT-CHAR	Get the next character.
+		CP	+2B	Is it a '+'?
+		JR	Z,2CFE,SIGN-DONE	Jump forward.
+		CP	+2D	Is it a '-'?
+		JR	NZ,2CFF,ST-E-PART	Jump if neither '+' not '-'.
+		INC	B	Change the sign of the flag.
+2CFE	SIGN-DONE	RST	0020,NEXT-CHAR	Point to the first digit.
+2CFF	ST-E-PART	CALL	2D1B,NUMERIC	Is it indeed a digit?
+		JR	C,2CCF,DEC-RPT-C	Report the error if not.
+		PUSH	BC	Save the flag in B briefly.
+		CALL	2D3B,INT-TO-FP	Stack ABS m, where m is the
+				exponent.
+		CALL	2DD5,FP-TO-A	Transfer ABS m to A.
+		POP	BC	Restore the sign flag to B.
+		JP	C31AD,REPORT-6	Report the overflow now if
+		AND	A	ABS m is greater than 255 or
+		JP	M,31AD,REPORT-6	indeed greater than 127 (other
+				values greater than about 39 will
+				be detected later).
+		INC	B	Test the sign flag in B; '+'
+				(i.e. +FF) will now set the zero
+				flag.
+		JR	Z,2D18,E-FP-JUMP	Jump if sign of m is '+'.
+		NEG		Negate m if sign is '-'.
+2D18	E-FP-JUMP	JP	2D4F,E-TOO-FP	Jump to assign to the 'last value'
+				the result of x*10^m.
+
+
+THE 'NUMERIC SUBROUTINE
+This subroutine returns with the carry flag reset if the present value of the A register denotes a valid digit.
+
+2D1B	NUMERIC	CP	+30	Test against 30 hex, the code
+				for '0'.
+		RET	C	Return if not a valid character
+				code.
+		CP	+3A	Test against the upper limit.
+		CCF		Complement the carry flag.
+		RET		Finished.

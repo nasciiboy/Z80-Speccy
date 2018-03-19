@@ -1,0 +1,565 @@
+<HTML>
+<HEAD>
+<TITLE>Z80 Software Development Tools</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+<body bgcolor="#FFFFFF">
+</HEAD>
+<A HREF="http://z80.info/index.html">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT="98" WIDTH="198" border="0"></A>
+<A NAME="TOP">
+<H2>Software Development Tools for Z80 Family</H2>
+<P>
+If there are more software development tools for Z80 family, 
+you know of or you would like to point to, please tell me.
+</P>
+
+<HR>
+<HR>
+
+<A NAME="TOC">
+<B>Table-of-Contents</B>
+<UL>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_ASM">Assemblers</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_ASM_VAR">for multiple platforms</A>
+<LI><A HREF="z80sdt.htm#SDT_ASM_COHERENT">for COHERENT</A>
+<LI><A HREF="z80sdt.htm#SDT_ASM_CPM">for CP/M</A>
+<LI><A HREF="z80sdt.htm#SDT_ASM_PCDOS">for PC-DOS</A>
+<LI><A HREF="z80sdt.htm#SDT_ASM_W32">for 32bit Windows</A>
+<LI><A HREF="z80sdt.htm#SDT_ASM_UNIX">for UNIX</A>
+<LI><A HREF="z80sdt.htm#SDT_ASM__C">C Source</A>
+</UL>
+<LI><A HREF="z80sdt.htm#SDT_DISASM">Dis-Assemblers</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_DISASM_CPM">for CP/M</A>
+<LI><A HREF="z80sdt.htm#SDT_DISASM_OS2">for OS/2</A>
+<LI><A HREF="z80sdt.htm#SDT_DISASM_PCDOS">for PC-DOS</A>
+<LI><A HREF="z80sdt.htm#SDT_DISASM_PCDOS_PM">for PC-DOS, Protected Mode</A>
+<LI><A HREF="z80sdt.htm#SDT_DISASM_UNIX">for UNIX</A>
+<LI><A HREF="z80sdt.htm#SDT_DISASM_W95">for Windows 95</A>
+<LI><A HREF="z80sdt.htm#SDT_DISASM_WNT">for Windows NT</A>
+
+</UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_BAS">Basic Compilers</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_BAS_CPM">for CP/M</A>
+</UL>
+<LI><A HREF="z80sdt.htm#SDT_INTERPRETER_BAS">Basic Interpreters</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_INTERPRETER_BAS_CPM">for CP/M</A>
+</UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_C">C-Compilers</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_C_AMIGAOS">for AmigaOS</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_C_CPM">for CP/M</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_C_PCDOS">for PC-DOS</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_C_TI85">for TI-85</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_C_VAR">for various platforms</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_C__C">C Source</A>
+</UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_FORTH">Forth Compilers</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_FORTRAN">Fortran Compilers</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_MODULA2">Modula2 Compilers</A>
+
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_PAS">Pascal-Compilers</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_PAS_PCDOS">for PC-DOS</A>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_PAS_WIN95">for Windows 95</A>
+
+</UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_PLM">PL/M Compilers</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_PLM_CPM">for CP/M</A>
+</UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_PRO">Prolog System</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_COMPILER_PRO_CPM">for CP/M</A>
+</UL>
+
+<LI><A HREF="z80sdt.htm#SDT_DBG">Debuggers</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_DBG_CPM">for CP/M</A>
+<LI><A HREF="z80sdt.htm#SDT_DBG_PCDOS">for PC-DOS</A>
+</UL>
+<LI><A HREF="z80emu.htm#EMU_ICE">In-Circuit-Emulators</A>
+<LI><A HREF="z80sdt.htm#SDT_SIM">Simulators</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_SIM_PCDOS">for PC-DOS</A>
+<LI><A HREF="z80sdt.htm#SDT_SIM_WIN95">for Windows 95</A>
+<LI><A HREF="z80sdt.htm#SDT_SIM_VAR">for various platforms</A>
+</UL>
+
+<LI><A HREF="z80sdt.htm#SDT_KIT">Development Kits</A>
+
+<LI><A HREF="z80sdt.htm#SDT_IDE">Programmer's Integrated Development Environments</A>
+<UL>
+<LI><A HREF="z80sdt.htm#SDT_IDE_PCDOS">for PC-DOS</A>
+</UL>
+
+<LI><A HREF="uepte.htm">Programmer's Text Editors</A>
+<UL>
+<LI><A HREF="uepte.htm#SDT_EDIT_PCDOS">for PC-DOS</A>
+<LI><A HREF="uepte.htm#SDT_EDIT_WIN">for Windows</A>
+<LI><A HREF="uepte.htm#SDT_EDIT_WIN95">for Windows 95</A>
+<LI><A HREF="uepte.htm#SDT_EDIT_WINNT">for Windows NT (Intel)</A>
+<LI><A HREF="uepte.htm#SDT_EDIT_WINNT_PPC">for Windows NT (PowerPC)</A>
+</UL>
+<LI><A HREF="ueutl.htm">Miscellaneous Utilities</A>
+<UL>
+<LI><A HREF="ueutl.htm#SDT_UTIL_CPM">for CP/M and emulators</A>
+<LI><A HREF="ueutl.htm#SDT_UTIL_PCDOS">for PC-DOS</A>
+<LI><A HREF="ueutl.htm#SDT_UTIL_WIN">for Windows ??</A>
+</UL>
+</UL>
+
+<HR>
+<HR>
+
+<A NAME="SDT_ASM">
+<A NAME="SDT_ASM_VAR">
+<H3><B>Assemblers for multiple platforms</B></H3>
+
+<UL>
+<LI>
+<A HREF="http://dmoz.org/Computers/Programming/Languages/Assembly/Z80/">
+Open Directory z80 assembler category</A>. Check this out for various z80
+assembling tools and tutorials. Also contains a calculators sub-category.
+</LI>
+<LI>
+<A HREF="http://k1.spdns.de/cgi-bin/zasm.cgi">Kio's ZASM</A> -
+cli version of zasm, where you can assemble files online.</LI>
+
+<LI><A HREF="http://www.ecstaticlyrics.com/electronics/z80/sarcasm/">Sarcasm Z80 assembler</A>,
+by Richard Cooper. Works with any Operating System that has Perl.
+</LI>
+
+<LI><A HREF="http://trimah.com/eng/index.php/tools-for-developers/1-kasm">KAsm z80 assember for Java</A>.
+KAsm is open source cross assembler for Z80 and 8051 family of microcontrollers written in Java. It can be run on any machine supporting Java 1.5 or later. It is available under GPL license.
+</LI>
+
+<LI><A HREF="http://xl2s.eu.pn/sjasm.html">SjASM</A>, for Windows32 and Linux, including sources.</LI>
+
+<LI><A HREF="http://sjasmplus.sourceforge.net/">SjASMPlus</A> - shares some code with the one above but is very different on some aspects.</LI>
+
+<LI><A HREF="http://clrhome.org/asm/">ORG - ClrHome</A> is a complete online (web-based) Z80 IDE and assembler, with extra build options for ZX Spectrum and for TI graphing calculator developers.</LI>
+
+</UL>
+
+<HR>
+
+<A NAME="ASM_COHERENT">
+<H3><B>Assemblers (running on COHERENT platform)</B></H3>
+<UL>
+<LI><A HREF="zip/z80pack.tgz">Z80 Cross Assembler for COHERENT</A> (TGZ) C Source included
+</UL>
+
+<HR>
+
+<A NAME="SDT_ASM_CPM">
+<H3><B>Assemblers (running on CP/M platform)</B></H3>
+<UL>
+<LI><A HREF="ftp://oak.oakland.edu/pub/cpm/asmutl/">OAKLAND CP/M-Archive: ASMUTL</A> Take your choice
+<LI><A HREF="http://cc.usu.edu/~ivie/cpm2/ch3.html"> CP/M Documentation: ASM</A>
+<LI><A HREF="https://github.com/rolffokkens/rf-assembler">RF-ASSEMBLER for MSX2</A> Assembler, dis-assembler and Debugger
+(with sources) by Rolf Fokkens.
+</UL>
+
+<HR>
+
+<A NAME="SDT_ASM_PCDOS">
+<H3><B>Assemblers (running on PC-DOS platform)</B></H3>
+<UL>
+<LI><A HREF="ftp://ftp.uni-stuttgart.de/pub/systems/msdos/programming/as/as1416.zip"> AS Universal Macro-Cross-Assembler (V 1.41 Rel 6)</A> Docs are in German
+<LI><A HREF="zip/as80_111.zip">AS80 (V 1.11)</A>
+<LI><A HREF="zip/psz80a13.zip">PSZ80 (V 1.3)</A>
+<LI><A HREF="http://www.halcyon.com/squakvly/">TASM</A> table driven assembler Can assemble Z80 and a lot of other CPUs
+<LI><A HREF="zip/tasm29.zip">TASM (V2.9 March 92)</A> 
+<LI><A HREF="zip/tasm301.zip">TASM (V3.01)</A>
+<LI><A HREF="zip/xasm.zip">XASM Cross Assembler</A> by Dave Dunfield
+<LI><A HREF="z80syntx.htm">Z80 Assembler syntax with detailed information</A>
+<LI><A HREF="http://www.janus.demon.co.uk/alife/prog/zues.html">The Zues Z80 Assembler</A> info about it
+<LI><A HREF="zip/zasm11.zip">ZASM V1.1 1993 Z8, Z80, Z8000</A> 
+</UL>
+
+<HR>
+
+<A NAME="SDT_ASM_W32">
+<H3><B>Assemblers (running on 32bit Windows)</B></H3>
+<UL>
+<LI><A HREF="zip/as8080.zip">Z80 ASM by Joe Moore</A>. 
+AS8080 ( Version 2.0.9) & Disassembler (version 1.0.13)
+<BR>
+Contains a Z80/Z180/I8080 Macro Assembler(v2.0.8) 
+<BR>
+Uses Intel/TDL nmemonics. Nearly DR MAC compatible.
+ Generates Srec, iHex, and Binary files.
+ Produces Color Coded Listing file (RTF)
+<BR>
+Also, included is Zilog/Intel/TDL dissassembler(V1.0.12).
+<BR>
+Generates Intel/TDL or Zilog nmemonics
+ Can load iHex, Srec, Binary, and Dump listings. 
+ Can define data areas, can load symbols from some iHex files.
+ Has Debug Console for displaying and listing memory.(allows you to search for data)
+ Produces iHex, Srec, Binary or Dump files as output
+ Produces Color Coded Listing file
+ Produces source file
+<BR>
+Also included are a few utilities (very crude) to get a SDS/JadeDD system converted to 3.5 inch floppies. 
+<BR>
+
+Here is some sample code for it: <A HREF="zip/sampz80.zip">sampz80.zip</A>.
+<BR>
+<LI><A HREF="http://retrospec.sgn.net/game.php?link=z80asm">
+Z80 PC Assembler by Peter Hanratty</A>.
+Z80 assembler that runs under windows and is
+designed for use with ZX Spectrum Emulators.</LI>
+
+<LI><A HREF="http://www.tni.nl/products/tniasm.html" TARGET="_new">
+tniASM - Cross Assembler</A>.
+tniASM is a Z80, R800 and GBZ80 cross assembler running in Windows. 
+(Versions prior to v0.35 also run in MS-DOS).</LI>
+
+<LI><A HREF="http://48k.ca/zmac.html" TARGET="_new">
+zmac by George Phillips</A>, Z-80 Macro Cross Assembler. Includes full C source code and builds with trivial effort on Linux, OSX and most other *nix variations.</LI>
+
+<LI><A HREF="http://www.desdes.com/products/oldfiles/zeus.htm" TARGET="_new">
+ZEUS Z80 assembler</A>, A PC Z80 cross-assembler and emulator. Includes various example sources and games.</LI>
+</UL>
+
+<HR>
+
+<A NAME="SDT_ASM_UNIX">
+<H3><B>Assemblers (running on UNIX platform)</B></H3>
+<UL>
+<LI><A HREF="http://wwwhomes.uni-bielefeld.de/achim/z80-asm.html">Z80 ASM</A>
+for various flavours of Un*x and DOS.</LI>
+
+<LI><A HREF="http://k1.spdns.de/Develop/Projects/zasm/Distributions/">Kio's ZASM</A>
+Command line z80 assembler for Linux, BSD, OS X and,
+hopefully, any Unix-like OS. 
+Supports the plain vanilla z80 stuff plus some ZX Spectrum
+specific file formats. 
+Supports binary output and intel hex file.</LI> 
+
+</UL>
+
+
+
+<HR>
+
+<A NAME="SDT_DISASM">
+<A NAME="SDT_DISASM_CPM">
+<H3><B>Dis-Assemblers (running on CP/M platform)</B></H3>
+<UL>
+<LI><A HREF="http://oak.oakland.edu/oak/cpm/disasm-pre.html">OAKLAND CPM-Archive</A>
+</UL>
+
+<HR>
+
+<A NAME="SDT_DISASM_OS2">
+<H3><B>Dis-Assemblers (running on OS/2 platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.datarescue.com/">IDA<B></A></B>
+<LI><A HREF="http://www.ccso.com">IDA Pro</A>
+</UL>
+
+<HR>
+
+<A NAME="SDT_DISASM_PCDOS">
+<H3><B>Dis-Assemblers (running on PC-DOS platform)</B></H3>
+<UL>
+<LI><A HREF="zip/dasmz80.zip">DASM</A> by Charles Doty
+<LI><A HREF="zip/ida37fw.zip">IDA (V 3.5 FW)</A>
+<LI><A HREF="http://www.inkland.org.uk/dz80/">dZ80</A> by Mark Incley C source available
+<LI><A HREF="zip/z80disas.zip">Z80DisAs.ZIP</A> DisAssembler for Z80, Uses external Brainfile, you can edit this file to handle any CPU you like. <A HREF="zip/da_sorce.zip">Source in watcom C</A>
+</UL>
+
+<HR>
+
+<A NAME="SDT_DISASM_PCDOS_PM">
+<H3><B>Dis-Assemblers (running on PC-DOS-PM platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.datarescue.com/ida.htm">IDA</A>
+<LI><A HREF="http://www.ccso.com">IDA Pro</A>
+</UL>
+
+<HR>
+<A NAME="SDT_DISASM_UNIX">
+<H3><B>Dis-Assemblers (running on UNIX platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.tablix.org/~avian/z80dasm/">z80dasm</A>.
+</UL>
+
+
+<HR>
+
+<A NAME="SDT_DISASM_W95">
+<H3><B>Dis-Assemblers (running on Windows 95 platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.ccso.com">IDA Pro</A>
+</UL>
+
+<HR>
+
+<A NAME="SDT_DISASM_WNT">
+<H3><B>Dis-Assemblers (running on Windows NT platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.ccso.com">IDA Pro</A>
+</UL>
+
+<HR>
+
+<A NAME="SDT_COMPILER_BAS">
+<H3><B>Basic Compilers</B></H3>
+<UL>
+<LI><A HREF="http://www.boriel.com/wiki/en/index.php/ZX_BASIC">Boriel’s ZX-Basic Compiler</A>.
+This cross-compiler is focused on ZX-Spectrum, but with some
+patchworking it can be used to compile to whatever machine running on
+z80 architecture.
+</UL>
+
+<HR>
+
+<A NAME="SDT_COMPILER_C">
+<H3><B>C-Compilers</B></H3>
+<UL>
+<LI><A HREF="http://www.softools.com/SC180.htm#Control">Cross C Standard C Compiler ($)</A>
+<LI><A HREF="http://www.z88dk.org/">z88 Development Kit</A> Open Source z80 C cross Compiler for
+various platforms
+</UL>
+
+<HR>
+
+
+<A NAME="SDT_COMPILER_C_CPM">
+<H3><B>C-Compilers (running on CP/M platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.z80.eu/downloads/z80v309.lzh">HiTech-C (V 3.09)</A>
+<LI><A HREF="http://www.z80.eu/downloads/z80doc.zip">Hi-Tech-C manual</A>
+<LI><A HREF="http://www.cs.uwa.edu.au/~mafm/robot/small-c-readme.html">SMALL-C</A> As documented in the book <A HREF="z80lit.htm#PROG_C_TSCH">"The Small-C Handbook"</A> by James E. Hendrix
+<LI><A HREF="http://www.z80.eu/c-compiler.html">more C compilers at z80.eu</A>
+<LI><A HREF="http://xepb.org/dtz/softlib/microgen5.17.tar.gz">MicrogenSF C compiler for CP/M</A>, docs in Russian, translation can be found <A HREF="http://xepb.org/dtz/softlib/microgen.en.txt">here</A>.
+</UL>
+
+<HR>
+
+<A NAME="SDT_COMPILER_C_PCDOS">
+<H3><B>C-Compilers (running on PC-DOS platform)</B></H3>
+<UL>
+<LI><A HREF="zip/zcc096.zip">ZCC (V 0.96)</A>This ZCC package contains an assembler as well as a C compiler, Really cool docs here also
+<LI><A HREF="http://www.greymatter.co.uk/gmWEB/Items/00002485.HTM">Crossware Z80 XDS ($)</A>
+<LI><A HREF="http://www.htsoft.com/rel-notes/z80-743.html">Z80/Z180/64180 C CROSS COMPILER by HI-TECH ($, AU)</A>
+<LI><A HREF="http://www.greymatter.co.uk/gmWEB/items/00000226.HTM">Z80/Z180/64180 C CROSS COMPILER by HI-TECH ($, UK)</A>
+<LI><A HREF="http://www.ximetrix.ca/xisdir/xisoft/xi-mdz80.htm">Ximetrix, Z80/64180 development tools</A>
+<LI><A HREF="http://sdcc.sourceforge.net/">Small Device C Compiler, Z80 and 8051, a Freeware , retargettable, optimizing ANSI - C compiler</a>
+</UL>
+
+<HR>
+
+<A NAME="SDT_COMPILER_C_TI85">
+<H3><B>C Compilers (running on TI-85 platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.infinet.com/~edt/ti85comp.zip">"extended" Small-C Compiler for TI-85</A> a port of the Ron Cain/Hendrix/Yorston, etc. Small C customized for the TI85 calculator
+	
+</UL>
+
+<HR>
+<A NAME="SDT_COMPILER_C_VAR">
+<H3><B>C Compilers (running on various platforms)</B></H3>
+<UL>
+<LI><A HREF="http://sdcc.sourceforge.net/">sdcc</A> - Linux, OSX, Windows: 
+C compiler for the Z80 and other CPUs.</LI>
+<LI><A HREF="http://k1.spdns.de/Develop/Projects/zasm/Distributions/">Kio's zasm</A> 
+- OSX, Linux, web interface: An assembler which can directly include c source files and 
+acts as assembler, library resolver and linker. Uses sdcc. The OSX version includes 
+a trimmed version of sdcc.</LI>
+
+
+
+</UL>
+
+
+
+<HR>
+
+
+<A NAME="SDT_COMPILER_FORTH">
+<H3><B>Forth Compilers (running on CP/M platform)</B></H3>
+<UL>
+<LI><A HREF="zip/z804th.zip">eForth</A> by Ken Chen</LI>
+<LI><A HREF="http://www.taygeta.com/forthcomp.html">Forth Compilers on Taygeta</A></LI>
+<LI><A HREF="http://forth.org/compilers.html">Forth Compilers Page</A> at Forth.org.</LI>
+<LI><A HREF="http://www.netbay.com.au/~dxforth/#dxforth">DX-Forth v4.04 for CP/M-80</A></LI>
+</UL>
+
+<HR>
+
+<A NAME="SDT_COMPILER_PAS">
+<A NAME="SDT_COMPILER_PAS_PCDOS">
+<H3><B>Pascal-Compilers (running on PC-DOS platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.pluennecke.de/prospero/pxizd3.htm">Prospero Pascal X Z80 Cross Compiler ($)</A> Pricing &amp; Contacts
+</UL>
+
+<HR>
+
+<A NAME="SDT_COMPILER_PAS_WIN95">
+<H3><B>Pascal Compilers (running on Windows 95 platform)</B></H3>
+<UL>
+<LI><A HREF="http://users.iafrica.com/r/ra/rainier">Embedded Pascal Compiler Package (Shareware)</A>
+        This first release provides compiler, assembler, linker and
+	simulator for Z80 and Z180.
+        Targeted for stand-alone applications (i.e. no operating system),
+	it allows you to use Borland's Delphi to design your
+	embedded application under Windows 95, or you can use it on its own.
+<LI><a href="http://www.geocities.com/SiliconValley/Vista/1170/">Same as above, at Geocities</A>
+</UL>
+
+<HR>
+
+
+<A NAME="SDT_COMPILER_PRO">
+<A NAME="SDT_COMPILER_PRO_CPM">
+<H3><B>Prolog System (running on CP/M platform)</B></H3>
+<UL>
+<LI><A HREF="ftp://oak.oakland.edu/pub/cpm/prolog/">OAKLAND CP/M-Archive: System</A>
+</UL>
+
+<HR>
+
+<A NAME="SDT_DBG">
+<A NAME="SDT_DBG_CPM">
+<H3><B>Debuggers (running on CP/M platform)</B></H3>
+<UL>
+<LI><A HREF="ftp://oak.oakland.edu/pub/cpm/debug/">OAKLAND CPM-Archive: DEBUG</A> Take your choice
+<LI><A HREF="http://cc.usu.edu/~ivie/cpm2/ch4.html">CP/M Documentation: DDT</A>
+</UL>
+
+<HR>
+
+<A NAME="SDT_DBG_PCDOS">
+<H3><B>Debuggers (running on PC-DOS platform)</B></H3>
+<UL>
+<LI><A HREF="http://www.noicedebugger.com/">NoICE remote debugger for Z80 (NEW V 3.0)</A> A PC and your Z80 Hardware, communicate via RS-232
+</UL>
+
+<HR>
+
+<A NAME="SDT_SIM">
+<H3><B>Simulators</B></H3>
+<UL>
+<LI><A HREF="http://web.archive.org/web/*/www.barleywood.com">Z80 Simulator ($)</A> 
+Timely limited evaluation version by Barleywood
+<LI><A HREF="http://mannet.mcb.net/rts/micsim.html">
+	MICSIM ($)</A>
+
+<LI><A HREF="http://www.sourceforge.net/projects/z80sim">Z80Sim</a>
+A Zilog Z80 simulator, debugger and profiler tailored for ZX
+Spectrum development (but generic enough to be used with other
+platforms), OS portable.
+
+</UL>
+
+<HR>
+
+<A NAME="SDT_SIM_PCDOS">
+<H3><B>Simulators (running on PCDOS platform)</B></H3>
+<UL>
+<li><A HREF="zip/z80dt.zip">Z80DT - a Z80 simulator made by the Dutch Open University.</A><BR>
+This program can also be used for downloading assembled code into the MicroProfessor
+MPF-1b through a very simple cable. The cable connects the PC's com-port with the MPF's 
+earphone-port and is very easy to build. The explanation is in dutch but the layout speaks 
+for itselfs. The pinouts you see is the solderside (backside) of a DB25 connector connected 
+to a 3,5mm jackplug. -&gt; <A HREF="zip/downloadcable.pdf">download cable layout (PDF)</A>.
+<BR>
+<A HREF="zip/manuel_z80dt.pdf">Notice d'utilisation du simulateur Z80DT<A>, Z80DT manual in 
+French, by Ahmed Zebbache.
+
+
+<LI><A HREF="http://ftp.cised.unina.it/pub/electronics/ftp.armory.com/Z80/zint.zip">ZINT 
+(V 5.78)</a>
+
+<UL>
+<LI><A HREF="ftp://ftp.armory.com:/pub/user/rstevew/Z80/zint.zip">same, different FTP site (USA)</A>
+<LI><A HREF="http://ftp.cised.unina.it/pub/electronics/ftp.armory.com/Z80/zint.doc">Docs for ZINT</A>
+<LI><A HREF="ftp://ftp.armory.com:/pub/user/rstevew/Z80/zint.doc">same, different FTP site (USA)</A>
+</UL>
+
+<LI><A HREF="http://www.jm-micro.com/umps.htm">
+	Universal Microprocessor Simulator/Debugger ($)</A> 
+	Complete with Assembler and Disassembler,
+	Forward/Reverse step capabilities, 
+	Updates Registers and Flags after executions
+</UL>
+
+<HR>
+
+<A NAME="SDT_SIM_WIN95">
+<H3><B>Simulators (running on MS-Windows 95 platform)</B></H3>
+<UL>
+<LI><A HREF="http://barleywood.com/docs/product.htm">
+	Z80 Simulator ($)</A>
+        by <A HREF="mailto:mmoore@barletwood.com">
+	Mike Moore</A>    </LI>
+        
+
+<LI><A HREF="http://users.iafrica.com/r/ra/rainier">
+	Z80 Simulator (Shareware)</A>
+	is part of Embedded Pascal Compiler Package
+        by <A HREF="mailto:rainier@questek.co.za">
+	Rainier Lamers</A>
+	(*)       </LI>
+
+<LI><A HREF="http://www.oshonsoft.com/z80.html">
+	Z80 Simulator IDE ($)</A>, 
+                Evaluation Copy available for download
+                </LI>
+
+</UL>
+
+
+<HR>
+
+<A NAME="SDT_SIM_VAR">
+<H3><B>Simulators (running on various platforms)</B></H3>
+<UL>
+<LI><A HREF="http://simh.trailing-edge.com/"> The Computer History Simulation Project</A>
+SIMH is a highly portable, multi-system simulator, including 8080 and z80.</LI>
+<LI><A HREF="http://www.schorn.ch/cpm/intro.html">Altair 8800 simulator</A>.</LI>
+</UL>
+
+
+<HR>
+<A NAME="SDT_KIT">
+<H3><B>Development Kits</B></H3>
+<UL>
+<LI><A HREF="http://www.avocetsystems.com/company/search/search.php?chip=z80">
+Avocet Systems</A>:
+Z80 Macro Assemblers, Simulators and C Compilers for 32bit Windows.
+</LI>
+<LI><A HREF="http://www.zilog.com/index.php?option=com_product&task=dev_tool&Itemid=141">
+Zilog Development Tools</A> (free download)</LI>
+<LI><A HREF="http://www.train-z.de/">TRAIN-Z</A>, SB development system for the Z80 CPU.</LI>
+</UL>
+
+
+<HR>
+
+<A NAME="SDT_IDE">
+<H3><B>Integrated Development Environment</B></H3>
+<UL>
+<LI><A HREF="http://www.dunfield.com/pub/alps.zip">
+	ALPS</A> for 8080/85/Z80
+	by <A HREF="mailto:dave@dunfield.com">
+	Dave Dunfield</A></LI>
+<!--<LI>
+<A HREF="https://github.com/Assemblance/Assemblance">Assemblance</A>, open-source IDE for Z80 Assembly programming.
+</LI>-->
+</UL>
+
+<HR>
+</body></html>

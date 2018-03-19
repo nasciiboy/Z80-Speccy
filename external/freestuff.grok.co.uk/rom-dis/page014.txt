@@ -1,0 +1,56 @@
+Note: The value '437,500/f' gives the 'half-cycle' length of the note and reducing it by '30.125' allows for '120.5' T states in which to actually produce the note and adjust the counters etc.
+The values can now be transferred to the required registers.
+
+		CALL	1E99,FIND-INT2	The 'timing loop' value is
+				compressed into the BC
+		PUSH	BC	register pair; and saved.
+
+Note: If the timing loop value is too large then an error will occur (returning via ERROR-1); thereby excluding 'pitch' values of '+70 to +127'.
+
+		CALL	1E99,FIND-INT2	The 'f*t' value is compressed
+				into the BC register pair.
+		POP	HL	Move the 'timing loop' value to
+				the HL register pair.
+		LD	D,B	Move the 'f*t' value to the
+		LD	E,C	DE register pair.
+
+However before making the 'beep' test the value 'f*t'.
+
+		LD	A,D	Return if 'f*t' has given the
+		OR	E	result of 'no cycles'
+		RET	Z	required.
+		DEC	DE	Decrease the cycle number and
+		JP	03B5,BEEPER	jump to the BEEPER subroutine
+				(making, at least, one pass).
+
+Report B - interget out of range
+
+046C	REPORT-B	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0A	routine.
+
+THE 'SEMI-TONE' TABLE
+This table holds the frequencies of the twelve semi-tones in an octave.
+
+			frequency hz.	note
+046E	DEFB	+89,+02,+D0,+12,+86	261.63	C
+	DEFB	+89,+0A,+97,+60,+75	277.18	C#
+	DEFB	+89,+12,+D5,+17,+1F	293.66	D
+	DEFB	+89,+1B,+90,+41,+02	311.12	D#
+	DEFB	+89,+24,+D0,+53,+CA	329.63	E
+	DEFB	+89,+2E,+9D,+36,+B1	349.23	F
+	DEFB	+89,+38,+FF,+49,+3E	369.99	F#
+	DEFB	+89,+43,+FF,+6A,+73	392	G
+	DEFB	+89,+4F,+A7,+00,+54	415.30	G#
+	DEFB	+89,+5C,+00,+00,+00	440	A
+	DEFB	+89,+69,+14,+F6,+24	466.16	A#
+	DEFB	+89,+76,+F1,+10,+05	493.88	B
+
+THE 'PROGRAM NAME' SUBROUTINE (ZX81)
+The following subroutine applies to the ZX81 and was not removed when the program was rewritten for the SPECTRUM.
+
+04AA	DEFB	+CD,+FB,+24,+3A
+	DEFB	+3B,+5C,+87,+FA
+	DEFB	+8A,+1C,+E1,+D0
+	DEFB	+E5,+CD,+F1,+2B
+	DEFB	+62,+6B,+0D,+F8
+	DEFB	+09,+CB,+FE,+C9

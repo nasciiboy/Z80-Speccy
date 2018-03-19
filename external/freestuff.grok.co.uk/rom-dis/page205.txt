@@ -1,0 +1,60 @@
+		JR	358C,END-TESTS	the final tests.
+3559	STRINGS	RRCA		The string comparisons now
+				have the range 02-03 with carry
+				set for 'equal' and 'not equal'.
+		PUSH	AF	Save the offset.
+		CALL	2BF1,STK-FETCH	The lengths and starting
+		PUSH	DE	addresses of the strings are
+		PUSH	BC	fetched from the claculator
+		CALL	2BF1,STK-FETCH	stack.
+		POP	HL	The length of the second string.
+3564	BYTE-COMP	LD	A,H	
+		OR	L	
+		EX	(SP),HL	
+		LD	A,B	
+		JR	NZ,3575,SEC-PLUS	Jump unless the second string
+		OR	C	is null.
+356B	SECND-LOW	POP	BC	Here the second string is either
+				null or less than the first.
+		JR	Z,3572,BOTH-NULL	
+		POP	AF	
+		CCF		The carry is complemented to
+		JR	3588,STR-TEST	give the correct test results.
+3572	BOTH-NULL	POP	AF	Here the carry is used as it
+		JR	3588,STR-TEST	stands.
+3575	SEC-PLUS	OR	C	
+		JR	Z,3585,FRST-LESS	The first string is now null,
+				the second not.
+		LD	A,(DE)	Neither string is null, so their
+		SUB	(HL)	next bytes are compared.
+		JR	C,3585,FRST-LESS	The first byte is less.
+		JR	NZ,356B,SECND-LOW	The second byte is less.
+		DEC	BC	The bytes are equal; so the
+		INC	DE	lengths are decremented and a
+		INC	HL	jump is made to BYTE-COMP
+		EX	(SP),HL	to compare the next bytes of
+		DEC	HL	the reduced strings.
+		JR	3564,BYTE-COMP	
+3585	FRST-LESS	POP	BC	
+		POP	AF	
+		AND	A	The carry is cleared here for the
+				correct test results.
+3588	STR-TEST	PUSH	AF	For the string tests, a zero is
+		RST	0028,FP-CALC	put on to the calculator stack.
+		DEFB	+A0,stk-zero	
+		DEFB	+38,end-calc	
+358C	END-TESTS	POP	AF	These three tests, called as
+		PUSH	AF	needed, give the correct results
+		CALL	C,3501,NOT	for all twelve comparisons. The
+		POP	AF	initial carry is set for 'not equal'
+		PUSH	AF	and 'equal', and the final carry
+		CALL	NC,34F9,GREATER-0	is set for 'greater than', 'less
+		POP	AF	than' and 'equal'.
+		RRCA		
+		CALL	NC,3501,NOT	
+		RET		Finished.
+
+THE 'STRING CONCATENATION' OPERATION
+(Offset 17: 'strs-add')
+
+This subroutine performs the binary operation 'A$+B$. The parameters for these strings are fetched and the total length found. Sufficient room to hold both the strings is made available in the work space and the strings are copied over. The result of this subroutine is therefore to produce a temporary variable A$+B$ that resides in the work space.

@@ -1,0 +1,57 @@
+		JP	NC,160E,REPORT-O	over +FF.
+		CALL	1601,CHAN-OPEN	Use the channel for the
+				stream in question.
+		AND	A	Clear the carry flag and
+		RET		return.
+
+THE 'INPUT' COMMAND ROUTINE
+This routine allows for values entered from the keyboard to be assigned to variables. It is also possible to have print items embedded in the INPUT statement and these items are printed in the lower part of the display.
+2089	INPUT	CALL	2530,SYNTAX-Z	Jump forward if syntax is
+		JR	Z,2096,INPUT-1	being checked.
+		LD	A,+01	Open channel 'K'.
+		CALL	1601,CHAN-OPEN
+		CALL	0D6E,CLS-LOWER	The lower part of the display
+				is cleared.
+2096	INPUT-1	LD	(DF-SZ),+01	Set the lower part to be only
+				one line in size.
+		CALL	20C1,IN-ITEM-1	Call the subroutine to deal with
+				the INPUT items.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+				if checking syntax.
+		LD	BC,(S-POSN)	Fetch the current print position.
+		LD	A,(DF-SZ)	Jump forward if the current
+		CP	B	position is above the lower
+		JR	C,20AD,INPUT-2	screen.
+		LD	C,+21	Otherwise set the print position
+		LD	B,A	to the top of the lower screen.
+20AD	INPUT-2	LD	(S-POSN),BC	Reset S-POSN.
+		LD	A,+19	Now set the scroll counter.
+		SUB	B
+		LD	(SCR-CT),A
+		RES	0,(TV-FLAG)	Signal 'main screen'.
+		CALL	0DD9,CL-SET	Set the system variables
+		JP	0D6E,CLS-LOWER	and exit via CLS-LOWER.
+The INPUT items and embedded PRINT items are dealt with in turn by the following loop.
+20C1	IN-ITEM-1	CALL	204E,PR-POSN-1	Consider first any position
+		JR	Z,20C1,IN-ITEM-1	control characters.
+		CP	+28	Jump forward if the present
+		JR	NZ,20D8,IN-ITEM-2	character is not a '('.
+		RST	0020,NEXT-CHAR	Fetch the next character.
+		CALL	1FDF,PRINT-2	Now call the PRINT command
+				routine to handle the items
+				inside the brackets.
+		RST	0018,GET-CHAR	Fetch the present character.
+		CP	+29	Give report C unless the
+		JP	NZ,1C8A,REPORT-C	character is a ')'.
+		RST	0020,NEXT-CHAR	Fetch the next character and
+		JP	21B2,IN-NEXT-2	jump forward to see if there are
+				any further INPUT items.
+Now consider whether INPUT LINE is being used.
+20D8	IN-ITEM-2	CP	+CA	Jump forward if it is not
+		JR	NZ,20ED,IN-ITEM-3	'LINE'.
+		RST	0020,NEXT-CHAR	Advance CH-ADD.
+		CALL	1C1F,CLASS-01	Determine the destination
+				address for the variable.
+		SET	7,(FLAGX)	Signal 'using INPUT LINE'.
+		BIT	6,(FLAGS)	Give report C unless using
+		JP	NZ,1C8A,REPORT-C	a string variable.

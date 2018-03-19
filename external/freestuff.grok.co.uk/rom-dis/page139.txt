@@ -1,0 +1,59 @@
+		JR	Z,2831 ,SF-VALUES	Jump if complete match now
+				found.
+2825	SF-NOT-FD	POP	HL	Restore the pointer to the 'DEF
+				FN'.
+		DEC	HL	Step back one location.
+		LD	DE,+0200	Use the search routine to find
+		PUSH	BC	the end of the DEF FN state-
+		CALL	198B,EACH-STMT	ment, preparing for the next
+		POP	BC	search; save the name and status
+				meanwhile.
+		JR	2808,SF-FND-DF	Jump back for a further search.
+
+ii. The correct DEF FN statement has now been found. The arguments of the FN statement will be evaluated by repeated calls of SCANNING, and their 5 byte values (or parameters, for strings) will be inserted into the DEF FN statement in the spaces made there at syntax checking. HL will be used to point along the DEF FN statement (calling FN-SKPOVR as needed) while CH-ADD points along the FN statement (calling RST 0020, NEXT-CHAR, as needed).
+
+2831	SF-VALUES	AND	A	If HL is now pointing to a '$',
+		CALL	Z,28AB,FN-SKPOVR	move on to the '('.
+		POP	DE	Discard the pointer to 'DEF
+				FN'.
+		POP	DE	Get the pointer to the first
+		LD	(CH-ADD),DE	argument of FN, and copy it to
+				CH-ADD.
+		CALL	28AB,FN-SKPOVR	Move past the '(' now.
+		PUSH	HL	Save this pointer on the stack.
+		CP	+29	Is it pointing to a ')'?
+		JR	Z,2885,SF-R-BR-2	If so, jump: FN has no argu-
+				ments.
+2843	SF-ARG-LP	INC	HL	Point to the next code.
+		LD	A,(HL)	Put the code into A.
+		CP	+0E	Is it the 'number marker' code,
+				0E hex?
+		LD	D,+40	Set bit 6 of D for a numerical
+				argument.
+		JR	Z,2852,SF-ARG-VL	Jump on zero: numerical
+				argument.
+		DEC	HL	Now ensure that HL is pointing
+				to the '$' character (not e.g. to a
+		CALL	28AB,FN-SKPOVR	control code).
+		INC	HL	HL now points to the 'number
+				marker'.
+		LD	D,+00	Bit 6 of D is reset: string
+				argument.
+2852	SF-ARG-VL	INC	HL	Point to the 1st of the 5 bytes
+				in DEF FN.
+		PUSH	HL	Save this pointer on the stack.
+		PUSH	DE	Save the 'string status' of the
+				argument.
+		CALL	24FB,SCANNING	Now evaluate the argument.
+		POP	AF	Get the no./string flag into A.
+		XOR	(FLAGS)	Test bit 6 of it against the result
+		AND	+40	of SCANNING.
+		JR	NZ,288B,REPORT-Q	Give report Q if they did not
+				match.
+		POP	HL	Get the pointer to the first of
+		EX	DE,HL	the 5 spaces in DEF FN into
+				DE.
+		LD	HL,(STKEND)	Point HL at STKEND.
+		LD	BC,+0005	BC will count 5 bytes to be
+				moved.
+		SBC	HL,BC	First, decrease STKEND by 5,

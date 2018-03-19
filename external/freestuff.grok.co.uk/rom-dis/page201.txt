@@ -1,0 +1,58 @@
+34A5	in	CALL	1E99,FIND-INT2	The 'last value', X, is
+				compressed into BC.
+		IN	A,(C)	The signal is received.
+		JR	34B0,IN-PK-STK	Jump to stack the result.
+
+THE 'PEEK' FUNCTION
+(Offset 2B: 'peek')
+
+This subroutine handles the function PEEK X. The 'last value' is unstacked by calling FIND-INT2 and replaced by the value of the contents of the required location.
+
+34AC	peek	CALL	1E99,FIND-INT2	Evaluate the 'last value',
+				rounded to the nearest integer;
+				test that it is in range and return
+				it in BC.
+		LD	A,(BC)	Fetch the required byte.
+34B0	IN-PK-STK	JP	2D28,STACK-A	Exit by jumping to STACK-A.
+
+THE 'USR' FUNCTION
+(Offset 2D: 'usr-no')
+
+This subroutine ('USR number' as distinct from 'USR string') handles the function USR X, where X is a number. The value of X is obtained in BC, a return address is stacked and the machine code is executed from location X.
+
+34B3	usr-no	CALL	1E99,FIND-INT2	Evaluate the 'last value',
+				rounded to the nearest integer;
+				test that it is in range and return
+				it in BC.
+		LD	HL,+2D2B	Make the return address be that
+		PUSH	HL	of the subroutine STACK-BC.
+		PUSH	BC	Make an indirect jump to the
+		RET		required location.
+
+Note: It is interesting that the IY register pair is re-initialised when the return to STACK-BC has been made, but the important H'L' that holds the next literal pointer is not restored should it have been disturbed. For a successful return to BASIC, H'L' must on exit from the machine code contain the address in SCANNING of the 'end-calc' instruction, 2758 hex (10072 decimal).
+
+THE 'USR-STRING' FUNCTION
+(Offset 19: 'usr-$')
+
+This subroutine handles the function USR X$, where X$ is a string. The subroutine returns in BC the address of the bit pattern for the user-defined graphic corresponding to X$. It reports error A if X$ is not a single letter between a and u or a user-defined graphic.
+
+34BC	usr-$	CALL	2BF1,STK-FETCH	Fetch the parameters of the
+				string X$.
+		DEC	BC	Decrease the length by 1 to test
+				it.
+		LD	A,B	If the length was not 1, then
+		OR	C	jump to give error report A.
+		JR	NZ,34E7,REPORT-A	
+		LD	A,(DE)	Fetch the single code of the
+				string.
+		CALL	2C8D,ALPHA	Does it denote a letter?
+		JR	C,34D3,USR-RANGE	If so, jump to gets its address.
+		SUB	+90	Reduce range for actual user-
+				defined graphics to 0 - 20
+				decimal.
+		JR	C,34E7,REPORT-A	Give report A if out of range.
+		CP	+15	Test the range again.
+		JR	NC,34E7,REPORT-A	Give report A if out of range.
+		INC	A	Make range of user-defined
+				graphics 1 to 21 decimal, as for
+				a to u.

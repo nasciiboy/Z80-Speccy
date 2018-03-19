@@ -1,0 +1,51 @@
+		DEFB	+C0,st-mem-0	(X0 is copied to mem-0).
+		DEFB	+0F,addition	Y, X0 + X
+		DEFB	+01,exchange	X0+X, Y
+		DEFB	+38,end-calc
+		LD	A,(COORDS-hi)	Get Y0 into A and so
+		CALL	2D28,STACK-A	on to the stack.
+		RST	0028,FP-CALC	X0+X, Y, Y0
+		DEFB	+C5,st-mem-5	(Y0 is copied to mem-5).
+		DEFB	+0F,addition	X0+X, Y0+Y
+		DEFB	+E0,get-mem-0	X0+X, Y0+Y, X0
+		DEFB	+E5,get-mem-5	X0+X, Y0+Y, X0, Y0
+		DEFB	+38,end calc
+		POP	BC	Restore the arc-counter in B.
+
+iv. The arc-drawing loop. This is entered at 2439 with the co-ordinates of the starting point on top of the stack, and the initial displacements for the first arc in mem-1 and mem-2. It uses simple trigonometry to ensure that all subsequent arcs will be drawn to points that lie on the same circle as the first two, subtending the same angle at the centre. It can be shown that if 2 points X1, Y1 and X2, Y2 lie on a circle and subtend an angle N at the centre, which is also the origin of co-ordinates, then X2 = X1*COS N - Y1*SIN N, and Y2 = X1*SIN N + Y1*COS N. But because the origin is here at the increments, say Un = Xn+1 - Xn and Vn = Yn+1 - Yn, thus achieving the desired result. The stack is shown below on the (n+1)th pass through the loop, as Xn and Yn are incremented by Un and Vn, after these are obtained from Un-1 and Vn-1. The 4 values on the top of the stack at 2425 are, in DRAW, reading upwards, X0+X, Y0+Y, Xn and Yn but to save space these are not shown until 2439. For the initial values in CIRLCE, see the end of CIRCLE, above. In CIRCLE too, the angle G must be taken to be 2*PI.
+
+2420	DRW-STEPS	DEC	B	B counts the passes through the
+				loop.
+		JR	Z,245F,ARC-END	Jump when B has reached zero.
+		JR	2439,ARC-START	Jump into the loop to start.
+2425	ARC-LOOP	RST	0028,FP-CALC	(See text above for the stack).
+		DEFB	+E1,get-mem-1	Un-1
+		DEFB	+31,duplicate	Un-1,Un-1
+		DEBF	+E3,get-mem-3	Un-1,Un-1,COS(G/A)
+		DEFB	+04,multiply	Un-1,Un-1*COS(G/A)
+		DEFB	+E2,get-mem-2	Un-1,Un-1*COS(G/A),Vn-1
+		DEFB	+E4,get-mem-4	Un-1,Un-1*COS(G/A),Vn-1,
+				SIN(G/A)
+		DEFB	+04,multiply	Un-1,Un-1*COS(G/A),Vn-1*
+				SIN(G/A)
+		DEFB	+03,subtract	Un-1,Un-1*COS(G/A)-Vn-1*
+				SIN(G/A)=Un
+		DEFB	+C1,st-mem-1	(Un is copied to mem-1).
+		DEFB	+02,delete	Un-1
+		DEFB	+E4,get-mem-4	Un-1,SIN(G/A)
+		DEFB	+04,multiply	Un-1*SIN(G/A)
+		DEFB	+E2,get-mem-2	Un-1*SIN(G/A),Vn-1
+		DEFB	+E3,get-mem-3	Un-1*SIN(G/A),Vn-1,COS(G/A)
+		DEFB	+04,multiply	Un-1*SIN(G/A),Vn-1*COS(G/A)
+		DEFB	+0F,addition	Un-1*SIN(G/A)+Vn-1*COS
+				(G/A)=Vn
+		DEFB	+C2,st-mem-2	(Vn is copied to mem-2).
+		DEFB	+02,delete	(As noted in the text, the stack
+		DEFB	+38,end-calc	in fact holds X0+X,Y0+Y, Xn
+				and Yn).
+2439	ARC-START	PUSH	BC	Save the arc-counter.
+		RST	0028,FP-CALC	X0+X, Y0+y, Xn, Yn
+		DEFB	+C0,st-mem-0	(Yn is copied to mem-0).
+		DEFB	+02,delete	X0+X, Y0+Y, Xn
+		DEFB	+E1,get-mem-1	X0+X, Y0+Y, Xn, Un
+		DEFB	+0F,addition	X0+X, Y0+Y, Xn+Un = Xn+1

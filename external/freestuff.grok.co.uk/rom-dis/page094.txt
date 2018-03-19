@@ -1,0 +1,59 @@
+The following instructions cleverly copy the even bits of the supplied byte to the odd bits. In effect making the permanent bits the same as the temporary ones.
+
+		RLCA		Move the mask leftwards.
+		XOR	(HL)	Impress onto the mask
+		AND	+AA	only the even bits of the
+		XOR	(HL)	other byte.
+		LD	(HL),A	Restore the result.
+		RET
+
+THE 'COMMAND CLASS 09' ROUTINE
+This routine is used by PLOT, DRAW & CIRCLE statements in order to specify the default conditions of 'FLASH 8; BRIGHT 8; PAPER 8;' that are set up before any embedded colour items are considered.
+
+1CBE	CLASS-09	CALL	2530,SYNTAX-Z	Jump forward if
+		JR	Z,1CD6,CL-09-1	checking syntax.
+		RES	0,(TV-FLAG)	Signal 'main screen'.
+		CALL	0D4D,TEMPS	Set the temporary colours for
+				the main screen.
+		LD	HL,+5C90	This is MASK-T.
+		LD	A,(HL)	Fetch its present value but
+		OR	+F8	keep only its INK part
+				'unmasked'.
+		LD	(HL),A	Restore the value which now
+				indicates 'FLASH 8; BRIGHT 8;
+				PAPER 8;'.
+		RES	6,(P-FLAG)	Also ensure NOT 'PAPER 9'.
+		RST	0018,GET-CHAR	Fetch the present character
+				before continuing to deal with
+				embedded colour items.
+1CD6	CL-09-1	CALL	21E2,CO-TEMP	Deal with the locally dominant
+				colour items.
+		JR	1C7A,EXPT-2NUM	Now get the first two operands
+				for PLOT, DRAW or CIRCLE.
+
+THE 'COMMAND CLASS 0B' ROUTINE
+This routine is used by SAVE, LOAD, VERIFY & MERGE statements.
+
+1CDB	CLASS-0B	JP	0605,SAVE-ETC	Jump to the cassette
+				handling routine.
+
+THE 'FETCH A NUMBER' SUBROUTINE
+This subroutine leads to a following numeric expression being evaluated but zero being used instead if there is no expression.
+
+1CDE	FETCH-NUM	CP	+0D	Jump forward if at the end
+		JR	Z,1CE6,USE-ZERO	of a line.
+		CP	+3A	But jump to EXPT-1NUM unless
+		JR	NZ,1C82,EXPT-1NUM	at the end of a statement.
+
+The calculator is now used to add the value zero to the calculator stack.
+
+1CE6	USE-ZERO	CALL	2530,SYNTAX-Z	Do not perform the operation
+		RET	Z	if syntax is being checked.
+		RST	0028,FP-CALC	Use the calculator.
+		DEFB	+A0,stk-zero	The 'last value' is now zero.
+		DEFB	+38,end-calc
+		RET		Return with zero added to the
+				stack.
+
+THE COMMAND ROUTINES
+The section of the 16K monitor program from 1CEE to 23FA contains most of the command routines of the BASIC interpreter.

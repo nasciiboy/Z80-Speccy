@@ -1,0 +1,52 @@
+		DEFB	+01,exchange	sa,sb,sa,sb
+		DEFB	+31,duplicate	sa,sb,sa,sb,sb
+		DEFB	+E0,get-mem-0	sa,sb,sa,sb,sb,sa
+		DEFB	+A0,stk-zero	sa,sb,sa,sb,sb,sa,0
+		DEFB	+C1,st-mem-1	(mem-1 is set to zero)
+		DEFB	+02,delete	sa,sb,sa,sb,sb,sa
+		DEFB	+38,end-calc
+
+(Here sa denotes X+Z and sb denotes Y - Z*SIN (PI/A)).
+
+		INC	(mem-2-1st)	Incrementing the exponent byte
+				of mem-2 sets mem-2 to
+				2*Z*SIN(PI/A).
+		CALL	1E94,FIND-INT1	The last value X+Z is moved
+		LD	L,A	from the stack to A and copied
+				to L.
+		PUSH 	HL	It is saved in HL.
+		CALL	1E94,FIND-INT1	Y - Z*SIN (PI/A) goes from the
+		POP	HL	stack to A and is copied to H.
+		LD	H,A	HL now holds the initial point.
+		LD	(COORDS),HL	It is copied to COORDS.
+		POP	BC	The arc-count is restored.
+		JP	2420,DRW-STEPS	The jump is made to DRAW.
+
+(The stack now holds X+Z, Y - Z*SIN (PI/A), Y - Z*SIN (PI/A), X+Z).
+
+THE DRAW COMMAND ROUTINE
+This routine is entered with the co-ordinates od a point X0, Y0, say, in COORDS. If only two parameters X, Y are given with the DRAW command, it draws an approximation to a straight line from the point X0, Y0 to X0+X, Y0+Y. If a third parameter G is given, it draws an approximation to a circular arc from X0, Y0 to X0+X, Y0+Y turning anti-clockwise through an angle G radians.
+     The routine has four parts:
+  i. Just draws a line if only 2 parameters are given or if the diameter of the implied circle is less than 1;
+ ii. Calls CD-PRMS1 at 247D-24B6 to set the first parameters;
+iii. Sets up the remaining parameters, including the initial displacements for the first arc;
+ iv. Enters the arc-drawing loop and draws the arc as a series of smaller arcs approximated by straight lines, calling the line-drawing subroutine at 24B7-24FA as necessary.
+Two subroutines, CD-PRMS1 and DRAW-LINE, follow the main routine. The above 4 parts of the main routine will now be treated in turn.
+i.   If there are only 2 paramaters, a jump is made to LINE-DRAW at 2477. A line is also drawn if the quantity Z=(ABS X + ABS Y)/ABS SIN(G/2) is less than 1.  Z lies between 1 and 1.5 times the diameter of the implied circle. In this section mem-0 is set to SIN (G/2), mem-1 to Y, and mem-5 to G.
+
+2382	DRAW	RST	0018,GET-CHAR	Get the current characater.
+		CP	+2C	If it is a comma,
+		JR	Z,238D,DR-3-PRMS	then jump.
+		CALL	1BEE,CHECK-END	Move on to next statement if
+				checking syntax.
+		JP	2477,LINE-DRAW	Jump to just draw the line.
+238D	DR-3-PRMS	RST	0020,NEXT-CHAR	Get next character (the angle).
+		CALL	1C82,EXPT-1NUM	Angle to calculator stack.
+		CALL	1BEE,CHECK-END	Move on to next statement if
+				checking syntax.
+		RST	0028,FP-CALC	X, Y, G are on the stack.
+		DEFB	+C5,st-mem-5	(G is copied to mem-5)
+		DEFB	+A2,stk-half	X, Y, G, 0.5
+		DEFB	+04,multiply	X, Y, G/2
+		DEFB	+1F,sin	X, Y, SIN (G/2)
+		DEFB	+31,duplicate	X, Y, SIN (G/2), SIN (G/2)

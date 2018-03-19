@@ -1,0 +1,63 @@
+		LD	A,+0D	Follow the 'new name' with
+		RST	0010,PRINT-A-1	a 'carriage return'.
+
+The correct header has been found and the time has come to consider the three commands LOAD, VERIFY, & MERGE separately.
+
+		POP	HL	Fetch the pointer.
+		LD	A,(IX+00)	'SCREEN$ and CODE' are
+		CP	+03	handled with VERIFY.
+		JR	Z,07CB,VR-CONTRL
+		LD	A,(T-ADDR-lo)	Jump forward if using a
+		DEC	A	LOAD command.
+		JP	Z,0808,LD-CONTRL
+		CP	+02	Jump forward if using a MERGE
+		JP	Z,08B6,ME-CONTRL	command; continue with a
+				VERIFY command.
+
+THE 'VERIFY' CONTROL ROUTINE
+The verification process involves the LOADing of a block of data, a byte at a time, but the bytes are not stored - only checked. This routine is also used to LOAD blocks of data that have been described with 'SCREEN$ & CODE'.
+
+07CB	VR-CONTRL	PUSH	HL	Save the 'pointer'.
+		LD	L,(IX-06)	Fetch the 'number of bytes'
+		LD	H,(IX-05)	as described in the 'old' header.
+		LD	E,(IX+0B)	Fetch also the number from the
+		LD	D,(IX+0C)	'new' header.
+		LD	A,H	Jump forward if the 'length' is
+		OR	L	unspecified.
+		JR	Z,07E9,VR-CONT-1	e.g. 'LOAD name CODE' only.
+		SBC	HL,DE	Give report R if attempting
+		JR	C,0806,REPORT-R	to LOAD a larger block than has
+				been requested.
+		JR	Z,07E9,VR-CONT-1	Accept equal 'lengths'.
+		LD	A,(IX+00)	Also give report R if trying
+		CP	+03	to VERIFY blocks that are of
+		JR	NZ,0806,REPORT-R	unequal size. ('Old length'
+				greater than 'new length'.)
+
+The routine continues by considering the 'destination pointer'.
+
+07E9	VR-CONT-1	POP	HL	Fetch the 'pointer', i.e. the
+				'start'.
+		LD	A,H	This 'pointer' will be used
+		OR	L	unless it is zero, in which
+		JR	NZ,07F4,VR-CONT-2	case the 'start' found in
+		LD	L,(IX+0D)	the 'new' header will be used
+		LD	H,(IX+0E)	instead.
+
+The VERIFY/LOAD flag is now considered and the actual LOAD made.
+
+07F4	VR-CONT-2	PUSH	HL	Move the 'pointer' to the
+		POP	IX	IX register pair.
+		LD	A,(T-ADDR-lo)	Jump forward unless using
+		CP	+02	the VERIFY command; with
+		SCF		the carry flag signalling
+		JR	NZ,0800,VR-CONT-3	'LOAD'
+		AND	A	Signal 'VERIFY'.
+0800	VR-CONT-3	LD	A,+FF	Signal 'accept data block only'
+				before LOADing the block.
+
+THE 'LOAD A DATA BLOCK' SUBROUTINE
+This subroutine is common to all the 'LOADing' routines. In the case of LOAD & VERIFY it acts as a full return from the cassette handling routines but in the case of MERGE the data block has yet to be 'MERGEd'.
+
+0802	LD-BLOCK	CALL	0556,LD-BYTES	LOAD/VERIFY a data block.
+		RET	C	Return unless an error.

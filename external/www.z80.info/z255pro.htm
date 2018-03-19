@@ -1,0 +1,157 @@
+<HTML><HEAD>
+<TITLE>8255PIO</TITLE>
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<H2 ALIGN=left>8255 PIO</H2>
+If you need futher information please check my page, I have the manual online.<br>
+<hr><center>
+<img src="gfx/8255_blk.gif" width=395 height=333 border=0></center><br>
+<H3>24 BIT DIGITAL I/O PIO DETAILS</H2>
+
+<H4>PROGRAMMING INFORMATION</H4>
+
+<P>The 8255 I/O <A href="zhelp.htm#PIO">PIO</A> occupies (4) consecutive 8 bit I/O locations starting at BASE+0 and going to BASE+3.</P>
+
+<P>The structure of the addressing is as follows:
+
+
+<ul>
+<li>BASE+0 = Port A (read or write)
+<li>BASE+1 = Port B (read or write)
+<li>BASE+2 = Port C (read or write)
+<li>BASE+3 = Control Register (write only)
+</ul></P>
+
+<P>The following is an overview of each of the three available modes:</P>
+
+
+<P>MODE 0 (Basic Input/Output):
+
+
+
+<UL>
+<LI>(2) Eight bit ports and (2) 4 bit ports
+
+
+<LI>Any port can be either input or output
+
+
+<LI>Outputs are latched
+
+
+<LI>Inputs are not latched
+
+
+<LI>(16) different Input/Output configurations are possible in this mode
+
+
+</UL></P>
+
+
+<BR><BR>
+
+
+<P>MODE 1 (Strobed Input/Output):
+
+
+<UL>
+
+
+<LI> (2) Groups (Group A and Group B)
+
+
+<LI> Each group contains one 8 bit data port and (1) 4 bit control/data port
+
+
+<LI> The 8 bit data port can be either input or output
+
+
+<LI> Both inputs and outputs are latched
+
+
+<LI> The 4 bit port is used for control and status of the 8 bit data port
+
+
+</UL>
+
+
+</P>
+
+
+<BR><BR>
+
+
+<P>MODE 2 ( Strobed Bi-directional Bus I/O):
+
+
+<UL>
+<LI>Used in Group A only
+
+
+<LI> One 8 bit bi-directional bus port (Port A) and one 5 bit control port (Port C)
+
+
+<LI> Both inputs and outputs are latched
+
+
+<LI> The 5 bit control port (Port C) is used for control and status for the 8 bit, bi-directional bus port (Port A)
+
+
+</UL>
+</P><hr>
+CONTROL WORD to define operation mode: (This word is written to base+3)<p>
+<IMG SRC="gfx/z255cont.gif"><pre>
+D7 = 1  Designation of mode set flag
+
+D6  D5  Mode selection of Group A
+0   0  = mode 0
+0   1  = mode 1
+1   x  = mode 2
+
+D4  Input/Output selection of Port A
+0 = Output
+1 = Input
+
+D3  Input/Output selection of high order 4 bits of Port C
+0 = Output
+1 = Input
+
+D2  Mode selection of Group B
+0  = mode 0
+1  = mode 1
+
+D1  Input/Output selection of Port B
+0 = Output
+1 = Input
+
+D0  Input/Output selection of low order 4 bits of Port C
+0 = Output
+1 = Input
+</pre><hr>
+CONTROL WORD to set and reset bits in In/Out Port C (This word is written to base+3)<p>
+<IMG SRC="gfx/z255con.gif"><pre>
+D7 = 0  Bit set/reset flag 0 = Active.
+
+D6 D5 D4 Don't care.
+
+D3 D2 D1 Bit selection
+0  0  0  PC0
+0  0  1  PC1
+0  1  0  PC2
+0  1  1  PC3
+1  0  0  PC4
+1  0  1  PC5
+1  1  0  PC6
+1  1  1  PC7
+
+D0 Bit set/reset selection
+0 = Reset
+1 = Set
+
+</pre>
+<hr>
+</center></body></html>
+
+<Try the secret.htm>
+

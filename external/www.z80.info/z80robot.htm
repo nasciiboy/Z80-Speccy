@@ -1,0 +1,182 @@
+<HTML>
+<HEAD>
+<TITLE>Z80 robot system</TITLE>
+<META NAME="keywords" CONTENT="Z80,Programming,Software,,robot,assembler,multitask">
+<META NAME="description" CONTENT="Z80,Programming,multitask,robot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" BACKGROUND="gfx/zand.jpg">
+
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" BORDER=0 WIDTH=198 HEIGHT=97 ALT="Z80 Home"></A></P>
+<HR>
+<B><FONT SIZE=6>Z80 Multitasking Robot</B></FONT><BR>
+By Rick Chalfant <P>
+<HR>
+<A HREF="zip/r19doc.zip">Download Robot Docs Ziped</A> <br>
+<A HREF="zip/r19pgm.zip">Download Robot Sources Ziped</A><br>
+<p>
+
+<H2>Key features:</H2><H4>
+SERIAL RADIO LINK, 49Mhz FSK modulated, 2400 baud.<br>
+DIRECTION OF SOUND DETERMINATION, with three microphones.<br>
+</h4>
+<PRE>
+
+
+<h5>The following documentation contains design objectives which 
+were written before work was begun.  It also contains detailed 
+descriptions of completed functions.
+</h5>
+
+<B>FUNCTIONAL DESCRIPTION</B>
+
+Rather than one very powerful CPU controlling everything, several 
+smaller CPU's will be integrated into a network.  This allows the 
+individual CPU's to be more closely matched to their particular 
+functions.  It also allows construction to proceed in a modular 
+fashion.
+
+
+<B>MAIN CPU</B>
+
+This CPU is responsible for determining what actions to take.  It 
+must be constantly aware of exact vehicle position in relation to 
+surroundings, including temporary obstacles.  It accepts and 
+interprets encoded speech commands from the speech processor CPU 
+and sends encoded speech responses to the speech processor for 
+utterance.  The main CPU issues motion commands to the base CPU 
+and requests reports on motion progress and vehicle status.  It 
+also accepts asynchronous notification of emergency events.  
+Initially, the main CPU will be located off-board.  It will 
+communicate with the vehicle via a serial link, either radio or 
+umbilical cord.
+
+
+<B>BASE CPU</B>
+
+The base CPU is responsible for all hardware on the vehicle base, 
+except the speech components.  This CPU controls the stepper 
+motors and DC drive motors and monitors their position.  It 
+monitors all bumper and limit switches.  When a switch closes, 
+the corresponding motor is stopped first, then the main CPU is 
+notified of the aborted command.  The battery charge level is 
+monitored, and charging operations proceed under its control.  
+Distance-to-object and direction-of-sound are calculated by the 
+base CPU.  The radio link to the main CPU, and the LED link to 
+the platform CPU are maintained by the base CPU.  A parallel port 
+connects it to the speech CPU.  Base CPU memory is used for 
+message buffering.
+
+
+<B>SPEECH CPU</B>
+
+The speech CPU interprets sounds and encodes them into word-
+codes.  These word-codes are passed to the main CPU (through 
+the base CPU's radio link) for interpretation of actual meaning.  
+The speech CPU receives word-codes from the main CPU, which it 
+utters via the speech synthesizer.
+
+
+<B>PLATFORM  CPU</B>
+
+The platform CPU is responsible for all components mounted on the 
+rotating platform, except the video digitizer.  It communicates 
+with the base CPU via LED's mounted in the support shaft.  
+Rotation of the platform is performed by the base control CPU, 
+upon request of the platform CPU.
+
+
+<B>VIDEO CPU</B>
+
+The video CPU captures digitized images, evaluates them, and 
+encodes the information it can discern.  It makes lens movement 
+and focus requests to the platform CPU.  It accepts image-related 
+requests from the main CPU via the base and platform CPU's.
+
+
+<B>DETAILED ORGANIZATION 
+BASE and PLATFORM CPU's
+HARDWARE DESCRIPTION</B>
+
+The same design is used for each of these CPU's, since they 
+perform very similar functions.  This CPU uses a 4MHz Z80 
+processor with 16K or 64K of memory.  The memory is divided 
+between RAM and ROM (EPROM).  A Z80 SIO or DART provides two 
+serial channels.  Two Z80 CTC's handle timing tasks.  Three Z80 
+PIO's are used for limit switch input and general bit oriented 
+control functions.  One of the PIO ports is a high-speed bi-
+directional parallel link to the speech or video CPU.  Eight 
+"dumb" output ports are used for stepper motor control, allowing 
+up to 16 four-phase steppers to be attached.
+
+The processor board contains all the components that must use the 
+data and address busses, as well as address-decode and clock 
+generation chips.
+
+Two stepper motor driver boards may be connected to one CPU 
+board.  Each stepper motor board controls eight four-phase 
+motors.  All timing and sequencing is handled by the CPU board.  
+The stepper board only provides output drive amplification.  
+The support boards contain miscellaneous circuitry specific to 
+the base or platform hardware.  Both support boards house the 
+reset circuit and auto-reset one-shot, limit switch buffers, and 
+LED strobe conditioners.  In addition, the base support board 
+contains FSK timing and radio link support, including transmit 
+solenoid and walkie-talkie board.
+
+The power board attached to the base CPU contains the DC motor 
+drivers and direction control, battery monitor and charge 
+circuitry, and voltage regulators.  The +12VDC from the battery 
+is regulated to +5VDC by a swithced-mode regulator.  A small 
+linear regulator provides +9VDC for the walkie-talkie.
+
+
+<B>AUTO-RESET</B>
+
+A primary design requirement states that the system will stop all 
+motion in the event of an unexpected error.  In this case, 
+"unexpected" means any error that the CPU does not monitor or for 
+which it does not have a recovery routine.  This will prevent 
+damage to the vehicle and to its environment, as well as limit 
+unnecessary battery drain.  To accomplish this requirement, an 
+"auto-reset" mechanism is employed.  A 74LS123 retriggerable 
+monostable is gated to the system-reset circuit.  Its output 
+pulse is initiated by the system-reset line.  It is kept active 
+by retriggering the one-shot via a parallel port bit.  If the 
+pulse ever times out, the system will perform a hardware reset.  
+If a software or hardware error prevents the program from 
+toggling the trigger bit within the allotted time, the resulting 
+reset will stop any motor activity and cause system diagnostics 
+to be performed.  The one-shot design was chosen because it runs 
+independently of the CPU.  A counter circuit running from the 
+system clock, for example, would fail to function if the CPU quit 
+because the system clock failed.
+</PRE>
+<P><HR></P>
+<PRE>
+<A HREF="zip/r19doc.zip">Download Robot Docs Ziped</A>
+<A HREF="zip/r19pgm.zip">Download Robot Sources Ziped</A>
+
+The Downloaded programs assembles with M80 and runs, but the timer interrupts use 
+up most of the processor time on a 4-mHz Z80.  Instead of using what 
+is essentially a software timer with a 1-msec interrupt, I need to 
+use the Z80-CTC as a hardware timer with a programmable down-counter 
+and a 1.04-msec period.  Of course, this means adjusting all the 
+other routines that use the timer, as well as the CTC circuitry.  
+I became involved in other projects and never finished this one.
+
+I'm only including this source code as an example for the 
+multi-tasking article, anyway, so the user can work out the timer 
+details on his own.
+
+The DOC files are a combination of design ideas and descriptions of 
+actual code.  The code doesn't necessarily match the design ideas.
+
+Rick.C
+
+<A HREF="multtask.htm">Article about the multitask system used in this robot</A>
+</PRE>
+<P><HR></P>
+</BODY>
+</HTML>
+

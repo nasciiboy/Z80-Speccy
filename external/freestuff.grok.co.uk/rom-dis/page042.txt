@@ -1,0 +1,68 @@
+		LD	(P-FLAG),A	P-FLAG.
+		POP	HL	Restore the values of ATTR-T
+		LD	(ATTR-T),HL	and MASK-T.
+
+The display is now scrolled.
+
+0CD2	PO-SCR-3	CALL	ODFE,CL-SC-ALL	The whole display is scrolled.
+		LD	B(DF-SZ)	The line and column numbers
+		INC	B	for the start of the line
+		LD	C,+21	above the lower part of the
+		PUSH	BC	display are found and saved.
+		CALL	0E9B,CL-ADDR	The corresponding attribute
+		LD	A,H	byte for this character area is
+		RRCA		then found. The HL register pair
+		RRCA		holds the address of the
+		RRCA		byte.
+		AND	+03
+		OR	+58
+		LD	H,A
+
+The line in question will have 'lower part' attribute values and the new line at the bottom of the display may have 'ATTR-P' values so the attribute values are exchanged.
+
+		LD	DE,+5AE0	DE points to the first attribute
+				byte of the bottom line.
+		LD	A,(DE)	The value is fetched.
+		LD	C,(HL)	The 'lower part' value.
+		LD	B,+20	There are thirty two bytes.
+		EX	DE,HL	Exchange the pointers.
+0CF0	PO-SCR-3A	LD	(DE),A	Make the first exchange
+		LD	(HL),C	and then proceed to use the
+		INC	DE	same values for the thirty
+		INC	HL	two attribute bytes of the
+		DJNZ	0CF0,PO-SCR-3A	two lines being handled.
+		POP	BC	The line and column numbers of
+				the bottom line of the 'upper
+				part' are fetched before
+		RET		returning.
+
+The 'scroll?' message
+
+0CF8		DEFB	+80	Initial marker - stepped over.
+		DEFB	+73,+63,+72,+6F	s-c-r-o
+		DEFB	+6C,+6C,+BF	l - l - ? (inverted).
+
+Report 0 - BREAK - CONT repeats
+
+0D00	REPORT-D	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0C	routine.
+
+The lower part of the display is handled as follows:
+
+0D02	PO-SCR-4	CP	+02	The 'out of screen' error is
+		JR	C,0C86,REPORT-5	given if the lower part is
+		ADD	A,(DF-SZ)	going to be 'too large' and a
+		SUB	+19	return made if scrolling is
+		RET	NC	unnecessary.
+		NEG		The A register will now hold
+				'the number of scrolls to be
+				made'.
+		PUSH	BC	The line and column numbers
+				are now saved.
+		LD	B,A	The 'scroll number', ATTR-T
+		LD	HL,(ATTR-T)	MASK-T & P-FLAG are all
+		PUSH	HL	saved.
+		LD	HL,(P-FLAG)
+		PUSH	HL
+		CALL	0D40,TEMPS	The 'permanent' colour items
+				are to be used.

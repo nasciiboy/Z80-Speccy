@@ -1,0 +1,63 @@
+		JP	2712,S-CONT-2
+25F5	S-FN	JP	27BD,S-FN-SBRN The 'scanning FN routine'.
+
+This routine, for user-defined functions, just jumps to the 'scanning FN subroutine'.
+
+25F8	S-RND	CALL	2530,SYNTAX-Z	Unless syntax is being checked,
+		JR	Z,2626,S-RND-END	jump to calculate a random
+				number.
+		LD	BC,(SEED)	Fetch the current value of
+				SEED.
+		CALL	2D2B,STACK-BC	Put it on the calculator stack.
+		RST	0028,FP-CALC	Now use the calculator,
+		DEFB	+A1,stk-one	The 'last value' is now
+		DEFB	+0F,addition	SEED+1.
+		DEFB	+34,stk-data	Put the decimal number 75
+		DEFB	+37,exponent+87	on the calculator stack.
+		DEFB	+16,(+00,+00,+00)
+		DEFB	+04,multiply	'last value' (SEED+1)*75.
+		DEFB	+34,stk-data	See STACK LITERALS to see
+		DEFB	+80,(four bytes)	how bytes are expanded so as to
+		DEFB	+41,exponent +91	put the decimal number 65537
+		DEFB	+00,+00,+80,(+00)	on the calculator stack.
+		DEFB	+32,n-mod-m	Divide (SEED+1)*75 by 65537
+				to give a 'remainder' and an
+				'answer'.
+		DEFB	+02,delete	Discard the 'answer'.
+		DEFB	+A1,stk-one	The 'last value' is now
+		DEFB	+03,subtract	'remainder' - 1.
+		DEFB	+31 ,duplicate	Make a copy of the 'last value'.
+		DEFB	+38,end-calc	The calculation is finished.
+		CALL	2DA2,FP-TO-BC	Use the 'last value' to give the
+		LD	(SEED),BC	new value for SEED.
+		LD	A,(HL)	Fetch the exponent of 'last
+				value'.
+		AND	A	Jump forward if the exponent is
+		JR	Z,2625,S-RND-END	zero.
+		SUB	+10	Reduce the exponent, i.e. divide
+		LD	(HL),A	'last value' by 65536 to give the
+				required 'last value'.
+2625	S-RND-END	JR	2630,S-PI-END	Jump past the 'PI' routine.
+
+The 'scanning-PI routine': unless syntax is being checked the value of 'PI' is calculated and forms the 'last value' on the calculator stack.
+
+2627	S-PI	CALL	2530,SYNTAX-Z	Test for syntax checking.
+		JR	Z,2630,S-PI-END	Jump if required.
+		RST	0028,FP-CALC	Now use the calculator.
+		DEFB	+A3,stk-pi/2	The value of PI/2 is put on the
+		DEFB	+3B,end-calc	calculator stack as the 'last
+				value'.
+		INC	(HL)	The exponent is incremented
+				thereby doubling the 'last value'
+				giving PI.
+2630	S-PI-END	RST	0020,NEXT-CHAR	Move on to the next character.
+		JP	26C3,S-NUMERIC	Jump forward.
+2634	S-INKEY$	LD	BC,+105A	Priority +10 hex, operation
+		RST	0020,NEXT-CHAR	code +5A for the 'read-in'
+				subroutine.
+		CP	+23	If next char. is '#', jump.
+		JP	Z,270D,S-PUSH-PO	There will be a numerical
+				argument.
+		LD	HL,+5C3B	This is FLAGS.
+		RES	6,(HL)	Reset bit 6 for a string result.
+		BIT	7,(HL)	Test for syntax checking.

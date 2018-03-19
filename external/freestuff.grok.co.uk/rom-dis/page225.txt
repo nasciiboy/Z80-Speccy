@@ -1,0 +1,62 @@
+LN X:
+
+	 10 	REM DEMONSTRATION FOR LN X
+	 20 	REM USING THE 'SERIES GENERATOR'
+	 30 	LET D=0	(This makes D the first variable).
+	 40 	DIM A(12)
+	 50 	LET A(1)= -.0000000003
+	 60 	LET A(2)=0.0000000020
+	 70 	LET A(3)= -.0000000127
+	 80 	LET A(4)=-0.0000000823
+	 90 	LET A(5)= -.0000005389
+	100 	LET A(6)=0.0000035828
+	110 	LET A(7)= -.0000243013
+	120 	LET A(8)=0.0001693953
+	130 	LET A(9)= -.0012282837
+	140 	LET A(10)=0.0094766116
+	150 	LET A(11)= -.0818414567
+	160 	LET A(12)=0.9302292213
+	170 	PRINT
+	180 	PRINT "ENTER START VALUE"
+	190 	INPUT C
+	200 	CLS
+	210 	PRINT "BASIC PROGRAM", "ROM PROGRAM"
+	220 	PRINT "-------------", "-----------"
+	230 	PRINT
+	240 	LET C=SQR C
+	250 	FOR J=1 TO 4
+	260 	LET C=C*C
+	270 	IF C=0 THEN STOP 	(STOP with 'invalid argument'.)
+	280 	LET D=C
+	290 	LET V=PEEK 23627+256*PEEK 23628+1
+	300 	LET N=PEEK V-128	(N holds e').
+	310 	POKE V,128
+	320 	IF D<=0.8 THEN GO TO 360	(D holds X').
+	330 	LET S=D-1
+	340 	LET Z=2.5*D-3
+	350 	GO TO 390
+	360 	LET N=N-1
+	370 	LET S=2*D-1
+	380 	LET Z=5*D-3
+	390 	LET R=N*0.6931471806	(R holds N*LN 2).
+	400 	LET BREG=12
+	410 	REM USE 'SERIES GENERATOR'
+	420 	GO SUB 550
+	430 	PRINT TAB 8;"LN ";C
+	440 	PRINT
+	450 	PRINT S*T+R,LN C
+	460 	PRINT
+	470 	NEXT J
+	480 	GO TO 170
+
+NOTES:
+
+  i. When C is entered this program calculates and prints LN C, LN (C**2), LN (C**4)
+     and LN (C**8). It also prints the values obtained by using the ROM program.
+     For a specimen of results, try entering these values: 1.1; 0.9; 300; 0.004; 1E5 (for
+     overflow) and 1E-5 (STOP as 'invalid argument').
+
+ ii. The constants A(1) to A(12) in lines 50 to 160 can be obtained by integrating 5*LN
+     (4* (X+1)/5)/(4*X-1) over the interval U=0 to PI, after first multiplying by COS
+     (N*U) for each constant (i.e. for N=1,2,...,12) and substituting COS U=2*X-1. Each
+     result should then be divided by PI.

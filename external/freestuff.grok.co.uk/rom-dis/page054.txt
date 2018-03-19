@@ -1,0 +1,66 @@
+		POP	BC	Drop the return address.
+		RET	C	Return via ED-LOOP if the
+				carry flag is set.
+		PUSH	BC	Restore the return address.
+		LD	B,H	Move the current address of
+		LD	C,L	the cursor to BC.
+
+Now enter a loop to check that control characters are not split from their parameters.
+
+103E	ED-EDGE-1	LD	H,D	HL will point to the
+		LD	L,E	character in the line after
+		INC	HL	that addressed by DE.
+		LD	A,(DE)	Fetch a character code.
+		AND	+F0	Jump forward if the code
+		CP	+10	does not represent
+		JR	NZ,1051,ED-EDGE-2	INK to TAB.
+		INC	HL	Allow for one parameter.
+		LD	A,(DE)	Fetch the code anew.
+		SUB	+17	Carry is reset for TAB.
+		ADC	A,+00	Note: This splits off AT & TAB
+				but AT & TAB in this form are
+				not implemented anyway so it
+				makes no difference.
+		JR	NZ,1051,ED-EDGE-2	Jump forward unless dealing
+		INC	HL	with AT & TAB which would
+				have two parameters, if used.
+1051	ED-EDGE-2	AND	A	Prepare for true subtraction.
+		SBC	HL,BC	The carry flag will be reset
+		ADD	HL,BC	when the 'updated pointer'
+				reaches K-CUR.
+		EX	DE,HL	For the next loop use the
+		JR	C,103E,ED-EDGE-1	'updated pointer', but if
+		RET		exiting use the 'present
+				pointer' for K-CUR.
+				Note: It is the control character
+				that is deleted when using
+				DELETE.
+
+THE 'CURSOR UP EDITING' SUBROUTINE
+
+1059	ED-UP	BIT	5,(FLAGX)	Return if in 'INPUT mode'.
+		RET	NZ
+		LD	HL.(E-PPC)	Fetch the current line
+		CALL	196E,LINE-ADDR	number and its start address.
+		EX	DE,HL	HL now points to the previous
+				line.
+		CALL	1695,LINE-NO	This line's number is fetched.
+		LD	HL,+5C4A	This is E-PPC-hi.
+		CALL	1910,LN-STORE	The line number is stored.
+106E	ED-LIST	CALL	1795,AUTO-LIST	A new automatic listing is
+		LD	A,+00	now produced and channel 'K'
+		JP	1601,CHAN-OPEN	re-opened before returning to
+				ED-LOOP.
+
+THE 'ED-SYMBOL' SUBROUTINE
+If SYMBOL & GRAPHICS codes were used they would be handled as follows:
+
+1076	ED-SYMBOL	BIT	7,(FLAGX)	Jump back unless dealing with
+		JR	Z,1024,ED-ENTER	INPUT. LINE.
+107C	ED-GRAPH	JP	0F81,ADD-CHAR	Jumpback.
+
+THE 'ED-ERROR' SUBROUTINE
+Come here when there has been some kind of error.
+
+107F	ED-ERROR	BIT	4,(FLAGS2)	Jump back if using other than
+		JR	Z,1026,ED-END	channel 'K'.

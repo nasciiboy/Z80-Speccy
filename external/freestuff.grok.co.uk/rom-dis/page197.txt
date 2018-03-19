@@ -1,0 +1,58 @@
+				value.
+		LD	C,A	This result is wanted in the
+		LD	B,+00	BC register pair.
+		ADD	HL,BC	Produce the new base address.
+		RET		Finished.
+
+THE 'GET FROM MEMORY AREA' SUBROUTINE
+(Offsets E0 to E5: 'get-mem-0' to 'get-mem-5')
+
+This subroutine is called using the literals E0 to E5 and the parameter derived from these literals is held in the A register. The subroutine calls MEMORY LOCATION to put the required source address into the HL register pair and MOVE A FLOATING-POINT NUMBER to copy the five bytes involved from the calculator's memory area to the top of the calculator stack to form a new 'last value'.
+
+340F	get-mem-0	PUSH	DE	Save the result pointer.
+	etc.	LD	HL,(MEM)	Fetch the pointer to the current
+				memory area (see above).
+		CALL	3406,LOC-MEM	The base address is found.
+		CALL	33C0,MOVE-FP	The five bytes are moved.
+		POP	HL	Set the result pointer.
+		RET		Finished.
+
+
+THE 'STACK A CONSTANT' SUBROUTINE
+(offsets A0 to A4: 'stk-zero','stk-one','stk-half','stk-pi/2' & 'stk-ten')
+
+This subroutine uses SKIP CONSTANTS to find the base address of the requested constants from the calculator's table of constants and then calls STACK LITERALS, entering at STK-CONST, to make the expanded form of the constant the 'last value' on the calculator stack.
+
+341B	stk-zero	LD	H,D	Set HL to hold the result
+	etc.			pointer.
+		LD	L,E
+		EXX		Go to the alternate register set
+		PUSH	HL	and save the next literal pointer.
+		LD	HL,+32C5	The base address of the calcul-
+				ator's table of constants.
+		EXX		Back to the main set of registers.
+		CALL	33F7,SKIP-CONS	Find the requested base address.
+		CALL	33C8,STK-CONST	Expand the constant.
+		EXX
+		POP	HL	Restore the next literal pointer.
+		EXX
+		RET		Finished.
+
+THE 'STORE IN MEMORY AREA' SUBROUTINE
+(Offsets C0 to C5: 'st-mem-0' to 'st-mem-5')
+
+This subroutine is called using the literals C0 to C5 and the parameter derived from these literals is held in the A register. This subroutine is very similar to the GET FROM MEMORY subroutine but the source and destination pointers are exchanged.
+
+342D	st-mem-0	PUSH	HL	Save the result pointer.
+	etc.	EX	DE,HL	Source to DE briefly.
+		LD	HL,(MEM)	Fetch the pointer to the current
+				memory area.
+		CALL	3406,LOC-MEM	The base address is found.
+		EX	DE,HL	Exchange source and
+				destination pointers.
+		CALL	33C0,MOVE-FP	The five bytes are moved.
+		EX	DE,HL	'Last value' +5, i.e. STKEND, to
+				DE.
+		POP	HL	Result pointer to HL.
+		RET		Finished.
+

@@ -1,0 +1,53 @@
+		OR	E	00 FF 00 00 00 is replaced by
+		JR	NZ,30EA,MULT-RSLT	zero; that they should not be
+		LD	C,A	needed if this number were
+				excluded from the system (see
+				after 303B) above).
+30EA	MULT-RSLT	CALL	2D8E,INT-STORE	Now store the result on the
+				stack.
+		POP	DE	Restore STKEND to DE.
+		RET		Finished.
+30EF	MULT-OFLW	POP	DE	Restore the pointer to the
+				second number.
+30F0	MULT-LONG	CALL	3293,RE-ST-TWO	Re-stack both numbers in full
+				five byte floating-point form.
+The full MULTIPLICATION subroutine prepares the first number for multiplication by calling PREP-M/D, returning if it is zero; otherwise the second number is prepared by again calling PREP-M/D, and if it is zero the subroutine goes to set the result to zero. Next it fetches the two numbers from the calculator stack and multiplies their mantissas in the usual way, rotating the first number (treated as the multiplier) right and adding in the second number (the multiplicand) to the result whenever the multiplier bit is set. The exponents are then added together and checks are made for overflow and for underflow (giving the result zero). Finally, the result is normalised and returned to the calculator stack with the correct sign bit in the second byte.
+		XOR	A	A is set to Hex.00 so that the
+				sign of the first number will go
+				into A.
+		CALL	30C0,PREP-M/D	Prepare the first number, and
+		RET	C	return if zero. (Result already
+				zero.)
+		EXX		Exchange the registers.
+		PUSH	HL	Save the next literal address.
+		EXX		Exchange the registers.
+		PUSH	DE	Save the pointer to the multi-
+				plicand.
+		EX	DE,HL	Exchange the pointers.
+		CALL	30C0,PREP-M/D	Prepare the 2nd number.
+		EX	DE,HL	Exchange the pointers again.
+		JR	C,315D,ZERO-RSLT	Jump forward if 2nd number is
+				zero.
+		PUSH	HL	Save the pointer to the result.
+		CALL	2FBA,FETCH-TWO	Get the two numbers from
+				the stack.
+		LD	A,B	M5 to A (see FETCH-TWO).
+		AND	A	Prepare for a subtraction.
+		SBC	HL,HL	Initialise HL to zero for the
+				result.
+		EXX		Exchange the registers.
+		PUSH	HL	Save M1 & N1 (see
+				FETCH-TWO).
+		SBC	HL,HL	Also initialise H'L' for the
+				result.
+		EXX		Exchange the registers.
+		LD	B,+21	B counts 33 decimal, Hex.21,
+				shifts.
+		JR	3125,STRT-MLT	Jump forward into the loop.
+Now enter the multiplier loop.
+3114	MULT-LOOP	JR	NC,311B,NO-ADD	Jump forward to NO-ADD if no
+				carry, i.e. the multiplier bit was
+				reset.
+		ADD	HL,DE	Else, add the multiplicand in
+		EXX		D'E'DE (see FETCH-TWO) into
+		ADC	HL,DE	the result being built up on

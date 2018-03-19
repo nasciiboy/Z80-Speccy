@@ -1,0 +1,65 @@
+Note that -1 <=W <=1, as required for the series to converge.
+ii. The argument Z is formed, such that Z=2*W*W-1.
+iii. The SERIES GENERATOR is used to return (SIN (PI*W/2))/W
+iv. Finally a simple multiplication gives SIN X.
+
+37B5	sin	RST	0028 FP-CALC	X
+
+Perform step i.
+
+		DEFB	+39,get-argt	W
+
+
+Perform step ii. The subroutine from now on is common to both the SINE and COSINE functions.
+
+37B7	C-ENT	DEFB	+31,duplicate	W, W
+		DEFB	+31,duplicate	W, W, W
+		DEFB	+04,multiply	W, W*W
+		DEFB	+31,duplicate	W, W*W, W*W
+		DEFB	+0F,addition	W, 2*W*W
+		DEFB	+A1,stk-one	W, 2*W*W, 1
+		DEFB	+03,subtract	W, 2*W*W-1 = Z
+
+
+Perform step iii, passing to the SERIES GENERATOR the parameter '6' and the six constants required.
+
+		DEFB	+86,series-06	W, Z
+	1.	DEFB	+14,exponent+64	
+		DEFB	+E6,(+00,+00,+00)	
+	2.	DEFB	+5C,exponent+6C	
+		DEFB	+1F,+0B,(+00,+00)	
+	3.	DEFB	+A3,exponent+73
+		DEFB	+8F,+38,+EE,(+00)
+	4.	DEFB	+E9,exponent+79
+		DEFB	+15,+63,+BB,+23
+	5.	DEFB	+EE,exponent+7E
+		DEFB	+92,+0D,+CD,+ED
+	6.	DEFB	+F1,exponent+81
+		DEFB	+23,+5D,+1B,+EA
+
+At the end of the last loop the 'last value' is (SIN (PI*W/2))/W.
+
+Perform step v.
+
+		DEFB	+04,multiply	SIN (PI*W/2) = SIN X (or =
+				COS X)
+		DEFB	+38,end-calc	
+		RET		Finished: 'last value' = SIN X.
+				or ('last value' = COS X)
+
+
+THE 'TAN' FUNCTION
+(Offset 21: 'tan')
+
+This subroutine handles the function TAN X. The subroutine simply returns SIN X/COS X, with arithmetic overflow if COS X = 0.
+
+37DA	tan	RST	0028,FP-CALC	X
+		DEFB	+31,duplicate	X, X
+		DEFB	+1F,sin	X, SIN X
+		DEFB	+01,exchange	SIN X, X
+		DEFB	+20,cos	SIN X,COS X
+		DEFB	+05,division	SIN X/COS X = TAN X
+				Report arithmetic overflow if
+				needed.
+		DEFB	+38,end-calc	TAN X
+		RET		Finished: 'last value' = TAN X.

@@ -1,0 +1,56 @@
+
+2F8B	CA=10*A+C	PUSH	DE	Save whichever DE pair is in use.
+		LD	L,A	Copy the multiplicand from A
+		LD	H,+00	to HL.
+		LD	E,L	Copy it to DE too.
+		LD	D,H	
+		ADD	HL,HL	Double HL.
+		ADD	HL,HL	Double it again.
+		ADD	HL,DE	Add in DE to give HL=5*A.
+		ADD	HL,HL	Double again: now HL=10*A.
+		LD	E,C	Copy C to DE (D is zero) for
+				addition.
+		ADD	HL,DE	Now HL=10*A+C.
+		LD	C,H	H is copied to C.
+		LD	A,L	L is copied to A, completing
+				the task.
+		POP	DE	The DE register pair is restored.
+		RET		Finished.
+
+THE 'PREPARE TO ADD' SUBROUTINE.
+This subroutine is the first of four subroutines that are used by the main arithmetic operation routines - SUBTRACTION, ADDITION, MULTIPLICATION and DIVISION.
+This particular subroutine prepares a floating-point number for addition, mainly by replacing the sign bit with a true numerical bit 1, and negating the number (two's complement) if it is negative. The exponent is returned in the A register and the first byte is set to Hex.00 for a positive number and Hex.FF for a negative number.
+
+2F9B	PREP-ADD	LD	A,(HL)	Transfer the exponent to A.
+		LD	(HL),+00	Presume a positive number.
+		AND	A	If the number is zero then the
+		RET	Z	preparation is already finished.
+		INC	HL	Now point to the sign byte.
+		BIT	7,(HL)	Set the zero flag for positive
+				number.
+		SET	7,(HL)	Restore the true numeric bit.
+		DEC	HL	Point to the first byte again.
+		RET	Z	Positive numbers have been
+				prepared, but negative numbers
+				need to be twos complemented.
+		PUSH	BC	Save any earlier exponent.
+		LD	BC,+0005	There are 5 bytes to be handled.
+		ADD	HL,BC	Point one-past the last byte.
+		LD	B,C	Transfer the '5' to B.
+		LD	C,A	Save the exponent in C.
+		SCF		Set carry flag for negation.
+2FAF	NEG-BYTE	DEC	HL	Point to each byte in turn.
+		LD	A,(HL)	Get each byte.
+		CPL		One's complement the byte.
+		ADC	A,+00	Add in carry for negation.
+		LD	(HL),A	Restore the byte.
+		DJNZ	2FAF,NEG-BYTE	Loop the '5' times.
+		LD	A,C	Restore the exponent to A.
+		POP	BC	Restore any earlier exponent.
+		RET		Finished.
+
+
+THE 'FETCH TWO NUMBERS' SUBROUTINE
+This subroutine is called by ADDITION, MULTIPLICATION and DIVISION to get two numbers from the calculator stack and put them into the register, including the exchange registers.
+On entry to the subroutine the HL register pair points to the first byte of the first number and the DE register pair points to the first byte of the second number.
+When the subroutine is called from MULTIPLICATION or DIVISION the sign of the result is saved in the second byte of the first number.

@@ -1,0 +1,52 @@
+				indicated by a set carry flag.
+		RET	Z	Return with all positive
+				numbers that are in range.
+Report B - Integer out of range
+1E9F	REPORT-B	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0A	routine.
+
+THE 'RUN' COMMAND ROUTINE
+The parameter of the RUN command is passed to NEWPPC by calling the GO TO command routine. The operations of 'RESTORE 0' and 'CLEAR 0' are then performed before a return is made.
+1EA1	RUN	CALL	1E67,GO-TO	Set NEWPPC as required.
+		LD	BC,+0000	Now perform a 'RESTORE 0'.
+		CALL	1E45,REST-RUN
+		JR	1EAF,CLEAR-1	Exit via the CLEAR command routine.
+
+THE 'CLEAR' COMMAND ROUTINE
+This routine allows for the variables area to be cleared, the display area cleared and RAMTOP moved. In consequence of the last operation the machine stack is rebuilt thereby having the effect of also clearing the GO SUB stack.
+1EAC	CLEAR	CALL	1E99,FIND-INT2	Fetch the operand - using
+				zero by default.
+1EAF	CLEAR-RUN	LD	A,B	Jump forward if the operand is
+		OR	C	other than zero. When called
+		JR	NZ,1EB7,CLEAR-1	from RUN there is no jump.
+		LD	BC,(RAMTOP)	If zero use the existing value in
+				RAMTOP.
+1EB7	CLEAR-1	PUSH	BC	Save the value.
+		LD	DE,(VARS)	Next reclaim all the bytes
+		LD	HL,(E-LINE)	of the present variables
+		DEC	HL	area.
+		CALL	19E5,RECLAIM-1
+		CALL	0D6B,CLS	Clear the display area.
+The value in the BC register pair which will be used as RAMTOP is tested to ensure it is neither too low nor too high.
+		LD	HL,(STKEND)	The current value of STKEND.
+		LD	DE,+0032	is increased by '50' before
+		ADD	HL,DE	being tested. This forms the
+		POP	DE	lower limit.
+		SBC	HL,DE
+		JR	NC,1EDA,REPORT-M	RAMTOP will be too low.
+		LD	HL,(P-RAMT)	For the upper test the value
+		AND	A	for RAMTOP is tested against
+		SBC	HL,DE	P-RAMT.
+		JR	NC,1EDC,CLEAR-2	Jump forward if acceptable.
+Report M - RAMTOP no good
+1EDA	REPORT-M	RST	0008,ERROR-1	Call the error handling
+		DEFB	+15	routine.
+Continue with the CLEAR operation.
+1EDC	CLEAR-3	EX	DE,HL	Now the value can actually be
+		LD	(RAMPTOP,HL	passed to RAMTOP.
+		POP	DE	Fetch the address - STMT-RET.
+		POP	BC	Fetch the 'error address'.
+		LD	(HL),+3E	Enter a GO SUB stack end
+				marker.
+		DEC	HL	Leave one location.
+		LD	SP,HL	Make the stack pointer point

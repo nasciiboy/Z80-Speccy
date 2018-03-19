@@ -1,0 +1,57 @@
+REPORT-B - Integer out of range  35DC	REPORT-B	RST	0008,ERROR-1	Call the error handling 		DEFB	+0A	routine.
+
+THE 'VAL' AND 'VAL$' FUNCTION
+(Offsets 1D: 'val' and 18: 'val$')
+
+This subroutine handles the functions VAL X$ and VAL$ X$. When handling VAL X$, it return a 'last value' that is the result of evaluating the string (without its bounding quotes) as a numerical expression. when handling VAL$ X$, it evaluates X$ (without its bounding quotes) as a string expression, and returns the parameters of that string expression as a 'last value' on the calculator stack.
+
+35DE	val	LD	HL,(CH-ADD)	The current value of CH-ADD is
+	(also val$)	PUSH	HL	preserved on the machine stack.
+		LD	A,B	The 'offset' for 'val' or 'val$'
+				must be in the B register; it is
+				now copied to A.
+		ADD	A,+E3	Produce +00 and carry set for
+				'val', +FB and carry reset for
+				'val$'.
+		SBC	A,A	Produce +FF (bit 6 therefore
+				set) for 'val', but +00 (bit 6
+				reset) for 'val$'.
+		PUSH	AF	Save this 'flag' on the machine
+				stack.
+		CALL	2BF1,STK-FETCH	The parameters of the string are
+		PUSH	DE	fetched; the starting address is
+		INC	BC	saved; one byte is added to the
+		RST	0030,BC-SPACES	length and room made available
+				for the string (+1) in the work
+				space.
+		POP	HL	The starting address of the
+				string goes to HL as a source
+				address.
+		LD	(CH-ADD),DE	The pointer to the first new
+		PUSH	DE	space goes to CH-ADD and to
+				the machine stack.
+		LDIR		The string is copied to the work
+				space, together with an extra
+				byte.
+		EX	DE,HL	Switch the pointers.
+		DEC	HL	The extra byte is replaced by a
+		LD	(HL),+0D	'carriage return' character.
+		RES	7,(FLAGS)	The syntax flag is reset and the
+		CALL	24FB,SCANNING	string is scanned for correct
+				syntax.
+		RST	0018,GET-CHAR	The character after the string is
+				fetched.
+		CP	+0D	A check is made that the end of
+				the expression has been reached.
+		JR	NZ,360C,V-RPORT-C	If not, the error is reported.
+		POP	HL	The starting address of the
+				string is fetched.
+		POP	AF	The 'flag' for 'val/val$' is
+		XOR	(FLAGS)	fetched and bit 6 is compared
+		AND	+40	with bit 6 of the result of the
+				syntax scan.
+360C	V-RPORT-C	JP	NZ,1C8A,REPORT-C	Report the error if they do not
+				match.
+		LD	(CH-ADD),HL	Start address to CH-ADD again.
+		SET	7,(FLAGS)	The flag is set for line
+				execution.

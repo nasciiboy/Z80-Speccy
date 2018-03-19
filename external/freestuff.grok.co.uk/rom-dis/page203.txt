@@ -1,0 +1,61 @@
+3501	NOT	CALL	34E9,TEST-ZERO	The carry flag will be set only if
+				the 'last value' is zero; this gives
+				the correct result.
+	JR	350B,FP-0/1	Jump forward.
+
+THE 'LESS THAN ZERO' OPERATION
+(Offset 36: 'less-0')
+
+This subroutine returns a 'last value'of one if the present 'last value' is less than zero and zero otherwise. It is also used by other subroutines to 'jump on minus'.
+
+3506	less-0	XOR	A	Clear the A register.
+3507	SIGN-TO-C	INC	HL	Point to the sign byte.
+		XOR	(HL)	The carry is reset for a positive
+		DEC	HL	number and set for a negative
+		RLCA		number; when entered from
+				GREATER-0 the opposite sign
+				goes to the carry.
+
+
+THE 'ZERO OR ONE' SUBROUTINE
+This subroutine sets the 'last value' to zero if the carry flag is reset and to one if it is set. When called from 'E-TO-FP' however it creates the zero or one not on the stack but in mem-0.
+
+350B	FP-0/1	PUSH	HL	Save the result pointer.
+		LD	A,+00	Clear A without disturbing the
+				carry.
+		LD	(HL),A	Set the first byte to zero.
+		INC	HL	Point to the second byte.
+		LD	(HL),A	Set the second byte to zero.
+		INC	HL	Point to the third byte.
+		RLA		Rotate the carry into A, making
+				A one if the carry was set, but
+				zero if the carry was reset.
+		LD	(HL),A	Set the third byte to one or
+				zero.
+		RRA		Ensure that A is zero again.
+		INC	HL	Point to the fourth byte.
+		LD	(HL),A	Set the fourth byte to zero.
+		INC	HL	Point to the fifth byte.
+		LD	(HL),A	Set the fifth byte to zero.
+		POP	HL	Restore the result pointer.
+		RET		
+
+
+THE 'OR' OPERATION
+(Offset 07: 'or')
+
+This subroutine performs the binary operation 'X OR Y' and returns X if Y is zero and the value 1 otherwise.
+
+351B	or	EX	DE,HL	Point HL at Y, the second
+				number.
+		CALL	34E9,TEST-ZERO	Test whether Y is zero.
+		EX	DE,HL	Restore the pointers.
+		RET	C	Return if Y was zero; X is now
+				the 'last value'.
+		SCF		Set the carry flag and jump back
+		JR	350B,FP-0/1	to set the 'last value' to 1.
+
+THE 'NUMBER AND NUMBER' OPERATION
+(Offset 08: 'no-&-no')
+
+This subroutine performs the binary operation 'X AND Y' and returns X if Y is non-zero and the value zero otherwise.

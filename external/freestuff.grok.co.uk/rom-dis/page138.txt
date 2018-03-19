@@ -1,0 +1,65 @@
+		JR	27D9,SF-ARGMTS	Loop back to consider this
+				argument.
+27E4	SF-BRKT-2	CP	+29	Is the current character a ')'?
+27E6	SF-RPRT-C	JP	NZ,1C8A,REPORT-C	Report the error if it is not.
+27E9	SF-FLAG-6	RST	0020,NEXT-CHAR	Point to the next character in
+				the BASIC line.
+		LD	HL.+5C3B	This is FLAGS; assume a string-
+		RES	6,(HL)	valued function and reset bit 6
+				of FLAGS.
+		POP	AF	Restore the zero flag, jump if
+		JR	Z,27F4,SF-SYN-EN	the FN is indeed string valued.
+		SET	6,(HL)	Otherwise, set bit 6 of FLAGS
+27F4	SF-SYN-EN	JP	2712,S-CONT-2	Jump back to continue scanning
+				the line.
+
+ii. During line execution, a search must first be made for a DEF FN statement.
+
+27F7	SF-RUN	RST	0020,NEXT-CHAR	Get the first character of the
+				name.
+		AND	+DF	Reset bit 5 for upper case.
+		LD	B,A	Copy the name to B.
+		RST	0020,NEXT-CHAR	Get the next character.
+		SUB	+24	Subtract 24 hex, the code for '$'.
+		LD	C,A	Copy the result to C (zero for a
+				string, non-zero for a numerical
+				function).
+		JR	NZ,2802.SF-ARGMT1 Jump if non-zero: numerical
+				function.
+		RST	0020,NEXT-CHAR	Get the next character, the '('.
+2802	SF-ARGMT1	RST	0020,NEXT-CHAR	Get 1st character of 1st argu-
+				ment.
+		PUSH	HL	Save the pointer to it on the
+				stack.
+		LD	HL,(PROG)	Point to the start of the
+				program.
+		DEC	HL	Go back one location.
+2808	SF-FND-DF	LD	DEm+00CE	The search will be for 'DEF FN'.
+		PUSH	BC	Save the name and 'string
+				status'.
+		CALL	1D86,LOOK-PROG	Search the program now.
+		POP	BC	Restore the name and status.
+		JR	NC,2814,SF.CP-DEF	Jump if a DEF FN statement
+				found.
+
+REPORT P - FN without DEF.
+
+2812	REPORT-P	RST	0008,ERROR-1	Call the error handling
+		DEFB	+18	routine.
+
+When a DEF FN statement is found, the name and status of the two functions are compared: if they do not match, the search is resumed.
+
+2814	SF-CP-DEF	PUSH	HL	Save the pointer to the DEF FN
+				character in case the search has
+				to be resumed.
+		CALL	28AB,FN-SKPOVR	Get the name of the DEF FN
+				function.
+		AND	+DF	Reset bit 5 for upper case.
+		CP	B	Does it match the FN name?
+		JR	NZ,2825,SF-NOT-FD	Jump if it does not match.
+		CALL	28AB,FN-SKPOVR	Get the next character in the
+				DEF FN.
+		SUB	+24	Subtract 24 hex, the code for
+				'$'.
+		CP	C	Compare the status with that of
+				FN.

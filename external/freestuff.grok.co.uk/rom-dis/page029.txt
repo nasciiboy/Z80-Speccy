@@ -1,0 +1,67 @@
+THE 'MERGE' CONTROL ROUTINE
+There are three main parts to this routine.
+
+i. LOAD the data block into the work space.
+ii. MERGE the lines of the new program into the old program.
+iii. MERGE the new variables into the old variables.
+
+Start therefore with the LOADing of the data block.
+
+08B6	ME-CONTRL	LD	C,(IX+0B)	Fetch the 'length' of the
+		LD	B,(IX+0C)	data block.
+		PUSH	BC	Save a copy of the 'length'.
+		INC	BC	Now made 'length+1' locations
+		RST	0030,BC-SPACES	available in the work space.
+		LD	(HL),+80	Place an end-marker in the
+				extra location.
+		EX	DE,HL	Move the 'start' pointer to the
+				HL register pair.
+		POP	DE	Fetch the original 'length'.
+		PUSH	HL	Save a copy of the 'start'.
+		PUSH	HL	Now set the IX register pair
+		POP	IX	for the actual LOAD.
+		SCF		Signal 'LOAD'.
+		LD	A,+FF	Signal 'data block only'.
+		CALL	0802,LD-BLOCK	LOAD the data block.
+
+The lines of the new program are MERGEd with the lines of the old program.
+
+		POP	HL	Fetch the 'start' of the new
+				program.
+		LD	DE,(PROG)	Initialise DE to the 'start' of
+				the old program.
+
+Enter a loop to deal with the lines of the new program.
+
+08D2	ME-NEW-LP	LD	A,(HL)	Fetch a line number and test
+		AND	+C0	it.
+		JR	NZ,08F0,ME-VAR-LP	Jump when finished with all
+				the lines.
+
+Now enter an inner loop to deal with the lines of the old program.
+
+08D7	ME-OLD-LP	LD	A,(DE)	Fetch the high line number
+		INC	DE	byte and compare it.
+		CP	(HL)	Jump forward if it does not
+		INC	HL	match but in any case advance
+		JR	NZ,08DF,ME-OLD-L1	both pointers.
+		LD	A,(DE)	Repeat the comparison for the
+		CP	(HL)	low line number bytes.
+08DF	ME-OLD-L1	DEC	DE	Now retreat the pointers.
+		DEC	HL
+		JR	NC,08EB,ME-NEW-L2	Jump forward if the correct
+				place has been found for a line
+				of the new program.
+		PUSH	HL	Otherwise find the address of
+		EX	DE,HL	the start of the next old line.
+		CALL	19B8,NEXT-ONE
+		POP	HL
+		JR	08D7,ME-OLD-LP	Go round the loop for each of
+				the 'old lines'.
+08EB	ME-NEW-L2	CALL	092C,ME-ENTER	Enter the 'new line' and go
+		JR	08D2,ME-NEW-LP	round the outer loop again.
+
+In a similar manner the variables of the new program are MERGEd with the variables of the old program.
+	A loop is entered to deal with each of the new variables in turn.
+
+08F0	ME-VAR-LP	LD	A,(HL)	Fetch each variable name in

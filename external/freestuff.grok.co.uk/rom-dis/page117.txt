@@ -1,0 +1,51 @@
+		CPL		complemented (OVER 1) or
+				1 (OVER 0).
+2303	PLOT-END	LD	(HL),A	The byte is entered. Its other
+				bits are unchanged in every case.
+		JP	OBDB,PO_ATTR	Exit, setting attribute byte.
+
+THE 'STK-TO-BC' SUBROUTINE
+This subroutine loads two floating point numbers into the BC register pair. It is thus used to pick up parameters in the range +00-+FF. It also obtains in DE the 'diagonal move' values (+/-1,+/-1) which are used in the line drawing subroutine of DRAW.
+
+2307	STK-TO-BC	CALL	2314,STK-TO-A	First number to A.
+		LD	B,A	Hence to B.
+		PUSH 	BC	Save it briefly.
+		CALL	2314,STK-TO-A	Second number to A.
+		LD	E,C	Its sign indicator to E.
+		POP	BC	Restore first number.
+		LD	D,C	Its signs indicator to D.
+		LD	C,A	Second number to C.
+		RET		BC, DE are now as required.
+
+THE 'STK-TO-A' SUBROUTINE
+This subroutine loads the A register with the floating point number held at the top of the calculator stack. The number must be in the range 00-FF.
+
+2314	STK-TO-A	CALL	2DD5,FP-TO-A	Modulus of rounded last value to
+		JP	C,24F9,REPORT-B	A if possible; else, report error.
+		LD	C,+01	One to C for positive last value.
+		RET	Z	Return if value was positive.
+		LD	C,+FF	Else change C to +FF (i.e. minus
+		RET		one). Finished.
+
+THE 'CIRCLE' COMMAND ROUTINE
+This routine draws an approximation to the circle with centre co-ordinates X and Y and radius Z. These numbers are rounded to the nearest integer before use. Thus Z must be less than 87.5, even when (X,Y) is in the centre of the screen. The method used is to draw a series of arcs approximated by straight lines. It is illustrated in the BASIC program in the appendix. The notation of that program is followed here.
+     CIRCLE has four parts:
+  i. Tests the radius. If its modulus is less than 1, just plot X,Y;
+ ii. Calls CD-PRMS-1 at 2470-24B6, which is used to set the initial parameters for both CIRCLE and DRAW;
+iii. Sets up the remaining parameters for CIRCLE, including the initial displacement for the first 'arc' (a straight line in fact);
+ iv. Jumps into DRAW to use the arc-drawing loop at 2420-24FA.
+Parts i. to iii. will now be explained in turn.
+i.   2320-23AA. The radius, say Z', is obtained from the calculator stack. Its modulus Z is formed and used from now on. If Z is less than 1, it is deleted from the stack and the  point X,Y is plotted by a jump to PLOT.
+
+2320	CIRCLE	RST	0017,GET-CHAR	Get the present character.
+		CP	+2C	Test for comma.
+		JP	NZ,1C8A,REPORT-C	If not so, report the error.
+		RST	0020,NEXT-CHAR	Get next character (the radius).
+		CALL	1C82,EXPT-1NUM	Radius to calculator stack.
+		CALL	1BEE,CHECK-END	Move to consider next statement
+				if checking syntax.
+		RST	0028,FP-CALC	Use calculator: the stack holds:
+		DEFB	+2A,abs	X, Y, Z
+		DEFB	+3D,re-stack	Z is re-stacked; its exponent
+		DEFB	+38,end-calc	is therefore available.
+		LD	A,(HL)	Get exponent of radius.

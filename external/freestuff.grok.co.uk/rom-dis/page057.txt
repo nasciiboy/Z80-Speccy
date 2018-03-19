@@ -1,0 +1,66 @@
+		LD	HL,(ECHO-E)	Push the value of ECHO-E
+		PUSH	HL	on to the stack.
+		SCF		Make HL point to the start
+		CALL	1195,SET-HL	of the space and DE the end.
+		EX	DE,HL
+		CALL	187D,OUT-LINE2	Now print the line.
+		EX	DE,HL	Exchange the pointers and
+		CALL	18E1,OUT-CURS	print the cursor.
+		LD	HL,(S-POSNL)	Next fetch the Current value
+		EX	(SP),HL	of S-POSNL and exchange it
+				with ECHO-E.
+		EX	DE,HL	Pass ECHO-E to DE.
+		CALL	0D4D,TEMPS	Again fetch the permanent
+				colours.
+
+The remainder of any line that has been started is now completed with spaces printed with the 'permanent' PAPER colour.
+
+1150	ED-BLANK	LD	A,(S-POSNL-hi)	Fetch the current line number
+		SUB	D	and subtract the old line number.
+		JR	C,117C,ED-C-DONE	Jump forward if no 'blanking'
+				of lines required.
+		JR	NZ,115E,ED-SPACES	Jump forward if not on the
+				same line.
+		LD	A,E	Fetch the old column number
+		SUB	(S-POSNL-lo)	and subtract the new column
+				number.
+		JR	NC,117C,ED-C-DONE	Jump if no spaces required.
+115E	ED-SPACES	LD	A,+20	A 'space'.
+		PUSH	DE	Save the old values,
+		CALL	09F4,PRINT-OUT	Print it.
+		POP	DE	Fetch the old values.
+		JR	1150,ED-BLANK	Back again.
+
+New deal with any errors.
+
+1167	ED-FULL	LD	D,+00	Give out a 'rasp'.
+		LD	E,(RASP)	
+		LD	HL,+1A90
+		CALL	03B5,BEEPER
+		LD	(ERR-NR),+FF	Cancel the error number.
+		LD	DE,(S-POSNL)	Fetch the current value of
+		JR	117E,ED-C-END	S-POSNL and jump forward.
+
+The normal exit upon completion of the copying over of the editor the INPUT line.
+
+1170	ED-C-DONE	POP	DE	The new position value.
+		POP	HL	The 'error address'.
+
+But come here after an error.
+
+ll7E	ED-C-END	POP	HL	The old value of ERR-SP is
+		LD	(ERR-SP),HL	restored.
+		POP	BC	Fetch the old value of
+				S-POSNL.
+		PUSH	DE	Save the new position values.
+		CALL	0DD9,CL-SET	Set the system variables.
+		POP	HL	The old value of S-POSNL
+		LD	(ECHO-E),HL	goes into ECHO-E.
+		LD	(X-PTR-hi),+00	X-PTR is cleared in a
+		RET		suitable manner and the return
+				Made.
+
+THE 'SET-HL' AND 'SET-DE' SUBROUTINES
+These subroutines return with HL pointing to the first location and DE the 'last' location of either the editing area or the work space.
+
+1190	SET-HL	LD	HL,(WORKSP)	Point to the last location

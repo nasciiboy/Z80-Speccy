@@ -1,0 +1,61 @@
+THE 'E-LINE-NO' SUBROUTINE
+This subroutine is used to read the line number of the line in the editing area.  If there is no line number, i.e. a direct BASIC line, then the line number is considered to be zero.
+In all cases the line number is returned in the BC register pair.
+
+19FB	E-LINE-NO	LD	HL,(E-LINE)	Pick up the pointer to the
+				edit-line.
+		DEC	HL	Set the CH-ADD to point to the
+		LD	(CH-ADD),HL	location before any number.
+		RST	0020,NEXT-CHAR	Pass the first code to the A
+				register.
+		LD	HL,+5C92	However before considering
+		LD	(STKEND),HL	the code make the calculator's
+				memory area a temporary
+				calculator stack area.
+		CALL	2D3B,INT-TO-FP	Now read the digits of the line
+				number.  Return zero if no
+				number exists.
+		CALL	2DA2,FP-TO-BC	Compress the line number into
+				the BC register pair.
+		JR	C,1A15,E-L-1	Jump forward if the number
+				exceeds '65,536'.
+		LD	HL,+D8F0	Otherwise test it against
+		ADD	HL,BC	'10,000'.
+		JP	C,1C8A,REPORT-C	Give report C if over '9,999'.
+		JP	16C5,SET-STK	Return via SET-STK that
+				restores the calculator stack to
+				its rightful place.
+
+THE 'REPORT AND LINE NUMBER PRINTING' SUBROUTINE
+The entry point OUT-NUM-1 will lead to the number in the BC register pair being printed.  Any value over '9,999' will not however be printed correctly.
+The entry point OUT-NUM-2 will lead to the number indirectly addressed by the HL register pair being printed.  This time any necessary leading spaces will appear.  Again the limit of correctly printed numbers is '9,999'.
+
+1A1B	OUT-NUM-1	PUSH	DE	Save the other registers
+		PUSH	HL	throughout the subroutine.
+		XOR	A	Clear the A register.
+		BIT	7,B	Jump forward to print a zero
+				rather than '-2' when
+		JR	NZ,1A42,OUT-NUM-4	reporting on the edit-line.
+		LD	H,B	Move the number to the
+		LD	L,C	HL register pair.
+		LD	E,+FF	Flag 'no leading spaces'.
+		JR	1A30,OUT-NUM-3	Jump forward to print the
+				number.
+1A28	OUT-NUM-2	PUSH	DE	Save the DE register pair.
+		LD	D,(HL)	Fetch the number into the
+		INC	HL	DE register pair and save 
+		LD	E,(HL)	the pointer (updated).
+		PUSH	HL	
+		EX	DE,HL	Move the number to the HL
+		LD	E,+20	register pair and flag 'leading
+				space are to be printed'.
+
+Now the integer form of the number in the HL register pair is printed.
+
+1A30	OUT-NUM-3	LD	BC,+FC18	This is '-1,000'.
+		CALL	192A,OUT-SP-NO	Print a first digit.
+		LD	BC,+FF9C	This is '-100'.
+		CALL	192A,OUT-SP-NO	Print the second digit.
+		LD	C,+F6	This is '-10'.
+		CALL	192A,OUT-SP-NO	Print the third digit.
+

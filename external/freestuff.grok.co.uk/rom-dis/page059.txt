@@ -1,0 +1,60 @@
+THE EXECUTIVE ROUTINES
+
+THE 'INITIALISATION' ROUTINE
+The main entry point to this routine is at START/NEW (11CB).  When entered from START (0000), as when power is first applied to the system, the A register holds zero and the DE register the value +FFFF.  However the main entry point can also be reached following the execution of the NEW command routine.
+
+THE 'NEW COMMAND' ROUTINE
+
+11B7	NEW	DI		Disable the maskable interrupt.
+		LD	A,+FF	The NEW flag.
+		LD	DE,(RAMTOP)	The existing value of RAMTOP
+				is preserved.
+		EXX		Load the alternate registers
+		LD 	BC,(P-RAMT)	with the following system
+		LD 	DE,(RASP/PIP)	variables.  All of which will
+		LD 	HL,(UDG)	also be preserved.
+		EXX
+
+The main entry point.
+
+11CB	START/NEW	LD	B,A	Save the flag for later.
+		LD	A,+07	Make the border white in
+		OUT	(+FE),A	colour.
+		LD	A,+3F	Set the I register to hold
+		LD	I,A	the value of +3F.
+		DEFB	+00,+00,+00	Wait 24 T states.
+		DEFB	+00,+00,+00
+
+Now the memory is checked.
+
+11DA	RAM-CHECK	LD	H,D	Transfer the value in DE
+		LD	L,E	(START = +FFFF, NEW =
+				RAMTOP).
+11DC	RAM-FILL	LD	(HL),+02	Enter the value of +02 into
+		DEC	HL	every location above +3FFF.
+		CP	H
+		JR	NZ,11DC,RAM-FILL
+11E2	RAM-READ	AND	A	Prepare for true subtraction.
+		SBC	HL,DE	The carry flag will become
+		ADD	HL,DE	reset when the top is reached.
+		INC	HL	Update the pointer.
+		JR	NC,11EF,RAM-DONE	Jump when at top.
+		DEC	(HL)	+02 goes to +01.
+		JR	Z,11EF,RAM-DONE	But if zero then RAM is faulty.
+				Use current HL as top.
+		DEC	(HL)	+01 goes to +00.
+		JR	Z,11E2,RAM-READ	Step to the next test unless it
+				fails.
+11EF	RAM-DONE	DEC	HL	HL points to the last actual
+				location in working order.
+
+Next restore the 'preserved' system variables.  (Meaningless when coming from START.)
+		EXX		Switch registers.
+		LD	(P-RAMT),BC	Restore P-RAMT,RASP/PIP
+		LD	(RASP/PIP),DE	&UDG
+		LD	(UDG),HL	
+		EXX
+		INC	B	Test the START/NEW flag.
+		JR	Z,1219,RAM-SET	Jump forward if coming from
+				the NEW command routine.
+

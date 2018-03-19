@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+<TITLE>Z80 Family Interrupt Structure</TITLE>
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+<CENTER>
+<A HREF="http://web.archive.org/web/*/www.barleywood.com">
+<IMG SRC="gfx/barle.gif" WIDTH=618 HEIGHT=30 border=0></A><br>
+<FONT SIZE=6>Z80&reg; Family Interrupt Structure<br>
+</FONT><FONT SIZE=5>by<br>
+Michael Moore<p></center>
+Barleywood</FONT><br>
+13 Greenacre<br>
+Windsor, SL4 5LW<br>
+United Kingdom<br>
+<A HREF="http://web.archive.org/web/*/www.barleywood.com">http://barleywood.com</A><p>
+<FONT SIZE=2><P>
+<P>Copyright &copy;1997 Barleywood.  All rights reserved.  No part of this document may be copied or reproduced in any form or by any means without the prior written consent of Barleywood.<br>
+Z80&reg; is a registered trademark of Zilog, Inc<P>
+I (Thomas Scherrer) have permission to convert this document to HTML and put it online at my site, thanks to Barlewood and Mike Moore.<br>
+This original page is available in word format from this link<P>
+</FONT><P>&nbsp;</P>
+<FONT SIZE=6><P ALIGN="CENTER">Z80&reg; Family Interrupt Structure</P>
+</FONT><B><FONT FACE="Arial"><P>&nbsp;</P>
+<P>Interrupts provide the mechanism by which the Z80 can process asynchronous events such as timers, sensor input and peripheral communication.</P>
+<P>&nbsp;</P>
+<P>When an interrupt is received the Z80 executes a sub-routine known as an Interrupt Handler. These subroutines are the same as any other machine code subroutine except that the following considerations need to be taken into account</P>
+<P>&nbsp;</P>
+<P>The sub-routine can be executed at random points in the code and so must ensure that registers are saved before any data is lost. </P>
+<P>Interrupts must be re-enabled as soon as possible once the registers have been saved and the data acquired </P>
+<P>The RETI (RETurn from Interrupt) instruction must be used to return from an Interrupt Handler sub-routine.</P>
+<P>&nbsp;</P>
+<P>Because the Z80 has only one interrupt line, the Z80 and its peripheral support chips negotiate for the CPUs attention by using a hardware based daisy-chain approach. The peripheral chip closest to the power line on the daisy-chain has the highest priority when it raises an interrupt request. This is because the interrupting chip indicates its need for service to the other peripheral chips through the IEO signal. Any chip which is physically closer to the CPU on the chain can be blocked from raising an interrupt by holding IEO (Interrupt Enable Output) on the interrupting device low. Any peripheral chip which is being blocked from the CPU in this way will simply keep the interrupt request signal (INT) active until either the CPU acknowledges the peripheral chip (or until it loses the data). The peripheral is acknowledged when IEI is high (and IEO low) at the time that INTACK is received.</P>
+</B></FONT><P>&nbsp;</P>
+<B><FONT FACE="Arial"><P ALIGN="CENTER"><IMG SRC="gfx/1653aa.gif" WIDTH=529 HEIGHT=185></P>
+<P ALIGN="CENTER">Figure 1: The Z80 Interrupt Daisy-Chain</P>
+<P>&nbsp;</P>
+<P>&nbsp;The INT signal is known as a maskable interrupt because the programmer can cause the CPU to ignore all interrupt requests by using the DI (Disable Interrupt) instruction. Maskable interrupts are automatically disabled by the CPU during the INTACK cycle and must be re-enabled by the programmer (using the EI - Enable Interrupts - instruction) before any more interrupts can be acknowledged. The EI instruction is normally executed as soon as possible in the interrupt handler code to avoid losing any interrupt signals from higher priority peripherals in the daisy-chain.</P>
+<P>&nbsp;</P>
+<P>A skeletal interrupt handler sub-routine is shown in Figure 2.</P>
+<P>&nbsp;</P>
+<P ALIGN="CENTER"><IMG SRC="gfx/barle.gif" WIDTH=618 HEIGHT=30></P>
+<P>&nbsp;</P><IMG SRC="gfx/1653a.gif" ALIGN="LEFT" HSPACE=9 WIDTH=333 HEIGHT=380>
+<P>&nbsp;Data acquisition in an interrupt handler is normally achieved using the IN instruction. The Z80 supports two forms of the IN instruction, direct input to the A register</P>
+<P>&nbsp;IN A,(PORT)</P>
+<P>&nbsp;or indirect input into any 8-bit register</P>
+<P>&nbsp;LD C,PORT</P>
+<P>IN E,(C)</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>If the interrupt handler is extremely small and fast, or loss of incoming interrupt signals is not a factor in the design of the interrupt handler, then an extremely fast alternative mechanism for saving the register set is the EXX (EXchange eXtended registers) instruction.</P>
+<P>&nbsp;</P><IMG SRC="gfx/1653b.gif" ALIGN="LEFT" HSPACE=9 WIDTH=330 HEIGHT=298>
+<P>&nbsp;</P>
+<P>In this case the EI instruction should only be executed after the registers are restored since the execution of another EXX instruction effectively results in the restoration of the saved register values and possible register data corruption if executed by a subsequent interrupt handler sub-routine.</P>
+<P>&nbsp;</P>
+<P>Each PUSH instruction in Figure 2 requires 11 T-states and each POP instruction requires 10 for a total 84 T-states required to save register values. The EX and EXX instructions in Figure 3 require 4 T-states each for a total 16 T-states.</P>
+<P>&nbsp;</P>
+</B></FONT><P>&nbsp;</P>
+<B><FONT FACE="Arial"><P>&nbsp;</P>
+<P>The Z80 supports three different modes of operation when an interrupt signal is received. The IM (Interrupt Mode) instruction is used to determine which of the modes (0, 1 and 2) should be used.</P>
+<P>&nbsp;</P>
+<P>Interrupt Mode 0 is not supported by the Barleywood Z80 Simulator. This mode requires specific hardware support by the memory sub-system as well as by the interrupting device. In Mode 0, the interrupting device is required to place a Z80 instruction on the DATA bus. The Z80 will then execute this instruction. Normally the RST instructions are used for this purpose, but any instruction (including multi-byte instructions such as CALL) can be used.</P>
+<P>&nbsp;</P>
+<P>Interrupt Mode 1 always calls the subroutine beginning at address 38h. This mode requires that the interrupt handler is able to determine which interrupting device generated the interrupt and be able to take the appropriate action. Normally, the code beginning at address 38h is a register save sequence followed by a JP instruction.</P>
+</B></FONT><P>&nbsp;</P>
+<B><FONT FACE="Arial"><P>&nbsp;</P><IMG SRC="gfx/1653c.gif" ALIGN="LEFT" HSPACE=9 WIDTH=332 HEIGHT=611>
+<P>Interrupt Mode 2 is the most frequently used interrupt mode with the Z80 and its related peripherals. The interrupting device automatically places a vector address on the DATA bus when it recognises the INTACK. This forms the lower eight-bits of a 16-bit address. The contents of the I register form the upper eight bits of the address.</P>
+<P>&nbsp;</P>
+<P>All of the Z80 family peripherals (e.g. CTC, DART, PIO) can be easily programmed during initialisation to place a unique eight-bit value on the DATA bus in response to the INTACK signal.</P>
+<P>&nbsp;</P>
+<P>This 16-bit address is a vector. That is, the two-byte value which is found beginning at the RAM location specified by the vector is yet another address. This second address is the start of the interrupt handler routine.</P>
+<P>&nbsp;</P>
+<P>Figure 4 shows the basic interrupt mode 2 initialisation code.</P>
+<P>&nbsp;</P>
+</B><P>&nbsp;</P></FONT></BODY>
+</HTML>
+

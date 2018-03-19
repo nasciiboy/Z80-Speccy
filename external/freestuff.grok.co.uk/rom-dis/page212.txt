@@ -1,0 +1,70 @@
+iv. The argument Z if formed, such that Z=2*w-1.
+
+v. The SERIES GENERATOR is used to return 2**W.
+
+vi. Finally N is added to the exponent, giving 2**(N+W), which is 2**Y and therefore the required answer for EXP X.
+
+The method is illustrated using a BASIC program in the Appendix.
+
+36C4	EXP	RST	0028,FP-CALC	X
+Perform step i.
+
+		DEFB	+3D,re-stack	X (in full floating-point form)
+		DEFB	+34,stk-data	X, 1/LN 2
+		DEFB	+F1,exponent+81	
+		DEFB	+38,+AA,+3B,+29	
+		DEFB	+04,multiply	X/LN 2 = Y
+
+Perform step ii.
+
+		DEFB	+31,duplicate	Y, Y
+		DEFB	+27,int,1C46	Y, INT Y = N
+		DEFB	+C3,st-mem-3	Y, N	mem-3 holds N
+
+Perform step iii.
+
+		DEFB	+03,subtract	Y-N = W
+
+Perform step iv.
+
+		DEFB	+31,duplicate	W, W
+		DEFB	+0F,addition	2*W
+		DEFB	+A1,stk-one	2*W, 1
+		DEFB	+03,subtract	2*W-1 = Z
+
+Perform step v, passing to the SERIES GENERATOR the parameter '8' and the eight constants required.
+
+		DEFB	+88,series-08	Z
+	1.	DEFB	+13,exponent+63	
+		DEFB	+36,(+00,+00,+00)	
+	2.	DEFB	+58,exponent+68	
+		DEFB	+65,+66,(+00,+00)	
+	3.	DEFB	+9D,exponent+6D
+		DEFB	+78,+65,+40,(+00)
+	4.	DEFB	+A2,exponent+72
+		DEFB	+60,+32,+C9,(+00)
+	5.	DEFB	+E7,exponent+77
+		DEFB	+21,+F7,+AF,+24
+	6.	DEFB	+EB,exponent+7B
+		DEFB	+2F,+B0,+B0,+14
+	7.	DEFB	+EE,exponent +7E
+		DEFB	+7E,+BB,+94,+58
+	8.	DEFB	+F1,exponent+81
+		DEFB	+3A,+7E,+F8,+CF
+
+At the end of the last loop the 'last value' is 2**W.
+
+Perform step vi.
+
+		DEFB	+E3,get-mem-3	2**W, N
+		DEFB	+38,end-calc	
+		CALL	2DD5,FP-TO-A	The absolute value of N mod
+				256 decimal, is put into the A
+				register.
+		JR	NZ,3705,N-NEGTV	Jump forward if N was negative.
+		JR	C,3703,REPORT6	Error if ABS N greater than 255
+				dec.
+		ADD	A,(HL)	Now add ABS N to the
+				exponent.
+		JR	NC,370C,RESULT-OK	Jump unless e greater than 255
+				dec.

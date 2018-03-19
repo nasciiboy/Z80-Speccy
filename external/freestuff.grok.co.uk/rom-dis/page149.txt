@@ -1,0 +1,66 @@
+		RST 	0018,GET-CHAR 	Get the present character.
+		POP 	HL 	Restore the 'length'.
+		CP 	+CC 	Is the present character a 'TO'?
+		JR 	Z,2A81,SL-SECOND 	Jump forward to consider the
+				second parameter if it is so;
+				CP +29 otherwise show that there is
+2A7A 	SL-RPT -C 	JP 	NZ,1C8A,REPORT-C 	a closing bracket.
+
+At this point a 'slice' of a single character has been identified. e.g. - A$(4).
+
+		LD 	H,D 	The last character of the 'slice'
+		LD 	L,E 	is also the first character.
+		JR 	2A94,SL-DEFINE 	Jump forward.
+
+The second parameter of a 'slice' is now evaluated.
+
+2A81 	SL-SECOND 	PUSH 	HL 	Save the 'length' briefly.
+		RST 	0020,NEXT-CHAR 	Get the next character.
+		POP 	HL 	Restore the 'length'.
+		CP 	+29 	Is the present character a
+				')'?
+		JR 	Z,2A94,SL-DEFINE 	Jump if there is not a
+				second parameter.
+		POP 	AF 	If the first parameter was in
+				range A will hold zero;
+				otherwise +FF.
+		CALL 	2ACD,INT-EXP2 	Make BC hold the second
+				parameter.
+		PUSH 	AF 	Save the 'error register'.
+		RST 	0018,GET-CHAR 	Get the present character.
+		LD 	H,B 	Pass the result obtained from
+		LD 	L,C 	INT-EXP2 to the HL register
+				pair.
+		CP 	+29 	Check that there is a closing
+		JR 	NZ,2A7A,SL-RPT-C 	bracket now.
+
+The 'new' parameters are now defined.
+
+2A94 	SL-DEFINE 	POP 	AF 	Fetch the 'error register'.
+		EX 	(SP),HL 	The second parameter goes on
+				the stack and the 'start' goes to
+				HL.
+		ADD 	HL,DE 	The first parameter is added
+				to the 'start'.
+		DEC 	HL 	Go back a location to get it
+				correct.
+		EX 	(SP),HL 	The 'new start' goes on the
+				stack and the second parameter
+				goes to HL.
+		AND 	A 	Subtract the first parameters
+		SBC 	HL,DE 	from the second to find the
+				length of the 'slice'.
+		LD 	BC,+0000 	Initialise the 'new length'.
+		JR 	C,2AA8,SL-OVER 	A negative 'slice' is a 'null
+				string' rather than an error
+				condition. (See manual.)
+		INC 	HL 	Allow for the inclusive byte.
+		AND 	A 	Only now test the 'error
+				register'.
+		JP 	M,2A20,REPORT-3 	Jump if either parameter was
+				out of range for the string.
+		LD 	B,H 	Transfer the 'new length'
+		LD 	C,L 	to BC.
+2AA8 	SL+OVER 	POP 	DE 	Get the 'new start'.
+		RES 	6,(FLAGS) 	Ensure that a string is still
+				indicated.

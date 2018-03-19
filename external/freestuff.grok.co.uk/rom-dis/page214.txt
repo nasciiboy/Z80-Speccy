@@ -1,0 +1,62 @@
+		DEFB	+00,(+00,+00,+00)	
+		DEFB	+03,subtract	X', e'
+
+Perform step iii.
+
+		DEFB	+01,exchange	e', X'
+		DEFB	+31,duplicate	e', X', X'
+		DEFB	+34,stk-data	e', X', X',0.8 (decimal)
+		DEFB	+F0,exponent+80	
+		DEFB	+4C,+CC,+CC,+CD	
+		DEFB	+03,subtract	e', X', X'-0.8
+		DEFB	+37,greater-0	e', X', (1/0)
+		DEFB	+00,jump-true	e', X'
+		DEFB	+08,to 373D, GRE.8	e', X'
+		DEFB	+01,exchange	X', e'
+		DEFB	+A1,stk-one	X', e', 1
+		DEFB	+03,subtract	X', e'-1
+		DEFB	+01,exchange	e'-1, X'
+		DEFB	+38,end-calc	e'-1, X'
+		INC	(HL)	Double X' to give 2*X'.
+		RST	0028,FP-CALC	e'-1,2*X'
+373D	GRE.8	DEFB	+01,exchange	X',e'	- X' large.
+				2*X',e'-1	- X' small.
+		DEFB	+34,stk-data	X',e',LN 2
+		DEFB	+F0,exponent+80	2*X',e'-1, LN 2
+		DEFB	+31,+72,+17,+F8	
+		DEFB	+04,multiply	X',e'*LN 2 = Y1
+				2*X', (e'-1)*LN 2 = Y2
+
+Perform step iv.
+
+		DEFB	+01,exchange	Y1, X'	- X' large.
+				Y2, 2*X'	- X' small.
+		DEFB	+A2,stk-half	Y1, X', .5 (decimal)
+				Y2, 2*X', .5
+		DEFB	+03,subtract	Y1, X'-.5
+				Y2, 2*X'-.5
+		DEFB	+A2,stk-half	Y1, X'-.5, .5
+				Y2, 2*X'-.5, .5
+		DEFB	+03,subtract	Y1, X'-1
+				Y2, 2*X'-1
+
+Perform step v.
+
+		DEFB	+31,duplicate	Y, X'-1, X'-1
+				Y2, 2*X'-1, 2*X'-1
+		DEFB	+34,stk-data	Y1, X'-1, X'-1, 2.5 (decimal)
+				Y2, 2*X'-1, 2*X'-1, 2.5
+		DEFB	+32,exponent+82	
+		DEFB	+20,(+00,+00,+00)	
+		DEFB	+04,multiply	Y1, X'-1,2.5*X'-3 = Z
+				Y2, 2*X'-1, 5*X'-3 = Z
+
+Perform step vi, passing to the SERIES GENERATOR the parameter '12' decimal, and the twelve constant required.
+
+		DEFB	+8C,series-0C	Y1, X'-1, Z or Y2, 2*X'-1, Z
+	1.	DEFB	+11,exponent+61	
+		DEFB	+AC,(+00,+00,+00)	
+	2.	DEFB	+14,exponent+64	
+		DEFB	+09,(+00,+00,+00)
+	3.	DEFB	+56,exponent+66
+		DEFB	+DA,+A5,(+00,+00)

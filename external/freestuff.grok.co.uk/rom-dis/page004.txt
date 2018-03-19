@@ -1,0 +1,47 @@
+THE KEY TABLES
+There are six separate key tables. The final character code obtained depends on the particular key pressed and the 'mode' being used.
+
+(a) The main key table - L mode and CAPS SHIFT.
+0205	42 48 59 36 35 54 47 56	  B     H   Y  6  5  T  G  V
+020D	4E 4A 55 37 34 52 46 43	  N     J   U  7  4  R  F  C
+0215	4D 4B 49 38 33 45 44 58   M     K   I  8  3  E  D  K
+021D	0E 4C 4F 39 32 57 53 5A SYMBOL  L   0  9  2  W  S  Z
+	                       	SHIFT
+0225	20 0D 50 30 31 51 41	SPACE ENTER P  0  1  Q  A
+
+(b) Extended mode. Letter keys and unshifted
+022C	E3 C4 E0 E4	READ	BIN	LPRINT	DATA
+0230	B4 BC BD BB	TAN	SGN	ABS	SQR
+0234	AF B0 B1 C0	CODE	VAL	LEN	USR
+0238	A7 A6 BE AD	PI	INKEY$	PEEK	TAB
+023C	B2 BA E5 A5	SIN	INT	RESTORE	RND
+0240	C2 E1 B3 B9	CHR$	LLIST	COS	EXP
+0244	C1 B8      	STR$	LN
+
+(c) Extended mode. Letter keys and either shift.
+0246	7E DC DA 5C	~	BRIGHT	PAPER	\
+024A	B7 7B 7D D8	ATN	{	}	CIRCLE
+024E	BF AE AA AB	IN	VAL$	SCREEN$	ATTR
+0252	DD DE DF 7F	INVERSE	OVER	OUT	(c)
+0256	B5 D6 7C D5	ASN	VERIFY	|	MERGE
+025A	5D DB B6 D9	]	FLASH	ACS	INK
+025E	5B D7 0C 07	[	BEEP
+
+(d) Control codes. Digit keys and CAPS SHIFT.
+0260	0C 07 06 04	DELETE	EDIT	CAPS LOCK	TRUE VIDEO
+0264	05 08 0A 0B	INV VIDEO	Cursor left	Cursor down	Cursor up
+0268	09 0F      	Cursor right	GRAPHICS
+
+(e) Symbol code. Letter keys and symbol shift.
+026A	E2 2A 3F CD	STOP	*	?	STEP
+026E	C8 CC CB 5E	>=	TO	THEN	^
+0272	AC 2D 2B 3D	AT	-	+	=
+0276	2E 2C 3B 22	.	,	;	"
+027A	C7 3C C3 3E	<=	<	NOT	>
+027E	C5 2F C9 60	OR	/	<>	£
+0282	C6 3A      	AND	:
+
+(f) Extended mode. Digit keys and symbol shift.
+284	D0 CE A8 CA	FORMAT	DEF FN	FN	LINE
+0288	D3 D4 D1 D2	OPEN	CLOSE	MOVE	ERASE
+028C	A9 CF      	POINT	CAT

@@ -1,0 +1,56 @@
+		LD	A,E	The 'last' operation code.
+		AND	+3F	Strip off bits 6 and 7 to convert
+		LD	B,A	the operation code to a
+				calculator offset.
+		RST	0028,FP-CALC	Now use the calculator.
+		DEFB	+3B,fp-calc-2	Perform the actual operation
+		DEFB	+38,end-calc	It has been done.
+		JR	2764,S-RUNTEST	Jump forward.
+
+An important part of syntax checking involves the testing of the operation to ensure that the nature of the 'last value' is of the correct type for the operation under consideration.
+
+275B	S-SYNTEST	LD	A,E	Get the 'last' operation code.
+		XOR	(FLAGS)	This tests the nature of the 'last
+		AND	+40	value' against the requirement
+				of the operation. They are to be
+				the same for correct syntax.
+2761	S-RPORT-C	JP	NZ,1C8A,REPORT-C	Jump if syntax fails.
+
+Before jumping back to go round the loop again the nature of the 'last value' must be recorded in FLAGS.
+
+2764	S-RUNTEST	POP	DE	Get the 'last' operation code.
+		LD	HL,+5C3B	This is FLAGS.
+		SET	6,(HL)	Assume result to be numeric.
+		BIT	7,E	Jump forward if the nature of
+		JR	NZ,2770,S-LOOPEND	'last value' is numeric.
+		RES	6,(HL)	It is string.
+2770	S-LOOPEND	POP	BC	Get the 'present' values into BC:
+		JR	2734,S-LOOP	Jump back.
+
+Whenever the 'present' operation binds tighter, the 'last' and the 'present' values go back on the machine stack. However if the 'present' operation requires a string as its operand then the operation code is modified to indicate this requirement.
+
+2773	S-TIGHTER	PUSH	DE	The 'last' values go on the stack.
+		LD	A,C	Get the 'present' operation
+				code.
+		BIT	6,(FLAGS)	Do not modify the operation
+		JR	NZ,2790,S-NEXT	code if dealing with a numeric
+				operand.
+		AND	+3F	Clear bits 6 and 7.
+		ADD	A,+08	Increase the code by +08 hex.
+		LD	C,A	Return the code to the C
+				register.
+		CP	+10	Is the operation 'AND'?
+		JR	NZ,2788,S-NOT-AND	Jump if it is not so.
+		SET	6,C	'AND' requires a numeric
+				operand.
+		JR	2790,S-NEXT	Jump forward.
+2788	S-NOT-AND	JR	C,2761,S-RPORT-C	The operations -,*,/,^ and OR
+				are not possible between strings.
+		CP	+17	Is the operation a '+'?
+		JR	Z,2790,S-NEXT	Jump if it is so.
+		SET	7,C	The other operations yield a
+				numeric result.
+2790	S-NEXT	PUSH	BC	The 'present' values go on the
+				machine stack.
+		RST	0020,NEXT-CHAR	Consider the next character.
+		JP	24FF,S-LOOP-1	Go around the loop again.

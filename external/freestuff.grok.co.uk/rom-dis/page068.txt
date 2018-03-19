@@ -1,0 +1,58 @@
+		CALL	1664,POINTERS	Alter all the pointers before
+				making the 'room'.
+		LD	HL,(STKEND)	Make HL hold the new STKEND.
+		EX	DE,HL	Switch 'old' and 'new'.
+		LDDR		Now make the 'room'
+		RET		and return.
+
+Note: This subroutine returns with the HL register pair pointing to the location before the new 'room' and the DE register pair pointing to the last of the new locations.  The new 'room' therefore has the description: '(HL)+1' to '(DE)' inclusive.
+However as the 'new locations' still retain their 'old values' it is also possible to consider the new 'room' as having been made after the original location '(HL)' and it thereby has the description '(HL)+2' to (DE)+1'.
+In fact the programmer appears to have a preference for the 'second description' and this can be confusing.
+
+THE 'POINTERS' SUBROUTINE
+Whenever an area has to be 'made' or 'reclaimed' the system variables that address locations beyond the 'position' of the change have to be amended as required.  On entry the BC register pair holds the number of bytes involved and the HL register pair addresses the location before the 'position'.
+
+1664	POINTERS	PUSH	AF	These registers are saved.
+		PUSH	HL	Copy the address of the
+				'position'.
+		LD	HL,+5C4B	This is VARS, the first of the
+		LD	A,+0E	fourteen system pointers.
+
+A loop is now entered to consider each pointer in turn.  Only those pointers that point beyond the 'position' are changed.
+
+166B	PTR-NEXT	LD	E,(HL)	Fetch the two bytes of the
+		INC	HL	current pointer.
+		LD	D,(HL)	
+    		EX	(SP),HL	Exchange the system variable
+				with the address of the 'position'.
+		AND	A	The carry flag will become
+		SBC	HL,DE	set if the system variable's
+		ADD	HL,DE	address is to be updated.
+		EX	(SP),HL	Restore the 'position'.
+		JR	NC,167F,PTR-DONE	Jump forward if the pointer is
+				to be left; otherwise change it.
+		PUSH	DE	Save the old value.
+		EX	DE,HL	Now add the value in BC
+		ADD	HL,BC	to the old value.
+		EX	DE,HL	
+		LD	(HL),D	Enter the new value into the
+		DEC	HL	system variable - high byte
+		LD	(HL),E	before low byte.
+		INC	HL	Point again to the high byte.
+		POP	DE	Fetch the old value.
+167F	PTR-DONE	INC	HL	Point to the next system
+		DEC	A	variable and jump back until all
+		JR	NZ,166B,PTR-NEXT	fourteen have been considered.
+
+Now find the size of the block to be moved.
+
+		EX	DE,HL	Put the old value of STKEND in
+		POP	DE	HL and restore the other
+		POP	AF	registers.
+		AND	A	Now find the difference
+		SBC	HL,DE	between the old value of
+		LD	B,H	STKEND and the 'position'.
+		LD	C,L	Transfer the result to BC
+		INC	BC	and add '1' for the inclusive
+				byte.
+

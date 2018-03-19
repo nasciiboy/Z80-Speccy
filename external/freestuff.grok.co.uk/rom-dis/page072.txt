@@ -1,0 +1,65 @@
+		DEFB	+38,end-calc	and the channel code.
+		CALL	171E,STR-DATA	Fetch the data for the stream.
+		LD	A,B	Jump forward if both bytes of
+		OR	C	the data are zero, i.e. the
+		JR	Z,1756,OPEN-1	stream was in a closed state.
+		EX	DE,HL	Save DE.
+		LD	HL,(CHANS)	Fetch CHANS - the base
+		ADD	HL,BC	address of the channel
+		INC	HL	information and find the
+		INC	HL	code of the channel
+		INC	HL	associated with the stream
+		LD	A,(HL)	being OPENed.
+		EX	DE,HL	Return DE.
+		CP	+4B	The code fetched from the
+		JR	Z,1756,OPEN-1	channel information area
+		CP	+53	must be 'K', 'S' or 'P';
+		JR	Z,1756,OPEN-1	give an error if it is not.
+		CP	+50	
+		JR	NZ,1725,REPORT-O	
+1756	OPEN-1	CALL	175D,OPEN-2	Collect the appropriate data
+				in DE.
+		LD	(HL),E	Enter the data into the
+		INC	HL	two bytes in the stream
+		LD	(HL),D	information area.
+		RET		Finally return.
+
+THE 'OPEN-2' SUBROUTINE
+The appropriate stream data bytes for the channel that is associated with the stream being OPENed are found.
+
+175D	OPEN-2	PUSH	HL	Save HL
+		CALL	2BF1,STK-FETCH	Fetch the parameters of the
+				channel code.
+		LD	A,B	Give an error if the
+		OR	C	expression supplied is a null
+		JR	NZ,1767,OPEN-3	expression; i.e. OPEN #5,"".
+
+Report F - Invalid file name
+
+1765	REPORT-F	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0E	routine.
+
+Continue if no error occurred.
+
+1767	OPEN-3	PUSH	BC	The length of the expression
+				is saved.
+		LD	A,(DE)	Fetch the first character.
+		AND	+DF	Convert lower case codes to
+				upper case ones.
+		LD	C,A	Move code to the C register.
+		LD	HL,+177A	The base address of the
+				'OPEN stream look-up' table.
+		CALL	16DC,INDEXER	Index into this table and locate
+				the required offset.
+		JR	NC,1765,REPORT-F	Jump back if not found.
+		LD	C,(HL)	Pass the offset to the BC
+		LD	B,+00	register pair.
+		ADD	HL,BC	Make HL point to the start of
+				the appropriate subroutine.
+		POP	BC	Fetch the length of the
+		JP	(HL)	expression before jumping to
+				the subroutine.
+
+THE 'OPEN STREAM LOOK-UP' TABLE
+177A		DEFB	4B 06	- channel 'K', offset +06, address 1781
+

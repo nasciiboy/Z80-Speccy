@@ -5,5 +5,5 @@ Ensamblador Z80 que se encuentra en [[https://wiki.speccy.org/cursos/ensamblador
 publicado por *Santiago Romero*, bajo licencia [[http://creativecommons.org/licenses/by-nc-sa/4.0/][CC Attribution-Noncommercial-Share Alike 4.0 International]]
 
 El proposito de esta version (aun en proceso) es recopilar tanto el codigo, como la mayoria de
-enlaces y material adicional en un solo sitio, esperando que sea mas como y
+enlaces y material adicional en un solo sitio, esperando que sea mas comodo y
 pueda estudiarse sin necesidad de acceso a internet

@@ -1,0 +1,55 @@
+ATN X:
+
+	 10 	REM DEMONSTRATION FOR ATN X
+	 20 	REM USING THE 'SERIES GENERATOR'
+	 30 	DIM A(12)
+	 40 	LET A(1)= -.0000000002
+	 50 	LET A(2)=0.0000000010
+	 60 	LET A(3)= -.0000000066
+	 70 	LET A(4)=0.0000000432
+	 80 	LET A(5)= -.0000002850
+	 90 	LET A(6)=0.0000019105
+	100 	LET A(7)= -.0000131076
+	110 	LET A(8)=0.0000928715
+	120 	LET A(9)= -.0006905975
+	130 	LET A(10)=0.0055679210
+	140 	LET A(11)= -.0529464623
+	150 	LET A(12)=0.8813735870
+	160 	PRINT
+	170 	PRINT "ENTER START VALUE"
+	180 	INPUT C
+	190 	CLS
+	200 	PRINT "BASIC PROGRAM", "ROM PROGRAM"
+	210 	PRINT "-------------", "-----------"
+	220 	PRINT
+	230 	FOR J=1 TO 4
+	240 	LET B=J*C
+	250 	LET D=B
+	260 	IF ABS B>=1 THEN LET D= -1/B
+	270 	LET Z=2*D*D-1
+	280 	LET BREG=12
+	290 	REM USE "SERIES GENERATOR"
+	300 	GO SUB 550
+	310 	LET T=D*T
+	320 	IF B > =1 THEN LET T=T+PI/2
+	330 	IF B < =-1 THEN LET T=T-PI/2
+	340 	PRINT TAB 8;"ATN ";B
+	350 	PRINT
+	360 	PRINT T,ATN B	(or PRINT T*180/PI,ATN B*180/PI
+	370 	PRINT	to obtain the answers in degrees)
+	380 	NEXT J
+	390 	GO TO 160
+
+NOTES:
+
+  i. When C is entered this program calculates and prints ATN C, ATN (C*2), ATN (C*3)
+     and ATN (C*4).
+     For a specimen of results, try entering these values: 0.2; -1; 10 and -100. The results
+     may be found more interesting if converted to yield degrees by multiplying the
+     answers in line 360 by 180/PI.
+
+ ii. The constants A(1) to A(12) in lines 40 to 150 are given (apart from a factor of 1/2)
+     in Abramowitz and Stegun Handbook of Mathematical Functions (Dover 1965) page
+     82. They can be checked by integrating ATN X/X over the interval U=0 to PI, after
+     first multiplying by COS (N*U) for each parameter (i.e. for n=1,2,...,12) and sub-
+     stituting COS U=2*X*X-1. Each result should then be divided by PI.

@@ -1,0 +1,58 @@
+		DEFB	+31,duplicate	X0+X, Y0+Y, Xn+1, Xn+1
+		DEFB	+38,end-calc	Next Xn', the approximate
+				value of Xn reached by
+				the line-drawing subroutine
+		LD	A,(COORDS-lo)	is copied to A
+		CALL	2D28,STACK-A	and hence to the stack.
+		RST	0028,FP-CALC	X0+X,Y0+Y,Xn+1,Xn'
+		DEFB	+03,subtract	X0+X,Y0+Y,Xn+1,Xn+1,Xn'
+				- Xn' = Un'
+		DEFB	+E0,get-mem-0	X0+X,Y0+Y,Xn+1,Un',Yn
+		DEFB	+E2,get-mem-2	X0+X,Y0+Y,Xn+1,Un',Yn,Vn
+		DEFB	+0F,addition	X0+X,Y0+Y,Xn+1,Un',Yn +
+				Vn = Yn+1
+		DEFB	+C0,st-mem-0	(Yn+1 is copied to mem-0).
+		DEFB	+01,exchange	X0+X,Y0+Y,Xn+1,Yn+1,Un'
+		DEFB	+E0,get-mem-0	X0+X,Y0+Y,Xn+1,Yn+1,
+				Un',Yn+1
+		DEFB	+38,end-calc
+		LD	A,(COORDS-hi)	Yn', approximate like Xn', is
+		CALL	2D28,STACK-A	copied to A and hence to the
+				stack.
+		RST	0028,FP-CALC	X0+X,Y0+Y,Xn+1,Yn+1,
+				Un',Yn+1,Yn'
+		DEFB	+03,subtract	X0+X,Y0+Y,Xn+1,Yn+1,
+				Un',Vn'
+		DEFB	+38,end-calc
+		CALL	24B7,DRAW-LINE	The next 'arc' is drawn.
+		POP	BC	The arc-counter is restored.
+		DJNZ	2425,ARC-LOOP	Jump if more arcs to draw.
+245F	ARC-END	RST	0028,FP-CALC	The co-ordinates of the end
+		DEFB	+02,delete	of the last arc that was drawn
+		DEFB	+02,delete	are now deleted from the stack.
+		DEFB	+01,exchange	Y0+Y, X0+X
+		DEFB	+38,end-calc
+		LD	A,(COORDS-lo)	The X-co-ordinate of the end of
+		CALL	2D28,STACK-A	the last arc that was drawn, say
+		RST	0028,FP-CALC	Xz', is copied to the stack.
+		DEFB	+03,subtract	Y0+Y, X0+X - Xz'
+		DEFB	+01,exchange	X0+X - Xz', Y0+Y
+		DEFB	+38,end-calc
+		LD	A,(COORDS-hi)	The Y-co-ordinate is obtained.
+		CALL	2D28,STACK-A
+		RST	0028,FP-CALC	X0+X - Xz', Y0+Y, Yz'
+		DEFB	+03,subtract	X0+X - Xz', Y0+Y - Yz'
+		DEFB	+38,end-calc
+2477	LINE-DRAW	CALL	24B7,DRAW-LINE	The final arc is drawn to reach
+				X0+X, Y0+Y (or close the
+				circle).
+		JP	0D4D,TEMPS	Exit, setting temporary colours.
+
+THE 'INITIAL PARAMETERS' SUBROUTINE
+This subroutine is called by both CIRCLE and DRAW to set their initial parameters. It is called by CIRCLE with X, Y and the radius Z on the top of the stack, reading upwards. It is called by DRAW with its own X, Y, SIN (G/2) and Z, as defined in DRAW i. above, on the top of the stack. In what follows the stack is only shown from Z upwards.
+The subroutine returns in B the arc-count A as explained in both CIRCLE and DRAW above, and in mem-0 to mem-5 the quantities G/A, SIN (G/2*A), 0, COS (G/A), SIN (G/A) and G. For a circle, G must be taken to be equal to 2*PI.
+
+247D	CD-PRMS1	RST	0028,FP-CALC	Z
+		DEFB	+31,duplicate	Z, Z
+		DEFB	+28,sqr	Z, SQR Z
+		DEFB	+34,stk-data	Z, SQR Z, 2

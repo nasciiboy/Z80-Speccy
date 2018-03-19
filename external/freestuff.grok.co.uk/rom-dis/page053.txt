@@ -1,0 +1,64 @@
+		LD	(K-CUR),HL
+		POP	HL	Fetch the former channel
+		CALL	1615,CHAN-FLAG	address and set the
+		RET		appropriate flags before
+				returning to ED-LOOP.
+
+THE 'CURSOR DOWN EDITING' SUBROUTINE
+
+0FF3	ED-DOWN	BIT	5,(FLAGX)	Jump forward if in
+		JR	NZ,1001,ED-STOP	'INPUT' mode'.
+		LD	HL,+5C49	This is E-PPC.
+		CALL	190F,LN-FETCH	The next line number is found
+		JR	106E,ED-LIST	and a new automatic listing
+				produced.
+1001	ED-STOP	LD	(ERR-NR),+10	'STOP in INPUT' report.
+		JR	1024,ED-ENTER	Jump forward.
+
+THE CURSOR LEFT EDITING' SUBROUTINE
+
+1007	ED-LEFT	CALL	1031,ED-EDGE	The cursor is moved.
+		JR	1011,ED-CUR	Jump forward.
+
+THE 'CURSOR RIGHT EDITING' SUBROUTINE
+
+1000	ED-RIGHT	LD	A,(HL)	The current character is tested
+		CP	+0D	and if it is 'carriage return'
+		RET	Z	then return.
+		INC	HL	Otherwise make the cursor
+				come after the character.
+1011	ED-CUR	LD	(K-CUR),HL	Set the system variable K-CUR.
+		RET
+
+THE 'DELETE EDITING' SUBROUTINE
+
+1015	ED-DELETE	CALL	1031,ED-EDGE	Move the cursor leftwards.
+		LD	BC,+0001	Reclaim the current
+		JP	19E8,RECLAIM-2	character.
+
+THE 'ED-IGNORE' SUBROUTINE
+
+101E	ED-IGNORE	CALL	15D4,WAIT-KEY	The next two codes from the
+		CALL	15D4,WAIT-KEY	key-input routine are ignored.
+
+THE 'ENTER EDITING' SUBROUTINE
+
+1024	ED-ENTER	POP	HL	The address of ED-LOOP and
+		POP	HL	ED-ERROR are discarded.
+1026	ED-END	POP	HL	The old value of ERR-SP
+		LD	(ERR-SP),HL	is restored.
+		BIT	7,(ERR-NR)	Now return if there were
+		RET	NZ	no errors.
+		LD	SP,HL	Otherwise make an indirect
+		RET		jump to the error routine.
+
+THE 'ED-EDGE' SUBROUTINE
+The address of the cursor is in the HL register pair and will be decremented unless the cursor is already at the start of the line. Care is taken not to put the cursor between control characters and their parameters.
+
+1031	ED-EDGE	SCF		DE will hold either E-LINE
+		CALL	1195,SET-DE	(for editing) or WORK5P
+				(for INPUTing).
+		SBC	HL,DE	The carry flag will become set
+				if the cursor is already to be at
+		ADD	HL,DE	the start of the line.
+		INC	HL	Correct for the subtraction.

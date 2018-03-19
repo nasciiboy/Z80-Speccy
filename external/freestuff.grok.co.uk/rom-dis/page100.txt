@@ -1,0 +1,52 @@
+THE 'DATA' COMMAND ROUTINE
+During syntax checking a DATA statement is checked to ensure that it contains a series of valid expressions, separated by commas. But in 'run-time' the statement is passed by.
+1E27	DATA	CALL	2530,SYNTAX-Z	Jump forward unless checking
+		JR	NZ,1E37,DATA-2	syntax.
+A loop is now entered to deal with each expression in the DATA statement.
+1E2C	DATA-1	CALL	24FB,SCANNING	Scan the next expression.
+		CP	+2C	Check for the correct
+				separator - a ',';
+		CALL	NZ,1BEE,CHECK-END	but move on to the next
+				statement if not matched.
+		RST	0020,NEXT-CHAR	Whilst there are still
+		JR	1E2C,DATA-1	expressions to be checked go
+				around the loop.
+The DATA statement has to be passed-by in 'run-time'.
+1E37	DATA-2	LD	A,+E4	It is a 'DATA' statement that
+				is to be passed-by.
+
+THE 'PASS-BY' SUBROUTINE
+On entry the A register will hold either the token 'DATA' or the token 'DEF FN' depending on the type of statement that is being 'passed-by'.
+1E39	PASS-BY	LD	B,A	Make the BC register pair hold
+				a very high number.
+		CPDR		Look back along the statement
+				for the token.
+		LD	DE,+0200	Now look along the line
+		JP	198B,EACH-STMT	for the statement after. (The
+				'D-1'th statement from the
+				current position.
+
+THE 'RESTORE' COMMAND ROUTINE
+The operand for a RESTORE command is taken as a line number, zero being used if no operand is given.
+The REST-RUN entry point is used by the RUN command routine.
+1E42	RESTORE	CALL	1E99,FIND-INT2	Compress the operand into the
+				BC register pair.
+1E45	REST-RUN	LD	H,B	Transfer the result to the
+		LD	L,C	HL register pair.
+		CALL	196E,LINE-ADDR	Now find the address of that
+				line or the 'first line after'.
+		DEC	HL	Make DATADD point to the
+		LD	(DATADD),HL	location before.
+		RET		Return once it is done.
+
+THE 'RANDOMIZE' COMMAND ROUTINE
+Once again the operand is compressed into the BC register pair and transferred to the required system variable. However if the operand is zero the value in FRAMES1 and FRAMES2 is used instead.
+1E4F	RANDOMIZE	CALL	1E99,FIND-INT2	Fetch the operand.
+		LD	A,B	Jump forward unless the
+		OR	C	value of the operand is
+		JR	NZ,1E5A,RAND-1	zero.
+		LD	BC,(FRAMES1)	Fetch the two low order bytes
+				of FRAMES instead.
+1E5A	RAND-1	LD	(SEED),BC	Now enter the result into the
+		RET		system variable SEED before
+				returning.

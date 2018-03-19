@@ -1,0 +1,236 @@
+<HTML><Head>
+<TITLE>Z80 Flag Affection</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A><p>
+<H1>Z80 Flag Affection</H1>
+<I>This document is an adaption of the flags page on 
+
+<A HREF="http://www.acorn.co.uk/~mrison/en/cpc/tech.html">Mark Rison's Z80 Page</A>.
+
+<br>
+This page is made by <A HREF="mailto:syoung@cs.vu.nl">Sean Young</A></I><p>
+The flag register has the following structure:
+
+<TABLE WIDTH=60% CELLSPACING=0 BORDER=1>
+
+<TR>
+
+ <TH ALIGN=CENTER WIDTH=20%>Bit</TH>
+
+ <TD ALIGN=CENTER WIDTH=10%>7</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>6</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>5</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>4</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>3</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>2</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>1</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>0</TD>
+
+</TR>
+
+<TR>
+
+ <TH ALIGN=CENTER WIDTH=20%>Flag</TH>
+
+ <TD ALIGN=CENTER WIDTH=10%>S</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>Z</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>F5</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>H</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>F3</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>P/V</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>N</TD>
+
+ <TD ALIGN=CENTER WIDTH=10%>C</TD>
+
+</TR>
+
+</TABLE>
+
+The flags are set according to the result of the last instruction. 
+
+The standard behaviour is:
+
+<DL>
+
+ <DT>S - Sign flag
+
+  <DD>Set if the 2-complement value is negative (copy of MSB)
+
+ <DT>Z - Zero flag
+
+  <DD>Set if the value is zero
+
+ <DT>F5 - undocumented flag
+
+  <DD>Copy of bit 5
+
+ <DT>H - Half Carry
+
+  <DD>Carry from bit 3 to bit 4
+
+ <DT>F3 - undocumented flag
+
+  <DD>Copy of bit 3
+
+ <DT>P/V - Parity or Overflow
+
+  <DD>Parity set if even number of bits set
+
+  <DD>Overflow set if the 2-complement result does not fit in the register
+
+ <DT>N - Subtract
+
+  <DD>Set if the last operation was a subtraction
+
+ <DT>C - Carry
+
+  <DD>Set if the result did not fit in the register
+
+</DL>
+
+The following table contains all the instructions that affect the F register. 
+
+<PRE>
+
+? indicates the effect is undefined.
+
+* indicates the effect is non-standard (see the notes).
+
+0 indicates the flag is reset.
+
+1 indicates the flag is set.
+
+- indicates the flag is not affected.
+
+S,Z,5,H,3,P,V,N,C indicate the flag is set as above.
+
+
+
+r refers to any 8-bit quantity appropriate for that instruction.
+
+s refers to any 16-bit quantity appropriate for that instruction.
+
+
+
+Instruction           Flags     Notes
+
+===========           =====     =====
+
+
+
+ADD/ADC/SUB/SBC       SZ5H3VNC  
+
+CP r                  SZ*H*VNC  CP is just SUB with the result thrown away
+
+				F5 and F3 are copied from the operand, not the result
+
+
+
+INC/DEC r             SZ5H3VN-
+
+
+
+16 bit additions are done in two steps: 
+
+First the two lower bytes are added, the two higher bytes.
+
+
+
+ADD s                 --***-0C  F5,H,F3 from higher bytes addition
+
+ADC/SBC s             SZ***VNC  F5,H,F3 from higher bytes addition
+
+
+
+AND r                 SZ513P00
+
+OR/XOR r              SZ503P00
+
+
+
+RLCA/RLA/RRCA/RRA     --503-0C
+
+RLC/RL/RRC/RR r       SZ503P0C
+
+SLA/SLL/SRA/SRL r     SZ503P0C  SLL is like SLA except b0 gets set
+
+RRD/RLD               SZ503P0-  Flags set on result in A
+
+
+
+BIT n,r               *Z513*0-  PV as Z, S set only if n=7 and b7 of r set
+
+				Behaves much like AND r,2^n
+
+
+
+CCF                   --***-0*  C=1-C, H as old C
+
+				F5, F3 from A register
+
+
+
+SCF                   --*0*-01	F5, F3 from A register
+
+CPL                   --*1*-1-	F5, F3 from A register
+
+NEG                   SZ5H3V1C  A=0-A (Zaks gets C wrong)
+
+DAA                   SZ5*3P-*  H from internal correction, C for cascade BCD
+
+
+
+LD A,R/LD A,I         SZ503*0-  PV as IFF2 [yaze doesn't affect F?]
+
+
+
+LDI/LDIR/LDD/LDIR     --*0**0-  PV set if BC not 0
+
+				F5 is bit 1 of (transferred byte + A)
+
+				F3 is bit 3 of (transferred byte + A)
+
+
+
+CPI/CPIR/CPD/CPDR     SZ*H**1-  PV set if BC not 0
+
+                                S,Z,H from (A - (HL) ) as in CP (HL)
+
+				F3 is bit 3 of (A - (HL) - H), H as in F after instruction
+
+				F5 is bit 1 of (A - (HL) - H), H as in F after instruction
+
+
+
+IN r,(C)              SZ503P0-	Also true for IN F,(C)
+
+
+
+INI/INIR/IND/INDR     SZ5?3???  Flags affected as in DEC B
+
+OUTI/OTIR/OUTD/OTDR   SZ5?3???  Flags affected as in DEC B
+
+
+
+All others            --------  Except for POP AF and EX AF,AF', of course...
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,62 @@
+THE SCREEN & PRINTER HANDLING ROUTINES
+
+THE 'PRINT-OUT' ROUTINES
+All of the printing to the main part of the screen, the lower part of the screen and the printer is handled by this set of routines.
+The PRINT-OUT routine is entered with the A register holding the code for a control character, a printable character or a token.
+
+09F4	PRINT-OUT	CALL	0B03,PO-FETCH	The current print position.
+		CP	+20	If the code represents a
+		JP	NC,0AD9,PO-ABLE	printable character then jump.
+		CP	+06	Print a question mark for
+		JR	C,0A69,PO-QUEST	codes in the range +00 - +05.
+		CP	+18	And also for codes +18 - +1F.
+		JR	NC,0A69,PO-QUEST
+		LD	HL,+0A0B	Base of 'control' table.
+		LD	E,A	Move the code to the
+		LD	D,+00	DE register pair.
+		ADD	HL,DE	Index into the table and
+		LD	E,(HL)	fetch the offset.
+		ADD	HL,DE	Add the offset and make
+		PUSH	HL	an indirect jump to the
+		JP	0B03,PO-FETCH	appropriate subroutine.
+
+THE 'CONTROL CHARACTER' TABLE
+
+address	offset	character	address	offset	character
+
+0A11	4E	PRINT comma	0A1A	4F	not used
+0A12	57	EDIT	0A1B	5F	lNK control
+0A13	10	cursor left	0A1C	5E	PAPER control
+0A14	29	cursor right	0A1D	5D	FLASH control
+0A15	54	cursor down	0A1E	5C	BRlGHT control
+0A16	53	cursor up	0A1F	5B	INVERSE control
+0A17	52	DELETE	0A20	5A	OVER control
+0A18	37	ENTER	0A21	54	AT control
+0A19	50	not used	0A22	53	TAB control
+
+THE 'CURSOR LEFT' SUBROUTINE
+The subroutine is entered with the B register holding the current line number and the C register with the current column number.
+
+0A23	PO-BACK-1	INC	C	Move leftwards by one column.
+		LD	A,+22	Accept the change unless
+		CP	C	up against the lefthand side.
+		JR	NZ,0A3A,PO-BACK-3
+		BIT	1,(FLAGS)	If dealing with the printer
+		JR	NZ,0A38,PO-BACK-2	jump forward.
+		INC	B	Go up one line.
+		LD	C,+02	Set column value.
+		LD	A,+18	Test against top line.
+		CP	B	Note: This ought to be +19.
+		JR	NZ,0A3A,PO-BACK-3	Accept the change unless at
+				the top of the screen.
+		DEC	B	Unacceptable so down a line.
+0A38	PO-BACK-2	LD	C,+21	Set to lefthand column.
+0A3A	PO-BACK-3	JP	0DD9,CL-SET	Make an indirect return via
+				CL-SET & PO-STORE.
+
+THE 'CURSOR RIGHT' SUBROUTINE
+This subroutine performs an operation identical to the BASIC statement - PRINT
+OVER 1;CHR$ 32; -.
+
+0A3D	PO-RIGHT	LD	A,(P-FLAG)	Fetch P-FLAG and save it on
+		PUSH	AF	the machine stack.

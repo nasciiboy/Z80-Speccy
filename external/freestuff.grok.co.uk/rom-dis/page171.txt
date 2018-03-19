@@ -1,0 +1,64 @@
+		INC	DE	Point to next destination.
+		INC	(mem-5-1st)	One more digit for printing, and
+		INC	(mem-5-2nd)	one more before the decimal.
+		LD	C,+00	Change the flag from leading
+				zero to other zero.
+2EB3	PF-TEST-2	BIT	0,B	The source pointer needs to be
+		JR	Z,2EB8,PF,ALL-9	incremented on every second
+		INC	HL	passage through the loop, when
+				B is odd.
+2EB8	PF-ALL-9	DJNZ	2EA1,PF-DIGITS	Jump back for all 9 digits.
+		LD	A,(mem-5-1st)	Get counter: were there 9 digits
+		SUB	+09	excluding leading zeros?
+		JR	C,2ECB,PF-MORE	If not, jump to get more digits.
+		DEC	(mem-5-1st)	Prepare to round: reduce count
+				to 8.
+		LD	A,+04	Compare 9th digit, byte 4 of
+		CP	(mem-4-4th)	mem-4, with 4 to set carry for
+				rounding up.
+		JR	2F0C,PF-ROUND	Jump forward to round up.
+2ECB	PF-MORE	RST	0028,FP-CALC	Use the calculator again.
+		DEFB	+02,delete	- (i is now deleted).
+		DEFB	+E2,get-mem-2	f
+		DEFB	+38,end-calc	f
+
+vi. The fractional part of x is now stored in the print buffer.
+
+2ECF	PF-FRACTN	EX	DE,HL	DE now points to f.
+		CALL	2FBA,FETCH-TWO	The mantissa of f is now in
+				D',E',D,E.
+		EXX		Get the exchange registers.
+		LD	A,+80	The exponent of f is reduced to
+		SUB	L	zero, by shifting the bits of f 80
+		LD	L,+00	hex - e places right, where L'
+				contained e.
+		SET	7,D	True numerical bit to bit 7 of
+				D'.
+		EXX		Restore the main registers.
+		CALL	2FDD,SHIFT-FP	Now make the shift.
+2EDF	PF-FRN-LP	LP	A,(mem-5-1st)	Get the digit count.
+		CP	+08	Are there already 8 digits?
+		JR	C,2EEC,PR-FR-DGT	If not, jump forward.
+		EXX		If 8 digits, just use f to round i
+		RL	D	up, rotating D' left to set the
+				carry.
+		EXX		Restore main registers and jump
+		JR	2F0C,PF-ROUND	forward to round up.
+2EEC	PF-FR-DGT	LD	BC,+0200	Initial zero to C, count of 2 to B.
+2EEF	PF-FR-EXX	LD	A,E	D'E'DE is multiplied by 10 in 2
+		CALL	2F8B,CA=10*A+C	stages, first DE then D'E', each
+		LD	E,A	byte by byte in 2 steps, and the
+		LD	A,D	integer part of the result is
+		CALL	2F8B,CA=10*A+C	obtained in C to be passed into
+		LD	D,A	the print buffer.
+		PUSH	BC	The count and the result
+		EXX		alternate between BC and B'C'.
+		POP	BC	
+		DJNZ	2EEF,PF-FR-EXX	Look back once through the
+				exchange registers.
+		LD	HL,+5CA1	The start - 1st byte of mem-3.
+		LD	A,C	Result to A for storing.
+		LD	C,(mem-5-1st)	Count of digits so far in number
+				to C.
+		ADD	HL,BC	Address the first empty byte.
+		LD	(HL),A	Store the next digit.

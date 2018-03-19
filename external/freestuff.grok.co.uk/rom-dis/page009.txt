@@ -1,0 +1,66 @@
+0364	K-TOKENS	ADD	A,+A5	Add the required offset and
+		RET		return.
+
+Next the digit keys; and SPACE, ENTER & both shifts; are considered.
+
+0367	K-DIGIT	CP	+30	Proceed only with the digit keys.
+		RET	C	i.e. Return with SPACE (+20),
+				ENTER (+0D) & both shifts
+				(+0E).
+		DEC	C	Now separate the digit keys into
+				three groups - according to the
+				mode.
+		JP	M,039D,K-KLC-DGT	Jump with 'K', 'L' & 'C' modes;
+		JR	NZ,0389,K-GRA-DGT	and also with 'G' mode.
+				Continue with 'E' mode.
+		LD	HL,+0254	The base address for table 'f'.
+		BIT	5,B	Use this table for SYMBOL
+		JR	Z,034A,K-LOOK-UP	SHIFT & a digit key in
+				extended mode.
+		CP	+38	Jump forward with digit keys
+		JR	NC,0382,K-8-&-9	'8' and '9'.
+
+The digit keys '0' to '7' in extended mode are to give either a 'paper colour code' or an 'ink colour code' depending on the use of the CAPS SHIFT.
+
+		SUB	+20	Reduce the range +30 to +37
+				giving +10 to +17.
+		INC	B	Return with this 'paper colour
+		RET	Z	code' if the CAPS SHIFT is
+				not being used.
+		ADD	A,+08	But if it is then the range is to
+		RET		be +18 to +1F instead - indicat-
+				ing an 'ink colour code'.
+
+The digit keys '8' and '9' are to give 'BRIGHT' & 'FLASH' codes.
+
+0382	K-8-&-9	SUB	+36	+38 & +39 go to +02 & +03.
+		INC	B	Return with these codes if CAPS
+		RET	Z	SHIFT is not being used. (These
+				are 'BRIGHT' codes.)
+		ADD	A,+FE	Subtract '2' is CAPS SHIFT is
+		RET		being used; giving +00 & +01 (as
+				'FLASH' codes).
+
+The digit keys in graphics mode are to give the block graphic characters (+80 to +8F), the GRAPHICS code (+0F) and the DELETE code (+0C).
+
+0389	K-GRA-DGT	LD	HL,+0230	The base address of table 'd'.
+		CP	+39	Use this table directly for
+		JR	Z,034A,K-LOOK-UP	both digit key '9' that is to give
+		CP	+30	GRAPHICS, and digit key '0'
+		JR	Z,034A,K-LOOK-UP	that is to give DELETE.
+		AND	+07	For keys '1' to '8' make the
+		ADD	A,+80	range +80 to +87.
+		INC	B	Return with a value from this
+		RET	Z	range if neither shift key is
+				being pressed.
+		XR	+0F	But if 'shifted' make the range
+		RET		+88 to +8F.
+
+Finally consider the digit keys in 'K', 'L' & 'C' modes.
+
+039D	K-KLC-DGT	INC	B	Return directly if neither shift
+		RET	Z	key is being used. (Final codes
+				+30 to +39.)
+		BIT	5,B	Use table 'd' if the CAPS
+		LD	HL,+0230	SHIFT key is also being
+		JR	NZ,034A,K-LOOK-UP	pressed.

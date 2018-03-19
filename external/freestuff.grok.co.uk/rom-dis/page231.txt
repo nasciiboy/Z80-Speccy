@@ -1,0 +1,63 @@
+INDEX TO ROUTINES
+
+address	routine	page
+
+THE RESTART ROUTINES and TABLES
+0000 	START    	1
+0008 	Error    	1
+0010 	Print a character 	1
+0018 	Collect character 	1
+0020 	Collect next character 	1
+0028 	Calculator 	1
+0030 	Make BC spaces 	1
+0038 	Maskable interrupt 	1
+0053 	ERROR-2  	2
+0066 	Non-maskable Interrupt 	2
+0074 	CH-ADD+1 	2
+007D 	SKIP-OVER 	2
+0095 	Token tables 	3
+0205 	Key tables 	4
+
+THE KEYBOARD ROUTINES
+028E 	Keyboard scanning 	5
+02BF 	KEYBOARD 	6
+0310 	Repeating key 	7
+031E 	K-TEST   	7
+0333 	Keyboard decoding 	8
+
+THE LOUDSPEAKER ROUTINES
+03B5 	BEEPER   	11
+03F8 	BEEP     	12
+046E 	Semi-tone table 	14
+
+THE CASSETTE HANDLING ROUTINES
+04C2 	SA-BYTES 	15
+053F	SA/LD-RET 	17
+0556	LD-BYTES 	17
+05E3 	LD-EDGE-2 	20
+0605 	SAVE-ETC 	21
+07CB 	VERIFY control 	26
+0802 	Load a data block 	26
+0808 	LOAD control 	27
+08B6 	MERGE control 	29
+0970 	SAVE control 	32
+09A1 	Cassette messages 	32
+
+THE SCREEN & PRINTER HANDLING ROUTINES
+09F4 	PRINT-OUT 	33
+0A11 	Control character table 	33
+0A23 	Cursor left 	33
+0A3D 	Cursor right 	33
+0A4F 	Carriage return 	34
+0A5F 	Print comma 	34
+0A69 	Print a question mark 	34
+0A6D 	Control characters with operands	34
+0AD9 	PO-ABLE  	35
+0ADC 	Position store 	36
+0B03 	Position fetch 	36
+0B24 	Print any character 	36
+0B7F 	Print all characters 	37
+0BDB 	Set attribute byte 	39
+0C0A 	Message printing 	39
+0C3B 	PO-SAVE  	40
+0C41 	Table search 	40

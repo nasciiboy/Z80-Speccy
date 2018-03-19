@@ -1,0 +1,55 @@
+		DEFB	+02,delete	final power of 10 reached,
+		DEFB 	+28,end-calc	leaving the 'last value' x*10^m
+		RET		on the stack
+
+THE 'INT-FETCH' SUBROUTINE
+This subroutine collects in DE a small integer n (-65535<=n<=65535) from the location addressed by HL: i.e. n is normally the first (or second) number at the top of the calcul-ator stack; but HL can alls access (by exchange with DE) a number which has been deleted from the stack. The subroutine does not itself delete the number from the satck or from memory; it returns HL pointing to the fourth byte of the number in its original position.
+
+2D7F	INT-FETCH	INC	HL	Point to the sign byte of the
+				number.
+		LD	C,(HL)	Copy the sign byte to C.
+
+The following mechanism will twos complement the number if it is negative (C is FF) but leave it unaltered if it is positive (C is OO)
+
+		INC 	HL	Point to the less significant
+				byte.
+		LD 	A,(HL)	Collect the byte in A.
+		XOR	C	Ones complement it if negative
+		SUB	C	This adds 1 for negative
+				numbers; it sets the carry unless
+				the byte was 0.
+		LD	E,A	Less significant byte to E now.
+		INC	HL	Point to the more significant
+				byte.
+		LD	A,(HL)	Collect it in A.
+		ADC	A,C	Finish two complementing in
+				the case of a negative number;
+				note that the carry is always
+				left reset.
+		LD	D,A	More significant byte to D now.
+		RET		Finished.
+
+THE 'INT-STORE' SUBROUTINE
+This subroutine stores a small integer n (-65535<=n<=65535) in the location addressed by HL and the four following locations: i.e. n replaces the first (or second) number at the top of the calculator stack. The subroutine returns HL pointing to the first byte of n on the stack.
+
+2D8C	P-INT-STO	LD	C,+00	This entry point would store a
+				number known to be positive
+2D8E	INT-STORE	PUSH	HL	The pointer to the first location
+				is saved.
+		LD	(HL),+00	The first byte is set to zero.
+		INC	HL	Point to the second location.
+		LD	(HL),C	Enter the second byte.
+
+The same mechanism is now used as in 'INT-FETCH' to twos complement negative numbers. This is needed e.g. before and after the multiplication of small integers. Addit-tion is however performed without any further twos complementing before or afterwards.
+
+		INC	HL	Point to the third location.
+		LD	A,E	Collect the less significant 
+				byte.
+		XOR	C	Twos complement it if the
+		SUB	C	number is negative
+		LD	(HL),A	Store the byte.
+		INC	HL	Point to the fourth location.
+		LD	A,D	Collect the more significant
+				byte.
+		ADC	A,C	Twos complement it if the
+		XOR	C	number is negative

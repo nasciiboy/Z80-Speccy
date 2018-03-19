@@ -1,0 +1,55 @@
+THE DISASSEMBLY
+
+THE RESTART ROUTINES and THE TABLES
+
+THE 'START'
+The maskable interrupt is disabled and the DE register pair set to hold the 'top of possible RAM'.
+0000	START	DI		Disable the 'keyboard interrupt'.
+		XOR	A	+00 for start (but +FF for
+				'NEW').
+		LD	DE,+FFFF	Top of possible RAM.
+		JP	11CB,START/NEW	Jump forward.
+
+THE 'ERROR' RESTART
+The error pointer is made to point to the position of the error. 
+0008	ERROR-1	LD	HL,(CH-ADD)	The address reached by the
+		LD	(X-PTR),HL	interpreter is copied to the error
+		JP	0053,ERROR-2	pointer before proceeding.
+
+THE 'PRINT A CHARACTER' RESTART
+The A register holds the code of the character that is to be printed.
+0010	PRINT-A-1	JP	15F2,PRINT-A-2	Jump forward immediately.
+		DEFB	+FF,+FF,+FF,+FF,+FF	Unused locations.
+
+THE 'COLLECT CHARACTER' RESTART
+The contents of the location currently addressed by CH-ADD are fetched. A return is made if the value represents a printable character, otherwise CH-ADD is incremented and the tests repeated.
+0018	GET-CHAR	LD	HL,(CH-ADD)	Fetch the value that is addressed
+		LD	A,(HL)	by CH-ADD.
+001C	TEST-CHAR	CALL	007D,SKIP-OVER	Find out if the character is
+		RET	NC	printable. Return if it is so.
+
+THE 'COLLECT NEXT CHARACTER' RESTART
+As a BASIC line is interpreted, this routine is called repeatedly to step along the line.
+0020	NEXT-CHAR	CALL	0074,CH-ADD+1	CH-ADD needs to be incre-
+				mented.
+		JR	001C,TEST-CHAR	Jump back to test the new
+				value.
+		DEFB	+FF,+FF,+FF	Unused locations.
+
+THE 'CALCULATOR' RESTART
+The floating point calculator is entered at 335B.
+0028	FP-CALC	JP	335B,CALCULATE	Jump forward immediately.
+		DEFB	+FF,+FF,+FF,+FF,+FF	Unused locations.
+
+THE 'MAKE BC SPACES' RESTART
+This routine creates free locations in the work space. The number of locations is determined by the current contents of the BC register pair.
+0030	BC-SPACES	PUSH	BC	Save the 'number'.
+		LD	HL,(WORKSP)	Fetch the present address of the
+		PUSH	HL	start of the work space and save
+		JP	169E,RESERVE	that also before proceeding.
+
+THE 'MASKABLE INTERRUPT' ROUTINE
+The real time clock is incremented and the keyboard scanned whenever a maskable interrupt occurs.
+0038	MASK-INT	PUSH	AF	Save the current values held in
+		PUSH	HL	these registers.
+		LD	HL,(FRAMES)	The lower two bytes of the

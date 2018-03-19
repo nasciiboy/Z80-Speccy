@@ -1,0 +1,64 @@
+Report 8 - End of file
+15E4	REPORT-8	RST	0008,ERROR-1	Call the error handling
+		DEFB	+07	routine.
+
+THE 'INPUT-AD' SUBROUTINE
+The registers are saved and HL made to point to the input address.
+
+15E6	INPUT-AD	EXX		Save the registers.
+		PUSH	HL	
+		LD	HL,(CURCHL)	Fetch the base address for the
+				current channel information.
+		INC	HL	Step past the output address.
+		INC	HL
+		JR	15F7,CALL-SUB	Jump forward.
+
+THE 'MAIN PRINTING' SUBROUTINE
+The subroutine is called with either an absolute value or a proper character code in the A register.
+
+15EF	OUT-CODE	LD	E,+30	Increase the value in the
+		ADD	A,E	A register by +30.
+15F2	PRINT-A-2	EXX		Again save the registers.
+		PUSH	HL	
+		LD	HL,(CURCHL)	Fetch the base address for the
+				current channel.  This will point
+				to an output address.
+
+Now call the actual subroutine.  HL points to the output or the input address as directed.
+
+15F7	CALL-SUB	LD	E,(HL)	Fetch the low byte.
+		INC	HL
+		LD	D,(HL)	Fetch the high byte.
+		EX	DE,HL	Move the address to the HL
+				register pair.
+		CALL	162C,CALL-JUMP	Call the actual subroutine.
+		POP	HL	Restore the registers.
+		EXX
+		RET		Return will be from here
+				unless an error occurred.
+
+THE 'CHAN-OPEN' SUBROUTINE
+This subroutine is called with the A register holding a valid stream number - normally +FD to +03.  Then depending on the stream data a particular channel will be made the current channel.
+
+1601	CHAN-OPEN	ADD	A,A	The value in the A register is
+		ADD	A,+16	doubled and then increased by
+		LD	L,A	+16.  The result is moved to L.
+		LD	H,+5C	The address 5C16 is the base
+				address for stream +00.
+		LD	E,(HL)	Fetch the first byte of the
+		INC	HL	required stream's data; then
+		LD	D,(HL)	the second byte.
+		LD	A,D	Give an error if both bytes
+		OR	E	are zero; otherwise jump
+		JR	NZ,1610,CHAN-OP-1	forward.
+
+Report O - Invalid stream
+160E	REPORT-O	RST	0008,ERROR-1	Call the error handling
+		DEFB	+17	routine.
+
+Using the stream data now find the base address of the channel information associated with that stream.
+
+1610	CHAN-OP-1	DEC	DE	Reduce the stream data.
+		LD	HL,(CHANS)	The base address of the whole
+				channel information area.
+

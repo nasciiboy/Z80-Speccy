@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 5.0::19980907::extensions to HTML 4.0//EN" "hmpro5.dtd">
+ 
+<HTML>
+ 
+<HEAD>
+<TITLE>vbSpec Frequently Asked Questions</TITLE>
+</HEAD>
+ 
+<BODY BGCOLOR="#CCCCCC">
+<P><FONT FACE="Arial,Helvetica" SIZE="+1"><B>vbSpec Frequently Asked
+Questions</B></FONT><BR>
+By Chris Cowley, Grok Developments Ltd.
+</P>
+<P>Last Updated: 25/Aug/2002 -- Covers vbSpec version 1.50</P>
+<P><FONT FACE="Arial,Helvetica"><A HREF="index.html">vbSpec Homepage</A></FONT>
+</P>
+<HR>
+<P><B>Q1. What is vbSpec?</B><BR>
+vbSpec is a program that runs on Windows 95/98/Me, Windows NT/2000 or Windows
+XP, and emulates a Sinclair ZX Spectrum computer (both 48K and 128K models are
+emulated, as is the Timex Colour TC2048). The ZX Spectrum is a simple,
+beautifully-designed little computer based around a Zilog Z80A CPU running at
+3.5MHz. It was hugely popular in the 1980's, and has a strong and dedicated
+following to this day. Very unusually for an emulator, vbSpec is written
+entirely in Visual Basic.</P>
+<P><B>Q2. Why on earth would anyone want to write an emulator in Visual
+Basic?</B><BR>
+There are lots of reasons why you <I>wouldn't</I> want to write an emulator in
+VB - the lack of any bitwise rotation operators means that relatively expensive
+(in terms of CPU time) integer division and multiplication has to be used
+instead of simple bit-shifts, there's no unsigned 16-bit integer type in VB
+which is inconvenient when it comes to emulating a Z80, VB is not very
+portable, and perhaps most importantly of all:- even compiled, optimised VB
+code calls DLL routines for many BASIC statements and functions as they are
+executed. The overhead of all of these DLL function calls, coupled with various
+other things such as intense parameter checking, means that code written in VB
+executes quite <B>slowly</B> when compared to equivalent algorithms written and
+compiled with, say, Visual C++ or Borland Delphi. So, to actually get on and
+answer the question &quot;<B>Why VB?</B>&quot;, the three simple reasons are:- 
+</P>
+<OL>
+<LI> To be different (there's loads of publicly available Z80 emulation code
+written in C, C++, Assembler for various processors, and Delphi, but nothing
+else, to my knowledge, written in VB!)</LI>
+<LI> To see how fast it would run (and indeed, to see if it would run at all!) 
+</LI>
+<LI>As a learning tool (this was certainly a great learning exercise for me,
+and hopefully the source will be of interest to the proliferation of VB
+programmers in the world, some of whom may not know any other programming
+language).</LI>
+</OL>
+<P>Although this project was originally intended simply as an exercise in
+seeing what was possible with VB, it has gradually become quite a well-featured
+emulator in it's own right. This is quite embarrassing to me, as I really would
+have written it in C or Delphi if I'd have realised people were actually going
+to use it!</P>
+<P><B>Q3. How fast is it?</B><BR>
+Version 1.40, with its support for Spectrum 128K memory paging and full sound
+emulation (beeper and AY-3-8912) and the additional Timex video modes, manages
+full 3.5MHz Spectrum speed on a 266MHz Pentium-MMX when used with a fairly fast
+display card. </P>
+<P>As of version 1.40, I have removed the &quot;USE_WINAPI&quot; compiler
+directive as it was becoming increasingly difficult to maintain source code for
+producing a 100% native VB version (in other words, a version that does not
+explicitly call any Windows API functions itself). With the new features that
+have recently been added, I've decided it's okay just to go ahead and include
+WinAPI function calls in the code although I would discourage this in
+situations where it is possible to use native VB code without any performance
+degradation. I guess this reflects that fact that vbSpec is increasingly being
+used as a &quot;serious&quot; emulator rather than the programmer's folly it
+was originally intended to be.</P>
+<P><B>Q4. What features does it have?</B><BR>
+The Z80 emulation supports all of the undocumented opcodes that are in common
+use, and bits 3 and 5 of the Flags register are correctly emulated (the rhino
+in Ultimate's &quot;Sabre Wulf&quot; walks around properly!). The colour
+display is fully emulated, including bright and flashing attributes, and as of
+v1.40 the display is painted on a scanline-basis so programs which use subtle
+tricks to display more than two colours per attribute square should look right.
+There is full sound emulation, using the Windows waveOut* API functions to
+emulate both the 48K Spectrum's beeper and the 3 channel sound of the 128K
+Spectrum models. Support for loading and saving of .Z80 and .SNA snapshot
+images is included, and .TAP tape images and raw 16K ROM images can also be
+loaded (no patches are made to the ROM by vbSpec, so any image that would work
+with a real Spectrum should work with vbSpec too).</P>
+<P><B>Q5. Can anything be done to make it run faster?</B><BR>
+I've done as much optimization as I can, but I don't doubt that there is some
+room for further improvement. When I released vbSpec v1.00, a number of people
+sent in suggestions for optimizing various parts of the code (most notably
+Miguel Santos, whose suggestions resulted in 2- to 3-fold increase in the
+overall performance of vbSpec!). A lot of these initial optimizations have been
+gradually eaten up by the additional overhead of the new features such as 128K
+paged memory, AY-3-8912 sound, scanline display code, so if anyone has any
+suggestions for further improving the performance without resorting to using
+external libraries, I'd be very pleased to hear about them!</P>
+<P><B>Q6. I think I found a bug! Are you interested?</B><BR>
+Yes, most definitely. If you find a bug, please e-mail the details to me at
+&lt;ccowley@grok.co.uk&gt;. However,
+please note that this is a personal project and I spend at least 80% of my
+working day writing and debugging code and answering e-mail -- in the event
+that I have trouble finding sufficient time or motivating myself to do the same
+thing in my spare time, I hope you'll be able to forgive me. That said, I'll
+try my best to respond to as much vbSpec related mail as I can!</P>
+<P><B>Q7. Are there any plans to add new features to vbSpec?</B><BR>
+I have no firm plans to go on developing vbSpec, but I expect to revisit the
+code from time to time to 'play' with it. Also, if I receive any patches that
+contain interesting new features or optimizations, then I'll almost certainly
+take some time out to add them into my development copy! </P>
+<P><B>Q8. I've just added this cool new feature to vbSpec, will you include it
+in the main distribution?</B><BR>
+For the most part, the answer to this question is &quot;Yes&quot;. But there
+are a few exceptions, the main one being that any new code must <I>work
+reliably</I> and not interfere unduly with the rest of the emulation. If
+possible, please also try to avoid code that relies on third-party components.
+As of vbSpec version 1.20, performance is becoming a limiting factor on adding
+new features. I want to try to keep the minimum required hardware down to a
+266MHz PII, so patches that significantly degrade the overall performance might
+not make it into the main distribution unless I can come up with a way of
+optimizing everything a bit more. </P>
+<P><B>Q9. Are there plans for any other VB emulators?</B><BR>
+I've also written a Sinclair ZX81 emulator, called <A HREF="../vb81/index.html">vb81</A>,
+that uses essentially the same Z80 core as vbSpec. I'd be interested in hearing
+from anyone who is planning to use the Z80 core from vbSpec to produce other VB
+emulators -- Visual Basic GameBoy, Amstrad CPC, and Jupiter ACE emulators would
+be good to see!</P>
+<P><B>Q10. Where can I download games to play on vbSpec?</B><BR>
+<A HREF="http://www.void.demon.nl/spectrum.html">World of Spectrum</A> contains
+a huge searchable archive of Spectrum games and related information. There are
+other sites too, such as <A
+HREF="http://www.spectrumarchive.freeserve.co.uk/">The Spectrum Archive</A>.
+Many of the authors, publishers and copyright holders of original Spectrum
+games have given their permission for their games to be distributed freely for
+use with emulators such as vbSpec. <A HREF="http://www.amstrad.com/">Amstrad
+plc</A>, who bought Sinclair Research Ltd in the 1980s, have kindly given
+permission for the ZX Spectrum ROM images to be distributed with freeware
+emulators such as vbSpec.</P>
+<P><B>Q11. When I load games from TZX tape files, why doesn't the border look
+right?</B><BR>
+For performance reasons, the border in vbSpec is only updated 50 times per
+second. On a real spectrum the border is updated much more frequently to create
+the familiar effect of the border &quot;stripes&quot; that can be seen when a
+program is loading from tape. Don't worry, the game will load into vbSpec
+without problems, despite the non-stripey border!</P>
+<HR>
+<P ALIGN="CENTER"><A HREF="http://www.grok.co.uk/legal.html">Copyright
+&copy;2000-2002 Grok Developments Ltd</A></P>
+</BODY>
+</HTML>
+ 

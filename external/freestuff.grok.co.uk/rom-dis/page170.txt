@@ -1,0 +1,64 @@
+				decimal in x.
+		LD	A,B	Then i is multiplied by
+				10^(-n+7)
+		NEG		This will bring it into medium
+		CALL	2D4F,E-TO-FP	range for printing.
+		JR	2E01,PF-LOOP	Round the loop again to deal
+				with the now medium-sized
+				number.
+
+v.  The integer part of x is now stored in the print buffer in mem-3 and mem-4.
+
+2E6F	PF-MEDIUM	EX	DE,HL	DE now points to i, HL to f.
+		CALL	2FBA,FETCH-TWO	The mantissa of i is now in
+				D',E',D,E.
+		EXX		Get the exchange registers.
+		SET	7,D	True numerical bit 7 to D'.
+		LD	A,L	Exponent byte e of i to A.
+		EXX		Back to the main registers.
+		SUB	+80	True exponent e'=e - 80 hex to
+				A.
+		LD	B,A	This gives the required bit
+				count.
+
+Note that the case where i us a small integer (less than 65536) re-enters here.
+
+2E7B	PF-BITS	SLA	E	The mantissa of i is now rotated
+		RL	D	left and all the bits of i are thus
+		EXX		shifted into mem-4 and each
+		RL	E	byte of mem-4 is decimal
+				adjusted at each shift.
+		RL	D	All four bytes of i.
+		EXX		Back to the main registers.
+		LD	HL,+5CAA	Address of fifth byte of mem-4
+		LD	C,+05	to HL; count of 5 bytes to C.
+2E8A	PF-BYTES	LD	A,(HL)	Get the byte of mem-4.
+		ADC	A,A	Shift it left, taking in the new
+				bit.
+		DAA		Decimal adjust the byte.
+		LD	(HL),A	Restore it to mem-4.
+		DEC	HL	Point to next byte of mem-4.
+		DEC	C	Decrease the byte count by one.
+		JR	NZ,2E8A,PF-BYTES	Jump for each byte of mem-4.
+		DJNZ	2E7B,PF-BITS	Jump for each bit of INT (x).
+
+Decimal adjusting each byte of mem-4 gave 2 decimal digits per byte, there being at most 9 digits. The digits will now be re-packed, one to a byte, in mem-3 and mem-4, using the instruction RLD.
+
+		XOR	A	A is cleared to receive the digits.
+		LD	HL,+5CA6	Source address: first byte of
+				mem-4.
+		LD	DE,+5CA1	Destination: first byte of
+				mem-3.
+		LD	B,+09	There are at most 9 digits.
+		RLD		The left nibble of mem-4 is
+				discarded.
+		LD	C,+FF	FF in C will signal a leading
+				zero, 00 will signal a non-leading
+				zero.
+2EA1	PF-DIGITS	RLD		Left nibble of (HL) to A, right
+				nibble of (HL) to left.
+		JR	NZ,2EA9,PF-INSERT	Jump if digit in A is not zero.
+		DEC	C	Test for a leading zero:
+		INC	C	it will now give zero reset.
+		JR	NZ,2EB3,PF-TEST-2	Jump it it was a leading zero.
+2EA9	PF-INSERT	LD	(DE),A	Insert the digit now.

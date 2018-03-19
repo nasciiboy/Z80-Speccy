@@ -1,0 +1,63 @@
+THE 'PRINT A FLASHING CHARACTER' SUBROUTINE
+The 'error cursor' and the 'mode cursors' are printed using this subroutine.
+
+18C1	OUT-FLASH	EXX		Save the current register.
+		LD	HL,(ATTR-T)	Save the ATTR-T & MASK-T on
+		PUSH	HL	the machine stack.
+		RES	7,H	Ensure that FLASH is
+		SET	7,L	active.
+		LD	(ATTR-T),HL	Use these modified values
+				for ATTR-T & MASK-T.
+		LD	HL,+5C91	This is P-FLAG.
+		LD	D,(HL)	Save P-FLAG also on the
+		PUSH	DE	machine stack.
+		LD	(HL),+00	Ensure INVERSE 0, OVER 0,
+				and not PAPER 9 nor INK 9.
+		CALL	09F4,PRINT-OUT	The character is printed.
+		POP	HL	The former value of P-FLAG
+		LD	(P-FLAG),H	is restored.
+		POP	HL	The former values of ATTR-T
+		LD	(ATTR-T),HL	& MASK-T are also restored
+		EXX		before returning.
+		RET
+
+THE 'PRINT THE CURSOR' SUBROUTINE
+A return is made if it is not the correct place to print the cursor but if it is then either 'C', 'E', 'G', 'K' or 'L' will be printed.
+
+18E1	OUT-CURS	LD	HL,(K-CUR)	Fetch the address of the
+		AND	A	cursor but return if the
+		SBC	HL,DE	correct place is not being
+		RET	NZ	considered.
+		LD	A,(MODE)	The current value of MODE is
+		RLC	A	fetched and doubled.
+		JR	Z,18F3,OUT-C-1	Jump forward unless delaing with
+				Extended mode or Graphics.
+		ADD	A,+43	Add the appropriate offset to
+				give 'E' or 'G'.
+		JR	1909,OUT-C-2	Jump forward to print it.
+18F3	OUT-C-1	LD	HL,+5C3B	This is FLAGS.
+		RES	3,(HL)	Signal 'K-mode'.
+		LD	A,+4B	The character 'K'.
+		BIT	2,(HL)	Jump forward to print 'K'.
+		JR	Z,1909,OUT-C-2	If 'the printing is to be in
+				K-mode'.
+		SET	3,(HL)	The 'printing is to be in L-mode'
+				so signal 'L-MODE'.
+		INC	A	Form the character 'L'.
+		BIT	3,(FLAGS2)	Jump forward if not in
+		JR	Z,1909,OUT-C-2	'C-mode'.
+		LD	A,+43	The character 'C'.
+1909	OUT-C-2	PUSH	DE	Save the DE register pair
+		CALL	18C1,OUT-FLASH	whilst the cursor is printed
+		POP	DE	- FLASHing.
+		RET		Return once it has been done.
+
+Note: It is the action of considering which cursor-letter is to be printed that determines the mode - 'K' vs 'L/C'.
+
+THE 'LN-FETCH' SUBROUTINE
+This subroutine is entered with the HL register pair addressing a system variable - S-TOP or E-PPC.
+The subroutine returns with the system variable holding the line number of the following line.
+
+190F	LN-FETCH	LD	E,(HL)	The line number held by the
+		INC	HL	system variable is collected.
+

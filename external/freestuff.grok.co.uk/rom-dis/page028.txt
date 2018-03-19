@@ -1,0 +1,63 @@
+		INC	BC	Add three bytes - one for
+		INC	BC	the name and two for the
+		INC	BC	'length'.
+		LD	A,(IX-03)	'IX+0E' of the old header
+				gives the name of the array.
+		PUSH	AF	The name is saved whilst the
+		CALL	1655,MAKE-ROOM	appropriate amount of room is
+		INC	HL	made available. In effect 'BC'
+		POP	AF	spaces before the 'new 80-byte'.
+		LD	(HL),A	The name is entered.
+		POP	DE	The 'length' is fetched and
+		INC	HL	its two bytes are also
+		LD	(HL),E	entered.
+		INC	HL
+		LD	(HL),D
+		INC	HL	HL now points to the first
+				location that is to be filled
+				with data from the tape.
+		PUSH	HL	This address is moved to the
+		POP	IX	IX register pair; the carry
+		SCF		flag set; 'data block' is
+		LD	A,+FF	signalled; and the block
+		JP	0802,LD-BLOCK	LOADed.
+
+Now deal with the LOADing of a BASIC program and its variables
+
+0873	LD-PROG	EX	DE,HL	Save the 'destination pointer'.
+		LD	HL,(E-LINE)	Find the address of the
+		DEC	HL	end-marker of the current
+				variables area - the '80-byte'.
+		LD	(X-PTR),IX	Save IX temporarily.
+		LD	C,(IX+0B)	Fetch the 'length' of the
+		LD	B,(IX+0C)	new data block.
+		PUSH	BC	Keep a copy of the 'length'
+		CALL	19E5,RECLAIM-1 whilst the present program and
+		POP	BC	variables areas are reclaimed.
+		PUSH	HL	Save the pointer to the program
+		PUSH	BC	area and the length of the new
+				data block.
+		CALL	1655,MAKE-ROOM	Make sufficient room available
+				for the new program and its
+				variables.
+		LD	IX,(X-PTR)	Restore the IX register pair.
+		INC	HL	The system variable VARS
+		LD	C,(IX+0F)	has also to be set for the
+		LD	B,(IX+10)	new program.
+		ADD	HL,BC
+		LD	(VARS),HL
+		LD	H,(IX+0E)	If a line number was
+		LD	A,H	specified then it too has to
+		AND	+C0	be considered.
+		JR	NZ,08AD,LD-PROG-1	Jump if 'no number'; otherwise
+		LD	L,(IX+0D)	set NEWPPC & NSPPC.
+		LD	(NEWPPC),HL
+		LD	(NSPPC),+00
+
+The data block can now be LOADed.
+
+08AD	LD-PROG-1	POP	DE	Fetch the 'length'.
+		POP	IX	Fetch the 'start'.
+		SCF		Signal 'LOAD'.
+		LD	A,+FF	Signal 'data block' only.
+		JP	0802,LD-BLOCK	Now LOAD it.

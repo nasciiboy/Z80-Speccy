@@ -1,0 +1,59 @@
+If the present character is indeed a binary operator it will be given an operation code in the range +C3 - +CF hex, and the appropriate priority code.
+
+2723	S-OPERTR	LD	B,+00	Original code to BC to index
+		LD	C,A	into table of operators.
+		LD	HL,+2795	The pointer to the table.
+		CALL	16DC,INDEXER	Index into the table.
+		JR	NC,2734,SLOOP	Jump forward if no operation
+				found.
+		LD	C,(HL)	Get required code from the
+				table.
+		LD	HL,+26ED	The pointer to the priority
+				table: i.e. 26ED +C3 gives 27B0
+				as the first address.
+		ADD	HL,BC	Index into the table.
+		LD	B,(HL)	Fetch the appropriate priority.
+
+The main loop of this subroutine is now entered. At this stage there are:
+
+i. A 'last value' on the calculator stack.
+
+ii. The starting priority market on the machine stack below a hierarchy, of unknown size, of function and binary operation codes. This hierarchy may be null.
+
+iii. The BC register pair holding the 'present' operation and priority, which if the end of an expression has been reached will be priority zero.
+
+Initially the 'last' operation and priority are taken off the machine stack and compared against the 'present' operation and priority.
+
+    If the 'present' priority is higher than the 'last' priority then an exit is made from the loop as the 'present' priority is considered to bind tighter than the 'last' priority.
+
+    However, if the present priority is less binding, then the operation specified as the 'last' operation is performed. The 'present' operation and priority go back on the machine stack to be carried round the loop again. In this manner the hierarchy of functions and binary operations that have been queued are dealt with in the correct order.
+
+2734	S-LOOP	POP	DE	Get the 'last' operation and
+				priority.
+		LD	A,D	The priority goes to the A
+				register.
+		CP	B	Compare 'last' against 'present'.
+		JR	C,2773,S-TIGHTER	Exit to wait for the argument.
+		AND	A	Are both priorities zero?
+		JP	Z,0018,GET-CHAR	Exit via GET-CHAR thereby
+				making 'last value' the required
+				result.
+
+Before the 'last' operation is performed, the 'USR' function is separated into 'USR number' and 'USR string' according as bit 6 of FLAGS was set or reset when the argument of the function was stacked as the 'last value'.
+
+		PUSH	BC	Stack the 'present' values.
+		LO	HL,+5C3B	This is FLAGS.
+		LD	A,E	The 'last' operation is compared
+		CP	+ED	with the code for USR, which
+		JR	NZ,274C,S-STK-LST	will give 'USR number' unless
+				modified; jump if not 'USR'.
+		BIT	6,(HL)	Test bit 6 of FLAGS.
+		JR	NZ,274C,S-STK-LST	Jump if it is set ('USR number').
+		LD	E,+99	Modify the 'last' operation
+				code: 'offset' 19, +80 for string
+				input and numerical result
+				('USR string').
+274C	S-STK-LST	PUSH	DE	Stack the 'last' values briefly.
+		CALL	2530,SYNTAX-Z	Do not perform the actual
+		JR	Z,275B,S-SYNTEST	operation if syntax is being
+				checked.

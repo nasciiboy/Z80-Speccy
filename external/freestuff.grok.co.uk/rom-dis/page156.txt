@@ -1,0 +1,60 @@
+		LD	HL,(DEST)	Fetch the pointer to the
+				letter.
+		AND	(HL)	Mark the letter as required.
+				L-STRING is now used to add
+				the new string to the variables
+				area.
+
+
+THE 'L-STRING' SUBROUTINE
+The parameters of the 'new' string are fetched, sufficient room is made available for it and the string is then transferred.
+
+2BC6	L-STRING	PUSH	AF	Save the variable's letter
+		CALL	2BF1,STK-FETCH	Fetch the 'start' and the
+				'length' of the 'new' string.
+		EX	DE,HL	Move the 'start' to HL.
+		ADD	HL,BC	Make HL point 'one-past' the
+				string.
+		PUSH	BC	Save the 'length'.
+		DEC	HL	Make HL point to the end of
+				the string.
+		LD	(DEST),HL	Save the pointer briefly.
+		INC	BC	Allow one byte for the letter
+		INC	BC	and two bytes for the length.
+		INC	BC
+		LD	HL,(E-LINE)	Make HL point to the
+		DEC	HL	'80-bye' at the end of th
+				variables area.
+		CALL	1655,MAKE-ROOM	Now open up the variables area.
+				Note: In effect 'BC' spaces are
+				made before the displaced
+				'80-byte'.
+		LD	HL,(DEST)	Restore the pointer to the
+				end of the 'new' string.
+		POP	BC	Make a copy of the length
+		PUSH	BC	of the 'new' string.
+		INC	BC	Add one to the length in case
+				the 'new' string is a 'null'
+				string.
+		LDDR		Now copy the 'new' string +
+				one byte.
+		EX	DE,HL	Make HL point to the byte
+		INC	HL	that is to hold the high-length.
+		POP	BC	Fetch the 'length'.
+		LD	(HL),B	Enter the high-length.
+		DEC	HL	Back one.
+		LD	(HL),C	Enter the low-length.
+		POP	AF	Fetch the variabl's letter.
+
+
+THE 'L-FIRST' SUBROUTINE
+This subroutine is entered with the letter of the variable, suitably marked, in the A register. The letter overwrites the 'old 80-byte' in the variables area. The subroutine returns with the HL register pair pointing to the 'new 80-byte'.
+
+2BEA	L-FIRST	DEC	HL	Make HL point to the 'old
+				80-byte'.
+		LD	(HL),A	It is overwritten with the
+				letter of the varable.
+		LD	HL,(E-LINE)	Make HL point to the 'new
+				80-byte'.
+		DEC	HL	Finished with all the
+		RET		'newly declared variables'.

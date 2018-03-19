@@ -1,0 +1,53 @@
+		LD	A,D	Fetch the original value.
+		CP	+0A	Only allow PAPER/INK a
+		JR	C,2246,CO-TEMP-9	range of '0' to '9'.
+Report K - Invalid colour
+2244	REPORT	RST	0008,ERROR-1	Call the error handling
+		DEFB	+13	routine.
+Continue to handle PAPER & INK;
+2246	CO-TEMP-9	LD	HL,+5C8F	Prepare to alter ATTR-T,
+				MASK-T & P-FLAG.
+		CP	+08	Jump forward with PAPER/INK
+		JR	C,2258,CO-TEMP-B	'0' to 5'7'.
+		LD	A,(HL)	Fetch the current value of
+		JR	Z,2257,CO-TEMP-A	ATTR-T and use it unchanged,
+				by jumping forward, with
+				PAPER/INK '8'.
+		OR	B	But for PAPER/INK '9' the
+		CPL		PAPER and INK colours
+		AND	+24	have to be black and white.
+		JR	Z,2257,CO-TEMP-A	Jump for black INK/PAPER;
+		LD	A,B	but continue for white INK/
+				PAPER.
+2257	CO-TEMP-A	LD	C,A	Move the value to the C register.
+The mask (B) and the value (C) are now used to change ATTR-T.
+2258	CO-TEMP-B	LD	A,C	Move the value.
+		CALL	226C,CO-CHANGE	Now change ATTR-T as needed.
+Next MASK-T is considered.
+		LD	A,+07	The bits of MASK-T are set
+		CP	D	only when using PAPER/INK
+		SBC	A,A	'8' or '9'.
+		CALL	226C,CO-CHANGE	Now change MASK-T as needed.
+Next P-FLAG is considered.
+		RLCA		The appropriate mask is
+		RLCA		built up in the B register
+		AND	+50	is order to change bits 4 &
+		LD	B,A	6 as necessary.
+		LD	A,+08	The bits of P-FLAG are set
+		CP	D	only when using PAPER/INK
+		SBC	A,A	'9'.
+				Continue into CO-CHANGE to
+				manipulate P-FLAG.
+
+THE 'CO-CHANGE' SUBROUTINE
+This subroutine is used to 'impress' upon a system variable the 'nature' of the bits in the A register, The B register holds a mask that shows which bits are to be 'copied over' from A to (HL).
+226C	CO-CHANGE	XOR	(HL)	The bits, specified by the
+		AND	B	mask in the B register, are
+		XOR	(HL)	changed in the value and the
+		LD	(HL),A	result goes to form the
+				system variable.
+		INC	HL	Move on to address the next
+				system variable.
+		LD	A,B	Return with the mask in the
+		RET		A register.
+FLASH & BRIGHT are handled by the following routine.

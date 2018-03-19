@@ -1,0 +1,64 @@
+0D68	CLS	CALL	0DAF,CL-ALL	The whole of the display is
+				'cleared'.
+0D6E	CLS-LOWER	LD	HL,+5C3C	This is TV-FLAG.
+		RES	5,(HL)	Signal 'do not clear the lower
+				screen after keystroke'.
+		SET	0,(HL)	Signal 'lower part'.
+		CALL	0D4D,TEMPS	Use the permanent values. i.e.
+				ATTR-T is copied from BORDCR.
+		LD	B,(DF-SZ)	The lower part of the screen is
+		CALL	0E44,CL-LINE	now 'cleared' with these values.
+
+With the exception of the attribute bytes for lines '22' & '23' the attribute bytes for the lines in the lower part of the display will need to be made equal to ATTR-P.
+
+		LD	HL,+5AC0	Attribute byte at start of line
+				'22'.
+		LD	A,(ATTR-P)	Fetch ATTR-P.
+		DEC	B	The line counter.
+		JR	0D8E,CLS-3	Jump forward into the loop.
+0D87	CLS-1	LD	C,+20	+20 characters per line.
+0D89	CLS-2	DEC	HL	Go back along the line setting
+		LD	(HL),A	the attribute bytes.
+		DEC	C
+		JR	NZ,0D89,CLS-2
+OD8E	CLS-3	DJNZ	0D87,CLS-1	Loop back until finished.
+
+The size of the lower part of the display can now be fixed.
+
+		LD	(DF-SZ),+02	It will be two lines in size.
+
+It now remains for the following 'house keeping' tasks to be performed.
+
+0D94	CL-CHAN	LD	A,+FD	Open channel 'K'.
+		CALL	1601,CHAN-OPEN
+		LD	HL,(CURCHL)	Fetch the address of the
+		LD	DE,+09F4	current channel and make
+		AND	A	the output address +09F4
+0DA0	CL-CHAN-A	LD	(HL),E	(= PRINT-OUT) and the
+		INC	HL	input address +10A8
+		LD	(HL),D	(= KEY-INPUT).
+		INC	HL
+		LD	DE,+10A8
+		CCF		First the output address
+		JR	C,0DA0,CL-CHAN-A	then the input address.
+		LD	BC,+1721	As the lower part of the
+				display is being handled the
+				'lower print line' will be
+				line '23'.
+		JR	0DD9,CL-SET	Return via CL-SET.
+
+THE 'CLEARING THE WHOLE DISPLAY AREA' SUBROUTINE
+This subroutine is called from; i. the CLS command routine. ii. the main execution routine, and iii. the automatic listing routine.
+
+0DAF	CL-ALL	LD	HL,+0000	The system variable C00RDS
+		LD	(C00RDS),HL	is reset to zero.
+		RES	0,(FLAGS2)	Signal 'the screen is clear'.
+		CALL 0D94,CL-CHAN	Perform the 'house keeping'
+				tasks.
+		LD	A,+FE	Open channel 'S'.
+		CALL	1601,CHAN-OPEN
+		CALL	0D4D,TEMPS	Use the 'permanent' values.
+		LD	B,+18	Now 'clear' the 24 lines
+		CALL	0E44,CL-LINE	of the display.
+		LD	HL,(CURCHL)	Ensure that the current
+		LD	DE,+09F4	output address is +09F4

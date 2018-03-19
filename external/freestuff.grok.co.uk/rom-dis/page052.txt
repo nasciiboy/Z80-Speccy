@@ -1,0 +1,62 @@
+		PUSH	HL	routine is saved on the machine
+				stack.
+		LD	HL,(K-CUR)	The HL register pair is set and
+		RET		an indirect jump made to the
+				required routine.
+
+THE	'EDITING KEYS' TABLE
+
+address	offset	character	address	offset	character
+0FA0	09	EDIT	0FA5	70	DELETE
+0FA1	66	cursor left	0FA6	7E	ENTER
+0FA2	6A	cursor right	0FA7	CF	SYMBOL SHIFT
+0FA3	50	cursor down	0FA8	D4	GRAPHICS
+0FA4	85	cursor up
+
+THE 'EDIT KEY' SUBROUTINE
+When in 'editing mode' pressing the EDIT key will bring down the 'current BASIC line'. However in 'INPUT mode' the action of the EDIT key is to clear the current reply and allow a fresh one.
+
+0FA9	ED-EDIT	LD	HL,(E-PPC)	Fetch the current line number.
+		BIT	5,(FLAGX)	But jump forward if in
+		JP	NZ,1097,CLEAR-SP	'INPUT mode'.
+		CALL	196E,LINE-ADDR	Find the address of the start of
+		CALL	1695,LINE-NO	the current line and hence its
+				number.
+		LD	A,D	If the line number returned is
+		OR	E	zero then simply clear the
+		JP	Z,1097,CLEAR-SP	editing area.
+		PUSH	HL	Save the address of the line.
+		INC	HL	Move on to collect the
+		LD	C,(HL)	length of the line.
+		INC	HL
+		LD	B,(HL)
+		LD	HL,+000A	Add +0A to the length and test
+		ADD	HL,BC	that there is sufficient room
+		LD	B,H	for a copy of the line.
+		LD	C,L
+		CALL	1F05,TEST-ROOM
+		CALL	1097,CLEAR-SP	Now clear the editing area.
+		LD	HL,(CURCHL)	Fetch the current channel
+		EX	(SP),HL	address and exchange it for the
+				address of the line.
+		PUSH	HL	Save it temporarily.
+		LD	A,+FF	Open channel 'A' so that the
+		CALL	1601,CHAN-OPEN	line will be copied to the editing
+				area.
+		POP	HL	Fetch the address of the line.
+		DEC	HL	Goto before the line.
+		DEC	(E-PPC-lo)	Decrement the current line
+				number so as to avoid
+				printing the cursor.
+		CALL	1855,OUT-LINE	Print the BASIC line
+		INC	(E-PPC-lo)	Increment the current line
+				number.
+				Note: The decrementing of the
+				line number does not always
+				stop the cursor from being
+				printed.
+		LD	HL,(E-LINE)	Fetch the start of the line in
+		INC	HL	the editing area and step past
+		INC	HL	the line number and the
+		INC	HL	length to find the address
+		INC	HL	for K-CUR.

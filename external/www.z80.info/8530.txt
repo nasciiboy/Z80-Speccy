@@ -1,0 +1,30 @@
+
+8530, 8531, Z8530, Z8531
+Zilog Serial Comminucations Controller.
+(Z8531 has no synchronous capabilities)
+
+          +--------------+
+       D1 |1    +--+   40| D0
+       D3 |2           39| D2
+       D5 |3           38| D4
+       D7 |4           37| D6
+     /INT |5           36| /RD
+      IEO |6           35| /WR
+      IEI |7           34| A0 A/B
+   /INTAK |8           33| /CE
+      VCC |9           32| A1 D/C
+  /W_REQA |10   Z8530  31| GND
+   /SYNCA |11    SCC   30| /W_REQB
+   /RTxCA |12          29| /SYNCB
+     RxDA |13          28| /RTxCB
+   /TRxCA |14          27| RxDB
+     TxDA |15          26| /TRxCB
+/DTR_REQA |16          25| TxDB
+    /RTSA |17          24| /DTR_REQB
+    /CTSA |18          23| /RTSB
+    /DCDA |19          22| /CTSB
+      CLK |20          21| /DCDB
+          +--------------+
+
+
+

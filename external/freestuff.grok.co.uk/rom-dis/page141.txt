@@ -1,0 +1,64 @@
+		RST	0020,NEXT-CHAR	Get the next character in the
+				BASIC line.
+		JP	2712,S-CONT-2	Jump back to continue
+				scanning.
+
+
+THE 'FUNCTION SKIPOVER' SUBROUTINE
+
+This subroutine is used by FN and by STK-F-ARG to move HL along the DEF FN statement while leaving CM-ADD undisturbed, as it points along the FN statement.
+
+28AB	FN-SKPOVR	INC	HL	Point to the next code in the
+				statement.
+		LD	A,(HL)	Copy the code to A.
+		CP	+21	Jump back to skip over it if it is
+		JR	C,28AB,FN-SKPOVR	a control code or a space.
+		RET		Finished.
+
+
+THE 'LOOK-VARS' SUBROUTINE
+
+This subroutine is called whenever a search of the variables area or of the arguments of a DEF FN statement is required. The subroutine is entered with the system variable CH-ADD pointing to the first letter of the name of the variable whose location is being sought. The name will be in the program area or the work space. The subroutine initially builds up a discriminator byte, in the C register, that is based on the first letter of the variable's name. Bits 5 & 6 of this byte indicate the type of the variable that is being handled.
+
+The B register is used as a bit register to hold flags.
+
+2882	LOOK-VARS	SET	6,(FLAGS)	Presume a numeric variable.
+		RST	0018,GET-CHAR	Get the first character into A.
+		CALL	2C8D,ALPHA	Is it alphabetic?
+		JP	NC,1C8A,REPORT-C	Give an error report if it is not
+				so.
+		PUSH	HL	Save the pointer to the first
+				letter.
+		AND	+1F	Transfer bits 0 to 4 of the letter
+		LD	C,A	to the C register; bits 5 & 7 are
+				always reset.
+		RST	0020,NEXT-CMAR	Get the 2nd character into A.
+		PUSH	HL	Save this pointer also.
+		CP	+28	is the 2nd character a '('?
+		JR	Z,28EF,V-RUN/SYN	Separate arrays of numbers.
+		SET	6,C	Now set bit 6.
+		CP	+24	Is the 2nd character a '$'?
+		JR	Z,28DE,V-STR-VAR	Separate all the strings.
+		SET	5,C	Now set bit 5.
+		CALL	2C88,ALPHANUM	If the variable's name has only
+		JR	NC,28E3,V-TEST-FN	one character then jump
+				forward.
+
+Now find the end character of a name that has more than one character.
+
+2804	V-CHAR	CALL	2C88,ALPHANUM	Is the character alphanumeric?
+		JR	NC,28EF,V-RUN/SYN	Jump out of the loop when the
+				end of the name is found.
+		RES	6,C	Mark the discriminator byte.
+		RST	0020,NEXT-CHAR	Get the next character.
+		JR	28D4,V-CHAR	Go back to test it.
+
+Simple strings and arrays of strings require that bit 6 of FLAGS is reset.
+
+28DE	V-STR-VAR	RST	0020,NEXT-CHAR	Step CH-ADD past the '$'.
+		RES	6,(FLAGS)	Reset the bit 6 to indicate a
+				string.
+
+If DEFADD-hi is non-zero, indicating that a 'function' (a 'FN') is being evaluated, and if in 'run-time', a search will be made of the arguments in the DEF FN statement.
+
+28E3	V-TEST-FN	LD	A,(DEFADD-hi)	Is DEFADD-hi zero?

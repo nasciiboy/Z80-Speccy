@@ -1,0 +1,853 @@
+
+                            NiCd Battery FAQ V1.00
+                                       
+   Contents:
+   
+     * Chapter 1) Some Ramblings About NiCd Batteries, by Ken A.
+       Nishimura
+     * 1.1) About the Author
+     * 1.2) Legal Stuff and Disclaimer
+     * 1.3) Credo #1: Charge control is the key to battery management
+     * 1.4) How does a Ni-Cd battery work?
+     * 1.5) OK, so what happens when cells are charged?
+     * 1.6) OK, so what's so tricky?
+     * 1.7) OK, so it looks like batteries are well protected. Now what?
+     * 1.8) Credo #2: Heat is the enemy of batteries
+     * 1.9) What are battery manufacturers doing to prevent damage from
+       overcharging?
+     * 1.10) How about those high-temp batteries?
+     * 1.11) What about those super-high capacity cells?
+     * 1.12) Does the memory effect exist?
+     * 1.13) Summary
+     * 1.14) OK, so I need to "properly" charge cells. How do I do that?
+     * 1.15) I've seen terminology like "C/n" where n is a number. What
+       gives?
+     * 1.16) So, what's the right charge current?
+     * 1.17) You mentioned cell reversal. What is that, and why is it so
+       bad?
+     * 1.18) Credo #3: Take care of your cells, and they will take care
+       of you
+     * 1.19) OK, my cells died. I was nice to them, what happened?
+     * 1.20) I've seen people talk about zapping cells to revive them
+     * 1.21) How about self-discharge?
+     * 1.22) What about NiMH cells?
+     * 1.23) What if I want to learn even more about NiCds and other
+       batteries?
+     * Chapter 2) General Electric's tech. note regarding memory, by Bob
+       Myers KC0EW
+     * Chapter 3) More on NiCd dealings, by Paul Timmerman
+     * 3.1) About the Author
+     * 3.2) NiCd 'memory' and more
+       
+   
+   [Document Version: 1.01] [Last Updated: 5/95]
+   
+     _________________________________________________________________
+                                      
+      Chapter 1) Some Ramblings About NiCd Batteries, by Ken A. Nishimura
+                                       
+     _________________________________________________________________
+                                      
+1.1) About the Author
+
+   Some Ramblings About NiCd Batteries
+   
+   Author: Ken A. Nishimura (KO6AF)
+   
+   I have decided to write this diatribe due to the continuing Ni-Cd
+   battery saga. Yes, batteries are LOW tech -- they can't compare to the
+   bells and whistles of our latest HTs, but... your new HT is but a
+   paperweight (albeit an expensive one) without power from your
+   batteries. This is not a response to any particular prior post, and is
+   unsolicited, so in short, I'm not flaming anyone.... But, I thought it
+   may be useful, so, without further ado, let us take a more careful
+   look into NiCd battery management.
+   
+   Note:
+   
+    1. The stuff below glosses over some of the more technical nitty
+       gritty details. I wanted it to be shorter than 50K Bytes!
+    2. I actively solicit corrections, both technical and editorial. If
+       you have information contrary to that presented below, please let
+       me know. Flames, on the other hand, are summarily disregarded, as
+       usual.
+       
+   
+     _________________________________________________________________
+                                      
+1.2) Legal Stuff and Disclaimer
+
+   Panasonic, Sanyo, and Millenium are registered trademarks of their
+   respective holders. This document is not intended to promote a
+   particular manufacturer or product. Material contain herein is
+   believed to be correct, but the author cannot be held responsible for
+   error, either editorial or material contained within. Use of the
+   information above is at the sole risk of the reader. Permission
+   granted to use any of the material above, provided this disclaimer is
+   preserved in its entirety.
+   
+     _________________________________________________________________
+                                      
+1.3) Credo #1: Charge control is the key to battery management
+
+   More batteries are destroyed or damaged by bad charging techniques
+   than all other causes combined. Once a battery reaches full charge,
+   the charging current has to go somewhere -- most often, generating
+   heat and gases. Both are bad for batteries.
+   
+     _________________________________________________________________
+                                      
+1.4) How does a Ni-Cd battery work?
+
+   Let us answer this with another question. How does a electrochemical
+   cell work?
+   
+   First, a bit of nomenclature. A cell is a single electrochemical
+   device with a single anode and a single cathode. A battery is a
+   collection of cells, usually connected in series to obtain a higher
+   terminal voltage.
+   
+   Batteries, whether they are primary (use once) or secondary
+   (rechargeable) are devices which convert chemical energy into
+   electrical energy. In the case of the latter, they can take electrical
+   energy and store it as chemical energy for later use.
+   
+   The key to electrochemistry are the processes of oxidation and
+   reduction. Remember the phrase" "LEO (the lion) goes GER (grr??) " --
+   Lose Electrons Oxidation -- Gain Electrons Reduction. When one
+   oxidizes a material, it gives up electrons it becomes more positively
+   charged, or enters a higher oxidation state. Likewise, when one
+   reduces a material, one is adding electrons to it and either making it
+   negatively charged or reducing its oxidation state.
+   
+   Now, one can make a cell using two materials, say A and B and
+   immersing them in a solution which can conduct ions, called an
+   electrolyte. (An ion is a charged atom or radical of a molecule
+   capable of transferring electrical charge). Now, let us say that
+   material A is easily oxidized -- it likes to lose electrons, while B
+   is a material that likes to be reduced. When these two materials are
+   immersed in an electrolyte, and a circuit is completed from A to B, A
+   is oxidized and electrons are released to flow to the circuit. After
+   performing electrical work, the electrons flow into B, where B is
+   reduced. The circuit from B to A is completed by the flow of ions in
+   the electrolyte. A secondary cell can be reversed by forcing electrons
+   into A, and reducing the oxidized A to regain unoxidized A for use
+   again.
+   
+   This, of course, is an oversimplified view, as only certain
+   combinations of materials and electrolytes provides useful and
+   practical batteries.
+   
+   Oh, one more bit of nomenclature: The cathode is where reduction takes
+   place, and the anode is where oxidation takes place. So, in a battery
+   which is producing current, the positive terminal is the cathode, and
+   the negative terminal is the anode. Yes, this is counterintuitive from
+   our understanding of diodes, where the cathode is negative with
+   respect to the anode...
+   
+   Now, the NiCd system itself:
+   
+   When the cell is fully charged:
+   
+   The cathode is composed of Nickelic Hydroxide.
+   
+   Now, nickel is one of those elements that has multiple oxidation
+   states -- it can lose a different number of electrons per atom,
+   depending on how hard it is coerced. Nickel is usually found with
+   oxidation states of 0 (free metal), +2, +3 and +4. The +2 state is
+   referred with a -ous suffix, while the +3 and +4 states are referred
+   with a -ic suffix. So, nickelic hydroxide is really NiOOH (the nickel
+   has a charge of +3) or
+
+Ni(OH) (the nickel has a charge of +4)
+      4
+
+   
+   The anode is composed of free cadmium metal (zero oxidation).
+   
+   The electrolyte is usually a solution of potassium hydroxide (KOH).
+   
+   When one connects a load to the cell, as explained earlier, the anode
+   is oxidized and the cathode is reduced. Electrons leave the anode
+   where the cadmium is oxidized and forms:
+   
+Cd(OH) , plus 2 free electrons.
+      2
+
+   
+   These two electrons go to the cathode where they reduce the nickelIC
+   hydroxide to form nickelOUS hydroxide or:
+
+Ni(OH) (where the nickel has
+      2
+
+   
+   a charge of +2)
+   
+   This reaction can take place until the materials are exhausted. In
+   theory, cells are manufactured so that both anode and cathode are
+   spent at roughly equal rates.
+   
+     _________________________________________________________________
+                                      
+1.5) OK, so what happens when cells are charged?
+
+   Well, in a nutshell, the inverse of the discharge. To charge, one is
+   forcing current back into the cell (opposite of discharge current).
+   Here, electrons are being taken out of the positive terminal, and
+   forced into the negative terminal. This means that the material at the
+   positive terminal is being oxidized (hence is now the anode --
+   confusing, eh?) and material at the negative terminal is being reduced
+   (now the cathode).
+   
+   In the NiCd system, the cadmium hydroxide is being re-converted into
+   cadmium, and the nickelous hydroxide is being re-converted to nickelic
+   hydroxide.
+   
+   Note that the electrolyte in both charge and discharge is a means to
+   move the hydroxyl (OH-) ions around. Unlike the lead-acid system, the
+   electrolyte really doesn't change in composition too much between the
+   charged and discharged state.
+   
+     _________________________________________________________________
+                                      
+1.6) OK, so what's so tricky?
+
+   The easy part of charging is reconverting the spent material on the
+   plates to the charged condition. The hard part is knowing when to
+   stop. Let us take a moment to think about what happens when we
+   overcharge the battery. Once all the nickelous hydroxide is converted
+   into nickelic hydroxide, and in theory all the cadmium hydroxide is
+   converted into cadmium, the charging current has to go somewhere. As
+   the energy of the charging current cannot go into more chemical
+   energy, it goes into splitting water (water is still the major
+   constituent of the electrolyte). Just like the age old chemistry
+   experiment of splitting water into hydrogen and oxygen, a fully
+   charged NiCd cell does the same thing. You are forcing oxidation at
+   the positive terminal and reduction at the negative. When one oxidizes
+   water (actually the OH-) ion, one produces oxygen. Likewise, at the
+   negative terminal (now the cathode), one produces hydrogen.
+   
+   This of course is bad. Oxygen + hydrogen = BOOM. Cell manufacturers,
+   or at least their lawyers, frown on this from happening. So, they
+   cheat. During manufacture, they deliberately oversize the negative
+   plate, and they partially discharge it. That is, they put a fully
+   charged positive plate, but put a slightly discharged, but bigger
+   plate of cadmium in. The amount of free cadmium in the oversized plate
+   is matched to discharge in step with the amount of nickelic hydroxide
+   provided in the positive plate.
+   
+   Now consider what happens as full charge is achieved. Oxidation of
+   water starts at the anode, but since the cathode is oversized, and has
+   excess hydroxide, the current continues to produce cadmium metal
+   instead of hydrogen. At the same time, the separator (the material
+   used to prevent the plates from shorting) is designed to allow oxygen
+   gas to diffuse through, from the positive to the negative plate. The
+   free oxygen then oxidizes the cadmium metal to form more cadmium
+   hydroxide to prevent hydrogen from being formed. Voila -- a safe
+   battery.
+   
+     _________________________________________________________________
+                                      
+1.7) OK, so it looks like batteries are well protected. Now what?
+
+   Not so fast..... this scheme will work only as long as the
+   overcharging current is limited to a value such that the rate of
+   oxygen liberation at the anode is less than or equal to the rate of
+   diffusion across the separator. If the overcharging current is too
+   high, excess oxygen is produced at the anode, and since not enough
+   oxygen can diffuse across to make up for the reduction at the cathode,
+   the excess cadmium hydroxide is used up. Then, hydrogen is formed.
+   This leads to a dangerous situation, due to both fire and
+   overpressure. Cells are designed to vent when this condition occurs,
+   releasing the excess hydrogen and oxygen to the air before really bad
+   things happen. While this may keep one's cells from blowing up, it
+   does damage them, since one is losing material from one's cell. As one
+   loses water, it upsets the chemical balance inside the cell -- lose
+   enough water, and it stops working.
+   
+   Another problem is that the process of generating oxygen, and
+   recombining it at the cathode generates heat. With a moderate amount
+   of current, the cell temperature can rise considerably, to 50 or 60
+   degrees C. If after charging, the batteries are hot, then you have
+   overcharged them -- slap yourself on your wrist...
+   
+     _________________________________________________________________
+                                      
+1.8) Credo #2: Heat is the enemy of batteries
+
+   A NiCd stored, used, or charged under high temperature conditions will
+   die an early death. Heat causes the separator to weaken, the seals to
+   weaken, and greatly accelerates changes in the plate material, some of
+   which cause the dreaded memory effect.
+   
+   So even though the cells may not vent, the heat by-product is wearing
+   down the cells. Specifically, hydrolysis or degradation of the
+   separator material, usually polyamide, is greatly accelerated at high
+   temperatures. This leads to premature cell failure (see below).
+   
+     _________________________________________________________________
+                                      
+1.9) What are battery manufacturers doing to prevent damage from overcharging?
+
+   Quite a lot. The demand for rapid charging has lead to a great
+   increase in overcharging abuse. Most all NiCd cells can be rapid
+   charged. The trick is to stop charging when it is fully charged. The
+   so called "rapid charge" type of cells just incorporate protection
+   against overcharging at high currents. Most often, this is done with
+   activated carbon inserted in the cell to promote the collection of
+   oxygen and to deliver it to the cathode for recombination. By
+   increasing the rate of oxygen transport, one is increasing the ability
+   of the cell to resist venting. Note however, that heat is still
+   generated.
+   
+   The price one pays for this is reduced capacity. Everything takes
+   space in the cell, and space for carbon means less space for active
+   material. Also, there have been some indications that carbon can cause
+   the cadmium metal to corrode, possibly leading to a shorter life.
+   
+     _________________________________________________________________
+                                      
+1.10) How about those high-temp batteries?
+
+   There are ways to make NiCd cells more resistant to the damaging
+   effects of heat. Mainly, using polypropylene separators and changing
+   the electrolyte to sodium hydroxide makes the cells more durable under
+   high temperatures. However, the cost is higher, and the internal
+   resistance is raised, making high current discharge more difficult.
+   Unless one knows that cells will be used at high temperatures, don't
+   bother -- learn to take care of the cells to avoid overheating them.
+   
+     _________________________________________________________________
+                                      
+1.11) What about those super-high capacity cells?
+
+   Yup, the manufacturers are in a numbers game. It used to be that AA
+   cells were 450 mAh. Then came 500, then 600 mAh. Now, 700, 800 and
+   even 900 mAh cells are available. Next year, Sanyo will introduce a
+   950 mAh cell. OK, so what's going on? Well, the highest capacity cells
+   use foamy or spongy backing material for their plates. This allows
+   packing more active material into the plates, but the cost is higher
+   resistance. Recall that one of the great virtues of NiCds is their low
+   internal resistance -- this allows large discharge currents for
+   transmitting, for example.
+   
+   So far, the highest capacity sintered plate (best for low resistance)
+   cell I have seen is the Sanyo KR-800 cell, rated at 800 mAh.
+   
+   The Panasonic 900 mAh cell is of the foam type, and may work for a
+   specific application, but expect higher resistance. I also suspect
+   (but am not sure) that the Millenium cells are also foam type. For
+   most consumer applications, the internal resistance isn't an issue --
+   for high power transmitting (e.g. more than 1A of current), it can be
+   a concern.
+   
+     _________________________________________________________________
+                                      
+1.12) Does the memory effect exist?
+
+   <Flame shields on> YES
+   
+   Just as everyone is running around and saying that the memory effect
+   is a myth, here I am, saying that it is true. OK, so, why is this?
+   First of all, the term memory effect is quite unscientific. People
+   tend to attribute any failure of a NiCd to memory.
+   
+   Let us define memory as the phenomenon where the discharge voltage for
+   a given load is lower than it should be. This can give the appearance
+   of a lowered capacity, while in reality, it is more accurate to term
+   it voltage depression.
+   
+   Memory is also hard to reproduce, which makes it hard to study.
+   Originally, memory effect was seen in spacecraft batteries subjected
+   to a repeated discharge/charge cycle that was a fixed percentage of
+   total capacity (due to the earth's shadow). After many cycles, when
+   called upon to provide the full capacity, the battery failed to do so.
+   Since we aren't in space, the above is not really relevant...
+   
+   Let us look at various causes of "memory" or voltage depression.
+   
+   Memory can be attributed to changes in the negative or cadmium plate.
+   Recall that charging involves converting
+   
+Cd(0H) to Cd metal.
+      2
+
+   
+   Ordinarily, and under moderate charging currents, the cadmium that is
+   deposited is microcrystalline (i.e. very small crystals). Now,
+   metallurgical thermodynamics states that grain boundaries (boundaries
+   between the crystals) are high energy regions, and given time, the
+   tendency of metals is for the grains to coalesce and form larger
+   crystals. This is bad for the battery since it makes the cadmium
+   harder to dissolve during high current discharge, and leads to high
+   internal resistance and voltage depression.
+   
+   The trick to avoiding memory is avoiding forming large crystal
+   cadmium. Very slow charging is bad, as slow growth aids large crystal
+   growth (recall growing rock candy). High temperatures are bad, since
+   the nucleation and growth of crystals is exponentially driven by
+   temperature. The problem is that given time, one will get growth of
+   cadmium crystals, and thus, one needs to reform the material. Partial
+   cycling of the cells means that the material deep with the plate never
+   gets reformed. This leads to a growth of the crystals. By a proper
+   execution of a discharge/charge cycle, one destroys the large crystal
+   cadmium and replace it with a microcrystalline form best for
+   discharge.
+   
+   This does NOT mean that one needs to cycle one's battery each time it
+   is used. This does more harm than good, and unless it is done on a per
+   cell basis, one risks reversing the cells and that really kills them.
+   Perhaps once in a while, use the pack until it is 90% discharged, or
+   to a cell voltage of 1.0V under light load. Here, about 95% of the
+   cells capacity is used, and for all intensive purposes, is discharged.
+   At this point, recharge it properly, and that's it.
+   
+   The more common "memory effect" isn't memory at all, but voltage
+   depression caused by overcharging. Positive plate electrochemistry is
+   very complicated, but overcharging changes the crystal structure of
+   the nickelic hydroxide from beta-Nickelic Hydroxide to gamma-Nickelic
+   hydroxide. The electrochemical potential of the gamma form is about 40
+   to 50 mV less than the beta form. This results in a lower discharge
+   voltage. In a six cell (7.2v) pack, this means a loss of 300 mV.
+   Trick? Don't overcharge. Leaving cells on a trickle charger encourages
+   formation of gamma nickelic hydroxide. Expect the cells to discharge
+   at a lower voltage.
+   
+     _________________________________________________________________
+                                      
+1.13) Summary
+
+     * DON'T deliberately discharge the batteries to avoid memory
+     * DO let the cells discharge to 1.0V/cell on occasion through normal
+       use.
+     * DON'T leave the cells on trickle charge for long times, unless
+       voltage depression can be tolerated.
+     * DO protect the cells from high temperature both in charging and
+       storage.
+     * DON'T overcharge the cells. Use a good charging technique.
+     * DO choose cells wisely. Sponge/foam plates will not tolerate high
+       charge/discharge currents as well as sintered plate.
+       
+   
+     _________________________________________________________________
+                                      
+1.14) OK, so I need to "properly" charge cells. How do I do that?
+
+   There are many methods of charging. One is trickle or the old 15 hour
+   method. This involves using a current of about 50 mA (for AA cells)
+   and leaving them on charge for 15 hours. At this current level, oxygen
+   diffusion is more than enough to take care of the excess current once
+   full charge is achieved. Of course, one runs the risk of voltage
+   depression due to overcharge.
+   
+   The best method is the so called delta-V method. If one plots the
+   terminal voltage of the cell during a charge with a constant voltage,
+   it will continue to rise slowly as charging progresses. At the point
+   of full charge, the cell voltage will drop in a fairly short time. The
+   amount of drop is small, about 10 mV/cell, but is distinctive. There
+   are circuits out there built specifically to look for this. The Maxim
+   MAX712 and 713 ICs are ones that come to mind now. This method is
+   expensive and tedious, but gives good reproducible results. There is a
+   danger in this though. In a battery with a bad cell this delta - V
+   method may not work, and one may end up destroying all the cells, so
+   one needs to be careful. If one ends up putting in more than double
+   the charge capacity of the cell, then something is wrong.
+   
+   Another cheap way is to measure the cell temperature. The cell
+   temperature will rise steeply as full charge is reached. When the cell
+   temperature rises to 10 degrees C or so above ambient, stop charging,
+   or go into trickle mode.
+   
+   Whatever method one chooses, a failsafe timer is a requirement with
+   high charge currents. Don't let more than double the cell capacity of
+   charge current flow, just in case. (i.e. for a 800 mAh cell, no more
+   than 1600 mAh of charge).
+   
+     _________________________________________________________________
+                                      
+1.15) I've seen terminology like "C/n" where n is a number. What gives?
+
+   This is a method of expressing current as a fraction of the Ah rating
+   of a cell. Simply, a 100 mA current means much more to a small N cell
+   than to a large D cell. So, rather than use absolute units of amperes,
+   cell manufacturers often use fractions of cell capacity, or C. A
+   typical good AA cell has a capacity of 700 mAh, so C = 700 mA. A
+   current of C/10 is therefore 70 mA, while C/2 is 350 mA.
+   
+     _________________________________________________________________
+                                      
+1.16) So, what's the right charge current?
+
+   Depends. If using an unregulated charger -- one that doesn't do any
+   detection of full charge, then one must restrict your charge current
+   to the overcharge capacity of your cell. All NiCd cells I have seen
+   can handle C/10 (approx. 50 mA for AA cell) indefinitely without
+   venting. This is not to say that one won't get voltage depression, but
+   rather that one won't destroy the cell(s).
+   
+   If one wants to get a bit more aggressive, a C/3 charge will recharge
+   the cells in about 4 hours, and at this rate, most cells will handle a
+   bit of overcharge without too much trouble. That is, if one catches
+   the cells within an hour of full charge, things should be OK. No
+   overcharge is best of course.
+   
+   Only with automatic means of full charge detection should one use
+   charge currents above C/2. At this current level and above, many cells
+   can be easily damaged by overcharging. Those that have oxygen
+   absorbers may not vent, but will still get quite hot.
+   
+   With a good charge control circuit, charge currents in excess of C
+   have been used -- the problem here becomes reduced charge efficiency
+   and internal heating from ohmic losses. Unless one is in a great
+   hurry, avoid rates greater than C.
+   
+     _________________________________________________________________
+                                      
+1.17) You mentioned cell reversal. What is that, and why is it so bad?
+
+   In a battery, not all cells are created equal. One will be weaker than
+   the others. So, as the battery is discharged, the weakest cell will
+   use up all its active material. Now, as discharge continues, the
+   current through the dead cell becomes a charging current, except that
+   it is reversed. So, now reduction is occurring at the positive
+   terminal. As there is no more nickelic hydroxide, it reduces the
+   water, and produces hydrogen. Cell pressure builds, and it vents. The
+   cell has lost water and the life of the cell has been shortened
+   
+   This is the big danger of battery cycling to prevent memory.
+   Invariably, unless one is very careful, one ends up reversing a cell.
+   It does much more harm than the cycling does good. Also, keep in mind
+   that cells to have a finite life. Each cycle is a bit of life.
+   
+     _________________________________________________________________
+                                      
+1.18) Credo #3: Take care of your cells, and they will take care of you
+
+   I have a set of cells from 1981 that are still working. Sintered
+   plate, 450 mAh old technology -- originally trickle charged, now rapid
+   charged many times using a delta-V technique.
+   
+     _________________________________________________________________
+                                      
+1.19) OK, my cells died. I was nice to them, what happened?
+
+   All good things must come to an end. No matter how well one takes care
+   of the cells, they will eventually die. There are two main reasons
+   cells fail, other than abuse. One is separator failure, and the other
+   is degradation of the active material. The first is far more common,
+   and the result is a shorted cell. Every time a cell is charged, the
+   active material is redeposited on the plates. Ideally, this occurs
+   uniformly across the surface of the plate.
+   
+   However, in reality, there will be bumps and valleys. When there are
+   bumps on both the positive and negative plates are adjacent, separated
+   only by the separator, the resistance between those two points is
+   slightly less than in other regions of the cell. So, the current
+   density there rises. This means that more material is deposited there,
+   contributing to even more "bumpiness". In reality, needles called
+   dendrites form, and given time, they can force themselves through the
+   separator to short the cell.
+   
+   A cell that appears to self-discharge in a couple of days has dendrite
+   problems, and will soon completely short out. Plan to replace the
+   cell.
+   
+   Degradation of the active plate material is just a normal aging
+   process of cycling. Both of these mechanisms are very good reasons to
+   avoid cycling the cells after each use. Cells should live to about
+   1000 cycles if treated properly. Anything over that is gravy.
+   
+     _________________________________________________________________
+                                      
+1.20) I've seen people talk about zapping cells to revive them
+
+   Yup -- a quick fix it. When cells short due to dendrites, the piece of
+   material that is actually shorting the cell is very thin. So, by
+   forcing a huge impulse of current into the cell, one can vaporize the
+   dendrite -- sort of blowing a fuse.
+   
+   This works, and can revive an otherwise shorted cell. However, it is a
+   stopgap measure at best. First, the fact that one dendrite has formed
+   means that another is not too far behind. Second, the material that
+   was vaporized has now permeated the separator material, forming a
+   resistor that shorts the plates. The cell may no longer be shorted,
+   but will still have a poor charge retention.
+   
+   Besides, unless done properly, this can be dangerous as large currents
+   are necessary.
+   
+     _________________________________________________________________
+                                      
+1.21) How about self-discharge?
+
+   Yes, NiCds have a bad habit of going dead when you just leave them.
+   Fortunately you can recharge them. The current cells discharge about 1
+   percent a day, maybe a bit less. Expect them to be mostly flat after 3
+   months. Unfortunately, the so called 15 hour trickle chargers more
+   than make up for self-discharge. In fact most of the current goes to
+   making oxygen, not making up for self-discharge. If you want to make
+   something to keep your cells from self-discharging, make a 1 to 2 mA
+   current source. That should more than overcome self-discharge.
+   
+     _________________________________________________________________
+                                      
+1.22) What about NiMH cells?
+
+   NiMH or nickel metal-hydride cells are a promising alternative to
+   NiCds. They use hydrides (metals capable of storing hydrogen) as the
+   negative material in lieu of cadmium. They have higher capacity for
+   the same size cell, and don't use toxic cadmium. They also are
+   advertised as not suffering from memory.
+   
+   The downside: They are expensive (all new technology is). They have a
+   horrible self-discharge rate (I have measured between 3 to 10 percent
+   per day -- useless after 1 month). They are trickier to charge. Delta
+   V works, but the voltage drop is very small (2.5 mV/cell). Better to
+   charge them to a point where the voltage stops rising. And, yes, the
+   same thing goes with hydrides as with cadmium. They can suffer from
+   memory, though it is much harder to see than in NiCds. Expect to see a
+   bit less touting of the "memory free" operation of NiMH cells in the
+   future.
+   
+     _________________________________________________________________
+                                      
+1.23) What if I want to learn even more about NiCds and other batteries?
+
+   There are several good texts on batteries. One is quite new and
+   contains fairly contemporary material:
+   
+     * Maintenance-Free Batteries by D. Berndt,
+       Research Studies Press, Ltd.,
+       Taunton, Somerset, England
+       in conjunction with J. Wiley & Sons,
+       New York, 1993. ISBN 0-86380-143-9.
+       
+   
+     _________________________________________________________________
+                                      
+ Chapter 2) General Electric's tech. note regarding memory, by Bob Myers KC0EW
+                                       
+   From General Electric's tech. note regarding memory
+   (posted without permission and any errors are my own):
+   
+   
+          "Among the many users of batteries in both the industrial and
+          consumer sectors, the idea of a memory phenomenon in
+          nickel-cadmium batteries has been widely misused and
+          understood. The term 'memory' has become a catch-all 'buzzword'
+          that is used to describe a raft of application problems, being
+          most often confused with simple voltage depression.
+          
+          To the well informed, however, 'memory' is a term applied to a
+          specific phenomenon encountered very infrequently [emphasis
+          mine - RLM] in field applications. Specifically, the term
+          'memory' came from an aerospace nickel-cadmium application in
+          which the cells were repeatedly discharged to 25% of available
+          capacity (plus or minus 1%) by exacting computer control, then
+          recharged to 100% capacity WITHOUT OVERCHARGE [emphasis in the
+          original]. This long term, repetitive cycle regime, with no
+          provisions for overcharge, resulted in a loss of capacity
+          beyond the 25% discharge point. Hence the birth of a "memory"
+          phenomenon, whereby nickel-cadmium batteries purportedly lose
+          capacity if repeatedly discharged to a specific level of
+          capacity.
+          
+          The 'memory' phenomenon observed in this original aerospace
+          application was eliminated by simply reprogramming the computer
+          to allow for overcharging. [Note that no mention is made of
+          adding an intentional *discharge* to clear the problem - RLM]
+          In fact, 'memory' is always a completely reversible condition;
+          even in those rare cases where 'memory' cannot be avoided, it
+          can easily be erased. Unfortunately, the idea of memory-related
+          loss of capacity has been with us since. Realistically,
+          however, 'memory' CANNOT exist if ANY ONE of the following
+          conditions holds:
+          
+         1. Batteries achieve full overcharge.
+         2. Discharge is not exactly the same each cycle - plus or minus
+            2-3%
+         3. Discharge is to less than 1.0 volt per cell.
+            
+          
+          Remember, the existence of any ONE of these conditions
+          eliminates the possibility of 'memory'. GE has not verified
+          true 'memory' in any field application with the single
+          exception of the satellite application noted above. Lack of
+          empirical evidence notwithstanding, 'memory' is still blamed
+          regularly for poor battery performance that is caused by a
+          number of simple, correctable application problems."
+          
+   
+   [End of quote from GE tech. note]
+   
+   This note goes on to list the following as the most common causes of
+   application problems wrongly attributed to 'memory':
+   
+    1. Cutoff voltage too high - basically, since NiCds have such a flat
+       voltage vs. discharge characteristic, using voltage sensing to
+       determine when the battery is nearly empty can be tricky; an
+       improper setting coupled with a slight voltage depression can
+       cause many products to call a battery "dead" even when nearly the
+       full capacity remains usable (albeit at a slightly reduced
+       voltage).
+    2. High temperature conditions - NiCds suffer under high-temp
+       conditions; such environments reduce both the charge that will be
+       accepted by the cells when charging, and the voltage across the
+       battery when charged (and the latter, of course, ties back into
+       the above problem).
+    3. Voltage depression due to long-term overcharge - Self-explanatory.
+       NiCds can drop 0.1-0.15 V/cell if exposed to a long-term (i.e., a
+       period of months) overcharge. Such an overcharge is not unheard-of
+       in consumer gear, esp. if the user gets in the habit of leaving
+       the unit in a charger of simplistic design (but which was intended
+       to provide enough current for a relatively rapid charge). As a
+       precaution, I do NOT leave any of my NiCd gear on a charger longer
+       than the recommended time UNLESS the charger is specifically
+       designed for long-term "trickle charging", and explicitly
+       identified as such by the manufacturer.
+    4. There are a number of other possible causes listed in a
+       "miscellaneous" category; these include -
+          + Operation below 0 deg. C
+          + High discharge rates (above 5C) in a battery not specifically
+            designed for such use
+          + Inadequate charging time or a defective charger
+          + One or more defective or worn-out cells (NiCds DO have a
+            finite life; they won't keep charging and discharging FOREVER
+            no matter how well we baby them.)
+       
+   
+   To close with one more quote from the GE note:
+   
+   
+          "To recap, we can say that true 'memory' is exceedingly rare.
+          When we see poor battery performance attributed to 'memory', it
+          is almost always certain to be a correctable application
+          problem. Of the...problems noted above, Voltage Depression is
+          the one most often mistaken for 'memory'.....
+          
+   
+     _________________________________________________________________
+                                      
+              Chapter 3) More on NiCd dealings, by Paul Timmerman
+                                       
+     _________________________________________________________________
+                                      
+3.1) About the Author
+
+   Author: Paul Timmerman
+   Posted to: sci.chem.electrochem
+   E-Mail: ptimmerm@mashtun.jpl.nasa.gov or
+   paul.j.timmerman@jpl.nasa.gov
+   
+   This has been an interesting thread, but one which took some slightly
+   wrong turns. I hate to sound like a self proclaimed expert, but I will
+   anyhow. NASA has paid me for the last 5 years to study and model
+   Nickel-Cadmium batteries. Check out my battery modeling home page if
+   you care to, at:
+   
+   http://mashtun.jpl.nasa.gov/section342.html
+   
+     _________________________________________________________________
+                                      
+3.2) NiCd 'memory' and more
+
+   [...] stated that the "memory" effect was not caused by shallow
+   discharges, but by poor charging practices. Well, this is correct in
+   that most commerical apps have cheap constant current chargers, and
+   people forget to unplug them. However, with the most sophisicated
+   chargers, and repetative cycling, a noticable voltage plateau does
+   indeed develope, and it occurs at both electrodes. (I have the data)
+   The cadmium electrode is said to develope a cadmium/nickel alloy with
+   a smaller reversible potential. The positive electrode is more
+   complex. The formation of the higher valence Ni+3 (gamma) phase
+   material seems to produce marked semicondutor phenonenon, which can
+   lead to depletion of the charge carrier (holes?). In this case the
+   positive electrode potential can drop down to the reversible potential
+   for oxygen. If this happens any oxygen in the cell, it can reconbine
+   electrochemcially at the positive, creating a mixed potenital which is
+   seen as such a plateau. Both oxygen build up and gamma phase
+   acculation are often the result of overcharging, but will happen too
+   with "good" charging paractices, but more slowely.
+   
+   Getting back to the origninal question, is reconditioning useful. The
+   answer is definitely a yes, but marginally. If you were to completely
+   discharge your cells every time you used them, you would dramtically
+   shorten thier lives. If however, you need max capacity and have the $$
+   for new cells, go for it. I would recommend a recondition once every
+   three months for most applications. Too much hassle? then don't do it
+   and buy new packs sooner.
+   
+   Recondition should be done to 1.0 volts per cell or there abouts, if
+   no individual cell let down resistors are present. The strong cells
+   tend to drive the weak into reversal, generating hydrogen and causing
+   some permanent dammage to the cell, although the hydrogen will
+   eventually recombine. Lots of hydrogen is a dangerous thing. If you
+   feel must go lower, you should switch to a low rate reistor for the
+   last bit. With individual cell monitoring you could go all the way to
+   0.0 v theoretically, but that never happens.
+   
+   But I prefer to run my packs to various depths, and get a mild
+   "stealth" reconditioning that way. This reduces the total number of
+   cycles on the pack and should help prolong the useful life.
+   
+   I was stated that with modern Ni-Cd's rigorous battery charge control
+   was nearly superfluous. I couldn't disagree more. The trend for
+   rechargable applicaions is to push them harder and harder, with
+   expectations of greater cycle life, faster recharge, better voltage
+   regulation, and more temperature tollerance. The basic commerical
+   design has not changed very much, although some manufacturers are
+   doing a very good job in tuning thier production to give consistent
+   cells. The desire for 15 minute chargers is very real, and you need
+   special equipment to do it.
+   
+   Pulse charing is a hot topic that alot of people are trying stake out
+   patents. There seems to be some advantage at the highest rates 15 -30
+   minute charging to this technique for nicds. The Cristie charger was
+   designed for Lead-Acid systems, where liquid phase stratification was
+   a big problem. It is quite helpful in "stirring" the acid in the big
+   cells they typically market. There is also some evidence that the
+   pulse charging changes the morphology of the cadmium electode, in an
+   advantageous way. High rates and current reversals tend to give higher
+   areas and better utilization. This is good, expecially for cheap
+   plastic roll bonded cadmium electrodes found in your average
+   commerical cell.
+   
+   The comments about storage shorted or trickle charged is right on.
+   What wasn't said is the benefits of keeping them in the fridge or
+   frezzer. Keep them above -20f and you'll be sure not to freeze the
+   electroltye.
+   
+   Jonathon was asking about bubbles and charging and heat. It sounds
+   like you got some sales literature thrown at you. The bubbles are
+   oxygen, and you don't shake them loose, you electro- chemcially
+   recombine them. Bill, they are generated at the Nickel electrode. The
+   real solution is to not make so many of them. You do that by
+   controlling the cell potential, and thus the driving potential on the
+   positive electrode. Pulsing may do that by relaxing the proton
+   diffusion gradients in the postive electrode, or it may not! Like I
+   said, at high rates, good idea. The effect on dead cells can be to
+   burn out the cadmium shorts and give you a few more cycles. Jon, I
+   could tell you what to look for but then I'd have to kill ya! :-)
+   
+   The circuit that Gerald posted seems to be working off 60 hz AC. I am
+   not sure, but I think that is a little fast for optimal results. (So
+   move to europe 50 hz :-) The problem is that at two high a frequency
+   you just access the doulbe layer capacitance in the cell and you don't
+   exercise the main reactions, or the overcharge ones. I seem to
+   remember 15 hz as being indicated by the work of McBreen on the Zinc
+   electrode.
+   
+   I could go on, but have probably said to much already. I hope somebody
+   finds it useful. If somebody has a specific application or problem, I
+   can handle it by email at
+   
+     _________________________________________________________________
+                                      
+   
+    Please check attribution for Author. Processed by
+    filipg@paranoia.com [Feedback Form] [mailto]. The most recent
+    version is available on the WWW server
+    http://www.paranoia.com/~filipg [Copyright] [Disclaimer]
+
+

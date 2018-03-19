@@ -1,0 +1,329 @@
+; Article on CPU280 for TCJ
+; 16. September 1991, Tilmann Reh
+; 06. October 1998: revised for Thomas Scherrer
+
+
+The History
+
+When Zilog first introduced the Z800 MPU in their 1983/84 data book, I was
+working with a homebrew Z80 system, based on ECB-bus EuroCards (a
+well-established standard here in europe these days). My system was running
+with the usual 4 MHz clock, but my CP/M-3 (CP/M-Plus) BIOS already had some
+very nice advantages. For example, I had developed the AutoFormat system, a
+technique which supports various different disk formats without manual work.
+The basic principle is the same as MS-DOS uses: the disk contains a
+parameter block which holds all information nessessary to process it.
+Another feature was the automatic installation and adaption of some
+different hardware equipments. As some people around here had similar
+machines, none of them had to install hardware parameters (as long as they
+didn't need very special things).
+
+When I had a look at the 'preliminary' specifications of the Z800, I began
+thinking about some performance improvement on my system. So I waited for
+this chip to become available. I was still waiting, when in 1985 Hitachi's
+HD 64180 suddenly appeared. This processor had much of the Z800, but it was
+really available! So I gave up waiting any longer and developed a
+64180-based single board computer. It had the 64180 MPU (with both serial
+channels used), 32 KB EPROM and 512 KB DRAM, a 765 type floppy controller
+for up to four drives, and an ECB bus interface on an EuroCard. The clock
+frequency was 9.216 MHz, which made an effective Z80 speed of about 11 to 12
+MHz. Since the ECB bus cannot handle these frequencies, the bus clock was
+only half the CPU clock (4.6 MHz), with timing signals stretched to meet
+standard Z80 peripheral conditions. When changing my system to the new
+'CPU180', it replaced three of the older boards: the CPU, the memory and the
+floppy controller board.
+
+The new single-board design brought the advantage of direct access to all
+basic I/O, so the BIOS could rely on these basics and use them. So the
+CP/M-3 implentation I wrote for that system was more comfortable than the
+former Z80 multi-board version (for example, it introduced automatic disk
+exchange recognition). The high processor performance was amazing, comparing
+assemble/compile times to the 4 MHz Z80.
+
+Then came the IBM-PC's. In that time, CP/M was systematically forced to
+death here in europe. The special german computer syndrom became 'it has to
+be always the newest, biggest and fastest machine', and the computer
+magazines followed that slogan. So after a while, I was the only one around
+here who was still active with CP/M. That was the reason why the CPU180 was
+built exactly once: I was working with the prototype board, and noone else
+seemed to be interested.
+
+At the end of 1988 Uwe Herczeg, another 'lone CP/M user' in germany, placed
+an ad in a great computer magazine, searching for other CP/M users. This
+brought the remaining activists together. But, most of them were still using
+4 or 6 MHz Z80 systems, often also based on ECB-bus EuroCards, and some were
+very interested in my CPU180 system. So we began thinking about a redesign
+of that board, with actual technology and some enhancements. Then one of
+those new friends suggested to take the Z280 instead of the Z180. Z280? I
+ordered the data sheet and had a look at the late incarnation of the old
+Z800 idea. Unbelievable but true, the Z280 was really available! So we
+decided to take the Z280, for this CPU has a far more powerful instruction
+set than the Z180.
+
+
+The Hardware Design
+
+Basics and Memory
+
+As the hard- and software concept of the CPU180 had proved very well, all
+basic principles were also taken into the CPU280 design. As it was with the
+CPU180, the design rule of highest priority was to get the absolutely
+maximum performance out of the MPU with the absolutely minimum circuit
+expense and parts cost. Concerning the PCB technique, that means the use of
+a standard double-sided PCB (no multi-layer) with normal wire thickness (.25
+mm), and no SMD parts at all. Just the good old sort of computer boards,
+reliable and with easy maintaining.
+
+In order to get the full power of the Z280, it must be run in the 16-bit
+Z-bus mode, with cache and burst-mode enabled, and no RAM wait states, with
+the highest possible clock frequency (12.5 MHz). These are the demandments
+concerning the memory interface. All memory on board is 16 bit wide.
+
+Main memory is built with dynamic RAM. There are eight sockets for 1 M-bit
+or 4 M-bit chips (with 4 bit data width), of which at least four must be
+used (to fit the 16-bit data bus). So the possible memory capacities are 512
+KB and 1, 2 or 4 MB. This direct accessable memory should be enough for the
+very most circumstances; the standard configuration is with eight 1 M-bit
+chips (1 MB total). For space saving purposes and the availability of
+exactly pin-compatible 1/4 M-bit memory chips, ZIP-cased RAM is used.
+
+As I made very good experience with synchronous DRAM timing (the CPU180
+memory worked absolutely error-free for many years), I built a fully
+synchronous timing chain for the DRAM's again. This uses a HCT175 as a
+four-bit shift register and a GAL containing the CAS decoding and selection
+logic. The DRAM interface also supports the processor's burst mode,
+increasing the lowest address bits during the burst with a GAL (we can't use
+nibble-mode RAM's as these are not available with 4-bit width!). The RAM
+timing is designed to meet all specifications of the Z280 and the RAM's when
+using 100 ns RAM types at a CPU clock of 12.5 MHz. However, as the prices
+for 100 ns and 80 ns types are identical, we normally take the latter for
+safety.
+
+Since the memory interface is far too fast for the ECB bus, external memory
+is not supported. Additional reasons are the data bus width (16 bit vs. 8)
+and the different timing and status signals (Z-bus vs. Z80). Support of
+external memory with burst-mode is absolutely impossible, as the ECB bus
+doesn't have strobing signals which could do that job. Interfacing the fast
+16-bit internal data bus to the slow 8-bit ECB bus would need very much
+circuitry, and that would be against our main design rule. So if someone
+really needs more than 4 MB RAM, please connect an external I/O-accessed
+RAM-disk via ECB (DMA support is no problem).
+
+The boot software is placed in two 27C256 or 27C512, so the boot capacity is
+64 KB or 128 KB. For easy handling, ordinary 28-pin DIP sockets carry the
+EPROM's. As this memory usually is only needed during boot-up, burst-mode
+is not supported, and for slower memory chips up to three wait states may be
+added. 
+
+The Z280 is able to use different memory timings when accessing the lower or
+upper half of it's 16 MB address space. So the EPROM is decoded into the
+lower half (8 MB, what a waste!) and the RAM into the upper half. This way,
+using the RAM with zero wait-states and burst mode is possible, while the
+EPROM needs up to three wait-states and doesn't support burst mode. Mapping
+any desired memory configuration to the CPU's logical 64k address space is
+done with the PMMU (Paged Memory Managing Unit) internal to the Z280.
+
+
+I/O Basics and Bus Interface
+
+For good availability of Z80 peripherals, the ECB bus clock with the
+according timing signals should not exceed 6 MHz. As the CPU clock frequency
+is 12.288 MHz (for easy baud rate generation, it should be a multiple of
+2.4576 MHz), the best way is to use half the CPU clock for the bus again.
+This results in a bus clock of 6.144 MHz, for which Z80B or Z80-6 components
+are specified. With the internal wait-state generator of the Z280 programmed
+to insert four wait-states every I/O transaction (the maximum value), the
+duration of the I/O cycles is exactly matching the divided clock. The clock
+divider is made of a single flip-flop (HCT74), and is reset at the beginning
+of each transfer to produce the correct phase relationship between bus clock
+and timing signals. Since the Z-bus control & timing signals cannot be
+used for the ECB bus, they are converted into the appropriate Z80-type
+signals with a GAL.
+
+As the external peripherals could use Z80 type vectored interrupts, the bus
+interface must be able to generate the correct interrupt acknowledge and
+RETI timings. Interrupt acknowledge is treated as an I/O transaction and
+stretched by the Z280, but the RETI instruction consists of two memory
+cycles which are too fast for the peripherals, not regarding that the memory
+control signals do not appear on the ECB bus. Last but not least, the Z280
+has a new interrupt mode (mode 3) which uses another return instruction
+(RETIL). So a slow RETI timing can be simulated with special accesses to
+on-board I/O locations, with a GAL generating the correct signals for the
+ECB bus. This way, vectored external interrupts are supported, although the
+clock speeds are very different.
+
+The Z280 supports 24-bit I/O addresses as opposed to the 8/16-bit addresses
+of the Z80. The upper eight I/O address bits are accessed via the 'I/O Page
+Register' within the MPU. For full access to the 256 I/O addresses which are
+specified for the ECB bus, the bus interface is decoded to have an I/O page
+of its own. Another page is used for the on-board I/O, and two pages are
+reserved for the internal I/O registers of the Z280. Decoding of the I/O
+pages and addresses is done within GAL's.
+
+
+Internal and On-Board I/O
+
+The Z280 comes with a serial interface (UART), three 16-bit counter/timer
+circuits and four DMA channels on-chip. To avoid an external baud rate
+generator for the UART, one of the timers is used for that purpose. That is
+the reason for the clock frequency to be a multiple of 2.4576 MHz - these
+frequencies allow for standard baud rates up to 38400. Even greater, but
+non-standard baud rates are also possible.
+
+The internal UART is completed with two handshake signals which are not
+supplied by the MPU. A second serial interface is made of a Twenty-Pin-UART
+(TPUART) COM81C17 by SMC, which already contains a baud rate generator. Both
+interfaces are buffered and shifted to RS-232C levels with a 5-V-only line
+driver and receiver, the LT1134.
+
+The CPU280 contains a real-time-clock (RTC) with 50 bytes of nonvolatile
+RAM, the Dallas DS 1287. Since this part already contains the lithium
+battery, no external circuitry is required. The RTC is able to generate
+interrupts at given date and/or time (alarm) or periodically. The NVRAM is
+ideal for storing something like configuration parameters.
+
+Floppy disk I/O is possible using the on-board Floppy Disk Controller
+(FDC), which is realized using an FDC 37C65 by SMC. This neat chip,
+cased in a 44-pin PLCC, contains the complete controller. Just connect
+the CPU bus to some pins and the disk drives to some other (and don't
+forget the quartz), and everything is running. Floppy related data
+transfer may be done with one of the DMA channels of the Z280.
+
+For general bit-I/O, there are one 6-bit input port and one 8-bit output
+port on board, both made with simple TTL chips (HCT367, HCT259). One bit of
+each port is used for the handshake signals of the first RS-232C interface.
+The other outputs drive some FDC control lines, and three LED's for status
+display. Some of the inputs are connected to jumpers, so they can be used
+for configuration purposes.
+
+There are four 16V8 type GAL's on the CPU280 board. They contain memory
+address and CPU state decoding, I/O decoding, RAM timing and CAS decoding,
+and some 'glue' logic. As nearly all signals are processed with only one
+logic level, the standard 'slow' 25 ns GAL's are fast enough.
+
+The complete circuit of the CPU280 is designed using CMOS technology. The
+internal logic is made of the 74HCT series, which is fast enough for nearly
+every signal. The bus interface and the timing-critical functions in the DRAM
+interface use 74ACT chips. All LSI are also CMOS, and the GAL's should be
+taken from the 'Q' series (quarter-power). As a result, the complete CPU280
+board draws only about 350 mA from a single 5V power supply (when fully
+operating with maximum clock speed). No other voltages are required. The 32
+chips nearly exactly fill the board space of the EuroCard, with just enough
+space left to avoid a multilayer PCB.
+
+As with every good single-boarder, you just need to connect a power supply,
+at least one disk drive of any kind and size, and a terminal to complete the
+CP/M-3 workstation. However, by connecting the CPU280 to a standard ECB
+backplane, you are free to use nearly every available ECB I/O boards.
+
+
+The Software
+
+The best hardware doesn't produce anything, unless you got the right
+software. With this in mind, I adapted my CPU180 BIOS to the CPU280. Now
+using the powerful instruction set of the Z280, of course. As with the
+circuit design, the basic priciples and structures of the BIOS were taken
+directly from the CPU180. However, I completely redefined and enhanced the
+AutoFormat system and added the menu-driven hardware configuration program
+to the boot loader (this was impossible with the CPU180 as it had no NVRAM).
+Of course, some further improvements were made using the experiences of four
+years of CPU180 operation.
+
+Normally, the complete system (boot loader, CCP, BDOS & BIOS) is booted
+directly out of the EPROM. So you can boot up your machine in two seconds
+without any noise or mechanical action. (For testing new system versions, of
+course disk boot is also possible by pressing a button during RAM-test.)
+
+With all functional enhancements fully compatible to the CP/M-3 definitions,
+all CP/M-3 and most of the CP/M-2.2 software can be run on the CPU280
+without any problems. By the way, while the operating system is running in
+the Z280's system mode, all user programs run in user mode. This is mainly
+to achieve easy bank switching (which the MMU does automatically in this
+case), but it also increases system security. Unfortunately, CP/M-3 must
+have the BIOS entry vector and some data structures in common memory, so you
+cannot absolutely prevent user programs from damaging the system software.
+But since we don't have any better (and still compatible!) operating system,
+we have to live with that fact.
+
+
+The Power
+
+What is the real performance of a Z280 running with every booster switched
+on? In fact, the answer is not as clear as you would probably like it to be.
+First, the Z280 is a pipelined CPU. So you really can't say how many clock
+cycles any instruction will last - it depends on the last few instructions
+before. In addition, some instructions (Jumps and Calls, for example) flush
+the pipeline and thus are relatively 'slow'). Second, effective CPU speed
+depends on the 'hit quota' of the cache controller. So small loops will run
+much faster than 'spaghetti code'. Third, the 16-bit arithmetic unit of the
+Z280 (opposed to the 4-bit one of the Z80) processes indexing and math
+operations with greater speed gain than other instruction types. So the more
+a program makes use of these instructions, the greater the effective speed.
+
+Although it is impossible to exactly determine the power of the Z280, you
+can say that with normal 8080 or Z80 software it will have the power of a
+Z80 running at 16-20 MHz (with 12.288 MHz clock). Of course, using the new
+instructions (there are more than 600!) further increases the performance
+(while loosing Z80 compatibility, of course). As I hope the Z280 will be
+used more and more, perhaps soon there will be the first real Z280 programs
+or the first real Z280 operating system? (Which also could get rid of the
+stupid 62 KB TPA border of CP/M-3...)
+
+
+The Experiences
+
+After the first version of the CPU280 ran stable in March 1990, I made a
+redesign of the PCB layout with slight changes in parts of the circuit. In
+June 1990, I ordered the first series of PCB's, and in November 1990 I sent
+them along with all semiconductors and special parts to about 25 people here
+in germany. Few other people around the world did also get a PCB, but not
+the partset. I had to wait until November because that was the time when the
+12.5 MHz version of the Z280 became available, and we didn't like to take
+the slower version first and upgrade a few month later. Since early 1991,
+many of the machines are running very well, as far as I'm informed by the
+users. All of them who are working with the CPU280 have proved it to be very
+fast and very reliable. Our 'PD and ZCPR Man', Helmut Jungkunz, likes the
+machine for the flexible method of processing different disk formats, that's
+why he uses it for nearly all disk distribution he has to do. Of course, he
+likes the raw power, too.
+
+But the CPU280 is not the only project amongst us here in germany. I would
+like to introduce my next board, an IDE controller which connects standard
+(PC) AT-Bus harddisks to any ECB bus based CP/M system. The board also
+contains an active termination of all bus signals, a centronics printer
+interface, a four-LED power monitor and two system control buttons for reset
+and NMI (which, with the CPU280, forces a warm system reboot). As you
+probably agree, this board exactly matches the CPU280 to build a real
+high-power CP/M workstation.
+
+Another project of a friend is a LCD terminal, which in combination with a
+low-power Z180 single-boarder (a development based on my CPU180) makes a
+powerful CP/M-3 laptop! My newest project is already growing very well and
+will produce a high-performance CRT terminal for text and graphics at an
+unbeatable price. Wait and see. Needless to say that all three of these
+boards are EuroCard size. These informations are just to keep you informed
+about our activities in europe, esp. germany. Perhaps I or one of my friends
+are allowed to describe our further projects in TCJ.
+
+; Current state (06.Oct.1998):
+
+There are about 50 CPU280's worldwide. Since I lost contact to many of
+the owners, I don't know how many are still active with it. I still
+use the CPU280 at home for text processing and spreadsheets, and also
+do some arithmetic simulations for business sometimes.
+
+Though the Z280 has become obsolete, the CPU280 is still available. I
+put some CPU chips on stock, and I also have some more PCBs.
+Additionally, some of the owners have expressed that they would give
+away their CPU280 if someone else is interested.
+
+The system software has been further improved, and there are detailed
+hard- and software manuals meanwhile (though the software manual does
+not describe the current version...).
+
+
+Tilmann Reh
+Siegen, Germany
+email: tilmann.reh@bigfoot.com
+
+

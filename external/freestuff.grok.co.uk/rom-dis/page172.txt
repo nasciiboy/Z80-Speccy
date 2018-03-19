@@ -1,0 +1,63 @@
+		INC	(mem-5-1st)	Step up the count of digits.
+		JR	2EDF,PF-FRN-LP	Loop back until there are 8
+				digits.
+
+vii. The digits stored in the print buffer are rounded to a maximum of 8 digits for printing.
+
+2F0C	PF-ROUND	PUSH	AF	Save the carry flag for the
+				rounding.
+		LD	HL,+5CA1	Base address of number: mem-3,
+				byte 1.
+		LD	C,(mem-5-1st)	Offset (number of digits in
+		LD	B,+00	number) to BC.
+		ADD	HL,BC	Address the last byte of the
+				number.
+		LD	B,C	Copy C to B as the counter.
+		POP	AF	Restore the carry flag.
+2F18	PF-RND-LP	DEC	HL	This is the last byte of the
+				number.
+		LD	A,(HL)	Get the byte into A.
+		ADC	A,+00	Add in the carry i.e. round
+				up.
+		LD	(HL),A	Store the rounded byte in the
+				buffer.
+		AND	A	If the byte is 0 or 10, B will be
+		JR	Z,2F25,PF-R-BACK	decremented and the final zero
+		CP	+0A	(or the 10) will not be counted
+				for printing.
+		CCF		Reset the carry for a valid digit.
+		JR	NC,2F2D,PF-COUNT	Jump if carry reset.
+2F25	PF-R-BACK	DJNZ	2F18,PF-RND-LP	Jump back for more rounding
+				or more final zeros.
+		LD	(HL),+01	There is overflow to the left;
+		INC	B	an extra 1 is needed here.
+		INC	(mem-5-2nd)	It is also an extra digit before
+				the decimal.
+2F2D	PF-COUNT	LD	(mem-5-1st),B	B now sets the count of the
+				digits to be printed (final zeros
+				will not be printed).
+		RST	0028,FP-CALC	f is to be deleted.
+
+		DEFB	+02,delete	-
+		DEFB	+38,end-calc	-
+		EXX		The calculator offset saved on
+		POP	HL	the stack is restored to H'L'.
+		EXX		
+
+viii. The number can now be printed. First C will be set to hold the number of digits to be printed, not counting final zeros, while B will hold the number of digits required before the decimal.
+
+		LD	BC,(mem-5-1st)	The counters are set.
+		LD	HL,+5CA1	The start of the digits.
+		LD	A,B	If more than 9, or fewer than
+		CP	+09	minus 4, digits are required
+		JR	C,2F46,PF-NOT-E	before the decimal, then E-format
+				will be needed.
+		CP	+FC	Fewer than 4 means more than
+		JR	C,2F6C,PF-E-FRMT	4 leading zeros after the decimal.
+		AND	A	Are there no digits before the
+		CALL	Z,15EF,OUT-CODE	decimal? If so, print an initial
+				zero.
+
+The next entry point is also used to print the digits needed for E-format printing.
+
+2F4A	PF-E-SBRN	XOR	A	Start by setting A to zero.

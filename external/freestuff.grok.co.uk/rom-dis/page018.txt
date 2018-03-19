@@ -1,0 +1,66 @@
+		DI		The maskable interrupt is now
+				disabled.
+		LD	A,+0F	The border is made WHITE.
+		OUT	(+FE),A
+		LD	HL,+053F	Preload the machine stack
+		PUSH	HL	with the address - SA/LD-RET.
+		IN	A,(+FE)	Make an initial read of port '254'
+		RRA		Rotate the byte obtained but
+		AND	+20	keep only the EAR bit,
+		OR	+02	Signal 'RED' border.
+		LD	C,A	Store the value in the C register. -
+				(+22 for 'off' and +02 for 'on'
+				- the present EAR state.)
+		CP   	A   	Set the zero flag.
+
+The first stage of reading a tape involves showing that a pulsing signal actually exist (i.e. 'On/off' or 'off/on' edges.)
+
+0565	LD-BREAK	RET 	NZ 	Return if the BREAK key is
+				being pressed.
+056C	LD-START	CALL	05E7,LD-EDGE-1	Return with the carry flag reset
+		JR   	NC,056B,LD-BREAK 	if there is no 'edge' within
+				approx. 14,000 T states. But if
+				an 'edge' is found the border
+				will go CYAN.
+
+The next stage involves waiting a while and then showing that the signal is still pulsing.
+
+		LD  	HL,+0415  	The length of this waiting
+0574	LD-WAIT	DJNZ	0574,LD-WAIT	period will be almost one
+		DEC 	HL 	second in duration.
+		LD  	A,H
+		OR  	L
+		JR   	NZ,0574,LD-WAIT
+		CALL	05E3,LD-EDGE-2	Continue only if two edges are
+		JR	NC,056B,LD-BREAK	found within the allowed time
+				period.
+
+Now accept only a 'leader signal'.
+
+0580	LD-LEADER	LD	B,+9C	The timing constant,
+		CALL	05E3,LD-EDGE-2	Continue only if two edges are
+		JR	NC,056B,LD-BREAK	found within the allowed time
+				period.
+		LD	A,+C6	However the edges must have
+	 	CP	B	been found within about
+		JR	NC,056C,LD-START	3,000 T states of each other
+		INC	H	Count the pair of edges in the H
+		JR	NZ,0580,LD-LEADER	register until '256' pairs have
+				been found.
+
+After the leader come the 'off' and 'on' part's of the sync pulse.
+
+058F	LD-SYNC	LD	B,+9C	The timing constant.
+		CALL	05E7,LD-EDGE-1	Every edge is considered until
+		JR	NC,056B,LD-BREAK	two edges are found close
+		LD	A,B	together - these will be the
+		CP	+D4	start and finishing edges of
+		JR	NC,058F,LD-SYNC	the 'off' sync pulse.
+	 	CALL	05E7,LD-EDGE-1	The finishing edge of the
+		RET	NC	'on' pulse must exist.
+				(Return carry flag reset.)
+
+The bytes of the header or the program/data block can now be LOADed or VERIFied. But the first byte is the type flag.
+
+		LD	A,C	The border colours from now
+		XOR	+03	on will be BLUE & YELLOW.

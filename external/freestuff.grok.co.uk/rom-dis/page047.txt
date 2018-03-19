@@ -1,0 +1,63 @@
+		LD	C,+08	Again there are eight pixel
+				lines to be considered.
+
+Now enter a loop to clear all the pixel lines.
+
+0E4A	CL-LINE-1	PUSH	BC	Save the line number and the
+				pixel line counter.
+		PUSH	HL	Save the address.
+		LD	A,B	Save the line number in A.
+0E4D	CL-LINE-2	AND	+07	Find how many characters are
+		RRCA		involved in 'B mod 8' lines.
+		RRCA		Pass the result to the
+		RRCA		C register. (C will hold +00
+		LD	C,A	i.e. 256 dec. for a 'third'.)
+		LD	A,B	Fetch the line number.
+		LD	B,+00	Make the BC register pair
+		DEC	C	hold 'one less' than the number
+				of characters.
+		LD	D,H	Make DE point to the first
+		LD	E,L	character.
+		LD	(HL),+00	Clear the pixel-byte of the
+				first character.
+		INC	DE	Make DE point to the second
+		LDIR		character and then clear the
+				pixel-bytes of all the other
+				characters.
+		LD	DE,+0701	For each 'third' of the
+		ADD	HL,DE	display HL has to be increased
+				by +0701.
+		DEC	A	Now decrease the line number.
+		AND	+F8	Discard any extra lines and
+		LD	B,A	pass the 'third' count to B.
+		JR	NZ,0E4D,CL-LINE-2	Jump back if there are still
+				'thirds' to be dealt with.
+
+Now find if the loop has been used eight times.
+
+		POP	HL	Update the address for each
+		INC	H	pixel line.
+		POP	BC	Fetch the counters.
+		DEC	C	Decrease the pixel line
+		JR	NZ,0E4A,CL-LINE-1 counter and jump back unless
+				finished.
+
+Next the attribute bytes are set as required. The value in ATTR-P will be used when handling the main part of the display and the value in BORDCR when handling the lower part.
+
+		CALL	0E88,CL-ATTR	The address of the first
+				attribute byte and the number
+				of bytes are found.
+		LD	H,D	HL will point to the first
+		LD	L,E	attribute byte and DE the
+		INC	DE	second.
+		LD	A,(ATTR-P)	Fetch the value in ATTR-P.
+		BIT	0,(TV-FLAG)	Jump forward if handling the
+		JR	Z,0E80,CL-LINE-3	main part of the screen.
+		LD	A,(BORDCR)	Otherwise use BORDCR instead.
+0E80	CL-LINE-3	LD	(HL),A	Set the attribute byte.
+		DEC	BC	One byte has been done.
+		LDIR		Now copy the value to all the
+				attribute bytes.
+		POP	BC	Restore the line number.
+		LD	C,+21	Set the column number to the
+		RET		lefthand column and return.

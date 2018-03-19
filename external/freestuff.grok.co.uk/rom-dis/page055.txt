@@ -1,0 +1,64 @@
+		LD	(ERR-NR),+FF	Cancel the error number and
+		LD	D,+00	give a 'rasp' before going
+		LD	E,(RASP)	around the editor again.
+		LD	HL,+1A90
+		CALL	0385,BEEPER
+		JP	0F30,ED-AGAIN
+
+THE 'CLEAR-SP' SUBROUTINE
+The editing area or the work space is cleared as directed.
+
+1097	CLEAR-SP	PUSH	HL	Save the pointer to the space.
+		CALL	1190,SET-HL	DE will point to the first
+				character and HL the last.
+		DEC	HL	The correct amount is now
+		CALL	19E5,RECLAIM-1	reclaimed.
+		LD	(K-CUR),HL	The system variables K-CUR
+		LD	(MODE),+00	and MODE ('K mode') are
+		POP	HL	initialised before fetching
+		RET		the pointer and returning.
+
+THE 'KEYBOARD INPUT' SUBROUTINE
+This important subroutine returns the code of the last key to have bean pressed but note that CAPS LOCK, the changing of the mode and the colour control parameters are handled within the subroutine.
+
+10A8	KEY-INPUT	BIT 	3,(TV-FLAG) 	Copy the edit-linear the
+		CALL	NZ,111D,ED-COPY	INPUT-line to the screen if
+				the mode has changed.
+		AND	A	Return with both carry
+		BIT 	5,(FLAGS) 	and zero flags reset if no
+		RET 	Z 	new key has been pressed
+		LD  	A,(LAST-K)  	Otherwise fetch the code and
+		RES 	5,(FLAGS) 	signal that it has been taken
+		PUSH	AF	Save the code temporarily.
+		BIT  	5,(TV-FLAG)  	Clear the lower part of the
+		CALL	NZ,0D6E,CLS-LOWER display if necessary;
+				e.g. after 'scroll?';
+		POP	AF	Fetch the code.
+		CP	+20	Accept all characters and
+		JR	NC,111B,KEY-DONE	token codes.
+		CP	+10	Jump forward with most of
+		JR	NC,10FA,KEY-CONTR	the control character codes.
+		CP	+06	Jump forward with the 'mode'.
+		JR	NC,10DB,KEY=M&CL	codes and the CAPS LOCK code.
+
+Now deal with the FLASH, BRIGHT& INVERSE codes.
+
+		LD	B,A	Save the code.
+		AND	+01	Keep only bit 0.
+		LD	C,A	C holds +00 (= OFF) or
+				C holds +01 (= ON).
+		LD	A,B	Fetch the code.
+		RRA		Rotate it once (losing bit 0).
+		ADD	A,+12	Increase it by +12 giving for
+		JR	1105,KEY-DATA	FLASH - +12, BRIGHT - +13
+				and INVERSE - +14.
+
+The CAPS LOCK code and the mode codes are dealt with 'locally'.
+
+10DB	KEY-M&CL	JR	NZ,10E6,KEY-MODE	Jump forward with 'mode' codes.
+		LD	HL,+5C6A	This is FLAGS2.
+		LD	A,+08	Flip bit 3 of FLAGS2. This is
+		XOR	(HL)	the CAPS LOCK flag.
+		LD	(HL),A
+		JR	10F4,KEY-FLAG	Jump forward.
+10E6	KEY-MODE	CP	+0E	Check the lower limit.

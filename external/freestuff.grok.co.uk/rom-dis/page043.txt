@@ -1,0 +1,62 @@
+		LD	A,B	The 'scroll number' is fetched.
+
+The lower part of the screen is now scrolled 'A' number of times.
+
+0D1C	PO-SCR-4A	PUSH	AF	Save the 'number'.
+		LD	HL,+5C6B	This is DF-SZ.
+		LD	B,(HL)	The value in DF-SZ is
+		LD	A,B	incremented; the B register
+		INC	A	set to hold the former value and
+		LD	(HL),A	the A register the new value.
+		LD	HL,+5C89	This is S-POSN-hi.
+		CP	(HL)	The jump is taken if only the
+		JR	C,0D2D,PO-SCR-4B	lower part of the display is
+				to be scrolled. (B = old DF-SZ).
+		INC	(HL)	Otherwise S-POSN-hi is
+		LD	B,+18	incremented and the whole
+				display scrolled. (B = +18)
+0D2D	PO-SCR-4B	CALL	0E00,CL-SCROLL	Scroll 'B' lines.
+		POP	AF	Fetch and decrement the
+		DEC	A	scroll number'.
+		JR	NZ,0D1C,PO-SOR-4A	Jump back until finished.
+		POP	HL	Restore the value of
+		LD	(P-FLAG),L	P-FLAG.
+		POP	HL	Restore the values of ATTR-T
+		LD	(ATTR-T),HL	and MASK-T.
+		LD	BC,(S-POSN)	In case S-POSN has been
+		RES	0,(TV-FLAG)	changed CL-SET is called to
+		CALL	0DD9,CL-SET	give a matching value to DF-CC.
+		SET	0,(TV-FLAG)	Reset the flag to indicate that
+		POP	BC	the lower screen is being
+		RET		handled, fetch the line and
+				column numbers, and then
+				return.
+
+THE 'TEMPORARY COLOUR ITEMS' SUBROUTINE
+This is a most important subroutine. It is used whenever the 'permanent' details are required to be copied to the 'temporary' system variables. First ATTR-T & MASK-T are considered
+
+0D4D	TEMPS	XOR	A	A is set to hold +00.
+		LD	HL,(ATTR-P)	The current values of ATTR-P
+		BIT	0,(TV-FLAG)	and MASK-P are fetched.
+		JR	Z,0D5B,TEMPS-1	Jump forward if handing the
+				main part of the screen.
+		LD	H,A	Otherwise use +00 and the
+		LD	L,(BORDCR)	value in BORDCR instead.
+0D5B	TEMPS-1	LD	(ATTR-T),HL	Now set ATTR-T & MASK-T.
+
+Next P-FLAG is considered.
+		LD	HL,+5C91	This is P-FLAG.
+		JR	NZ,0D65,TEMPS-2	Jump forward if dealing with
+				the lower part of the screen
+				(A = +00).
+		LD	A,(HL)	Otherwise fetch the value of
+		RRCA		P-FLAG and move the odd bits
+				to the even bits.
+0D65	TEMPS-2	XOR	(HL)	Proceed to copy the even bits
+		AND	+55	of A to P-FLAG.
+		XOR	(HL)
+		LD	(HL),A
+		RET
+
+THE 'CLS COMMAND' ROUTINE
+In the first instance the whole of the display is 'cleared' - the 'pixels' are all reset and the attribute bytes are set to equal the value in ATTR-P - then the lower part of the display is reformed.

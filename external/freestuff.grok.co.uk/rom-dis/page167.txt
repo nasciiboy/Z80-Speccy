@@ -1,0 +1,47 @@
+		CALL	2AB6,STK-STORE
+		RST	0028,FP-CALC	The calculator is used
+		DEFB	+34,stk-data	Log 2 to the base 10 is now
+				stacked.
+		DEFB	+EF,exponent +7F	The stack now holds a, log 2.
+		DEFB	+1A,+20,+9A,+85
+		DEFB	+04,multiply	A*log 2 i.e. log (2^A)
+		DEFB	+27,int	INT log (2^A)
+		DEFB	+38,end-calc
+
+The subroutine continues on into FP-TO-A to complete the calculation.
+
+THE 'FLOATING-POINT TO A' SUBROUTINE
+This short but vital subroutine is called at least 8 times for various purposes. It uses the last but one subroutine, FP-TO-BC, to get the 'last value' into the A register where this is possible. It therefore tests whether the modulus of the number rounds to more than 255 and if it does the subroutine returns with the carry flag set. Otherwise it returns with the modulus of the number, rounded to the nearest integer, in the A register, and the zero flag set to imply that the number was positive, or reset to imply that it was negative. 
+
+2DD5	FP-TO-A	CALL	2DA2,FP-TO-BC	Compress the 'last value' into
+				BC.
+		RET	C	Return if out of range already.
+		PUSH	AF	Save the result and the flags.
+		DEC	B	Again it will be out of range
+		INC	B	if the B register does not hold
+				zero.
+		JR	Z,2DE1,FP-A-END	Jump if in range.
+		POP	AF	Fetch the result and the flags
+		SCF		Signal the result is out of range.
+		RET		Finished - unsuccessful.
+2DE1	FP-A-END	POP	AF	Fetch the result and the flags.
+		RET		Finished - successful.
+
+THE 'PRINT A FLOATING-POINT NUMBER' SUBROUTINE
+This subroutine is called by the PRINT command routine at 2039 and by STR$ at 3630, which converts to a string the number as it would be printed. The subroutine prints x, the 'last value' on the calculator stack. The print format never occupies more than 14 spaces.
+The 8 most significant digits of x, correctly rounded, are stored in an ad hoc print buffer in mem-3 and mem-4. Small numbers, numerically less than 1, and large numbers, numerically greater than 2 ^ 27, are dealt with separately. The former are multiplied by 10 ^ n, where n is the approximate number of leading zeros after the decimal, while the latter are divided by 10 ^ (n-7), where n is the approximate number of digits before the decimal. This brings all numbers into the middle rane, and the numbers of digits required before the decimal is built up in the second byte of mem-5. Finally the printing is done, using E-format if there are more than 8 digits before the decimal or, for small numbers, more than 4 leading zeros after the decimal.
+The following program shows the range of print formats:
+10 FOR a=-11 TO 12: PRINT SGN a*9^a,: NEXT a
+
+i. First the sign of x is taken care of:
+If X is negative, the subroutine jumps to PF-NEGATIVE, takes ABS x and prings the minus sign.
+If x is zero, x is deleted from the calculator stack, a '0' is printed and a return is made from the subroutine.
+If x is positive, the subroutine just continues.
+
+2DE3	PRINT-FP	RST	0028,FP-CALC	Use the calculator
+		DEFB	+31,duplicate	x,x
+		DEFB	+36,less-0	x, (1/0) Logical value of x.
+		DEFB	+00,jump-true	x
+		DEFB	+0B,to PF-NEGTVE	x
+		DEFB	+31,duplicate	x,x
+		DEFB	+37,greater-0	x, (1/0) Logical value of X.

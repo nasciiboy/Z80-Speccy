@@ -1,0 +1,63 @@
+address	routine	page
+
+1E4F 	RANDOMIZE command 	100
+1E5F 	CONTINUE command 	101
+1E67 	GO TO command 	101
+1E7A 	OUT command 	101
+1E80 	POKE command 	101
+1E85 	TWO-PARAM 	101
+1E94 	Find integers 	101
+1EA1 	RUN command 	102
+1EAC 	CLEAR command 	102
+1EED 	GO SUB command 	103
+1F05 	TEST-ROOM 	103
+1F1A 	Free memory 	103
+1F23 	RETURN command 	104
+1F3A 	PAUSE command 	104
+1F54 	BREAK-KEY 	104
+1F60 	DEF FN command 	105
+1FC3 	UNSTACK-Z 	106
+1FC9 	LPRINT command 	106
+1FCF 	PRINT command 	106
+1FF5 	Print a carriage return 	107
+1FFC 	Print items 	107
+2045 	End of printing 	108
+204E 	Print position 	108
+2070 	Alter stream 	108
+2089 	INPUT command 	109
+21B9 	IN-ASSIGN 	111
+2106 	IN-CHAN-K 	112
+21E1	Colour item routines 	112
+226C 	CO-CHANGE 	114
+2294 	BORDER command 	115
+22AA 	Pixel address 	115
+22CB 	Point    	116
+22DC 	PLOT command 	116
+2307 	STK-TO-BC 	117
+2314 	STK-TO-A 	117
+2320 	CIRCLE command 	117
+2382 	DRAW command 	119
+247D 	Initial parameters 	123
+24B7 	Line drawing 	124
+
+
+EXPRESSION EVALUATION
+24FB 	SCANNING 	127
+2530 	SYNTAX-Z 	128
+2535 	Scanning SCREEN$ 	128
+2580 	Scanning ATTR 	129
+2596 	Scanning function table 	129
+25AF 	Scanning function routines 	130
+26C9 	Scanning variable routine 	133
+2734 	Scanning main loop 	135
+2795 	Table of operators 	137
+27B0 	Table of priorities 	137
+27BD 	Scanning function (FN) 	137
+28AB 	FN-SKPOVR 	141
+28B2 	LOOK-VARS 	141
+2951 	Stack function argument 	144
+2996 	STK-VAR  	145
+2A52 	SLICING  	148
+2AB6 	STK-STORE 	150
+2ACC 	INT-EXP  	150
+2AEE 	DE,(DE+1) 	151

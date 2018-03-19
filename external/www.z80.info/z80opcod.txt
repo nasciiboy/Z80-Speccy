@@ -1,0 +1,44 @@
+ 
+Z-80 OpCode Formation Rules: 
+ 
+Introductory note -- Binary form of opcodes
+   
+  Example:   LD r,r'
+ 
+the 8-bit binary opcode is
+ 
+     01dddsss
+ 
+   ...where "ddd" is a three-bit field specifying the destination,
+  and "sss" is a three-bit field specifying the source.
+ 
+is shown below as
+                          r   r'
+                      01 xxx xxx
+ 
+ 
+Detailed info LD
+ 
+Instruction Format:
+ 
+OPCODE  r    r'                             CYCLES
+----------------------------------------------------
+  01   XXX  XXX     LD   r,r'    dst,src      4
+ 
+ 
+Register  r,r'
+--------------
+ A = 111
+ B = 000
+ C = 001
+ D = 010
+ E = 011
+ H = 100
+ L = 101
+ 
+ 
+
+read more about this in the z80syntx.htm
+
+
+

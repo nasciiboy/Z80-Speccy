@@ -1,0 +1,57 @@
+		XOR	A	Clear A and reset the carry flag.
+		LD	B,+DF	B will count upwards from -33
+				to -1, twos complement,
+				Hex.DF to FF, looping on
+				minus and will jump again on
+				zero for extra precision.
+		JR	31E2,DIV-START	Jump forward into the division
+				loop for the first trial
+				subtraction.
+Now enter the division loop.
+31D2	DIV-LOOP	RLA		Shift the result left into B'C'CA,
+		RL	C	shifting out the bits already
+		EXX		there, picking up 1 from the
+		RL	C	carry whenever it is set, and
+		RL	B	rotating left each byte with
+		EXX		carry to achieve the 32 bit
+				shift.
+31DB	DIV-34TH	ADD	HL,HL	Move what remains of the
+		EXX		dividend left in H'L'HL before
+		ADC	HL,HL	the next trial subtraction; if a
+		EXX		bit drops into the carry, force
+				no restore and a bit for the
+				quotient, thus retrieving the lost
+		JR	C,31F2,SUBN-ONLY	bit and allowing a full 32-bit
+				divisor.
+31E2	DIV-START	SBC	HL,DE	Trial subtract divisor in D'E'DE
+		EXX		from rest of dividend in H'L'HL;
+		SBC	HL,DE	there is no initial carry (see
+		EXX		previous step).
+		JR	NC,31F9,NO-RSTORE	Jump forward if there is no
+				carry.
+		ADD	HL,DE	Otherwise restore, i.e. add back
+		EXX		the divisor. Then clear the carry
+		ADC	HL,DE	so that there will be no bit for
+		EXX		the quotient (the divisor 'did
+		AND	A	not go').
+		JR	31FA,COUNT-ONE	Jump forward to the counter.
+31F2	SUBN-ONLY	AND	A	Just subtract with no restore
+		SBC	HL,DE	and go on to set the carry flag
+		EXX		because the lost bit of the divi-
+		SBC	HL,DE	dend is to be retrieved and used
+		EXX		for the quotient.
+31F9	NO-RSTORE	SCF	One for the quotient in B'C'CA.
+31FA	COUNT-ONE	INC	B	Step the loop count up by one.
+		JP	M,31D2,DIV-LOOP	Loop 32 times for all bits.
+		PUSH	AF	Save any 33rd bit for extra
+				precision (the present carry).
+		JR	Z,31E2,DIV-START	Trial subtract yet again for any
+				34the bit; the PUSH AF above
+				saves this bit too.
+Note: This jump is made to the wrong place. No 34th bit will ever be obtained without first shifting the dividend. Hence important results like 1/10 and 1/1000 are not rounded up as they should be. Rounding up never occurs when it depends on the 34th bit. The jump should have been to 31DB DIV-34TH above: i.e. byte 3200 hex in the ROM should read DA hex (128 decimal) instead of E1 hex (225 decimal).
+		LD	E,A	Now move the four bytes that
+		LD	D,C	form the mantissa bytes of the
+		EXX		result from B'C'CA to D'E'DE.
+		LD	E,C
+		LD	D,B
+		POP	AF	Then put the 34th and 33rd bits

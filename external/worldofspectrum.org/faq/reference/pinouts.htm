@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Pinouts</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="../emulators/emulators.htm">Emulators</a> |
+<a title="Reference" href="reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">Pinouts</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+<div class="pageNavigation">| <a href="pinouts.htm#ULA">ULA</a> | <a href="pinouts.htm#AY">AY-3-8912</a>
+| <a href="pinouts.htm#Keyboard">Keyboard</a> | <a href="pinouts.htm#CVideo">Composite Video</a>
+| <a href="pinouts.htm#RGB">RGB Video</a> | <a href="pinouts.htm#PSU">Power Supplies</a>
+| <a href="pinouts.htm#RS232">RS-232</a> |</div>
+<p>In addition to the information provided here, several technical and service manuals are available that may be of
+interest to you. These cover the operation and configuration of these components in considerably more detail than
+is possible here. Please refer to the <a title="Documentation" href="../resources/documents.htm">documentation</a> page
+for links to these resources.</p>
+
+<p><a id="ULA"><strong>ULA:</strong></a></p>
+<ul>
+<li>
+<pre>/CAS  1    40 GND        One of the +5V is decoupled through a RC-low-pass.
+/WR   2    39 Q          U,V are the color-difference signals.
+/RD   3    38 /MREQ      /Y is the inverted video including sync.
+/WE   4    37 A15        D are the data-lines, decoupled from the CPU by resistors.
+A0    5    36 A14
+A1    6    35 /RAS       T are the data-lines to the keyboard (address-lines through diodes)
+A2    7    34 /ROM CS
+A3    8    33 /IO-ULA    SOUND is the analog-I/O-line for beep, save and load.
+A4    9    32 CLOCK      CLK is the clock-source to the CPU including the inhibited T-states.
+A5   10    31 D7
+A6   11    30 D6         IO-ULA is (A0(CPU) OR /IORQ) for the I/O-port 0xfe
+/INT 12    29 D5         Q is the 14MHz-crystal, other side grounded through a capacitor.
++5V  13    28 SOUND
++5V  14    27 D4
+U    15    26 T4
+V    16    25 D3
+/Y   17    24 T3
+D0   18    23 T2
+T0   19    22 D2
+T1   20    21 D1</pre></li>
+</ul>
+<div class="pageNavigation">| .gif images of the pin configuration and layout of the ULA are available from the <a href="http://www.worldofspectrum.org/">World of Spectrum</a> |</div>
+
+
+<p><a id="AY"><strong>AY-3-8912 Sound Chip:</strong></a></p>
+<ul>
+<li>
+<pre>SOUND C   1    28  D0       Vcc is +5V.
+PORT      2    27  D1       SOUND A, B and C can be tied together.
+Vcc       3    26  D2       CLOCK can be some MHz.
+SOUND B   4    25  D3
+SOUND A   5    24  D4
+GND       6    23  D5
+PORT      7    22  D6
+PORT      8    21  D7
+PORT      9    20  BC1
+PORT     10    19  BC2
+PORT     11    18  BDIR
+PORT     12    17  A8
+PORT     13    16  RESET
+CLOCK    14    15  CLOCK</pre></li>
+</ul>
+<div class="pageNavigation">| note that the AY-3-8912 used in the Timex <a href="hardware.htm#TS2068">TS2068</a> runs at 1.76475Mhz |</div>
+
+
+<p><a id="Keyboard"><strong>Keyboard Layout:</strong></a></p>
+<ul>
+<li>
+<pre>  OUTER SIDE   A 15 14 8  13 12 9  10 11  INNER SIDE
+             D
+             0   BR EN CS P  0  A  Q  1
+             1   SS L  Z  O  9  S  W  2
+             2   M  K  X  I  8  D  E  3
+             3   N  J  C  U  7  F  R  4
+             4   B  H  V  Y  6  G  T  5
+  INNER SIDE
+
+  [BR] BREAK   [EN] ENTER   [CS] CAPS SHIFT   [SS] SYMBOL SHIFT</pre></li>
+</ul>
+<div class="pageNavigation">| in reality, the matrix connections are in one row on the top side of the membrane |</div>
+
+
+<p><a id="CVideo"><strong>128K Composite Video Output:</strong></a><br />
+Pin 1 is composite PAL, 2 is GND. There's no audio on any pin of the RGB connector.<br /><br />
+The picture is a bit dull unless your TV's video input is High Z (high impedance) However, that's quite unlikely. Normally the impedance of the video
+input is around 75 Ohms. To alleviate this problem, short the 68 Ohms resistor inside the Speccy that's in series with pin 1 (follow the track on the
+PCB). Or you can hook it directly to the input of the RF modulator.<br /><br />
+The audio can be taken from the MIC socket but a better balance between 48K and 128K sound is obtained directly from pin 5 of IC38.</p>
+
+
+<p><a id="RGB"><strong>128K RGB Video:</strong></a></p>
+<ul>
+<li>128K ZX Spectrum:
+<pre>        RGB              Pin  Signal              Level
+                         -------------------------------------------------
+   --7--   --6--         1    Composite PAL       75 Ohms, 1.2 Volts pk-pk
+         |               2    0 Volts DC
+    3--  8  --1          3    Bright output       TTL
+  --     |     --        4    Composite sync      TTL
+      /     \            5    Vertical sync       TTL
+     5   |   4           6    Green               TTL
+    /    2    \          7    Red                 TTL
+         |               8    Blue                TTL</pre></li>
+<li>ZX Spectrum +2A / +3:
+<pre>        RGB              Pin  Signal              Level
+                         -------------------------------------------------
+   --7--   --6--         1                        +12V
+         |               2    GND                 0V
+    3--  8  --1          3    Audio Out
+  --     |     --        4    /Composite Sync     TTL
+      /     \            5                        +12V 
+     5   |   4           6    Green               Analogue 1.67V p-p
+    /    2    \          7    Red                 Analogue 1.67V p-p
+         |               8    Blue                Analogue 1.67V p-p</pre></li>
+</ul>
+
+
+<p><a id="PSU"><strong>Power Supplies:</strong></a><br />
+Information about <a href="hardware.htm">hardware</a> and <a href="peripherals.htm">peripherals</a> with entries elsewhere in this FAQ can be found on the appropriate pages.</p>
+<ul>
+<li>
+<pre>Machine             Voltage   Amperage  Centre Polarity
+-------------------------------------------------------
+ZX81                 9V DC     500 mA        +ve
+Timex 1000/1500      9V DC     500 mA        +ve
+TC 2048              9V DC     800 mA        -ve
+TC 2068              9V DC     1.0  A        -ve
+TS 2068             15V DC     1.0  A        -ve
+Z88                6.5V DC     500 mA        +ve
+Flat-screen TV     5.9V DC     100 mA        -ve</pre></li>
+</ul>
+
+
+<p><a id="RS232"><strong>ZX Interface I RS-232:</strong></a> 
+The RS-232 socket provided on the ZX Interface I has the following configuration:</p>
+<ol>
+<li>Not Connected.</li>
+<li>TX Data - Input.</li>
+<li>RX Data - Output.</li>
+<li>DTR - Input. This should be high when ready.</li>
+<li>CTS - Output. This should be high when ready.</li>
+<li>Not Connected.</li>
+<li>Ground. Pull down.</li>
+<li>Not Connected.</li>
+<li>+9v - Pull up.</li></ol>
+<pre>/----------------------\
+\ 5 o   o   o   o   o 1/
+ \  9 o   o   o   o 6 /
+  \------------------/</pre>
+An RS-232 cable will be required to connect to other peripherals. This must be wired as follows:
+<ul>
+<li>(Pin 2) - TX Data.</li>
+<li>(Pin 3) - RX Data.</li>
+<li>(Pin 5) - CTS.</li>
+<li>(Pin 6) +9V - Normally DSR.</li>
+<li>(Pin 7) - Ground.</li>
+<li>(Pin 20) - DTR.</li></ul>
+&raquo; <a href="peripherals.htm#InterfaceI">Further ZX Interface I details</a>
+<br /><br />
+
+<div class="pageNavigation">| <a href="pinouts.htm#ULA">ULA</a> | <a href="pinouts.htm#AY">AY-3-8912</a>
+| <a href="pinouts.htm#Keyboard">Keyboard</a> | <a href="pinouts.htm#CVideo">Composite Video</a>
+| <a href="pinouts.htm#RGB">RGB Video</a> | <a href="pinouts.htm#PSU">Power Supplies</a>
+| <a href="pinouts.htm#RS232">RS-232</a> |</div>
+</td></tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: pinouts.htm,v 1.13 2004/07/05 08:20:12 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+</body>
+</html>

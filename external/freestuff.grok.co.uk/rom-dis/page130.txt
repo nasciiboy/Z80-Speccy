@@ -1,0 +1,61 @@
+25AC         A9       CE         S-POINT                    267B
+25AE         00                                             End-marker
+
+THE SCANNING FUNCTION ROUTINES
+
+25AF	S-U-PLUS	RST	0020,NEXTCHAR	For unary plus, simply move on
+		JP	24FF,S-LOOP-1	to the next character and jump
+				back to the main re-entry
+				of SCANNING.
+
+The 'scanning QUOTE routine': This routine deals with string quotes, whether simple like "name" or more complex like "a ""white"" lie" or the seemingly redundant VAL$ """a""".
+
+25B3	S-QUOTE	RST	0018,GET-CHAR	Fetch the current character.
+		INC	HL	Point to the start of the string.
+		PUSH	HL	Save the start address.
+		LD	BC,+0000	Set the length to zero.
+		CALL	250F,S-QUOTE-S	Call the "matching" subroutine.
+		JR	NZ,25D9,S-Q-PRMS	Jump if zero reset - no more
+				quotes.
+25BE	S-Q-AGAIN	CALL	250F,S-QUOTE-S	Call it again for a third quote.
+		JR	Z,25BE,S-Q-AGAIN	And again for the fifth, seventh
+				etc.
+		CALL	2530,SYNTAX-Z	If testing syntax, jump to reset
+		JR	Z,25D9,S-Q-PRMS	bit 6 of FLAGS and to continue
+				scanning.
+		RST	0030,BC-SPACES	Make space in the work space
+				for the string and the
+				terminating quote.
+		POP	HL	Get the pointer to the start.
+		PUSH	DE	Save the pointer to the first
+				space.
+25CB	S-Q-COPY	LD	A,(HL)	Get a character from the string.
+		INC	HL	Point to the next one.
+		LD	(DE),A	Copy last one to work space.
+		INC	DE	Point to the next space.
+		CP	+22	Is last character a '"'?
+		JR	NZ,25CB,S-Q-COPY	If not, jump to copy next one.
+		LD	A,(HL)	But if it was, do not copy next
+		INC	HL	one; if next one is a '"', jump
+		CP	+22	to copy the one after it;
+		JR	Z,25CB,S-Q-COPY	otherwise, finished with copying.
+25D9	S-Q-PRMS	DEC	BC	Get true length to BC.
+
+Note that the first quote was not counted into the length; the final quote was, and is discarded now. Inside the string, the first, third, fifth, etc., quotes were counted in but the second, fourth, etc., were not.
+
+		POP	DE	Restore start of copied string.
+25DB	S-STRING	LD	HL,+5C3B	This is FLAGS; this entry point
+		RES	6,(HL)	is used whenever bit 6 is to be
+		BIT	7,(HL)	reset and a string stacked if exe-
+		CALL	NZ,2AB2,STK-STO-S	cuting a line. This is done now.
+		JP	2712,S-CONT-2	Jump to continue scanning the
+				line.
+
+Note that in copying the string to the work space, every two pairs of string quotes inside the string ("") have been reduced to one pair of string quotes(").
+
+25E8	S-BRACKET	RST 0020,NEXT-CHAR	The 'scanning BRACKET
+		CALL	24FB,SCANNING	routine' simply gets the
+		CP	+29	character and calls SCANNING
+				recursively.
+		JP	NZ,1C8A,REPORT-C	Report the error if no matching
+		RST	0020,NEXT-CHAR	bracket; then continue scanning.

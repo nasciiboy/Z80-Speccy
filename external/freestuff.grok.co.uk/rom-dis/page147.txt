@@ -1,0 +1,65 @@
+				count the elements occurring
+				before the specified element.
+		CALL 	2AF4,GET-HL*DE 	Multiply the counter by the
+				dimension-size.
+		ADD 	HL,BC 	Add the result of 'INT-EXP1'
+				to the present counter.
+		POP 	DE 	Fetch the variable pointer.
+		POP 	BC 	Fetch the dimension-number
+				and the discriminator byte.
+		DJNZ 	29C3,SV-COMMA 	Keep going round the loop
+				until 'B' equals zero.
+
+The SYNTAX/RUN flag is checked before arrays of strings are separated from arrays of numbers.
+
+		BIT 	7,C 	Report an error if checking
+2A12 	SV-RPT-C 	JR 	NZ,2A7A,SL-RPT-C 	syntax at this point.
+		PUSH 	HL 	Save the counter.
+		BIT	 6,C 	Jump forward if handling
+		JR 	NZ,2A2C,SV-ELEMS 	an array of strings.
+
+When dealing with an array of numbers the present character must be a ')'.
+
+		LD 	B,D 	Transfer the variable pointer
+		LD 	C,E 	to the BC register pair.
+		RST 	0018,GET -CHAR 	Fetch the present character.
+		CP 	+29 	Is it a ')'?
+		JR 	Z,2A22,SV-NUMBER 	Jump past the error report
+				unless it is needed.
+
+Report 3 - Subscript out of range
+
+2A20 	REPORT-3 	RST 	0008,ERROR-1 	Call the error handling
+		DEFB 	+02 	routine.
+
+The address of the location before the actual floating-point form can now be calculated.
+
+2A22 	SV-NUMBER 	RST 	0020,NEXT-CHAR 	Advance CH-ADD.
+		POP 	HL 	Fetch the counter.
+		LD 	DE,+0005 	There are 5 bytes to each
+				element in an array of numbers.
+		CALL 	2AF4,GET-HL*DE 	Compute the total number of
+				bytes before the required
+				element.
+		ADD 	HL,BC 	Make HL point to the location
+				before the required element.
+		RET 		Return with this address.
+
+When dealing with an array of strings the length of an element is given by the last 'dimension-size'. The appropriate parameters are calculated and then passed to the calculator stack.
+
+2A2C 	SV-ELEMS 	CALL 	2AEE,DE,(DE+1) 	Fetch the last dimension-size.
+		EX 	(SP),HL 	The variable printer goes on the
+				stack and the counter to HL.
+		CALL 	2AF4,GET-HL*DE 	Multiply 'counter' by
+				'dimension-zize'.
+		POP 	BC 	Fetch the variable pointer.
+		ADD 	HL,BC 	This gives HL pointing to the
+				location before the string.
+		INC 	HL 	So point to the actual 'start'.
+		LD 	B,D 	Transfer the last dimension-
+		LD 	C,E 	size to BC to form the 'length'.
+		EX 	DE,HL 	Move the 'start' to DE.
+		CALL 	2AB1,STK-ST-0 	Pass these parameters to the
+				calculator stack. Note: The first
+				parameter is zero indicating a
+				string from an 'array of strings'

@@ -1,0 +1,77 @@
+From: myers@fc.hp.com (Bob Myers)
+Newsgroups: sci.electronics.basics,sci.electronics.design
+Subject: Re: NiCds: 0V and - X Volts ok. Was: NiCad tester needed.
+Date: 6 Jun 1996 21:08:25 GMT
+Organization: Hewlett-Packard Fort Collins Site
+Message-ID: <4p7hc9$ot4@fcnews.fc.hp.com>
+NNTP-Posting-Host: hpfcrlm.fc.hp.com
+
+Richard Steven Walz (rstevew@armory.com) wrote:
+> You are certainly wrong
+> about "the memory effect", and I am awaiting a replay from Bob Myers,
+> Senior Engineer for HP in Colorado, Fort Collins, to reply.
+
+OK, Steve, you got it:
+
+You like the Varta technical data, SO...
+
+Form the Varta "Sealed NiCd Batteries Product Range and Technical Handbook"
+(my copy's from 1987, but I don't think that chemistry has changed all that
+much in 9 years) -
+
+"Sealed NiCd batteries may be stored for years regardless of the charge
+state they are in."
+
+1.0 V/cell is set as the end-of-discharge voltage in capacity curves
+based on a nominal discharge rate of 0.2C, but this does NOT mean that it
+is *necessarily* dangerous to the cell to allow its voltage to go below this
+level.  (In a constant-current discharge at 0.2C, 1.0V might be a good
+point to stop, just because AT THAT RATE, you're going to pass through the
+voltages between 1.0 and 0.0 pretty quickly.)  In fact, many of the Varta
+specs actually list permissable discharge rates to an end voltage of 0.7 or
+0.8V.  There's nothing especially magic about ANY of the points between
+1.0 and 0.0 V, other than the fact that you ARE on a very steep point on
+the curve and better be watching the discharge carefully.
+
+Switching sources for the moment, to a G.E. technical bulletin on the
+supposed "memory" phenomenon:
+
+"Realistically, however, 'memory' cannot exist if any one of the following
+ conditions holds:
+
+	A. Batteries achieve full overcharge*.
+	B. Discharge is not the same each cycle (+/- 2-3%)
+	C. Discharge is to LESS THAN 1.0 VOLT PER CELL. [emphasis mine]"
+
+* - I wanted to point out that "full overcharge" in the context of G.E.'s
+not is NOT in conflict with the notion that overcharging is responsible for
+voltage depression.  You would need to read the full note to understand
+what they're meaning by "full overcharge" here.
+
+So here's at least one source which not only isn't concerned about 1.0V/cell
+being a minimum, but actually is recommending discharge BELOW that point!
+
+Again, the 1.0V/cell point isn't magic.  The few times that I HAVE seen
+recommendations for an absolute, thou-shalt-not-drop-below-this-point sort
+of end-of-discharge voltage spec, it's been more in the 0.5-0.6V range.
+                                  rstevew: emphasis --> ^^^^^^^^
+1.0 V/cell is simply a convenient point at which to stop drawing the
+capacity curves, but this should NOT be taken as implying that something
+bad happens as soon as you get below it.
+
+> I'll
+> wait for Bob Myers to officiate this one, and do it my way. I have
+> many of mine at an extreme age now performing wonderfully! And they
+> don't and have never needed to be "deep discharged". That's a MYTH!
+
+100% agreed.  Intentional deep discharge is just a waste of time and
+energy, even if we could ignore the risk of reverse charging in the case
+of NiCd BATTERIES.
+
+
+Bob Myers  KC0EW  Hewlett-Packard Co.      |Opinions expressed here are not
+                  Workstations Systems Div.|those of my employer or any other
+myers@fc.hp.com   Fort Collins, Colorado   |sentient life-form on this planet.
+
+
+

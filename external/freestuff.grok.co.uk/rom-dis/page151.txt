@@ -1,0 +1,58 @@
+		JR 	Z,2AEB,I-RESTORE 	syntax.
+		PUSH 	AF 	Save the error register again.
+		CALL 	1E99,FIND-INT2 	The 'last value' is
+				compressed Into BC.
+		POP 	DE 	Error register to D.
+		LD 	A,B 	A 'next expression' that
+		OR 	C 	gives zero is always in
+		SCF 		error so jump forward if it
+		JR 	Z,2AE8,I-CARRY 	is so.
+		POP 	HL 	Take a copy of the
+		PUSH 	HL 	limit-value. This will be a
+				'dimension-size' a 'DIM-limit'
+				or a 'string length'.
+		AND 	A 	Now compare the result of
+		SBC 	HL,BC 	evaluating the expression against
+				the limit.
+
+The state of the carry flag and the value held in the D register are now manipulated so as to give the appropriate value for the 'error register'.
+
+2AE8 	I-CARRY 	LD 	A,D 	Fetch the 'old error value'
+		SBC 	A,+00 	Form the 'new error value';
+				+00 if no error at anytime/
+				+FF or less if an 'out of
+				range' error on this pass or on
+				previous ones.
+
+Restore the registers before returning.
+
+2AEB 	I-RESTORE 	POP 	HL 	Restore HL & DE.
+		POP 	DE
+		RET 		Return; 'error register' is the
+				A register.
+
+THE 'DE,(DE+1)' SUBROUTINE
+This subroutine performs the construction - LD DE,(DE+1) - and returns HL pointing
+to'DE+2'.
+
+2AEE 	DE,(DE+1) 	EX 	DE,HL 	Use HL for the construction.
+		INC 	HL 	Point to 'DE+1'.
+		LD 	E,(HL) 	In effect - LD E,(DE+1).
+		INC 	HL 	Point to 'DE+2'.
+		LD 	D,(HL) 	In effect - LD D,(DE+2).
+		RET 		Finished.
+
+THE 'GET-HL*DE' SUBROUTINE
+Unless syntax is being checked this subroutine calls 'HL=HL*DE' which performs the implied construction.
+Overflow of the 16 bits available in the HL register pair gives the report 'out of memory'. This is not exactly the true situation but it implies that the memory is not large enough for the task envisaged by the programmer.
+
+2AF4 	GET-HL*DE 	CALL 	2530,SYNTAX-Z 	Return directly if syntax is
+		RET 	Z 	being checked.
+		CALL 	30A9,HL=HL*DE 	Perform the multiplication.
+		JP 	C,1F15,REPORT-4 	Report 'Out of memory'.
+		RET 		Finished.
+
+THE 'LET' COMMAND ROUTINE
+This is the actual assignment routine for the LET, READ and INPUT commands.
+When the destination variable is a 'newly declared variable' then DEST will point to the first letter of the variable's name as it occurs in the BASIC line. Bit 1 of FLAGX will be set.
+However if the destination variable 'exists already' then bit 1 of FLAGX will be reset and DEST will point for a numeric variable to the location before the five bytes of the

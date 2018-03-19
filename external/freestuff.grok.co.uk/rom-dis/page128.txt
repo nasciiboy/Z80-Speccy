@@ -1,0 +1,60 @@
+		JR	NZ,252D,S-RPORT-C	Report the error if it is not.
+		CALL	1C79,NEXT-2NUM	Co-ordinates to calculator stack.
+		RST	0018,GET-CHAR	Fetch the current character.
+		CP	+29	Is it a ')'?
+252D	S-RPORT-C	JP	NZ,1C8A,REPORT-C	Report the error if it is not.
+
+THE 'SYNTAX-Z' SUBROUTINE
+At this point the 'SYNTAX-Z' subroutine is interpolated. It is called 32 times, with a saving of just one byte each call. A simple test of bit 7 of FLAGS will give the zero flag reset during execution and set during syntax checking.
+    i.e. SYNTAX gives Z set.
+
+2530	SYNTAX-Z	BIT	7,(FLAGS)	Test bit 7 of FLAGS.
+		RET		Finished.
+
+The next subroutine is the 'scanning SCREEN$ subroutine', which is used by S-SCREENS$ to find the character that appears at line x, column y of the screen. It only searches the character set 'pointed to' to CHARS.
+
+Note: This is normally the characters +20 (space) to +7F (©) although the user can alter CHARS to match for other characters, including user-defined graphics.
+
+2535	S-SCRN$-S	CALL	2307,STK-TO-BC	x to C, y to B; 0<=x<23
+		LD	HL,(CHARS)	decimal; O<=y<=31 decimal.
+		LD	DE,+0100	CHARS plus 256 decimal gives
+		ADD	HL,DE	HL pointing to the character set.
+		LD	A,C	x is copied to A.
+		RRCA		The number 32 (decimal) * (x
+		RRCA		mod 8) + y is formed in A and
+				copied to E.
+		RRCA		This is the low byte of the
+		AND	+E0	required screen address.
+		XOR	B
+		LD	E,A
+		LD	A,C	x is copied to A again
+		AND	+18	Now the number 64 (decimal) +
+		XOR	+40	8*INT (x/8) is inserted into D.
+		LD	D,A	DE now holds the screen address.
+		LD	B,+60	B counts the 96 characters.
+25AF	S-SCRN-LP	PUSH	BC	Save the count.
+		PUSH	DE	And the screen pointer.
+		PUSH	HL	And the character set pointer.
+		LD	A,(DE)	Get first row of screen character.
+		XOR	(HL)	Match with row from character
+				set.
+		JR	Z,255A,S-SC-MATCH	Jump if direct match found.
+		INC	A	Now test for match with inverse
+				character (get +00 in A from
+				+FF).
+		JR	NZ,2573,S-SCR-NXT	Jump if neither match found.
+		DEC	A	Restore +FF to A.
+255A	S-SC-MTCH	LD	C,A	Inverse status (+00 or +FF) to C.
+		LD	B,+07	B counts through the other 7
+				rows.
+255D	S-SC-ROWS	INC	D	Move DE to next row (add 256
+				dec.).
+		INC	HL	Move HL to next row (i.e. next
+				byte).
+		LD	A,(DE)	Get the screen row.
+		XOR	(HL)	Match with row from the ROM.
+		XOR	C	Include the inverse status.
+		JR	NZ,2573,S-SCR-NXT	Jump if row fails to match.
+		DJNZ	255D,S-SC-ROWS	Jump back till all rows done.
+		POP	BC	Discard character set pointer.
+		POP	BC	And screen pointer.

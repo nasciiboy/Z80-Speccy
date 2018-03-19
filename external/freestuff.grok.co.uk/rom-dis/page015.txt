@@ -1,0 +1,56 @@
+THE CASSETTE HANDLING ROUTINES
+
+The 16K monitor program has an extensive set of routines for handling the cassette interface. In effect these routines form the SAVE. LOAD, VERIFY & MERGE command routines.
+The entry point to the routines is at SAVE-ETC (0605). However before this point are the subroutines concerned with the actual SAVEing and LOADing (or VERIFYing) of bytes.
+In all cases the bytes to be handled by these subroutines are described by the DE register pair holding the 'length' of the block, the IX register pair holding the 'base address' and the A register holding +00 for a header block, or +FF for a program/data block.
+
+THE 'SA-BYTES' SUBROUTINE
+This subroutine is called to SAVE the header information (from 09BA) and later the actual program/data block (from 099E).
+
+04C2	SA-BYTES	LD	HL,+053F	Pre-load the machine stack with
+		PUSH	HL	the address - SA/LD-RET.
+		LD	HL,+1F80	This constant will give a leader
+				of about 5 secs. for a 'header'.
+		BIT	7,A	Jump forward if SAVEing a
+		JR	Z,04D0,SA-FLAG	header.
+		LD	HL,+0C98	This constant will give a leader
+				of about 2 secs. for a program/
+				data block.
+04D0	SA-FLAG	EX	AF,A'F'	The flag is saved.
+		INC	DE	The 'length' is incremented
+		DEC	IX	and the 'base address' reduced
+				to allow for the flag.
+		DI		The maskable interrupt is
+				disabled during the SAVE.
+		LD	A,+02	Signal 'MIC on' and border to
+				be RED.
+		LD	B,A	Give a value to B.
+
+A loop is now entered to create the pulses of the leader. Both the 'MIC on' and the 'MIC off' pulses are 2,168 T states in length. The colour of the border changes from RED to CYAN with each 'edge'.
+
+Note:	An 'edge' will be a transition either from 'on' to 'off', or from 'off' to 'on'.
+
+04DB	SA-LEADER	DJNZ  04D8,SA-LEADER	The main timing period.
+		OUT	(+FE),A	MlC on/off, border RED/CYAN,
+		XOR	+0F	on each pass.
+		LD	B,+A4	The main timing constant.
+		DEC	L	Decrease the low counter.
+		JR	NZ,04D8,SA-LEADER Jump back for another pulse.
+		DEC	B	Allow for the longer path
+				(-reduce by 13 T states).
+		DEC	H	Decrease the high counter.
+		JP	P,04D8,SA-LEADER	Jump back for another pulse
+				until completion of the leader.
+
+A sync pulse is now sent.
+
+		LD	B,+2F
+04EA	SA-SYNC-1	DJNZ	04EA,SA-SYNC-1	MIC off for 667 T states from
+				'OUT to OUT'.
+		OUT	(+FE),A	MIC on and RED.
+		LD	A,+0D	Signal'MIC off & CYAN'.
+		LD	B,+37	MIC on for 735 T States from
+04F2	SA-SYNC-2	DJNZ	04F2,SA-SYNC-2	'OUT to OUT'.
+		OUT	(+FE),A	Now MIC off & border CYAN.
+
+The header v. program/data flag will be the first byte to be SAVEd.

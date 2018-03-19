@@ -1,0 +1,65 @@
+THE 'NEXT' COMMAND ROUTINE
+The 'variable in assignment' has already been determined (see CLASS-04,1C6C); and it remains to change the VALUE as required.
+
+1DAB	NEXT	BIT	1,(FLAGX)	Jump to give the error report
+		JP	NZ,1C2E,REPORT-2	if the variable was not found.
+		LD	HL,(DEST)	The address of the variable
+		BIT	7,(HL)	is fetched and the name
+		JR	Z,1DD8,REPORT-1	tested further.
+
+Next the variable's VALUE and STEP are manipulated by the calculator.
+
+		INC	HL	Step past the name.
+		LD	(MEM),HL	Make the variable a
+				temporary 'memory area'.
+		RST	0028,FP-CALC	-
+		DEFB	+E0,get-mem-0	v
+		DEFB	+E2,get-mem-2	v, s
+		DEFB	+0F,addition	v+s
+		DEFB	+C0,st-mem-0	v+s
+		DEFB	+02,delete	-
+		DEFB	+38,end-calc	-
+
+The result of adding the VALUE and the STEP is now tested against the LIMIT by calling NEXT-LOOP.
+
+		CALL	1DDA,NEXT-LOOP	Test the new VALUE against
+				the LIMIT
+		RET	C	Return now if the FOR-NEXT
+				loop has been completed.
+
+Otherwise collect the 'looping' line number and statement.
+
+		LD	HL,(MEM)	Find the address of the
+		LD	DE,+000F	low byte of the looping
+		ADD	HL,DE	line number.
+		LD	E,(HL)	Now fetch this line number.
+		INC	HL
+		LD	D,(HL)
+		INC	HL
+		LD	H,(HL)	Followed by the statement
+				number.
+		EX	DE,HL	Exchange the numbers before
+		JP	1E73,GO-TO-2	jumping forward to treat them
+				as the destination line of a
+				GO TO command.
+
+Report 1 - NEXT without FOR
+
+1DD8	REPORT-1	RST	0008,ERROR-1	Call the error handling
+		DEFB	+00	routine.
+
+THE 'NEXT-LOOP SUBROUTINE
+This subroutine is used to determine whether the LIMIT has been exceeded by the present VALUE. Note has to be taken of the sign of the STEP.
+	The subroutine returns the carry flag set if the LIMIT is exceeded.
+
+1DDA	NEXT-LOOP	RST	0028,FP-CALC	-
+		DEFB	+E1,get-mem-1	l
+		DEFB	+E0,get-mem-0	l, v
+		DEFB	+E2,get-mem-2	l, v, s
+		DEFB	+36,less-0	l, v,(1/0)
+		DEFB	+00,jump-true	l, v,(1/0)
+		DEFB	+02,to NEXT-1	l, v,(1/0)
+		DEFB	+01,exchange	v, l
+1DE2	NEXT-1	DEFB	+03,subtract	v-l or l-v
+		DEFB	+37,greater-0	(1/0)
+		DEFB	+00,jump-true	(1/0)

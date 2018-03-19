@@ -1,0 +1,46 @@
+APPENDIX
+
+BASIC PROGRAMS FOR THE MAIN SERIES
+The following BASIC programs have been included as they give a good illustration of
+how Chebyshev polynomials are used to produce the approximations to the functions
+SIN, EXP, LN and ATN.
+	The series generator:
+	This subroutine is called by all the 'function' programs.
+
+	500 	REM SERIES GENERATOR, ENTER
+	510 	REM USING THE COUNTER BREG
+	520 	REM AND ARRAY-A HOLDING THE
+	530 	REM CONSTANTS.
+	540 	REM FIRST VALUE IN Z.
+	550 	LET M0=2*Z
+	560 	LET M2=0
+	570 	LET T=0
+	580 	FOR I=BREG TO 1 STEP -1
+	590 	LET M1=M2
+	600 	LET U=T*M0-M2+A(BREG+1-I)
+	610 	LET M2=T
+	620 	LET T=U
+	630 	NEXT I
+	640 	LET T=T-M1
+	650 	RETURN
+	660 	REM LAST VALUE IN T.
+
+In the above subroutine the variable are:
+	Z  - 	the entry value.
+	T  - 	the exit value.
+	M0 - 	mem-0
+	M1 - 	mem-1
+	M2 - 	mem-2
+	I  - 	the counter for BREG.
+	U  - 	a temporary variable for T.
+	A(1) to 
+	A(BREG) -	the constants.
+	BREG -	the number of constants to be used.
+
+To see how the Chebyshev polynomials are generated, record on paper the values of U,
+M1, M2 and T through the lines 550 to 630, passing, say, 6 times through the loop, and
+keeping the algebraic expressions for A(1) to A(6) without substituting numerical values.
+Then record T-M1. The multipliers of the constants A(1) to A(6) will then be the re-
+quired Chebyshev polynomials. More precisely, the multiplier of A(1) will be 2*T5(Z),
+for A(2) it will be 2*T4(Z) and so on to 2*T1(Z) for A(5) and finally T0(Z) for A(6).
+	Note that T0(Z)=1, T1(Z)=Z and, for n>=2, Tn(Z)=2*Z*Tn-1(Z)-Tn-2(Z).

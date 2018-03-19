@@ -1,0 +1,53 @@
+				to an empty GO SUB stack.
+		PUSH	BC	Next pass the 'error address'
+		LD	(ERR-SP),SP	to the stack and save its
+				address in ERR-SP.
+		EX	DE,HL	An indirect return is now
+		JP	(HL)	made to STMT-RET.
+Note: When the routine is called from RUN the values of NEWPPC & NSPPC will have been affected and no statements coming after RUN can ever be found before the jump is taken.
+
+THE 'GO SUB' COMMAND ROUTINE
+The present value of PPC and the incremented value of SUBPPC are stored on the GO SUB stack.
+1EED	GO-SUB	POP	DE	Save the address - STMT-RET.
+		LD	H,(SUBPPC)	Fetch the statement number
+		INC	H	and increment it.
+		EX	(SP),HL	Exchange the 'error address'
+				with the statement number.
+		INC	SP	Reclaim the use of a location.
+		LD	BC,(PPC)	Next save the present line
+		PUSH	BC	number.
+		PUSH	HL	Return the 'error address'
+		LD	(ERR-SP),SP	to the machine stack and
+				reset ERR-SP to point to it.
+		PUSH	DE	Return the address -
+				STMT-RET.
+		CALL	1E67,GO-TO-1	Now set NEWPPC & NSPPC to
+				the required values.
+		LD	BC,+0014	But before making the jump
+				make a test for room.
+
+THE 'TEST-ROOM' SUBROUTINE
+A series of tests is performed to ensure that there is sufficient free memory available for the task being undertaken.
+1F05	TEST-ROOM	LD	HL,(STKEND)	Increase the value taken from
+		ADD	HL,BC	STKEND by the value carried
+				into the routine by the BC
+				register pair.
+		JR	C,1F15,REPORT-4	Jump forward if the result is
+				over +FFFF.
+		EX	DE,HL	Try it again allowing for a
+		LD	HL,+0050	further eighty bytes.
+		ADD	HL,DE
+		JR	C,1F15,REPORT-4
+		SBC	HL,SP	Finally test the value against the
+				address of the machine stack.
+		RET	C	Return if satisfactory.
+Report 4 - Out of memory
+1F15	REPORT-4	LD	L,+03	This is a 'run-time' error and the
+		JP	0055,ERROR-3	error marker is not to be used.
+
+THE 'FREE MEMORY' SUBROUTINE
+There is no BASIC command 'FRE' in the SPECTRUM but there is a subroutine for performing such a task.
+An estimate of the amount of free space can be found at any time by using:
+'PRINT 65536-USR 7962'
+1F1A	FREE-MEM	LD	BC,+0000	Do not allow any overhead.
+		CALL	1F05,TEST-ROOM	Make the test and pass the

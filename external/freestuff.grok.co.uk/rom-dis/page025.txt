@@ -1,0 +1,65 @@
+		LD	BC,+0011	Form in the IX register pair
+		ADD	IX,BC	the base address of the 'second
+				header area'.
+
+Now enter a loop; leaving it only when a 'header' has been LOADed.
+
+0767	LD-LOOK-H	PUSH	IX	Make a copy of the base address.
+		LD	DE,+0011	LOAD seventeen bytes.
+		XOR	A	Signal 'header'.
+		SCF		Signal 'LOAD'.
+		CALL	0556,LD-BYTES	Now look for a header.
+		POP	IX	Retrieve the base address.
+		JR	NC,0767,LD-LOOK-H	Go round the loop until
+				successful.
+
+The new 'header' is now displayed on the screen but the routine will only proceed if the 'new' header matches the 'old' header.
+
+		LD	A,+FE	Ensure that channel 'S'
+		CALL	1601,CHAN-OPEN	is open.
+		LD	(SCR-CT),+03	Set the scroll counter.
+		LD	C,+80	Signal 'names do not match'.
+		LD	A,(IX+00)	Compare the 'new' type
+		CP	(IX-11)	against the 'old' type.
+		JR	NZ,078A,LD-TYPE	Jump if the 'types' do not
+				match.
+		LD	C,+F6	But if they do; signal 'ten
+				characters are to match'.
+078A	LD-TYPE	CP	+04	Clearly the 'header' is
+		JR	NC,0767,LD-LOOK-H	nonsense if 'type 4 or more'.
+
+The appropriate message - 'Program:', 'Number array:', 'Character array:' or 'Bytes:' is printed.
+
+		LD	DE,+09C0	The base address of the message
+				block.
+		PUSH	BC	Save the C register whilst
+		CALL	0C0A,PO-MSG	the appropriate message is
+		POP	BC	printed.
+
+The 'new name' is printed and as this is done the 'old' and the 'new' names are compared.
+
+		PUSH	IX	Make the DE register pair
+		POP	DE	point to the 'new type' and
+		LD	HL,+FFF0	the HL register pair to the
+		ADD	HL,DE	'old name'.
+		LD	B,+0A	Ten characters are to be
+				considered.
+		LD	A,(HL)	Jump forward if the match is
+		INC	A	to be against an actual name.
+		JR	NZ,07A6,LD-NAME
+		LD	A,C	But if the 'old name' is 'null'
+		ADD	A,B	then signal 'ten characters
+		LD	C,A	already match'.
+
+A loop is entered to print the characters of the 'new name'. The name will be accepted if the 'counter' reaches zero, at least.
+
+07A6	LD-NAME	INC	DE	Consider each character of the
+		LD	A,(DE)	'new name' in turn.
+		CP	(HL)	Match it against the appropriate
+		INC	HL	character of the 'old name'.
+		JR	NZ,07AD,LD-CH-PR	Do not count it if it does not
+		INC	C	does not match.
+07AD	LD-CH-PR	RST	0010,PRINT-A-1	Print the 'new' character.
+		DJNZ	07A6,LD-NAME	Loop for ten characters.
+		BIT	7,C	Accept the name only if the
+		JR	NZ,0767,LD-LOOK-H	counter has reached zero.

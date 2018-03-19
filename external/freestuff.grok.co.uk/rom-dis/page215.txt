@@ -1,0 +1,58 @@
+	4.	DEFB	+59,exponent+69	
+		DEFB	+30,+C5,(+00,+00)
+	5.	DEFB	+5C,exponent+6C
+		DEFB	+90,+AA,(+00,+00)
+	6.	DEFB	+9E,exponent+6E
+		DEFB	+70,+6F,+61,(+00)
+	7.	DEFB	+A1,exponent+71
+		DEFB	+CB,+DA,+96,(+00)
+	8.	DEFB	+A4,exponent+74
+		DEFB	+31,+9F,+B4,(+00)
+	9.	DEFB	+E7,exponent+77
+		DEFB	+A0,+FE,+5C,+FC
+	10.	DEFB	+EA,exponent+7A
+		DEFB	+1B,+43,+CA,+36
+	11.	DEFB	+ED,exponent+7D
+		DEFB	+A7,+9C,+7E,+5E
+	12.	DEFB	+F0,exponent+80
+		DEFB	+6E,+23,+80,+93
+
+At the end of the last loop the 'last value' is:
+
+	either	LD X'/(X'-1) for the larger values of X'
+	or	LD (2*X')/(2*X'-1) for the smaller values of X'.
+
+Perform step vii.
+
+	DEFB	+04,multiply	Y1=LN (2**e'), LN X'
+			Y2=LN (2**(e'-1)), LN (2*X')
+	DEFB	+0F,addition	LD (2**e')*X')	= LNX
+			LN(2**(e'-1)*2*X')	= LN X
+	DEFB	+38,end-calc	LN X
+	RET		Finished: 'last value' is LN X.
+
+THE REDUCE ARGUMENT' SUBROUTINE
+(Offset 39: 'get-argt')
+
+This subroutine transforms the argument X of SIN X or COS X into a value V.
+The subroutine first finds a value Y such that:
+
+Y = X/(2*PI) - INT (X/2*PI) + 0.5), where Y is greater than, or equal to, -.5 but less than +.5.
+The subroutine returns with:
+V = 4*Y	if -1 <=4*Y <=1	- case i.
+or, V = 2-4*Y	if 1 <4*Y <2	- case ii.
+or, V = -4*Y-2	if -2 <=4*Y < -1.	- case iii.
+
+In each case, -1 < =V <=1 and SIN (PI*V/2) = SIN X
+
+3783	get-argt	RST	0028,FP-CALC	X
+		DEFB	+3D,re-stack	X (in full floating-point form)
+		DEFB	+34,stk-data	X, 1/(2*PI)
+		DEFB	+EE,exponent+7E	
+		DEFB	+22,+F9,+83,+6E	
+		DEFB	+04,multiply	X/(2*PI)
+		DEFB	+31,duplicate	X/(2*PI), X/(2*PI)
+		DEFB	+A2,stk-half	X/(2*PI), X/(2*PI), 0.5
+		DEFB	+0F,addition	X/(2*PI), X/(2*PI)+0.5
+		DEFB	+27,int,1C46	X/(2*PI), INT (X/(2*PI)+0.5)
+		DEFB	+03,subtract,174C	X/(2*PI)-INT (X/(2*PI)+0.5)=Y

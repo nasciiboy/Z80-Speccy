@@ -1,0 +1,21 @@
+From: zzyyzz@mixcom.com (Vincent Mulhollon) 
+Subject: Re: Z80 Reset question
+Date: 1 Jun 1996 01:38:36 GMT
+Rocky (suesound@iafrica.com) wrote:
+: Maybe you could use the /BUSRQ signal - that definitely causes the bus
+: to be released. I think /RESET does not tri-state the /WR & /RD lines but
+: /BUSRQ does.
+
+ "The Z80 microcomputer handbook" William Barden, Jr, 1978, page 29 says:
+"When /RESET is brought low, the following actions occur:
+<SNIP>
+5. The address bus goes to a high-impedance state.
+6. The data bus goes to a high-impedance state.
+7. All output-control signals go to the inactive state."
+So "Rocky" is right.  /WR and /RD go high, NOT high-z.
+Might I suggest OR logic for the /WR and /RD with a few invertors and stuff?
+
+Of course, /BUSRQ will actually do what you want.
+  Extra credit for you if you implement handshaking with the /BUSAK signal.
+
+Vince Mulhollon N9NFB

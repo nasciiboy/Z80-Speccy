@@ -1,0 +1,66 @@
+		AND	A
+		JR	Z,28EF,V-RUN/SYN	If so, jump forward.
+		CALL	2530,SYNTAX-Z	In 'run-time'?
+		JP	NZ,2951,STK-F-ARG	If so, jump forward to search
+				the DEF FN statement.
+
+Otherwise (or if the variable was not found in the DEF FN statement) a search of variables area will be made, unless syntax is being checked.
+
+28EF	V-RUN/SYN	LD	B,C	Copy the discriminator bytes to
+				the B register.
+		CALL	2530,SYNTAX-Z	Jump forward if in
+		JR	NZ,28FD,V-RUN	'run-time'.
+		LD	A,C	Move the discriminator to A.
+		AND	+E0	Drop the character code part.
+		SET	7,A	Indicate syntax by setting bit 7.
+		LD	C,A	Restore the discriminator.
+		JR	2934,V-SYNTAX	Jump forward to continue.
+
+A BASIC line is being executed so make a search of the variables area.
+
+28FD	V-RUN	LD	HL,(VARS)	Pick up the VARS pointer.
+
+Now enter a loop to consider the names of the existing variables.
+
+2900	V-EACH	LD	A,(HL)	The 1st. letter of each
+				existing variable.
+		AND	+7F	Match on bits 0 to 6.
+		JR	Z,2932,V-80-BYTE	Jump when the '80-byte' is
+				reached.
+		CP	C	The actual comparison.
+		JR	NZ,292A,V-NEXT	Jump forward if the 1st
+				characters do not match.
+		RLA		Rotate A leftwards and then
+		ADD	A,A	double it to test bits 5 & 6.
+		JP	P,293F,V-FOUND-2	Strings and array variables.
+		JR	C,293F,V-FOUND-2	Simple numeric and FOR-NEXT
+				variables.
+
+Long names are required to be matched fully.
+		POP	DE	Take a copy of the pointer
+		PUSH	DE	to the 2nd. character.
+		PUSH	HL	Save the 1st letter pointer.
+2912	V-MATCHES	INC	HL	Consider the next character.
+2913	V-SPACES	LD	A,(DE)	Fetch each character in turn.
+		INC	DE	Point to the next character.
+		CP	+20	Is the character a 'space'?
+		JR	Z,2913,V-SPACES	Ignore the spaces.
+		OR	+20	Set bit 5 so as to match
+				lower and upper case letters.
+		CP	(HL)	Make the comparison.
+		JR	Z,2912,V-MATCHES	Back for another character if
+				it does match.
+		OR	+80	Will it match with bit 7 set?
+		CP	(HL)	Try it.
+		JR	NZ,2929,V-GET-PTR	Jump forward if the 'last
+				characters' do not match.
+		LD	A,(DE)	Check that the end of the
+		CALL	2C88,ALPHANUM	name has been reached before
+		JR	NC,293E,V-FOUND-1	jumping forward.
+
+In all cases where the names fail to match the HL register pair has to be made to point to the next variable in the variables area.
+
+2929	V-GET-PTR	POP	HL	Fetch the pointer.
+292A	V-NEXT	PUSH	BC	Save B & C briefly.
+		CALL	19B8,NEXT-ONE	DE is made to point to the
+				next variable.

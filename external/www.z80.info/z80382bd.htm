@@ -1,0 +1,355 @@
+<HTML>
+<HEAD>
+<TITLE>Thomas Scherrer Z80382 Brief Data</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+</HEAD>
+
+<body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+
+<A NAME="TOP">
+<H2>Z80382 Brief Data</H2>
+
+<PRE>
+Z382 BRIEF - REV.02 14. DEC 95
+</PRE>
+
+<H4><B><CENTER>Z80382</CENTER></B></H4>
+<H4><B><CENTER>High Performance Integrated Processor</CENTER></B></H4>
+
+<PRE>
+        FEATURES AND BENEFITS
+
+     Z380 Processor
+     - Fully Static CMOS design with low power standby
+        o Reduced power consumption
+        o Ideal for portable applications
+     - DC to 33MHz operating frequency @ 5.0V
+        o Fast processing at normal Vcc
+     - DC to 20MHz operating frequency @ 3.3V
+        o Ideal for portable applications
+     - Enhanced Instruction Set for 16 bit operation
+        o Provides greater design flexibility
+        o Improves device performance
+     - Maintains Object Code compatibility with Z80 & Z180
+        o Preserve "software capital" and leverage existing investment
+     - 16 MByte linear addressing
+     - 16 bit internal bus
+     - Two Clock Cycle Instruction execution minimum
+        o High performance
+     - Four on-chip register banks
+        o Allows fast context switching
+     - BC/DE/HL/IX/IY registers augmented to 32 bits
+
+     On-Chip Peripherals
+     - Three HDLC Synchronous Serial Channels
+        o Configurable for general data communications needs
+     - 8 advanced DMA channels with 24 bit addressing
+        o Allow operation at or above T1/E1 rates
+        o Can be dynamically assigned, increasing flexibility
+     - 16550 MIMIC with Com Decode, DMA mailbox, and 16mA bus drive.
+        o Enables direct connection to a PC ISA bus interface and
+        o Reduce system level costs
+     - PCMCIA interface
+        o Provides connectivity to the PCMCIA bus
+        o Reduce system level costs
+     - Plug and Play ISA interface
+        o Automatic configuration of bus resources
+        o Reduce system level costs
+     - 2 enhanced ASCIs with 16 bit baud rate generators
+        o Flexible serial channels capable of up to 512Kbps data rates
+     - IOM-2 Bus interface
+        o Provides compatibility to ISDN Basic Rate Interface
+     - 32 bits general I/O
+     - 3 Memory Chip Selects with wait state generators
+     - Dynamic Bus Sizing (8/16 bit inter-operability)
+        o Allows any mix of 16 and 8 bit memory and I/O devices
+        o Eliminates the need for external logic to drive MSIZE
+     - 2 16-bit timers with flexible prescalers
+     - CSIO (for use with serial memory)
+        o Provides simple means to connect to other processors
+     - Watch Dog Timer
+        o Prevents code runaway and possible resulting system damage
+        o Allows external peripherals to be reset along with the Z80382
+     - Clock Multiply (X2) and divide-by-two options
+        o Allows use of slower, lower cost crystal
+        o System level cost savings
+
+     Economical 144 pin QFP or VQFP
+        o Reduce board space
+</PRE>
+<HR>
+<PRE>
+        GENERAL DESCRIPTION
+
+     The  Z80382  is a  high-performance  integrated  datacommunications
+     processor  that  can  address several different  functions  with  a
+     single device.  Major functional blocks on the Z80382 include  Z380
+     processor,  3 HDLC serial channels with associated DMA,  IOM-2  bus
+     interface,  2  async channels, 16550 MIMIC, PCMCIA  interface,  and
+     Plug  and Play Interface logic.  A full range of  power  management
+     modes are provided.
+
+     Applications addressed by the Z80380 include High End Analog Modems
+     (V.34 and beyond) and Digital Modems (ISDN, GSM cellular, Mobitex &
+     Modacom).  The  Z80382  is also very well suited  for  single  chip
+     controller   applications  in  ISDN  hardware  including   Terminal
+     Adapters and Terminal Equipment. The Z80382 provides a  performance
+     upgrade  to  existing Z80 and Z18X-based designs by  utilizing  the
+     increased bandwidth of the Z380 embedded processor, while migrating
+     existing customer code.
+
+     The  Z380  microprocessor  core in the  Z80382  provides  fast  and
+     efficient throughput and increased memory addressing  capabilities.
+     The Z380 offers a continuing growth path for present Z80- or  Z180-
+     based   designs,while   maintaining  Z80   and   Z180   object-code
+     compatibility.   The   Z380   CPU   enhancements   include    added
+     instructions,  expanded  16-Mbyte address space  and  flexible  bus
+     interface timing.
+
+     In  the Z380 processor core, the basic addressing modes of the  Z80
+     microprocessor  have  been  augmented  to  include  Stack   Pointer
+     Relative  loads and stores, 16-bit and 24-bit indexed offsets,  and
+     more flexible Indirect Register addressing.  Internally, all of the
+     addressing  modes  allow up to 32 bit addressing.  Its  24  address
+     pins allow addressing of 16Mbytes of memory.
+
+     Other additions to the instruction set include a full complement of
+     16-bit  arithmetic and logical operations, 16-bit  I/O  operations,
+     multiply  and divide, plus a complete set  of  register-to-register
+     loads and exchanges.
+
+     The Z380 register file includes alternate versions of the IX and IY
+     registers. There are four banks of registers in the Z380, alongwith
+     instructions for switching among them.  All of the 16-bit  register
+     pairs and index registers in the basic Z80 microprocessor  register
+     file are expanded to 32 bits.
+
+     Some  features  that have traditionally been  handled  by  external
+     peripherals  have been incorporated into the  Z380  microprocessor.
+     These on-chip peripherals reduce system chip count, improve  system
+     reliability,   reduce   overall  power   consumption,  and   reduce
+     interconnection on the external bus.
+
+     The  Z80382  provides a low power standby mode  to  minimize  power
+     consumption  during system idle time, thus saving battery  life  in
+     portable  applications or reducing the size and cost of the  system
+     powre supply.
+
+     The  Z80382 is packaged in two surface-mount packages -- a  144-pin
+     QFP, or 144-pin VQFP for PCMCIA applications.
+
+     To  improve  total system throughput and reduce  system  cost,  the
+     Z80382  integrates on-chip peripherals and glue  logic,  summarized
+     below:
+
+     Three  HDLC  Synchronous Channels - These HDLC channels  feature  8
+     byte  receive  and transmit FIFOs.  These can be used  for  modems,
+     general  data  communications, and ISDN Basic Rate  Interface  when
+     configured  with  the  IOM-2 bus interface.  This  points  out  the
+     multiple applications that the Z80382 can address.
+
+     The  HDLC  Channels always transfer data through the  DMA  channels
+     (see  below).  A  transparent mode is selectable which  allows  use
+     with non-HDLC applications such as voice or audio.  Two of the HDLC
+     cells  can  be pin multiplexed with the ASCIs  (UARTs)  to  provide
+     dynamically switchable (async - sync) DTE interfaces.
+
+     8 DMA channels - These DMA channels can be dynamically assigned  to
+     serve the HDLC cells, MIMIC COM ports, Host DMA Mailbox, or  ASICs,
+     in  any  mixture,  making for a  very  flexible  arrangement.  They
+     include  24-bit  memory  addressing  and  8  bit  memory   transfer
+     capability.  Requests  are internally routed from the  HDLC  cells.
+
+       Linked  List operation allow all HDLC Transmitters and  Receivers
+     to operate at or above E1 rates simultaneously, without loading the
+     bus bandwidth.
+
+     16550 MIMIC - Provides connection to a PC ISA bus and emulation  of
+     the  16550 UART register set to eliminate the need for an  external
+     16550 UART, saving board space and system level cost.  Improvements
+     include 16mA output drivers and Com Port Decode to reduce  external
+     interface components.
+
+     PCMCIA  Interface - Provides connectivity to PCMCIA bus with  16550
+     MIMIC.  Configuration  registers  are  provided  that  comply  with
+     PCMCIA  2.01  and  3.0.  Reduces the need for  an  external  PCMCIA
+     interface device, which saves board space and reduces system  level
+     cost.
+
+     Plug  and  Play ISA interface - Provides a  hardware  and  software
+     mechanism  for  implementing  the Plug and Play  ISA  standard  for
+     automatic configuration of ISA bus resources.  Removes the need for
+     an external PnP device, which saves board space and reduces  system
+     level cost.
+
+     2  ASCIs - Flexible asynchronous serial channels with  16-bit  baud
+     rate  generators  for modem control and  status.  Capable  of  high
+     speed asynchronous data rates up to 512Kbps.
+
+     IOM-2 Bus Interface - Provides ISDN compatibility and time division
+     multiplex  capability.  Internal  signals from this module  can  be
+     connected  to  the HDLC channels to provide the B-channels  and  D-
+     channel  for  ISDN  applications.  Thus,  three  channels  can   be
+     configured for providing compatibility to the Basic Rate  Interface
+     (2B+D) of ISDN.
+
+     32  bit  general purpose I/O - for non-ISA  applications,  4  8-bit
+     ports  are  provided  for general purpose I/O.  In  ISA  or  PCMCIA
+     applications,  two of the ports are not pinned out, and  the  other
+     two  are selectively multiplexed with on-chip peripheral  functions
+     (ASCIs, CSI/O, PRT).  These pins are individually programmable  for
+     input or output mode.
+
+     ROM  and RAM Chip Selects with Wait State Generators - chip  select
+     outputs are provided to decode memory addresses and provide  memory
+     chip enables.  Each chip select has its own wait state generator to
+     allow use of different speed memories.  Reduces external glue logic
+     needed for decoding memory addresses.
+
+     Dynamic  Bus  Sizing - The Z80382 includes dynamic  bus  sizing  to
+     allow  any mix of 16 and 8 bit memory and I/O devices in a  system.
+     One application of using this capability would be to copy code from
+     a  low-cost,  slow 8 bit ROM to 16 bit RAM, from which  it  can  be
+     executed at much higher speed.  Memory bus sizes can be  configured
+     internally by software, to eliminate the need for external logic to
+     drive MSIZE.
+
+     2  16 bit timers - with flexible prescalers for wide-range  timing.
+     Preserves accuracy/granularity at any point in the timing range.
+
+     CSIO - Clocked serial I/O can be used for serial memory  interface.
+     Provides  a  simple  way to make  high-speed  data  connections  to
+     another microprocessor.
+
+     Watch  Dog  Timer - A watchdog timer is provided  to  prevent  code
+     runaway  and  possible resulting system damage.  A  range  of  time
+     constants  is provided as on the Z80185.  The /RESET input  can  be
+     forced as an output upon the terminal count of the Watch Dog Timer.
+     This allows external peripherals to be reset along with the Z80382.
+
+     Clock multiply and divide-by-2 options - Clock multiply allows  the
+     use  of  slower  frequency, less noisy,  less  expensive  crystals.
+     Saves board level cost and reduces noise impact during board  level
+     qualification.
+</PRE>
+<HR>
+<PRE>
+	Figure 1: block diagram of the Z382
+	Figure 2: pinout diagram for the QFP package
+</PRE>
+<HR>
+<PRE>
+
+                                  FIGURE 1
+                            Z80382 BLOCK DIAGRAM
+
+     P
+     C    |            |    |                   |    |          |
+     M<-->|  PCMCIA    |    |                   |    | 32 Bit   |
+     C    |  ADAPTOR   |<-->|                   |<-->| G P      |<-->
+     I    |attrib ram  | 8  |                   | 8  | I/O      |
+     A          /|\         |                   |    |          |
+                 |          |                   |
+                \|/         |                   |    |          |
+          |            |    |      Z380         |    | Dual ASCI|
+          | 16550 MIMIC|    |                   |<-->| & CSIO   |<-->
+     I<-->| INTERFACE  |<-->|                   | 8  |----------|
+          |            | 8  |                   |    | AutoBaud |
+     S     /|\  /|\         |                   |
+            |    |          |                   |    |          |
+     A    |     \|/         |                   |    | Dual     |
+          |  | PC DMA  |<-->|                   |<-->| Timer    |<-->
+      <----->| & I/O   | 8  |                   | 8  | & WDT    |
+     B    |  |Interface|    |                   |    |          |
+          |     /|\         |                   |
+     U    |      |          |                   |-->CHIP Selects & WSG
+          |      |          |                   |         |    /|\
+     S<->| Plug & Play |    |                   |        \|/    |
+         |ISA Interface|    |                   |<-->  MEMORY   |
+         |             |    |                   | 16     /|\    |
+                                        /|\               |8    |
+                                         |8               |     |
+                                        \|/              \|/    |
+                 | DMA | DMA | DMA | DMA | DMA | DMA | DMA | DMA |
+                 |     |     |     |     |     |     |     |     |
+                 |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |
+                 |     |     |     |     |     |     |     |     |
+                             |           |           |           |
+                             |  Ch.0     |  Ch.1     |  Ch.2     |
+          <----------------->|  HDLC     |  HDLC     |  HDLC     |
+                             |  Channel  |  Channel  |  Channel  |
+                             |           |           |           |
+                             |        IOM - 2 Serial Bus         |
+          <----------------->|                                   |
+</PRE>
+
+<PRE>
+                         //
+                        /BB    B      /  /
+                   //// RUU /  U / / /S//M /I
+                   IIII/ESS WCCS/I/I HTBBS IO +-------- /DCD0//TREFR
+              AAAAVINNNNSRAVALLCMOMOVANLHI/OCV|+------- /CTS0//TREFA
+              2222sTTTTMEECdIKKLRRWWsLBEEZMRLd||+------ /CTS1//TREFC
+              0123s3210ITQKdTOIKDDRRsTYNNE1QKd|||+----- PC2//TxEN2/TOUT
+              ||||||||||||||||||||||||||||||||||||
+           |  1   1    1    1    1    1    1    1   |
+     A19 --|1 4   4    3    3    2    2    1    1   |-- FSC/RxD2
+     A18 --|  4   0    5    0    5    0    5    0   |-- DD/TxD2
+     A17 --|                                        |-- DCL/RxC2/BCL2
+     A16 --|                                     105|-- DU/TxC2/FSC2
+     Vdd --|5                                       |-- Vss
+     A15 --|                                        |-- RxD1/RXA1
+     A14 --|                                        |-- TxD1/TXA1
+     A13 --|                                        |-- RxC1/BCL1/PC1
+     A12 --|                                     100|-- TxC1/FSC1/CKA1
+     A11 --|10                                      |-- RxD0/RXA0
+     A10 --|                                        |-- TxD0/TXA0
+      A9 --|                                        |-- RxC0/BCL0/PC0
+      A8 --|                                        |-- TxC0/FSC0/CKA0
+     Vss --|                                      95|-- Vdd
+      A7 --|15                                      |-- /TXEN1/RTS1
+      A6 --|                                        |-- /TXEN0/RTS0
+      A5 --|                                        |-- CKA0/HDRQ1/PCRESET
+      A4 --|                                        |-- TXA0/HDRQ0//PCCE1
+      A3 --|                                      90|-- RXA0//HDAK1//PCOE
+      A2 --|20               Z80382                 |-- /DCD0//HDAK0//PCWE
+      A1 --|                                        |-- /RTS0/HINT2/STSCHG
+      A0 --|                                        |-- TXA1/HINT1//PCIRQ
+     Vdd --|                                        |-- Vss
+     D15 --|                                      85|-- PA0/HD0
+     D14 --|25                                      |-- PA1/HD1
+     D13 --|                                        |-- PA2/HD2
+     D12 --|                                        |-- PA3/HD3
+     D11 --|                                        |-- PA4/HD4
+     D10 --|                                      80|-- PA5/HD5
+      D9 --|30                                      |-- PA6/HD6
+      D8 --|                                        |-- PA7/HD7
+     Vss --|                                        |-- Vdd
+      D7 --|                                        |-- PD0/HA0
+      D6 --|                                      75|-- PD1/HA1
+      D5 --|35                                      |-- PD2/HA2
+      D4 --|     4    4    5    5    6    6    7    |-- PD3/HA3
+           |     0    5    0    5    0    5    0    |
+              ||||||||||||||||||||||||||||||||||||
+              DDDDV|||||PPPVPPPPPPPPV||||||DRVPPPP
+              3210d|||||CCCsBBBBBBBBd||||||CXsDDDD
+                  d|||||543s76543210d||||||DAs7654
+                   |||||/// //////// ||||||11 ////
+                   |||||IIC TRCTRTRC ||||||// HHHH
+      EV1/ROMCSL --+||||EEK XXKXXXXK ||||||HH AAAA
+     EV2//RAMCSL ---+|||IOA AAAAASSS ||||||AA 7654
+     PC7//RAMCSH ----+||  1 00011    ||||||98
+      PC6//IOCS1 -----+|             |||||+---------- CKA1/HA10
+     TOUT//IOCS2 ------+             ||||+----------- CKS/HA11
+                                     |||+------------ RXS/HAEN//PCREG
+                                     ||+------------- TXS/HDDIS//INPACK
+     FIGURE 2: Z80382 PIN DIAGRAM    |+-------------- /CTS0//HRD//PCIORD
+                                     +--------------- /CTS1//HWR//PCIOWR
+</PRE>
+</body>
+</HTML>
+

@@ -1,0 +1,76 @@
+<HTML><Head>
+<TITLE>Z80 ASM routines</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<hr>
+<P><B><FONT SIZE=6>Z80 Programming</FONT></B><BR>
+This page is located at <a href="http://www.geocities.com/SiliconValley/Peaks/3938/">http://www.geocities.com/SiliconValley/Peaks/3938/</a><br>
+Is you want to participate, please E-mail to <a href="contact.htm">Thomas Scherrer</a><p><br>
+
+
+<HR>
+<PRE><I>
+<B><FONT SIZE=6>Z80 5seconds Timer for 10MHz</FONT></B></A></I>
+<BR><Blockquote>
+
+	...	...
+MAIN:	CALL	TIMER5
+	...	...
+
+
+TIMER5:	LD	E,35H
+J60:	LD	B,0FFH
+J61:	LD	D,0FFH
+J62:	DEC	D
+	JP	NZ,J62
+	DEC	B
+	JP	NZ,J61
+	DEC	E
+	JP	NZ,J60
+	RET
+
+
+</Blockquote>
+<HR>
+<PRE><I>
+<B><FONT SIZE=6>Z80  multivibrator</FONT></B></A></I>
+<Blockquote>
+Point: Use Loop Output 00H and FFH at 1 second interval.
+
+	ORG	0000H
+	LD	SP,0FFFFH
+
+PPI1	EQU	37H
+PORTB1	EQU	35H
+
+	LD	A,90H
+	OUT	(PPI1),A
+
+LOOP:	LD	A,0
+	OUT	(PORTB1),A
+	CALL	TIMER1
+	LD	A,0FFH
+	OUT	(PORTB1),A
+	CALL	TIMER1
+	JP	LOOP
+
+TIMER1:	LD	E,0AH	
+J50:	LD	B,0FFH
+J51:	LD	D,0FFH
+J52:	DEC	D
+	JP	NZ,J52
+	DEC	B
+	JP	NZ,J51
+	DEC	E
+	JP	NZ,J50
+	RET
+
+	END
+</Blockquote></pre>
+<hr>
+</body></html>
+

@@ -1,0 +1,61 @@
+		POP	BC	Final count to BC.
+		LD	A,+80	Last character code in set plus
+				one.
+		SUB	B	A now holds required code.
+		LD	BC,+0001	One space is now needed in the
+				work space.
+		RST	0030,BC-SPACES	Make the space.
+		LD	(DE),A	Put the character into it.
+		JR	257D,S-SCR-STO	Jump to stack the character.
+2573	S-SCR-NXT	POP	HL	Restore character set pointer.
+		LD	DE,+0008	Move it on 8 bytes, to the next
+		ADD	HL,DE	character in the set.
+		POP	DE	Restore the screen pointer.
+		POP	BC	And the counter.
+		DJNZ	254F,S-SCRN-LP	Loop back for the 96 characters.
+		LD	C,B	Stack the empty string (Length
+				zero).
+257D	S-SCR-STO	JP 2AB2,STK-STO-$		Jump to stack the matching
+				character, or the null string if
+				no match is found.
+
+Note: This exit, via STK-STO-$, is a mistake as it leads to 'double storing' of the string result (see S-STRING, 25DB). The instruction line should be 'RET'.
+
+    The last of these four subroutines is the 'scanning attributes subroutine'. It is called by S-ATTR to return the value of ATTR (x,y) which codes the attributes of line x, column y on the television screen.
+
+2580	S-ATTR-S	CALL	2307,STK-TO-BC	x to C, y to B. Again, 0<=x<=23
+		LD	A,C	decimal; 0<=y<=31 decimal.
+		RRCA		x is copied to A and the number
+		RRCA		32 (decimal)*x (mod 8)+y is
+		RRCA		formed in A and copied to L.
+		LD	C,A	32*x(mod 8)+INT (x/8) is also
+		AND	+E0	copied to C.
+		XOR	B
+		LD	L,A	L holds low byte of attribute
+				address.
+		LD	A,C	32*x(mod 8)+INT (x/8) is
+				copied to A.
+		AND	+03	88 (decimal)+INT (x/8) is
+		XOR	+58	formed in A and copied to H.
+		LD	H,A	H holds high byte of attribute
+				address.
+		LD	A,(HL)	The attribute byte is copied to
+				A.
+		JP	2D28,STACK-A	Exit, stacking the required byte.
+
+THE SCANNING FUNCTION TABLE
+
+This table contains 8 functions and 4 operators. It thus incorporates 5 new Spectrum functions and provides a neat way of accessing some functions and operators which already existed on the ZX81.
+
+location     code     offset     name                       address of handling routine
+2596         22       1C         S-QUOTE                    25B3
+2598         28       4F         S-BRACKET                  25E8
+259A         2E       F2         S-DECIMAL                  268D
+259C         2B       12         S-U-PLUS                   25AF
+259E         A8       56         S-FN                       25F5
+25A0         A5       57         S-AND                      25F8
+25A2         A7       84         S-PI                       2627
+25A4         A6       8F         S-INKEY$                   2634
+25A6         C4       E6         S-BIN (EQU. S-DECIMAL)     268D
+25A8         AA       BF         S-SCREEN$                  2668
+25AA         AB       C7         S-ATTR                     2672

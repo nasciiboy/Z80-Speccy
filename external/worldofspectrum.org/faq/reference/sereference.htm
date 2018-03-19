@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>ZX Spectrum SE Technical Information</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="../emulators/emulators.htm">Emulators</a> |
+<a title="Reference" href="reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">ZX Spectrum SE Reference</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+
+<div class="pageNavigation">|
+<a href="sereference.htm#Specifications">Technical Specifications</a> |
+<a href="sereference.htm#Software">Software</a> |
+<a href="sereference.htm#Future">Future Developments</a> |</div>
+
+<p>The SE, codenamed Chloe, is a modified <a href="hardware.htm#TC2048">Timex TC2048</a>.
+The modifications were specified by
+<a title="Contributors" href="../credits.htm">Andrew Owen</a> and designed and implemented by Jarek Adamski.
+Within each section, you may find links to additional information elsewhere in this FAQ, or to other reference documents.</p>
+
+<p><strong><a id="Specifications">Technical Specifications:</a></strong><br />
+The technical specifications for the ZX Spectrum SE are;</p>
+<ul>
+<li><strong>Codename:</strong> Chloe.</li>
+<li><strong>I/N:</strong> TC2280.</li>
+<li><strong>CPU:</strong> Z80A @ 3.528Mhz.</li>
+<li><strong>Total RAM:</strong> 280K.</li>
+<li><strong>Video RAM:</strong> 27K.</li>
+<li><strong>ROM:</strong> 64K (32K active, 32K passive)</li>
+<li><strong>Sound:</strong> AY-3-8912.</li>
+<li><strong>Keyboard:</strong> Cherry PS/2 Notebook.</li>
+<li><strong>Mouse:</strong> Amiga 2-Button.</li>
+<li><strong>Joystick:</strong> Kempston.</li>
+</ul>
+
+
+<p><strong><a id="Hardware">Hardware:</a></strong><br />
+For most people, the final specification of the ZX Spectrum SE is probably not a concern, since it is just one potential system
+to run Sinclair Extended Basic on - although I would love to see it supported by emulators. If you were holding out for all those
+new graphics modes I dreamed up, or if you just want a modern Z80 based machine right now, then I would recommend the Sprinter from
+<a href="http://www.petersplus.com/">Peters Plus Ltd</a>. I am working with Peters to ensure that
+Sinclair Extended Basic will run on the Sprinter. If you want to build your own Spectrum from off-the-shelf components then you
+should look at Mike Wynne's
+<a href="http://www.speccybob.2y.net/">SpeccyBOB</a>. In theory it should be possible to build a ZX Spectrum SE based on
+the SpeccyBOB schematics, and it will support Sinclair Extended Basic via a drop-in EPROM.<br /><br />
+If you got very excited when Zilog announced the eZ80 then you should keep an eye on the development of
+Richard Kelsh's Sparky project. It uses its own 24-bit version of Basic, based in part on Sinclair Extended Basic. I thought I'd be the
+first to use Sinclair Extended Basic on genuine hardware but Garry Lancaster, designer of the ZX Spectrum +3e, beat me to it. I'm
+working with him to ensure Sinclair Extended Basic supports ResiDOS - the operating system of the ZXATASP IDE interface. We are
+also looking at the possiblity of merging aspects of the +3e and Sinclair Extended Basic.<br /><br />
+Finally, if you have an old Spectrum and you want to give it a bit more pow, go and visit Jarek Adamski's website, buy original
+hardware, peripherals and software from Sintech, and read comp.sys.sinclair and, if you read Spanish, es.comp.sistemas.sinclair.<br /><br />
+There are 7 subsections available:
+<a href="sereference.htm#CPU">CPU</a>,
+<a href="sereference.htm#Memory">Memory</a>,
+<a href="sereference.htm#Mouse">Mouse/Joystick</a>,
+<a href="sereference.htm#PSU">PSU</a>,
+<a href="sereference.htm#ROM">ROM</a>,
+<a href="sereference.htm#Sound">Sound Chip</a> and
+<a href="sereference.htm#ULA">ULA</a>.</p>
+
+<ul>
+<li><strong><a id="CPU">CPU</a></strong><br />
+The main processor in the SE appears to run at 3.528 MHz as opposed to 3.5 Mhz on the 48K Spectrum. Scanline timings
+are unaffected because the SCLD uses counters rather than time-loops. Just like a normal 48K Spectrum there are 224
+T-states per scanline and 312 scanlines before the television picture.<br /><br /></li>
+</ul>
+
+
+<ul>
+<li><strong><a id="Memory">Memory</a></strong><br />
+The SE combines the RAM paging systems of the Timex TS2068 with the ZX Spectrum 128 and then adds another 16K to that.
+This means it uses two different systems to access its full 272K of RAM. Jarek installed his 128 compatibility upgrade to take the
+RAM to 144K and then installed a 128K SRAM connected to the Timex memory management unit.<br /><br />
+The Timex Horizontal MMU sees the RAM as three banks of memory; HOME, DOCK, and EX banks.<br /><br />
+The HOME bank is the normal Spectrum memory area. The top 32K is uncontended but the 16K screen area below that is
+contended. DOCK and EX banks are overlaid on this bank, but paging over the screen area does not change the RAM used by the
+ULA. This does mean it is possible to set up a screen and page it out.<br /><br />
+Memory is paged in 8K banks from either the DOCK or the EX bank, but these banks are mutually exclusive - you cannot page in a
+bank from both simultaneously. Bit 7 of port 0xff determines which bank to use (0=DOCK, 1=EX-ROM). Port 0xf4 determines which
+banks are to be paged in with each bit referring to the relevant bank (0-7 or 0'-7'). When memory is being paged, interrupts should
+be disabled and the stack should be in an area which is not going to change.<br /><br />
+On a TC2048, BASIC is contained in the 16K ROM area and banks 0-7 and 0'-7' are not normally available, while on a TS2068 part of
+the BASIC is stored in an 8K ROM in bank 0' and cartridges plugged into the dock use banks 0-7. On the SE each of these banks is
+connected to 64K of RAM, providing an additional 128K in addition to the base RAM.<br /><br />
+The contended memory timings for the SE are unknown but should be similar to that for the 48K machine, except that the pattern starts
+at a different number of T-states after the interrupt, than the usual 14335. Odd banks in the 128 scheme are contended.<br /><br />
+Reading this port returns the last byte sent to it.<br /><br />
+The TS2068 only has 48K of base RAM, but the SE has also been expanded to use a variation of the ZX Spectrum 128 paging system to
+increase the base RAM to 144K. This means that the HOME bank is paged like a normal Spectrum 128, except that there is an additional
+bank at 0x8000 where you would expect to find Bank 2. This does not appear to cause any problems with existing commercial software,
+although some demos (such as 'Real Action') are affected, but it provides some more memory.<br /><br />
+The HOME bank is paged in the same way as the Spectrum 128, using port 0x7ffd.
+<pre>D0-2: RAM bank (0-7) to map into memory at 0xc000.
+D3:   Select video area to be used by ULA; Bank 5 or Bank 7.
+D4:   Select ROM; 0 - Editor or 1 - Basic.
+D5-7: Not used.</pre>
+HOME RAM banks 1,3,4,6 and most of 7 are used for the RAM disk in 128 Basic; the rest of 7 contains editor scratchpads.<br /><br />
+The EX and DOCK banks are paged by the horizontal MMU.
+<pre>                                 HOME   
+0xffff +---------+---------++---------++--------+--------+--------+--------+---------+--------+---------+
+       |  Ex 7   | Dock 7  || Bank 0  || Bank 1 | Bank 2 | Bank 3 | Bank 4 | Bank 5  | Bank 6 | Bank 7  |
+       |         |         ||         ||        |(also at|        |        |Screen 0'|        |Screen 1'|
+0xe000 +---------+---------+|         ||        | 0x8000 |        |        +-- -- -- +        +-- -- -- +
+       |  Ex 6   | Dock 6  ||         ||        | on Spec|        |        |         |        |         |
+       |         |         ||         ||        |  128)  |        |        |Screen 0 |        |Screen 1 |
+0xc000 +---------+---------++---------++--------+--------+--------+--------+---------+--------+---------+
+       |  Ex 5   | Dock 5  || Bank 8  |             Any one of these pages may be switched in.
+       |         |         ||         |
+0xa000 +---------+---------+|         |
+       |  Ex 4   | Dock 4  ||         |
+       |         |         ||         |
+0x8000 +---------+---------++---------+
+       |  Ex 3   | Dock 3  || Bank 5  |
+       |         |         ||Screen 0'|
+0x6000 +---------+---------++-- -- -- +
+       |  Ex 2   | Dock 2  ||         |
+       |         |         ||Screen 0 |
+0x4000 +---------+---------++---------++--------+
+       |  Ex 1   | Dock 1  || ROM 0   || ROM 1  | Either ROM may be switched in.
+       |         |         ||         ||        |
+0x2000 +---------+---------+|         ||        |
+       |  Ex 0   | Dock 0  ||         ||        |
+       |         |         || Editor  || Basic  |
+0x0000 +---------+---------++---------++--------+
+       The EX and DOCK banks
+       are mutually exclusive.
+       Pages from these banks
+       may be switched in over
+       the HOME bank.</pre>
+Owing to the use of two completely different paging systems there are certain hardware limitations on which banks can be paged in.
+The first side effect is that the odd (slow) banks of the 128 paging system have higher priority than the DOCK and EX banks.<br /><br />
+The memory map looks like this:
+<pre>              bank number outed to 0x7ffd
+        0     1     2     3     4     5     6     7
+HOME    RAM0  RAM1  RAM2  RAM3  RAM4  RAM5  RAM6  RAM7
+DOCK    DOCK  RAM1  DOCK  RAM3  DOCK  RAM5  DOCK  RAM7
+EXROM   EXROM RAM1  EXROM RAM3  EXROM RAM5  EXROM RAM7
+^
+'---selected in section D</pre>
+So, to use the DOCK or EX memory in 0xc000...0xffff, one of the even banks (0,2,4,6) from the 128 paging system must be selected.
+If the selected bank is 1,3,5, or 7 this bank will appear instead of DOCK or EX memory. This concerns bits 6 and 7 of the MMU port 0xf4.<br /><br />
+The second side effect is that bits 2 and 3 of the MMU port 0xf4 also apply for those odd (slow) banks in section D. So when you select
+one of the odd banks (for section D, using port 0x7ffd), and then switch section B (0x4000..0x7fff) to DOCK/EX, you will have also the
+DOCK/EX in section D.<br /><br />
+The whole memory map is described below. The DOCK/EX memory is marked as X0...X7, because you can only have DOCK or EX at
+a time (bit 7 of 0xfe port). The number means 1/8 part of 64kB, corresponding to bit in 0xf4 port.<br /><br />
+The sections are marked as AL, AH, BL, BH, CL, CH, DL, DH. Every one means 8kB.<br /><br />
+<ol>
+<li>In case of HOME selected<br /><br />
+OUT 244,BIN 00000000
+<pre>              bank number outed to 0x7ffd
+ section   0     1     2     3     4     5     6     7
+ DH  7     RAM0H RAM1H RAM2H RAM3H RAM4H RAM5H RAM6H RAM7H
+ DL  6     RAM0L RAM1L RAM2L RAM3L RAM4L RAM5L RAM6L RAM7L
+ CH  5     ----------------- RAM8H only ------------------
+ CL  4     ----------------- RAM8L only ------------------
+ BH  3     ----------------- RAM5H only ------------------
+ BL  2     ----------------- RAM5L only ------------------
+ AH  1     --------------- ROM0H or ROM1H ----------------
+ AL  0     --------------- ROM0L or ROM1H ----------------</pre></li>
+<li>In case of DOCK/EXROM selected (except B section)<br /><br />
+This means OUT 244, BIN 11110011 or its 8kB variants like mixed with HOME (other 8kB of each 16kB are HOME) OUT 244,
+BIN 10100010 or OUT 244, BIN 01010001; or mixed with DOCK OUT 244, BIN 11110111 or OUT 244, BIN 11111011, this
+applies respectively.
+<pre>              bank number outed to 0x7ffd
+ section   0     1     2     3     4     5     6     7
+ DH  7     X7    RAM1H X7    RAM3H X7    RAM5H X7    RAM7H
+ DL  6     X6    RAM1L X6    RAM3L X6    RAM5L X6    RAM7L
+ CH  5     ------------------- X5 only -------------------
+ CL  4     ------------------- X4 only -------------------
+ BH  3     ----------------- RAM5L only ------------------
+ BL  2     ----------------- RAM5L only ------------------
+ AH  1     ------------------- X1 only -------------------
+ AL  0     ------------------- X0 only -------------------</pre></li>
+<li>In case of DOCK/EXROM selected (in every section) (independency from 7FFD port)<br /><br />
+OUT 244, BIN 1111111
+<pre> section   
+ DH  7     X7
+ DL  6     X6
+ CH  5     X5
+ CL  4     X4
+ BH  3     X3
+ BL  2     X2
+ AH  1     X1
+ AL  0     X0</pre></li>
+<li>In case of DOCK/EXROM selected (except D section)<br /><br />
+This means OUT 244, BIN 00111111 or its 8kB variants (BIN 0x1x1x1x or BIN x0x1x1x1).
+<pre>              bank number outed to 0x7ffd
+ section   0     1     2     3     4     5     6     7
+ DH  7     RAM0H X7    RAM2H X7    RAM4H X7    RAM6H X7
+ DL  6     RAM0L X6    RAM2L X6    RAM4L X6    RAM6L X6
+ CH  5     ------------------- X5 only -------------------
+ CL  4     ------------------- X4 only -------------------
+ BH  3     ------------------- X3 only -------------------
+ BL  2     ------------------- X2 only -------------------
+ AH  1     ------------------- X1 only -------------------
+ AL  0     ------------------- X0 only -------------------</pre></li>
+</ol></li>
+</ul>
+
+
+<ul>
+<li><strong><a id="Mouse">Mouse</a></strong><br />
+Jarek has modified the TC2048's Kempston joystick port to support auto-fire joysticks and a two button Amiga mouse.<br /><br />
+The port is read via 0x1f (active high):
+<pre>D7 - Mouse Button
+D6 - 
+D5 - Mouse Button
+D4 - Fire
+D3 - Up
+D2 - Down
+D1 - Left
+D0 - Right</pre></li>
+</ul>
+
+
+<ul>
+<li><strong><a id="PSU">PSU</a></strong><br />
+The SE requires a 9V DC supply at 800 mA -ve centre polarity. This is provided via a transformer taking a
+230v AC supply at 50Hz. Jarek has modified the LED so it shows red when the PSU is connected and green
+when the machine is powered up.</li>
+</ul>
+
+
+<ul>
+<li><strong><a id="ROM">ROM</a></strong><br />
+Jarek has replaced the standard ROM with a 64K EPROM. Only two pages are visible to the hardware;<br /><br />
+<ul>
+<li>The first is a modified version of the ZX Spectrum 128 editor. A call to the TEST routine in ROM-1 is
+replaced with code to reset the Timex ULA.<br /><br /></li>
+<li>The second is an exact copy of the original ZX Spectrum BASIC but has TR-DOS traps in place of the
+character set (0x3c00..0x3fff is filled with PUSH AF: RST 8: NOP: NOP).<br /><br /></li>
+</ul>
+This makes the machine more compatible with existing software titles than the original ZX Spectrum 128. A third
+page is exactly as the same as the first and a fourth page is exactly the same as second, but without TR-DOS
+traps (it has the character set). The A15 line of EPROM is connected to /M1 of Z80, while the A14 is connected to bit 3
+of the 0x7ffd port latch. The TR-DOS traps allow emulation of TR-DOS by the ZXVGS operating system. Custom ROMs
+can be loaded into memory and paged into place using the DOCK or EX banks. Jarek has fitted an external NMI button
+for ROMs with a working NMI routine.</li>
+</ul>
+
+
+<ul>
+<li><strong><a id="Sound">Sound Chip</a></strong><br />
+Jarek has installed an AY-3-8912 sound chip with an added 8K serial EEPROM. Port 14 of the AY is used as an IIC driver
+(must work as output). Bit 0 is the SDA (data) line, bit 1 is SCL (clock) of the IIC. The chip mapped to four I/O ports:
+<pre>OUT (0xfffd) - Select a register 0-14.
+IN  (0xfffd) - Read the value of the selected register.
+OUT (0xbffd) - Write to the selected register.</pre>
+These ports match the AY chip used in the ZX Spectrum 128.
+<pre>OUT (0xf5)   - Select a register 0-14
+IN  (0xf5)   - Read the value of the selected register
+OUT (0xf6)   - Write to the selected register</pre>
+These ports match the AY chip used in the Timex TS2068.<br /><br />
+The output is ABC/ACB stereo switchable.<br /><br />
+The sound produced by the beeper plays through an internal speaker but is muted when loading or saving to tape.</li>
+</ul>
+
+
+<ul>
+<li><strong><a id="ULA">ULA</a></strong><br />
+The Spectrum's ULA bug which causes snow when I is set to point to contended memory is also present in the
+TS2068 SCLD (ULA) but has been fixed by Jarek by adding an AND gate. He has also fixed a problem with the
+SCLD which would produce snow if IM2 was selected. The TS2068 SCLD provides a number of additional screen
+modes controlled using port 0xff. An unfortunate side effect of this is that a few games, like Arkanoid, which expect
+reading 0xff to produce screen and ATTR data bytes when the ULA is reading screen memory, will not work because the
+value returned will be the last byte sent to the port. The SCLD is also responsible for I/O and unlike a normal Spectrum,
+port addresses are fully decoded. This means it is not possible to read the keyboard from alternate addresses which also
+causes problems with some games. Port 0xff is also used to enable/disable the timer interrupt and select which bank of
+memory should be used by the horizontal MMU. The byte to output will be interpreted thus:
+<pre>D0-2: Screen mode. 000=screen 0, 001=screen 1, 010= hi-colour, 110=hi-res
+D3-5: Sets the screen colour in hi-res mode.
+        000 - Black on white.     100 - Green on magenta.
+        001 - Blue on yellow.     101 - Cyan on red.
+        010 - Red on cyan.        110 - Yellow on blue.
+        011 - Magenta on green.   111 - White on black.
+D6:   If set disables the generation of the timer interrupt.
+D7:   Selects which bank the horizontal MMU should use. 0=DOCK, 1=EX.</pre>
+Screen 0 is the normal screen at the start of video memory. Screen 1 uses the same format but is offset by 8K.<br /><br />
+The hi-res screen uses the data area of screen 0 and screen 1 to create a 512x192 pixel screen. Columns are taken alternately
+from screen 0 and screen 1. The attribute area is not used. In this mode all colours, including the BORDER, are BRIGHT, and the
+BORDER colour is the same as the PAPER colour.<br /><br />
+The hi-colour screen uses the data area of screen 0 for its data and the data area of screen 1 for its attributes, giving 2 colours
+per 8x1 pixel block. The attribute area is in the same byte order as the data area, which means MLT files, which have the attribute
+area in series, must be converted to be displayed.<br /><br />
+Bit 6 has the equivalent function of a DI machine code instruction when set or an EI instruction otherwise.<br /><br />
+With careful timing it is possible to mix screen modes so you could have a screen where the top half is hi-colour and the bottom
+half is hi-res - perfect for text adventures with graphics. Using a similar technique it is also possible to have more than two colours
+on a hi-res screen. No commercial software ever did this though.<br /><br />
+In addition to these screen modes the ULA can access two separate video areas, just like a Spectrum 128. This is done by using bit
+3 of port 0x7ffd. This gives the ULA a total of 27K of RAM which can be used for up to four standard screen areas or two hi-res or
+hi-colour screens.<br /><br />
+Port 0xfe deals with basic I/O. As mentioned before addresses are fully decoded, so whereas on a normal Spectrum every even I/O
+address will address the ULA, the SE will only respond to the correct port. The port is decoded as follows:
+<pre>D0-2: Border
+D3:   MIC
+D4:   EAR/beeper</pre>
+IN: Reads keys (bit 0 to bit 4 inclusive)
+<pre>0xfefe  SHIFT, Z, X, C, V            0xeffe  0, 9, 8, 7, 6
+0xfdfe  A, S, D, F, G                0xdffe  P, O, I, U, Y
+0xfbfe  Q, W, E, R, T                0xbffe  ENTER, L, K, J, H
+0xf7fe  1, 2, 3, 4, 5                0x7ffe  SPACE, SYM SHFT, M, N, B</pre></li>
+</ul>
+
+
+
+<p><strong><a id="Software">Software:</a></strong><br />
+Software development is ongoing, with
+<a href="hardware.htm#TS2068">TS2068</a> and
+<a href="peripherals.htm#InterfaceII">ZX Interface II</a> emulators having already been written.</p>
+
+
+<p><strong><a id="Future">Future Developments:</a></strong><br />
+IDE and RS232 interfaces should be available shortly.</p>
+
+
+<div class="pageNavigation">|
+<a href="sereference.htm#Specifications">Technical Specifications</a> |
+<a href="sereference.htm#Software">Software</a> |
+<a href="sereference.htm#Future">Future Developments</a> |</div>
+
+</td>
+</tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: sereference.htm,v 1.6 2004/07/05 08:20:12 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+</body>
+</html>

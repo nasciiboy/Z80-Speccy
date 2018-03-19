@@ -1,0 +1,58 @@
+		DEFB	+00,jump-true	x
+		DEFB	+0D,to PF-POSTVE	x Hereafter x'=ABS x.
+		DEFB	+02,delete	-
+		DEFB	+38,end-calc	-
+		LD	A,+30	Enter the character code for '0'.
+		RST	0010,PRINT-A-1	Print the '0'.
+		RET		Finished as the 'last value' is
+				zero.
+2DF2	PF-NEGTVE	DEFB	+2A,abs	x' x'=ABS x.
+		DEFB	+38,end-calc	x'
+		LD	A,+2D	Enter the character code for '-'.
+		RST	0010,PRINT-A-1	Print the '-'.
+		RST	0028,FP-CACL	Use the calculator again.
+2DF8	PF-POSTVE	DEFB	+A0,stk-zero	The 15 bytes of mem-3, mem-4
+		DEFB	+C3,st-mem-3	and mem-5 are now initalised to
+		DEFB	+C4,st-mem-4	zero to be used for a print
+		DEFB	+C5,st-mem-5	buffer and two counters.
+		DEFB	+02,delete	The stack is cleared, except for
+				x'.
+		DEFB	+38,end-calc	x'
+		EXX		H'L', which is used to hold
+		PUSH	HL	calculator offsets, (e.g. for
+		EXX		'STR$') is saved on the machine
+				stack.
+
+ii. This is the start of a loop which deals with large numbers. However every number x is first split into its integer part i and the fractional part f. If i is a small integer, i.e. if -65535 <= i <= 65535, it is stored in D'E' for insertion into the print buffer.
+2E01	PF-LOOP	RST	0028,FP-CALC	Use the calculator again.
+		DEFB	+31,duplicate	x' x'
+		DEFB	+27,int	x', INT (x')=i
+		DEFB	+C2,st-mem-2	(i is stored in mem-2).
+		DEFB	+03,subtract	x'-i=f
+		DEFB	+E2,get-mem-2	f,i
+		DEFB	+01,exchange	i,f
+		DEFB	+C2,st-mem-2	(f is stored in mem-2).
+		DEFB	+03,delete	i
+		DEFB	+38,end-calc	i
+		LD	A,(HL)	Is i a small integer (first byte
+		AND	A	zero) i.e. is ABS i <= 65535?
+		JR	NZ,2E56,PF-LARGE	Jump if it is not
+		CALL	2D7F,INT-FETCH	i is copied to DE (i, like x', >=0).
+		LD	B,+10	B is set to count 16 bits.
+		LD	A,D	D is copied to A for testing:
+		AND	A	Is it zero?
+		JR	NZ,2E1E,PF-SAVE	Jump if it iz not zero.
+		OR	E	Now test E.
+		JR	Z,2E24,PF-SMALL	Jump if DE zero: x is a pure
+				fraction.
+		LD	D,E	Move E to D and set B for 8
+		LD	B,+08	bits: D was zero and E was not.
+2E1E	PF-SAVE	PUSH	DE	Transfer DE to D'E', via the
+		EXX		machine stack, to be moved
+		POP	DE	into the print buffer at
+		EXX		PF-BITS.
+		JR	2E78,PF-BITS	Jump forward.
+
+iii. Pure fractions are multiplied by 10^n, where n is the approximate number of leading zeros after the decimal; and -n is added to the second byte of mem-5, which holds the number of digits needed before the decimals; a negative number here indicates leading zeros after the decimal;
+2E24	PF-SMALL	RST	0028,FP-CALC	i (i=zero here),
+		DEFB	+E2,get-mem-2	i,f

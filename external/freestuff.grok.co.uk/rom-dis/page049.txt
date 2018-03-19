@@ -1,0 +1,65 @@
+		LD	A,H	Jump forward and hence round
+		AND	+07	the loop again directly for the
+		JR	NZ,0EC9,COPY-2	eight pixel lines of a character
+				line.
+
+For each new line of characters the base address has to be updated.
+
+		LD	A,L	Fetch the low byte.
+		ADD	A,+20	Update it by +20 bytes.
+		LD	L,A	The carry flag will be reset when
+				'within thirds' of the display.
+		CCF		Change the carry flag.
+		SBC	A,A	The A register will hold +F8
+		AND	+F8	when within a 'third' but +00
+				when a new third' is reached.
+		ADD	A,H	The high byte of the
+		LD	H,A	address is now updated.
+0E09	COPY-2	DJNZ	0EB2,COPY-1	Jump back until '176' lines have
+				been printed.
+		JR	0EDA,COPY-END	Jump forward to the end
+				routine.
+
+THE 'COPY-BUFF' SUBROUTINE
+This subroutine is called whenever the printer buffer is to have its contents passed to the printer.
+
+0ECD	COPY-BUFF	DI		Disable the maskable interrupt.
+		LD	HL,+5800	The base address of the printer
+				buffer.
+		LD	B,+08	There are eight pixel lines.
+0ED3	COPY-3	PUSH	BC	Save the line number.
+		CALL	0EF4,COPY-LINE	It is called '8' times.
+		POP	BC	Fetch the line number.
+		DJNZ	0ED3,COPY-3	Jump back until '8' lines
+				have been printed.
+
+Continue into the COPY-END routine.
+
+0EDA	COPY-END	LD	A,+04	Stop the printer motor.
+		OUT	(+FB),A
+		EI		Enable the maskable interrupt
+				and continue into CLEAR-PRB.
+
+THE 'CLEAR PRINTER BUFFER' SUBROUTINE
+The printer buffer is cleared by calling this subroutine.
+
+0EDF	CLEAR-PRB	LD	HL,+5B00	The base address of the printer
+				buffer.
+		LD	(PR-CC_lo),L	Reset the printer 'column'.
+		XOR	A	Clear the A register.
+		LD	B,A	Also clear the B register in
+				effect B holds dec.256).
+0EE7	PRB-BYTES	LD	(HL),A	The '256' bytes of the
+		INC	HL	printer buffer are all
+		DJNZ	0EE7,PRB-BYTES	cleared in turn.
+		RES	1,(FLAGS2)	Signal 'the buffer is empty'.
+		LD	C,+21	Set the printer position and
+		JP	0DD9,CL-SET	return via CL-SET & P0-STORE.
+
+THE 'COPY-LINE' SUBROUTINE
+The subroutine is entered with the HL register pair holding the base address of the thirty two bytes that form the pixel-line and the B register holding the pixel-line number.
+
+0EF4	COPY-LINE	LD	A,B	Copy the pixel-line number.
+		CP	+03	The A register will hold
+		SBC	A,A	+00 until the last two lines
+		AND	+02	are being handled.

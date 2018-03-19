@@ -1,0 +1,60 @@
+
+		LD	BC,+3B0E	+3B is a timing constant; +0E
+				signals 'MIC off & YELLOW'.
+		EX	AF,A'F'	Fetch the flag and pass it to the
+		LD	L,A	L register for 'sending'.
+		JP	0507,SA-START	Jump forward into the SAVEing
+				loop.
+
+The byte SAVEing loop is now entered. The first byte to be SAVEd is the flag; this is followed by the actual data byte and the final byte sent is the parity byte that is built up by considering the values of all the earlier bytes.
+
+04FE	SA-LOOP	LD	A,D	The 'length' counter is tested
+		OR	E	and the jump taken when it
+		JR	Z,050E,SA-PARITY	has reached zero.
+		LD	L,(IX+00)	Fetch the next byte that is to
+				be SAVEd.
+0505	SA-LOOP-P	LD	A,H	Fetch the current 'parity'.
+		XOR	L	Include the present byte.
+0507	SA-START	LD	H,A	Restore the 'parity'. Note that
+				on entry here the 'flag' value
+				initialises 'parity'.
+		LD	A,+01	Signal 'MIC on & BLUE'.
+		SCF		Set the carry flag. This will act
+				as a 'marker' for the 8 bits of a
+				byte.
+		JP	0525,SA-8-BITS	Jump forward.
+
+When it is time to send the 'parity' byte then it is transferred to the L register for SAVEing.
+
+050E	SA-PARITY	LD	L,H	Get final 'parity' value.
+		JR	0505,SA-LOOP-P	Jump back.
+
+The following inner loop produces the actual pulses. The loop is entered at SA-BIT-1 with the type of the bit to be SAVEd indicated by the carry flag. Two passes of the loop are made for each bit thereby making an 'off pulse' and an 'on pulse'. The pulses for a reset bit are shorter by 855 T states.
+
+0511	SA-BIT-2	LD	A,C	Come here on the second pass
+				and fetch 'MIC off & YELLOW'.
+		BIT	7,B	Set the zero flag to show
+				'second pass'.
+0514	SA-BIT-1	DJNZ	0514,SA-BIT-1	The main timing loop; always
+				801 T states on a 2nd. pass.
+		JR	NC,051C,SA-OUT	Jump, taking the shorter path, if
+				SAVEing a '0'.
+		LD	B,+42	However if SAVEing a '1' then
+051A	SA-SET	DJNZ	051A,SA-SET	add 855 T states.
+051C	SA-OUT	OUT	(+FE),A	On the 1st. pass 'MIC on &
+				BLUE' and on the 2nd. pass
+				'MIC off & YELLOW'.
+		LD	B,+3E	Set the timing constant for
+				the second pass.
+		JR	NZ,0511,SA-BIT-2	Jump back at the end of the
+		DEC	B	first pass; otherwise reclaim
+				13 T states.
+		XOR	A	Clear the carry flag and set
+		INC	A	A to hold +01 (MIC on & BLUE}
+				before continuing into the
+				'8 bit loop'.
+
+The '8 bit loop' is entered initially with the whole byte in the L register and the carry flag set. However it is re-entered after each bit has been SAVEd until the point is reached when the 'marker' passes to the carry flag leaving the L register empty.
+
+0525	SA-8-BITS	RL	L	Move bit 7 to the carry and the
+				'marker' leftwards.

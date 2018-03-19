@@ -1,0 +1,58 @@
+		OR	(HL)	Bit 0 is set only when handling
+		LD	(HL),A	complete simple strings' thereby
+				signalling 'old copy to be
+				deleted'.
+		EX	DE,HL	HL now points to the string or
+				the element of the array.
+
+The pathways now come together to set STRLEN & DEST as required. For all numeric variables and 'new' string & string array variables STRLEN-lo holds the 'letter' of the variable's name. But for 'old' string & string array variables whether 'sliced' or complete it holds the 'length' in 'assignment'.
+
+1C46	VAR-A-3	LD	(STRLEN),BC	Set STRLEN as required.
+
+DEST holds the address for the 'destination of an 'old' variable but in effect the 'source' for a 'new' variable.
+
+		LD	(DEST),HL	Set DEST as required and
+		RET		return.
+
+Command class 02 is concerned with the actual calculation of the value to be assigned in a LET statement.
+
+1C4E	CLASS-02	POP	BC	The address - SCAN-LOOP is
+				dropped.
+		CALL	1C56,VAL-FET-1	The assignment is made.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+				either via CHECK-END if
+		RET		checking syntax, or STMT-RET
+				if in 'run-time'.
+
+THE 'FETCH A VALUE' SUBROUTINE
+This subroutine is used by LET, READ & INPUT statements to first evaluate and then assign values to the previously designated variable.
+	The entry point VAL-FET-1 is used by LET & READ and considers FLAGS whereas the entry point VAL-FET-2 is used by INPUT and considers FLAGX.
+
+1C56	VAL-FET-1	LD	A,(FLAGS)	Use FLAGS.
+1C59	VAL-FET-2	PUSH	AF	Save FLAGS or FLAGX.
+		CALL	24FB,SCANNING	Evaluate the next expression.
+		POP	AF	Fetch the old FLAGS or FLAGX.
+		LD	D,(FLAGS)	Fetch the new FLAGS.
+		XOR	D	The nature - numeric or string
+		AND	+40	of the variable and the
+				expression must match.
+		JR	NZ,1C8A,REPORT-C	Give report C if they do not.
+		BIT	7,D	Jump forward to make the
+		JP	NZ,2AFF,LET	actual assignment unless
+				checking syntax when simply
+		RET		return.
+
+THE 'COMMAND CLASS 04' ROUTINE
+The command class 04 entry point is used by FOR & NEXT statements.
+
+1C6C	CLASS-04	CALL	28B2,LOOK-VARS	Look in the variables area for
+				the variable being used.
+		PUSH	AF	Save the AF register pair whilst
+		LD	A,C	the discriminator byte is tested
+		OR	+9F	to ensure that the variable
+		INC	A	is a FOR-NEXT control
+		JR	NZ,1C8A,REPORT-C	variable.
+		POP	AF	Restore the flags register and
+		JR	1C22,VAR-A-1	jump back to make the variable
+				that has been found the
+				'variable in assignment'.

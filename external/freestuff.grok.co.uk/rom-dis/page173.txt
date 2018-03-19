@@ -1,0 +1,59 @@
+		SUB	B	Subtract B: minus will mean
+		JR	M,2F52,PF-OUT-LP	there are digits before the
+				decimal; jump forward to print
+				them.
+		LD	B,A	A is now required as a counter.
+		JR	2F5E,PF-DC-OUT	Jump forward to print the
+				decimal part.
+2F52	PF-OUT-LP	LD	A,C	Copy the number of digits to be
+		AND	A	printed to A. If A is 0, there are
+		JR	Z,2F59,PF-OUT-DT	still final zeros to print (B is
+				non-zero), so jump.
+		LD	A,(HL)	Get a digit from the print buffer.
+		INC	HL	Point to the next digit.
+		DEC	C	Decrease the count by one.
+2F59	PF-OUT-DT	CALL	15EF,OUT-CODE	Print the appropriate digit.
+		DJNZ	2F52,PF-OUT-LP	Loop back until B is zero.
+2F5E	PF-DC-OUT	LD	A,C	It is time to print the decimal,
+		AND	A	unless C is now zero; in that
+		RET	Z	case, return - finished.
+		INC	B	Add 1 to B - include the
+				decimal.
+		LD	A,+2E	Put the code for '.' into A.
+2F64	PF-DEC-0S	RST	0010,PRINT-A-1	Print the '.'.
+		LD	A,+30	Enter the character code for
+				'0'.
+		DJNZ	2F64,PF-DEC-0S	Loop back to print all needed
+				zeros.
+		LD	B,C	Set the count for all remaining
+				digits.
+		JR	2F52,PF-OUT-LP	Jump nack to print them.
+2F6C	PF-E-FRMT	LD	D,B	The count of digits is copied to
+				D.
+		DEC	D	It is decremented to give the
+				exponent.
+		LD	B,+01	One digit is required before the
+				decimal in E-format.
+		CALL	2F4A,PF-E-SBRN	All the part of the number
+				before the 'E' is now printed.
+		LD	A,+45	Enter the character code for
+				'E'.
+		RST	0010,PRINT-A-1	Print the 'E'.
+		LD	C,D	Exponent to C now for printing.
+		LD	A,C	And to A for testing.
+		AND	A	Its sign is tested.
+		JP	P,2F83,PF-E-POS	Jump if it is positive.
+		NEG		Otherwise, negate it in A.
+		LD	C,A	Then copy it back to C for
+				printing.
+		LD	A,+2D	Enter the character code for '-'.
+		JR	2F85,PF-E-SIGN	Jump to print the sign.
+2F83	PF-E-POS	LD	A,+2B	Enter the character code for
+				'+'.
+2F85	PF-E-SIGN	RST	0010,PRINT-A-1	Now print the sign: '+' or '-'.
+		LD	B,+00	BC holds the exponent for
+				printing.
+		JP	1A1B,OUT-NUM	Jump back to print it and finish.
+
+THE 'CA=10*A+C' SUBROUTINE'
+This subroutine is called by the PRINT-FP subroutine to multiply each byte of D'E'DE by 10 and return the integer part of the result in the C register. On entry, the A register contains the byte to be multiplied by 10 and the C register contains the carry over from the previous byte. On return, the A register contains the resulting byte and the C register the carry forward to the next byte.

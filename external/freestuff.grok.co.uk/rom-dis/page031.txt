@@ -1,0 +1,66 @@
+THE 'MERGE A LINE OR A VARIABLE' SUBROUTINE
+
+This subroutine is entered with the following parameters:
+	Carry flag	reset	- MERGE a BASIC line.
+		set	- MERGE a variable.
+	Zero		reset	- It will be an 'addition'.
+			set	- It is a 'replacement'.
+	HL register pair		- Points to the start of the new entry.
+	DE register pair		- Points to where it is to MERGE.
+
+092C	ME-ENTER	JR	NZ,093E,ME-ENT-1	Jump if handling an 'addition'.
+		EX	AF,A'F'	Save the flags.
+		LD	(X-PTR),HL	Save the 'new' pointer whilst
+		EX	DE,HL	the 'old' line or variable
+		CALL	19B8,NEXT-ONE	is reclaimed.
+		CALL	19E8,RECLAIM-2
+		EX	DE,HL
+		LD	HL,(X-PTR)
+		EX	AF,A'F'	Restore the flags.
+
+The new entry can now be made.
+
+093E	ME-ENT-1	EX	AF,A'F'	Save the flags.
+		PUSH	DE	Make a copy of the
+				'destination' pointer.
+		CALL	19B8,NEXT-ONE	Find the length of the 'new'
+				variable/line.
+		LD	(X-PTR),HL	Save the pointer to the 'new'
+				variable/line.
+		LD	HL,(PROG)	Fetch PROG - to avoid
+				corruption.
+		EX	(SP),HL	Save PROG on the stack and
+				fetch the 'new' pointer.
+		PUSH	BC	Save the length.
+		EX	AF,A'F'	Retrieve the flags.
+		JR	C,0955,ME-ENT-2	Jump forward if adding a new
+				variable.
+		DEC	HL	A new line is added before the
+				'destination' location.
+		CALL	1655,MAKE-ROOM	Make the room for the new line.
+		INC	HL
+		JR	0958,ME-ENT-3	Jump forward.
+0955	ME-ENT-2	CALL	1655,MAKE-ROOM	Make the room for the new
+				variable.
+0958	ME-ENT-3	INC	HL	Point to the l st new location.
+		POP	BC	Retrieve the length.
+		POP	DE	Retrieve PROG and store it
+		LD	(PROG),DE	in its correct place.
+		LD	DE,(X-PTR)	Also fetch the 'new' pointer.
+		PUSH	BC	Again save the length and the
+		PUSH	DE	new' pointer.
+		EX	DE,HL	Switch the pointers and copy
+		LDIR		the 'new' variable/line into the
+				room made for it.
+
+The 'new' variable/line has now to be removed from the work space.
+
+		POP	HL	Fetch the 'new' pointer.
+		POP	BC	Fetch the length.
+		PUSH	DE	Save the 'old' pointer. (Points
+				to the location after the 'added'
+				variable/line.)
+		CALL	19E8,RECLAIM-2	Remove the variable/line from
+				the work space.
+		POP	DE	Return with the 'old' pointer
+		RET		in the DE register pair.

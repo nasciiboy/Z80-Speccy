@@ -1,0 +1,66 @@
+		OUT	(+FB),A	Slow the motor for the last two
+				pixel lines only.
+		LD	D,A	The D register will hold either
+				+00 or +02.
+
+There are three tests to be made before doing any 'printing'.
+
+0EFD	COPY-L-1	CALL	1F54,BREAK-KEY	Jump forward unless the
+		JR	C,0F0C,COPY-L-2	BREAK key is being pressed.
+		LD	A,+04	But if it is then;
+		OUT	(+FB),A	stop the motor,
+		EI		enable the maskable interrupt,
+		CALL	0EDF,CLEAR-PRB	clear the printer buffer and exit
+		RST	0008,ERROR-1	via the error handling routine
+		DEFB	+0C	- 'BREAK-CONT repeats'.
+0F0C	COPY-L-2	IN	A,(+FB)	Fetch the status of the
+		ADD	A,A	printer.
+		RET	M	Make an immediate return if the
+				printer is not present.
+		JR	NC,0EFD,COPY-L-1	Wait for the stylus.
+		LD	C,+20	There are thirty two bytes.
+
+Now enter a loop to handle these bytes.
+
+0F14	COPY-L-3	LD	E,(HL)	Fetch a byte.
+		INC	HL	Update the pointer.
+		LD	B,+08	Eight bits per byte.
+0F18	COPY-L-4	RL	D	MoveDleft.
+		RL	E	Move each bit into the carry.
+		RR	D	Move D back again, picking up
+				the carry from E.
+0F1E	COPY-L-5	IN	A,(+FB)	Again fetch the status of the
+		RRA		printer and wait for the
+		JR	NC,0F1E,COPY-L-5	signal from the encoder.
+		LD	A,D	Now go ahead and pass the
+		OUT	(+FB),A	'bit' to the printer
+				Note: bit 2 - low starts the
+				motor, bit 1 - high slows the
+				motor and bit 7 is high for the
+				actual 'printing'.
+		DJNZ	0F18,COPY-L-4	'Print' each bit.
+		DEC	C	Decrease the byte counter.
+		JR	NZ,0F14,COPY-L-3	Jump back whilst there are
+		RET		still bytes; otherwise return.
+
+THE 'EDITOR' ROUTINES
+The editor is called on two occasions:
+i.  From the main execution routine so that the user can enter a BASIC line into the system.
+
+ii. From the INPUT command routine.
+
+First the 'error stack pointer' is saved and an alternative address provided.
+
+0F2C	EDITOR	LD	HL,(ERR-SP)	The current value is saved on
+		PUSH	HL	the machine stack.
+0F30	ED-AGAIN	LD	HL,+107F	This is ED-ERROR.
+		PUSH	HL	Any event that leads to the
+		LD	(ERR-SP),SP	error handling routine being
+				used will come back to
+				ED-ERROR.
+
+A loop is now entered to handle each keystroke.
+
+0F38	ED-LOOP	CALL	15D4,WAIT-KEY	Return once a key has been
+				pressed.
+		PUSH	AF	Save the code temporarily.

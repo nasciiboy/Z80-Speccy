@@ -1,0 +1,63 @@
+The following loop is accessed for each dimensionthat is specified in the parenthesised expression of the DIM statement. The total number of bytes required for the elements of the array is built up in the DE register pair.
+
+2C2E	D-NO-LOOP	RST	0020,NEXT-CHAR	Advance CH-ADD on each pass..
+		LD	H,+FF	Set a 'limit value'.
+		CALL	2ACC,INT-EXP1	Evaluate a parameter.
+		JP	C,2A20,REPORT-3	Give an error if 'out of range'.
+		POP	HL	Fetch the dimension-counter
+				and the discriminator byte.
+		PUSH	BC	Save the parameter on each
+				pass through the loop.
+		INC	H	Increase the dimension counter
+				on each pass also.
+		PUSH	HL	Restack the dimension-counter
+				and the discriminator byte.
+		LD	H,B	The paramenter is moved to
+		LD	L,C	the HL register pair.
+		CALL	2AF4,GET-HL*DE	The byte total is built up
+		EX	DE,HL	in HL and the transferred to
+				DE.
+		RST	0018,GET-CHAR	Get the present character
+		CP	+2C	and go around the loop again
+		JR	Z,2C2E,D-NO-LOOP	if there is another dimension.
+
+Note: At this point the DE register pair indicates the number of bytes required for the elements of the new array and the size of each dimension is stacked, on the machine stack.
+Now check that there is indeed a closing bracket to the parenthesised expression.
+
+		CP	+29	Is it a ')'?
+		JR	NZ,2C05,D-REPORT-C	Jump back if not so.
+		RST	0020,NEXT-CHAR	Advance CH-ADD past it.
+
+Allowance is now made for the dimension-sizes.
+
+		POP	BC	Fetch the dimension-counter
+				and the discriminator byte.
+		LD	A,C	Pass the discriminator byte
+				to the A register for kater.
+		LD	L,B	Move the counter to L.
+		LD	H,+00	Clear the H register.
+		INC	HL	Increase the dimension-
+		INC	HL	counter by two and double the
+		ADD	HL,HL	result and form the
+		ADD	HL,DE	correct overall length for
+				the variable by adding the
+				element byte total.
+		JP	C,1F15,REPORT-4	Give the report 'Out of
+				memory' if required.
+		PUSH	DE	Save the element byte total.
+		PUSH	BC	Save the dimension counter
+				and the discriminator byte.
+		PUSH	HL	Save the overall length also.
+		LD	B,H	Move the overall length to BC.
+		LD	C,L	
+
+The required amount of foom is made available for the new array at the end of the variables area.
+
+		LD	HL,(E-LINE)	Make the HL register pair
+		DEC	HL	point to the '80-byte'.
+		CALL	1655,MAKE-ROOM	The room is made available.
+		INC	HL	HL is made to point to the first
+				new location.
+
+The parameters are now entered.
+

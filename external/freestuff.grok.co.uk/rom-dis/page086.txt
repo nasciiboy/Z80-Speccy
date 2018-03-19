@@ -1,0 +1,62 @@
+1AEF	P-INVERSE	DEFB	+07	CLASS-07
+1AF0	P-OVER	DEFB	+07	CLASS-07
+1AF1	P-OUT	DEFB	+08	CLASS-08
+		DEFB	+00	CLASS-00
+		DEFB	+7A,+1E	OUT,1E7A
+1AF5	P-BORDER	DEFB	+06	CLASS-06
+		DEFB	+00	CLASS-00
+		DEFB	+94,+22	BORDER,2294
+1AF9	P-DEF-FN	DEFB	+05	CLASS-05
+		DEFB	+60,+1F	DEF-FN,1F60
+1AFC	P-OPEN	DEFB	+06	CLASS-06
+		DEFB	+2C	','
+		DEFB	+0A	CLASS-0A
+		DEFB	+00	CLASS-00
+		DEFB	+36,+17	OPEN,1736
+1B02	P-CLOSE	DEFB	+06	CLASS-06
+		DEFB	+00	CLASS-00
+		DEFB	+E5,+16	CLOSE,16E5
+1B06	P-FORMAT	DEFB	+0A	CLASS-0A
+		DEFB	+00	CLASS-00
+		DEFB	+93,+17	CAT-ETC,1793
+1B0A	P-MOVE	DEFB	+0A	CLASS-0A
+		DEFB	+2C	','
+		DEFB	+0A	CLASS-0A
+		DEFB	+00	CLASS-00
+		DEFB	+93,+17	CAT-ETC,1793
+1B10	P-ERASE	DEFB	+0A	CLASS-0A
+		DEFB	+00	CLASS-00
+		DEFB	+93,+17	CAT-ETC,1793
+1B14	P-CAT	DEFB	+00	CLASS-00
+		DEFB	+93,+17	CAT-ETC,1793
+
+Note: The requirements for the different command classes are as follows:
+
+CLASS-00	-	No further operands.
+CLASS-01	-	Used in LET. A variable is required.
+CLASS-02	-	Used in LET. An expression, numeric or string, must follow.
+CLASS-03	-	A numeric expression may follow. Zero to be used in case of default.
+CLASS-04	-	A single character variable must follow.
+CLASS-05	-	A set of items may be given.
+CLASS-06	-	A numeric expression must follow.
+CLASS-07	-	Handles colour items.
+CLASS-08	-	Two numeric expressions, separated by a comma, must follow.
+CLASS-09	-	As for CLASS-08 but colour items may precede the expressions.
+CLASS-0A	-	A string expression must follow.
+CLASS-OB	-	Handles cassette routines.
+
+
+THE 'MAIN PARSER' OF THE BASIC INTERPRETER
+The parsing routine of the BASIC interpreter is entered at LINE-SCAN when syntax is being checked, and at LINE-RUN when a BASIC program of one or more statements is to be executed.
+
+Each statement is considered in turn and the system variable CH-ADD is used to point to each code of the statement as it occurs in the program area or the editing area.
+
+1B17	LINE-SCAN	RES	7,(FLAGS)	Signal 'syntax checking'.
+		CALL	19FB,E-LINE-NO	CH-ADD is made to point to the
+				first code after any line number.
+		XOR	A	The system variable SUBPPC
+		LD	(SUBPPC),A	is initialised to +00 and
+		DEC	A	ERR-NR to +FF.
+		LD	(ERR-NR),A
+		JR	1B29,STMT-L-1	Jump forward to consider the
+				first statement of the line.

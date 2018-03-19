@@ -1,0 +1,63 @@
+There are also the following two messages.
+
+1537		', '		- a 'comma' and a 'space'
+1539		'(C) 1982 Sinclair Research Ltd'
+
+Report G - No room for line
+
+1555	REPORT-G	LD	A,+10	'G' has the code '10+07+30'
+		LD	BC,+0000	Clear BC.
+		JP	1313,MAIN-G	Jump back to give the report.
+
+THE 'MAIN-ADD' SUBROUTINE
+This subroutine allows for a new BASIC line to be added to the existing BASIC program in the program area.  If a line has both an old and a new version then the old one is 'reclaimed'.  A new line that consists of only a line number does not go into the program area.
+
+155D	MAIN-ADD	LD	(E-PPC),BC	Make the new line number the
+				'current line'.
+		LD	HL,(CH-ADD)	Fetch CH-ADD and save the
+		EX	DE,HL	address in DE.
+		LD	HL,+1555	Push the address of REPORT-G
+		PUSH	HL	on to the machine stack.
+				ERR-SP will now point to
+				REPORT-G.
+		LD	HL,(WORKSP)	Fetch WORKSP.
+		SCF		Find the length of the line
+		SBC,	HL,DE	from after the line number to
+				the 'carriage return' character
+				inclusively.
+		PUSH	HL	Save the length.
+		LD	H,B	Move the line number to the
+		LD	L,C	HL register pair.
+		CALL	196E,LINE-ADDR	Is there an existing line
+				with this number?
+		JR	NZ,157D,MAIN-ADD1	Jump if there was not.
+		CALL	19B8,NEXT-ONE	Find the length of the 'old'
+		CALL	19E8,RECLAIM-2	line and reclaim it.
+157D	MAIN-ADD1	POP	BC	Fetch the length of the
+		LD	A,C	'new' line and jump forward
+		DEC	A	if it is only a 'line number
+		OR	B	and a carriage return'.
+		JR	15AB,MAIN-ADD2
+		PUSH	BC	Save the length.
+		INC	BC	Four extra locations will be
+		INC	BC	needed.
+		INC	BC	i.e. two for the number &
+		INC	BC	two for the length.
+		DEC	HL	Make HL point to the location
+				before the 'destination'.
+		LD	DE,(PROG)	Save the current value of
+		PUSH	DE	PROG to avoid corruption when
+				adding a first line.
+		CALL	1655,MAKE-ROOM	Space for the new line is created.
+		POP	HL	The old value of PROG is
+		LD	(PROG),HL	fetched and restored.
+		POP	BC	A copy of the line length
+		PUSH	BC	(without parameters) is taken.
+		INC	DE	Make DE point to the end
+				location of the new area
+		LD	HL,(WORKSP)	and HL to the 'carriage
+		DEC	HL	return' character of the new
+		DEC	HL	line in the editing area.
+		LDDR		Now copy over the line.
+		LD	HL,(E-PPC)	Fetch the line's number.
+

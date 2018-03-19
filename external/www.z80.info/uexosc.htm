@@ -1,0 +1,62 @@
+<HTML><Head>
+<TITLE>Thomas Scherrer Crystal Oscillator Circuits</TITLE>
+</Head><body>
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<h2>Crystal Oscillator Circuits</h2>
+<hr>
+A well-designed crystal oscillator will provide good performance with TTL gates.<br>
+Two types of crystal oscillator circuits can be used:<br>
+One with series resonance, or one with parallel resonance.<hr>
+
+<IMG ALIGN=CENTER SRC="gfx/parallel.gif" alt="Parallel X-tal osc" border=1 width=576 height=480><p>
+The Figure above shows implementation of a parallel resonant oscillator circuit.<br>
+The circuit is designed to use the fundamental frequency of the crystal. <br>
+The 74AS04 inverter performs the 180-degree phase shift that a parallel oscillator requires.<br>
+The 4K7 resistor provides the negative feedback for stability.<br>
+The 10K potentiometer biases the 74AS04 in the linear region. This could be used for external oscillator designs.
+<hr>
+
+<IMG ALIGN=CENTER SRC="gfx/series.gif" alt="Series X-Tal osc" border=1 width=602 height=302><p>
+The Figure above shows implementation of a series resonant oscillator circuit.<br>
+The circuit is also designed to use the fundamental frequency of the crystal. <br>
+The inverter performs a 180-degree phase shift in a series resonant oscillator circuit.<br>
+The 330 Ohm resistors provide the negative feedback to bias the inverter in their linear region.<br>
+<hr>
+
+<IMG ALIGN=CENTER SRC="gfx/series2.gif" alt="Series X-Tal osc" border=1 width=689 height=407><p>
+The Figure above shows implementation of a series resonant oscillator circuit, using TTL NAND GATES.<br>
+This circuit is <b>tested</b> by <a href="contact.htm">me</a> and found working with the following IC types:<br>
+<b>7400</b> Total current consumption is 21 mA. <br>
+<b>74LS00</b> Total current consumption is 15 mA. <br>
+<b>74HCT00</b> Don't use this type, it will NOT work, because the HCT type is too fast.<br>
+<p>
+<A HREF="gfx/x-00-p6.gif">7400 PIN 6 SCOPE PICTURE</A><br>
+<A HREF="gfx/x-00-p11.gif">7400 PIN 11 SCOPE PICTURE</A><br>
+<A HREF="gfx/x-ls-p6.gif">74LS00 PIN 6 SCOPE PICTURE</A><br>
+<A HREF="gfx/x-ls-p11.gif">74LS00 PIN 11 SCOPE PICTURE</A><br>
+<hr>
+
+The parallel resonator above doesnt work with 74HCT04. Well, in fact it doesnt.<br>
+But it's not because the HCT technology is faster than LS, or, too fast.<br>
+In fact the propagation delay is similar in HCT and LS. <br>
+What really happens is that the HCT technology has a higher gain, that is,<br>
+the inverter has a mutch sharper characteristic than LS devices.<br>
+So, with that configuration, it gets very dificult do biase the inverter in the liner or high gain region.<br>
+Nevertheless, because the HCT is a low power technology, and nowadays preferable,<br>
+there's a very simple circuit to build clocks with HCT. I think that you know the configuration,<br>
+yet I leave it here just in case you dont. Note that this configuration<br>
+doesnt  work with LS because of the gain being to low to biase the inverter.<br>
+<IMG ALIGN=CENTER SRC="gfx/hctres.gif"><br>
+Thanks to J.A.Serralheiro for this information and the good picture<p>
+<HR>
+<P><B>Links:</B>
+<UL>
+<LI>
+<a
+href="http://www.4starelectronics.com/part-types/SMD-Crystal-Oscillators.html">Crystal Oscillators Distributor</a>
+</LI>
+</UL>
+<HR>
+</P>
+</body></html>

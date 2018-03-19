@@ -1,0 +1,61 @@
+		LD	(HL),E	(PRINT-OUT).
+		INC	HL
+		LD	(HL),D
+		LD	(SCR-CT),+01	Reset the scroll counter.
+		LD	BC,+1821	As the upper part of the display
+				is being handled the 'upper print
+				line' will be Line '0'.
+				Continue into CL-SET.
+
+THE 'CL-SET' SUBROUTINE
+This subroutine is entered with the BC register pair holding the line and column numbers of a character areas, or the C register holding the column number within the printer buffer. The appropriate address of the first character bit is then found. The subroutine returns via PO-STORE so as to store all the values in the required system variables.
+
+0DD9	CL-SET	LD	HL,+5B00	The start of the printer buffer.
+		BIT	1 ,(FLAGS)	Jump forward if handling the
+		JR	NZ,0DF4,CL-SET-2	printer buffer.
+		LD	A,B	Transfer the line number.
+		BIT	0,(TV-FLAG)	Jump forward if handling the
+		JR	Z,0DEE,CL-SET-1	main part of the display.
+		ADD	A,(DF-SZ)	The top line of the lower
+		SUB	+18	part of the display is called
+				'line +18' and this has to be
+				converted.
+0DEE	CL-SET-1	PUSH	BC	The line & column numbers are
+				saved.
+		LD	B,A	The line number is moved.
+		CALL	0E9B,CL-ADODR	The address for the start of the
+				line is formed in HL.
+		POP	BC	The line & column numbers are
+				fetched back.
+0DF4	CL-SET-2	LD	A,+21	The column number is now
+		SUB	C	reversed and transferred to
+		LD	E,A	the DE register pair.
+		LD	D,+00
+		ADD	HL,DE	The required address is now
+		JP	0ADC,PO-STORE	formed; and the address and
+				the line and column numbers
+				are stored by jumping to
+				PO-STORE.
+
+THE 'SCROLLING' SUBROUTINE
+The number of lines of the display that are to be scrolled has to be held on entry to the main subroutine in the B register.
+
+0DFE	CL-SC-ALL	LD	B,+17	The entry point after 'scroll?'
+
+The main entry point - from above and when scrolling for INPUT..AT.
+
+0E00	CL-SCROLL	CALL	0E9B,CL-ADDR	Find the starting address of
+				the line.
+		LD	C,+08	There are eight pixel lines to
+				a complete line.
+
+Now enter the main scrolling loop. The B register holds the number of the top line to be scrolled, the HL register pair the starting address in the display area of this line and the C register the pixel line counter.
+
+0E05	CL-SCR-1	PUSH	BC	Save both counters.
+		PUSH	HL	Save the starting address.
+		LD	A,B	Jump forward unless
+		AND	+07	dealing at the present
+		LD	A,B	moment with a 'third' of
+		JR	NZ,0E19,CL-SCR-3	the display.
+
+The pixel lines of the top lines of the 'thirds' of the display have to be moved across the 2K boundaries. (Each 'third' = 2K.)

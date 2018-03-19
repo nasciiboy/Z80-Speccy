@@ -1,0 +1,62 @@
+		JP	NZ,0514,SA-BIT-1	SAVE the bit unless finished
+				with the byte.
+		DEC	DE	Decrease the 'counter'.
+		INC	IX	Advance the 'base address'.
+		LD	B,+31	Set the timing constant for the
+				first bit of the next byte.
+		LD	A,+7F	Return (to SA/LD-RET) if the
+		IN	A,(+FE)	BREAK key is being pressed.
+		RRA
+		RET	NC
+		LD	A,D	Otherwise test the 'counter
+		INC	A	and jump back even if it has
+		JP	NZ,04FE,SA-LOOP	reached zero (so as to send the
+				'parity' byte).
+		LD	B,+3B	Exit when the 'counter
+053C	SA-DELAY	DJNZ	053C,SA-DELAY	reaches +FFFF. But first
+		RET		give a short delay.
+
+Note: A reset bit will give a 'MIC off' pulse of 855 T states followed by a 'MIC on' pulse of 855 T states. Whereas a Set bit will give pulses of exactly twice as long. Note also that there are no gaps either between the sync pulse and the first bit of the flag, or between bytes.
+
+THE 'SA/LD-RET' SUBROUTINE
+This subroutine is common to both SAVEing and LOADing.
+The border is set to its original colour and the BREAK key tested for a last time.
+
+053F	SA/LD-RET	PUSH	AF	Save the carry flag. (It is reset
+				after a LOADing error.)
+		LD	A,(BORDCR)	Fetch the original border colour
+		AND	+38	from its system variable.
+		RRCA		Move the border colour
+		RRCA		to bits 2, l & 0.
+		RRCA
+		OUT	(+FE),A	Set the border to its original
+				colour.
+		LD  	A.+7F  	Read the BREAK key for a
+		IN  	A,(+FE)  	last time.
+		RRA
+		EI   		Enable the maskable interrupt.
+		JR  	C,0554,SA/LD-END	Jump unless a break is to be
+				made.
+
+Report D - BREAK-CONT repeats
+
+0552	REPORT-D	RST 	0008,ERROR-l 	Call the error handling
+		DEFB	+0C	routine.
+
+Continue here.
+
+0554	SA/LD-END	POP	AF	Retrieve the carry flag.
+		RET		Return to the calling routine.
+
+THE 'LD-BYTES' SUBROUTINE
+This subroutine is called to LOAD the header information (from 07BE) and later LOAD, or VERIFY, an actual block of data (from 0802).
+
+0556	LD-BYTES	INC	D	This resets the zero flag. (D
+				cannot hold +FF.)
+		EX	AF,A'F'	The A register holds +00 for a
+				header and +FF for a block of
+				data.
+				The carry flag is reset for
+				VERIFYing and set for
+				LOADing.
+		DEC	D	Restore D to its original value.

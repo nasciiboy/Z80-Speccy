@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Emulators - Linux / Unix</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="emulators.htm">Emulators</a> |
+<a title="Reference" href="../reference/reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">Emulators - Linux / UNIX&reg; (and derivatives)</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+<p>Several entries previously listed have been archived and will not be actively maintatined in future. See the
+<a href="../resources/archive.htm">archive</a> page for details. There are 5 emulators currently listed
+for Linux / UNIX&reg; (and derivatives) platforms.</p>
+<ul>
+
+<li><a id="Fuse" href="http://fuse-emulator.sourceforge.net/">Fuse</a> v0.7.0<br /><br />
+<strong>Emulates</strong>: 16K / 48K / 128K / +2 / +2A / +3 / +3e / SE ZX Spectrums, Timex
+<a href="../reference/hardware.htm#TC2048">TC2048</a> and
+<a href="../reference/hardware.htm#TC2068">TC2068</a>, Pentagon 128 and Scorpion ZS 256.<br />
+<strong>Tape/Disk Formats</strong>: Loads almost all available tape images (including <a href="../reference/formats.htm#TZX">.tzx</a>), disk images and snapshots (including <a href="../reference/formats.htm#SZX">.szx</a> and <a href="../reference/z80format.htm">.z80</a>). Saves
+<a href="../reference/formats.htm#TZX">.tzx</a>,
+<a href="../reference/formats.htm#TAP">.tap</a>,
+<a href="../reference/formats.htm#SZX">.szx</a>,
+<a href="../reference/z80format.htm">.z80</a>,
+<a href="../reference/formats.htm#SNA">.sna</a>,
+<a href="../reference/formats.htm#TRD">.trd</a>,
+<a href="../reference/formats.htm#DSK">.dsk</a> and
+<a href="../reference/formats.htm#HDF">.hdf</a> files.<br />
+<strong>Requirements</strong>: A version of UNIX with either X, <a href="http://www.libsdl.org/index.php">SDL</a>,
+<a href="http://www.svgalib.org/">SVGAlib</a>
+or framebuffer support is required, as is
+<a href="http://fuse-emulator.sourceforge.net/libspectrum.php">libspectrum</a>.<br />
+<strong>Created by</strong>: <a href="../../cdn-cgi/l/email-protection#087869633a39256e7d7b6d487b7a6b6e267d6b696526677a6f267a6d65677e6d267c60617b">Philip Kendall</a>, and others.<br />
+<strong>Last updated</strong>: July 16th, 2004<br /><br />
+<strong>Comments</strong>: As well as all the 'standard' features, Fuse also includes support for the <a href="../reference/formats.htm#RZX">RZX input recording format</a>, the +3e, ZXATASP and ZXCF IDE interfaces, the Timex Dock cartridge port and the various printers available for the Spectrum.<br /><br />
+Fuse is released under the GNU General Public License and includes source code. A version is also available for <a href="macintosh.htm#Fuse">Macintosh OS X</a>.<br /><br /></li>
+
+
+<li><a href="http://www.zx-spectrum.net/xzx/">XZX-Pro</a> v4.4<br /><br />
+<strong>Emulates</strong>: 48K / 128K / +2 / +3 ZX Spectrums, Pentagon, Scorpion, Didaktik.<br />
+<strong>Tape/Disk Formats</strong>: <a href="../reference/formats.htm#SNA">.sna</a>,
+<a href="../reference/z80format.htm">.z80</a>,
+<a href="../reference/formats.htm#SLT">.slt</a>, .dat, <a href="../reference/formats.htm#TAP">.tap</a>,
+<a href="../reference/formats.htm#TZX">.tzx</a>,
+.voc, <a href="../reference/formats.htm#MDR">.mdr</a>, <a href="../reference/formats.htm#DSK">.dsk</a>,
+<a href="../reference/formats.htm#TRD">.trd</a>, .fdi, .scl, .mgt, .img, .d80,
+<a href="../reference/formats.htm#SCR">.scr</a>, <a href="../reference/formats.htm#POK">.pok</a> files.<br />
+<strong>Requirements</strong>: Various - see the XZX-Pro <a href="http://www.zx-spectrum.net/xzx/">web page</a>.<br />
+<strong>Created by</strong>: <a href="../../cdn-cgi/l/email-protection#3f485a5d525e4c4b5a4d7f4547124c4f5a5c4b4d4a5211515a4b114d5a5250495a114b57564c">Erik Kunze</a>.<br />
+<strong>Last updated</strong>: February 10th, 2004<br /><br />
+<strong>Comments</strong>: Also emulates the Beta 128 interface (with 4 disk drives), the
+<a href="../reference/peripherals.htm#InterfaceI">ZX Interface I</a> (with up to 8
+<a href="../reference/peripherals.htm#ZXMicrodrive">Microdrives</a>),
+the +D interface (with up to 2 disk drives), Kempston
+<a href="../reference/peripherals.htm#Mice">Mouse</a> and Sinclair 1/2, Cursor/Protek/AGF and Kempston
+<a href="../reference/peripherals.htm#Joysticks">Joystick Interfaces</a>, the Fuller Audio Box (AY and Joystick)
+The current distribution is released as shareware, and includes several utilities (EMPTYTRD, HOB2TRD and TRD2HOB) that can
+be used to manipulate and convert <a href="../reference/formats.htm#TRD">.trd</a> files between different formats.
+XZX-Pro has native audio support for all supported platforms and has recently been ported to
+<a href="macintosh.htm#MacOSX">Mac OS X</a> and Darwin.<br /><br />
+Please refer to the <a href="../reference/z80format.htm">Z80 Format</a> page for details of the extensions to the .z80 format
+supported by XZX-Pro.<br /><br /></li>
+
+
+<li><a href="http://www.rastersoft.com/fbzx.html">FBZX</a> v1.4<br /><br />
+<strong>Emulates</strong>: 48K / 128K / +2 / +2A ZX Spectrums.<br />
+<strong>Tape/Disk Formats</strong>: Loads and saves <a href="../reference/z80format.htm">.z80</a>,
+<a href="../reference/formats.htm#TAP">.tap</a> and
+<a href="../reference/formats.htm#TZX">.tzx</a> files.<br />
+<strong>Requirements</strong>: Linux system with <a href="http://www.libsdl.org/">SDL</a>.<br />
+<strong>Created by</strong>: <a href="../../cdn-cgi/l/email-protection#3240534146574072405341465740415d54461c515d5f1c40575f5d44571c465a5b41">Sergio Costas Rodriguez</a>.<br />
+<strong>Last updated</strong>: January 6th, 2004<br /><br />
+<strong>Comments</strong>: Also emulates the Kempston, Cursor and Sinclair
+<a href="../reference/peripherals.htm#Joysticks">Joystick Interfaces</a> and the
+<a href="../reference/peripherals.htm#InterfaceI">Interface I</a>. Distributed under the GNU General Public License (GPL). Does not emulate
+<a href="../reference/48kreference.htm#Contention">contended memory</a>.<br /><br /></li>
+
+
+<li><a href="http://glukalka.sourceforge.net/">Glukalka</a> v0.9<br /><br />
+<strong>Emulates</strong>: 48K / 128K ZX Spectrums, Pentagon 128K and Scorpion ZS 256.<br />
+<strong>Tape/Disk Formats</strong>: <a href="../reference/formats.htm#SNA">.sna</a> (read only),
+<a href="../reference/z80format.htm">.z80</a>,
+<a href="../reference/formats.htm#TAP">.tap</a>, <a href="../reference/formats.htm#TZX">.tzx</a>, .wav,
+<a href="../reference/formats.htm#TRD">.trd</a>,
+.scl (read only) and <a href="../reference/formats.htm#POK">.pok</a> formats.<br />
+<strong>Requirements</strong>: X11, Motif-compatible library.<br />
+<strong>Created by</strong>: Dmitry Sanarin.<br />
+<strong>Last updated</strong>: February 27th, 2004<br /><br />
+<strong>Comments</strong>: Also emulates the Beta 128 interface (with 4 disk drives) and the Kempston, Sinclair and Cursor
+<a href="../reference/peripherals.htm#Joysticks">Joystick Interfaces</a>. See the
+<a href="http://sourceforge.net/projects/glukalka/">Glukalka project page</a> for additional requirements
+and information. Licensed under the GNU General Public License.<br /><br /></li>
+
+
+<li><a href="http://jlozevis.free.fr/spectrum.html">ZX Spectrum Emulator for Linux/i386</a><br /><br />
+<strong>Emulates</strong>: 48K Spectrum.<br />
+<strong>Tape/Disk Formats</strong>: Claims to load <a href="../reference/z80format.htm">.z80</a> and <a href="../reference/formats.htm#sna">.sna</a> snapshots, but I haven't actually found one which works.<br />
+<strong>Requirements</strong>: An i386 compatible processor and X11.<br />
+<strong>Created by</strong>: Jean-Fran&ccedil;ois Lozevis.<br />
+<strong>Last updated</strong>: May 24th, 2004<br /><br />
+<strong>Comments</strong>: Appears to be rather simple: no border emulation, etc.<br /><br /></li>
+
+</ul>
+
+</td>
+</tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: unix.htm,v 1.14 2004/07/20 12:13:14 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+<script data-cfasync="false" src="../../cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script></body>
+</html>

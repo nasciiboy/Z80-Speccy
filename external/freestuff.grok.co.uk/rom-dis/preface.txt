@@ -1,0 +1,15 @@
+Preface
+
+The Sinclair ZX Spectrum is a worthy successor to the ZX 81 which in turn replaced the ZX 80.
+The Spectrum has a 16K monitor program. This program has been developed directly from the 4K program of the ZX 80 although there are now so many new features that the differences outweigh the similarities.
+We have both enjoyed producing this book. We have learnt a great deal about the techniques of Z80 machine code programming and now feel that between us we have unravelled the ‘secrets of the Spectrum’.
+We would like to thank:
+ --	Our families.
+ --	Alfred Milgrom, our publisher who has been extremely helpful.
+ --	Philip Mitchell whose notes on the cassette format were most informative.
+ --	Clive Sinclair and his team at Sinclair Research Ltd. who have produced such a ‘challenging’ and useful machine.
+
+January 1983
+
+	Ian Logan	Lincoln, U.K.
+	Frank O’Hara	London, U.K.

@@ -1,0 +1,59 @@
+		LD	(HL),+FF	The second byte is set to FF.
+		DEC	HL	HL again points to the first
+				byte.
+		LD	A,+18	The last 24 bits are to be zero.
+		JR	3272,NIL-BYTES	The jump to NIL-BYTES
+				completes the number 00 FF
+				00 00 00.
+If the exponent byte of x is between 81 and 90 hex (129 and 144 decimal) inclusive, I(x) is a 'small integer', and will be compressed into one or two bytes. But first a test is made to see whether x is, after all, large.
+323F	T-SMALL	JR	NC,326D,X-LARGE	Jump with exponent byte 92
+				or more (it would be better to
+				jump with 91 too).
+		PUSH	DE	Save STKEND in DE.
+		CPL		Range 129 <= A <= 144 becomes
+				126 >= A >= 111.
+		ADD	A,+91	Range is now 15 dec >= A >= 0.
+		INC	HL	Point HL at second byte.
+		LD	D,(HL)	Second byte to D.
+		INC	HL	Point HL at third byte.
+		LD	E,(HL)	Third byte to E.
+		DEC	HL	Point HL at first byte again.
+		DEC	HL
+		LD	C,+00	Assume a positive number.
+		BIT	7,D	Now test for negative (bit 7
+				set).
+		JR	Z,3252,T-NUMERIC	Jump if positive after all.
+		DEC	C	Change the sign.
+3252	T-NUMERIC	SET	7,D	Insert true numeric bit, 1, in D.
+		LD	B,+08	Now test whether A >= 8 (one
+		SUB	B	byte only) or two bytes needed.
+		ADD	A,B	Leave A unchanged.
+		JR	C,325E,T-TEST	Jump if two bytes needed.
+		LD	E,D	Put the one byte into E.
+		LD	D,+00	And set D to zero.
+		SUB	B	Now 1 <= A <= 7 to count the
+				shifts needed.
+325E	T-TEST	JR	Z,3267,T-STORE	Jump if no shift needed.
+		LD	B,A	B will count the shifts.
+3261	T-SHIFT	SRL	D	Shift D and E right B times to
+		RR	E	produce the correct number.
+		DJNZ	3261,T-SHIFT	Loop until B is zero.
+3267	T-STORE	CALL	2D8E,INT-STORE	Store the result on the stack.
+		POP	DE	Restore STKEND to DE.
+		RET		Finished.
+Large values of x remains to be considered.
+326C	T-EXPNENT	LD	A,(HL)	Get the exponent byte of x into
+				A.
+326D	X-LARGE	SUB	+A0	Subtract 160 decimal, A0 hex,
+				from e.
+		RET	P	Return on plus - x has no
+				significant non-integral part. (If
+				the true exponent were reduced
+				to zero, the 'binary point'
+				would come at or after the end
+				of the four bytes of the man-
+				tissa).
+		NEG		Else, negate the remainder; this
+				gives the number of bits to
+				become zero (the number of
+				bits after the 'binary point').

@@ -1,0 +1,12 @@
+2D40	NXT-DGT-2	CALL	2D22,STK-DIGIT	If the code represents a digit
+		RET	C	then stack the floating-point
+				form.
+		RST	0028,FP-CALC	Use the calculator.
+		DEFB	+01,exchange	'Digit' goes under 'last value'.
+		DEFB	+A4,stk-ten	Define decimal 10.
+		DEFB	+04,multiply	'Last value' = 'last value' *10.
+		DEFB	+0F,addition	'Last value' = 'last value+
+				'digit'.
+		DEFB    +38,end-calc
+		CALL	0074,CH-ADD+1	The next code goes into A.
+		JR	2D40,NXT-DGT-2	Loop back with this code.

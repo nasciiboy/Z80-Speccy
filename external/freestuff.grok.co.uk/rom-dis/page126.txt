@@ -1,0 +1,8 @@
+
+24F7 	D-L-RANGE 	JR 	Z,24EC,D-L-PLOT 	Zero after carry denotes X.
+				position 255, in range.
+				
+Report B - Integer out of range
+
+24F9 	REPORT.B 	RST 	0008,ERROR-1 	Call the error handling
+		DEFB 	+0A 	routine.

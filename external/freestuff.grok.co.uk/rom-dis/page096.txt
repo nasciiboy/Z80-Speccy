@@ -1,0 +1,63 @@
+		DEC	HL	Fetch the variable's single
+		LD	A,(HL)	character name.
+		SET	7,(HL)	Ensure bit 7 of the name is set.
+		LD	BC,+0006	It will have six locations at least.
+		ADD	HL,BC	Make HL point after them.
+		RLCA		Rotate the name and jump if
+		JR	C,1D34,F-L&S	it was already a FOR variable.
+		LD	C,+0D	Otherwise create thirteen
+		CALL	1655,MAKE-ROOM	more locations.
+		INC	HL	Again make HL point to the
+				LIMIT position.
+
+The initial values for the LIMIT and the STEP are now added.
+
+1D34	F-L&S	PUSH	HL	The pointer is saved.
+		RST	0028,FP-CLAC	l, s
+		DEFB	+02,delete	l
+		DEFB	+02,delete	-
+		DEFB	+38,end-calc	DE still points to 'l'.
+		POP	HL	The pointer is restored and
+		EX	DE,HL	both pointers exchanged.
+		LD	C,+0A	The ten bytes of the LIMIT
+		LDIR		and the STEP are moved.
+
+The looping line number and statement number are now entered.
+
+		LD	HL,(PPC)	The current line number.
+		EX	DE,HL	Exchange the registers before
+		LD	(HL),E	adding the line number to the
+		INC	HL	FOR control variable.
+		LD	(HL),D
+		LD	D,(SUBPPC)	The looping statement is
+		INC	D	always the next statement -
+		INC	HL	whether it exists or not.
+		LD	(HL),D
+
+The NEXT-LOOP subroutine is called to test the possibility of a 'pass' and a return is made if one is possible; otherwise the statement after for FOR - NEXT loop has to be identified.
+
+		CALL	1DDA,NEXT-LOOP	Is a 'pass' possible?
+		RET	NC	Return now if it is.
+		LD	B,(STRLEN-lo)	Fetch the variable's name.
+		LD	HL,(PPC)	Copy the present line number
+		LD	(NEWPPC),HL	to NEWPPC.
+		LD	A,(SUBPPC)	Fetch the current statement
+		NEG		number and two's complement it.
+		LD	D,A	Transfer the result to the D
+				register.
+		LD	HL,(CH-ADD)	Fetch the current value of
+				CH-ADD.
+		LD	E,+F3	The search will be for 'NEXT'.
+
+Now a search is made in the program area, from the present point onwards, for the first occurrence of NEXT followed by the correct variable.
+
+1D64	F-LOOP	PUSH	BC	Save the variable's name.
+		LD	BC,(NXTLIN)	Fetch the current value of
+				NXTLIN.
+		CALL	1D86,LOOK-PROG	The program area is now
+				searched and BC will change
+				with each new line examined.
+		LD	(NXTLIN),BC	Upon return save the pointer.
+		POP	BC	Restore the variable's name.
+		JR	C,1D84,REPORT-I	If there are no further NEXTs
+				then give an error.

@@ -1,0 +1,63 @@
+'old number'; and for a string variable to the first location of the 'old string'. The use of DEST in this manner applies to simple variables and to elements of arrays.
+Bit 0 of FLAGX is set if the destination variable is a 'complete'simple string variable. (Signalling - delete the old copy.) 
+Initially the current value of DEST is collected and bit 1 of FLAGS tested.
+
+2AFF 	LET 	LD 	HL,(DEST) 	Fetch the present address in
+				DEST.
+		BIT 	1,(FLAGX) 	Jump if handling a variable
+		JR 	Z,2B66,L-EXISTS 	that 'exists already'.
+
+A 'newly declared variable' is being used. So first the length of its name is found.
+
+		LD 	BC,+0005 	Presume dealing with a
+				numeric variable - 5 bytes.
+
+Enter a loop to deal with the characters of a long name. Any spaces or colour codes in the name are ignored.
+
+2B0B 	L-EACH-CH 	INC 	BC 	Add '1' to the counter for
+				each character of a name.
+2B0C 	L-NO-SP 	INC 	HL 	Move along the variable's name.
+		LD 	A,(HL) 	Fetch the 'present code'.
+		CP 	+20 	Jump back if it is a 'space';
+		JR 	Z,2B0C,L-NO-SP 	thereby Ignoring spaces.
+		JR 	NC,2B1F,L-TEST-CH 	Jump forward if the code is
+				+21 to +FF.
+		CP 	+10 	Accept, as a final code, those
+		JR 	C,2B29,L-SPACES 	in the range +00 to +0F.
+		CP 	+16 	Also accept the range
+		JR 	NC,2B29,L-SPACES 	+16 to +1F.
+		INC 	HL 	Step past the control code
+				after any of INK to OVER.
+		JR 	2B0C,L-NO-SP 	Jump back as these control
+				codes are treated as spaces.
+
+Separate 'numeric' and 'string' names.
+
+2B1F 	L-TEST -CH 	CALL 	2C88,ALPHANUM 	Is the code alphanumeric?
+		JR 	C,2B0B,L-EACH-CH 	If It is so then accept it as
+				a character of a 'long' name.
+		CP 	+24 	Is the present code a'S'?
+		JP 	Z,2BC0,L-NEWS 	Jump forward as handling a
+				'newly declared' simple string.
+
+The 'newly declared numeric variable' presently being handled will require 'BC' spaces in the variables area for its name and its value. The room is made available and the name of the variable is copied over with the characters being 'marked' as required.
+
+2B29 	L-SPACES 	LD 	A,C 	Copy the 'length' to A.
+		LD 	HL,(E-LlNE) 	Make HL point to the
+		DEC 	HL 	'80-byte' at the end of the
+				variables area.
+		CALL 	1655,MAKE-ROOM 	Now open up the variables area.
+				Note: In effect 'BC' spaces are
+				made before the displaced
+				'80-byte'.
+		INC 	HL 	Point to the first 'new' byte.
+		INC 	HL 	Make DE point to the second
+		EX 	DE,HL 	'new' byte.
+		PUSH 	DE 	Save this pointer.
+		LD 	HL,(DEST) 	Fetch the pointer to the
+				start of the name.
+		DEC 	DE 	Make DE point to the first
+				'new' byte.
+		SUB 	+06 	Make B hold the 'number of
+		LD 	B,A 	extra letters' that are fou nd
+				in a 'long name'.

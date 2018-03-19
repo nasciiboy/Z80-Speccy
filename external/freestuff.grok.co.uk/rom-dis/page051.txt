@@ -1,0 +1,69 @@
+		LD	D,+00	Fetch the duration of the
+		LD	E,(PIP)	keyboard click.
+		LD	HL,+00C8	And the pitch.
+		CALL	03B5,BEEPER	Now make the 'pip'.
+		POP	AF	Restore the code.
+		LD	HL,+0F38	Pre-load the machine stack
+		PUSH	HL	with the address of ED-LOOP.
+
+Now analyse the code obtained.
+
+		CP	+18	Accept all character codes,
+		JR	NC,0F81,ADD-CHAR	graphic codes and tokens.
+		CP	+07	Also accept ','.
+		JR	C,0F81,ADD-CHAR
+		CP	+10	Jump forward if the code
+		JR	C,0F92,ED-KEYS	represents an editing key.
+
+The control keys - INK to TAB -are now considered.
+
+		LD	BC,+0002	INK & PAPER will require
+				two locations.
+		LD	D,A	Copy the code to 0.
+		CP	+16	Jump forward with INK &
+		JR	C,0F6C,ED-CONTR	PAPER'
+
+AT & TAB would be handled as follows:
+
+		INC	BC	Three locations required.
+		BIT	7,(FLAGX)	Jump forward unless dealing
+		JP	Z,101E,ED-IGNORE	with INPUT LINE... .
+		CALL	15D4,WAIT-KEY	Get the second code.
+		LD	E,A	and put it in E.
+
+The other bytes for the control characters are now fetched.
+
+0F6C	ED-CONTR	CALL	15D4,WAIT-KEY	Get another code.
+		PUSH	DE	Save the previous codes.
+		LD	HL,(K-CUR)	Fetch K-CUR.
+		RES	0,(MODE)	Signal 'K mode'.
+		CALL	1655,MAKE-ROOM	Make two or three spaces.
+		POP	BC	Restore the previous codes.
+		INC	HL	Point to the first location.
+		LD	(HL),B	Enter first code.
+		INC	HL	Then enter the second code
+		LD	(HL),C	which will be Overwritten if
+				there are only two codes - i.e.
+				with INK & PAPER.
+		JR	0F8B,ADD-CH-1	Jump forward.
+
+THE 'ADDCHAR' SUBROUTINE
+This subroutine actually adds a code to the current EDIT or INPUT line.
+
+0F81	ADD-CHAR	RES	0,(MODE)	Signal 'K mode'.
+		LD	HL,(K-CUR)	Fetch the cursor position.
+0F88	ADD-CH-1	CALL	1652,ONE-SPACE	Make a single space.
+		LD	(DE),A	Enter the code into the space
+		INC	DE	and signal that the cursor is to
+		LD	(K-CUR),DE	occur at the location after. Then
+		RET		return indirectly to ED-LOOP.
+
+The editing keys are dealt with as follows:
+
+0F92	ED-KEYS	LD	E,A	The code is transferred to
+		LD	C,+00	the DE register pair.
+		LD	HL,+0F99	The base address of the editing
+				key table.
+		ADD	HL,DE	The entry is addressed and
+		LD	E,(HL)	then fetched into E.
+		ADD	HL,DE	The address of the handling

@@ -1,0 +1,55 @@
+		LD	B,H	result to the BC register
+		LD	C,L	before returning.
+		RET
+
+THE 'RETURN' COMMAND ROUTINE
+The line number and the statement number that are to be made the object of a 'return' are fetched from the GO SUB stack.
+1F23	RETURN	POP	BC	Fetch the address - STMT-RET.
+		POP	HL	Fetch the 'error address'.
+		POP	DE	Fetch the last entry on the
+				GO SUB stack.
+		LD	A,D	The entry is tested to see if
+		CP	+3E	it is the GO SUB stack end
+		JR	Z,1F36,REPORT-7	marker; jump if it is.
+		DEC	SP	The full entry uses three
+				locations only.
+		EX	(SP),HL	Exchange the statement number
+				with the 'error address'.
+		EX	DE,HL	Move the statement number.
+		LD	(ERR-SP),SP	Reset the error pointer.
+		PUSH	BC	Replace the address -
+				STMT-RET.
+		JP	1E73,GO-TO-2	Jump back to change NEWPPC
+				& NSPPC.
+Report 7 - RETURN without GOSUB
+1F36	REPORT-7	PUSH	DE	Replace the end marker and
+		PUSH	HL	the 'error address'.
+		RST	0008,ERROR-1	Call the error handling
+		DEFB	+06	routine.
+
+THE 'PAUSE' COMMAND ROUTINE
+The period of the PAUSE is determined by counting the number of maskable interrupts as they occur every 1/50 th. of a second.
+A PAUSE is finished either after the appropriate number of interrupts or by the system Variable FLAGS indicating that a key has been pressed.
+1F3A	PAUSE	CALL	1E99,FIND-INT2	Fetch the operand.
+1F3D	PAUSE-1	HALT		Wait for a maskable interrupt.
+		DEC	BC	Decrease the counter.
+		LD	A,B	If the counter is thereby
+		OR	C	reduced to zero the PAUSE
+		JR	Z,1F4F,PAUSE-END	has come to an end.
+		LD	A,B	If the operand was zero BC
+		AND	C	will now hold +FFFF and this
+		INC	A	value will be returned to
+		JR	NZ,1F49,PAUSE-2	zero. Jump will all other
+		INC	BC	operand values.
+1F49	PAUSE-2	BIT	5,(FLAGS)	Jump back unless a key has
+		JR	Z,1F3D,PAUSE-1	been pressed.
+The period of the PAUSE has now finished.
+1F4F	PAUSE-END	RES	5,(FLAGS)	Signal 'no key pressed'.
+		RET		Now return; - to STMT-RET.
+
+THE 'BREAK-KEY' SUBROUTINE
+This subroutine is called in several instances to read the BREAK key. The carry flag is returned reset only if the SHIFT and the BREAK keys are both being pressed.
+1F54	BREAK-KEY	LD	A,+7F	Form the port address
+		IN	A,(+FE)	+7FFE and read in a byte.
+		RRA		Examine only bit 0 by shifting
+				it into the carry position.

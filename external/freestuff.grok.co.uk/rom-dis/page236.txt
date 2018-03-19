@@ -1,0 +1,48 @@
+address	routine	page
+
+
+34E9 	TEST-ZERO 	202
+34F9 	Greater than zero (37) 	202
+3501 	NOT (30) 	202
+3506 	Less than zero (36) 	203
+350B 	Zero or one 	203
+351B 	OR (07)  	203
+3524 	Number AND number (08) 	203
+352D 	String AND number (10) 	204
+353B 	Comparison (09-0E, 11-16) 	204
+359C 	String concatenation (17) 	205
+35BF 	STK-PNTRS 	206
+35C9 	CHR$ (2F) 	206
+35DE 	VAL and VAL$ (1D,18) 	207
+361F	STR$ (2E) 	208
+3645 	Read-in (1A) 	208
+3669 	CODE (1C) 	209
+3674 	LEN (1E) 	209
+367A 	Decrease the counter (35) 	209
+3686 	Jump (33) 	209
+368F 	Jump on true (00) 	210
+369B 	END-CALC (38) 	210
+36A0 	Modulus (32) 	210
+36AF 	INT (27) 	211
+36C4 	Exponential (26) 	211
+3713 	Natural logarithm (25) 	213
+3783 	Reduce argument (39) 	215
+37AA 	Cosine (20) 	216
+37B5 	SINE (1 F) 	216
+37DA 	Tan (21) 	217
+37E2 	ARCTAN (24) 	218
+3833 	Arcsin (22) 	219
+3843 	Arccos (23) 	220
+384A 	Square root (28) 	220
+3851 	Exponentiation (06) 	220
+
+APPENDIX
+BASIC programs for the main series.
+  -   Series generator 	222
+  -   SIN X 	223
+  -   EXP X 	224
+  -   LN X  	226
+  -   ATNX  	228
+The 'DRAW' algorithm 	228
+The 'CIRCLE' algorithm 	229
+Note on Small Integers and -65536 	229

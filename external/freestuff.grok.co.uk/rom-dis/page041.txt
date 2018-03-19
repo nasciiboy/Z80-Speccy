@@ -1,0 +1,66 @@
+0C55	PO-SCR	BIT	1,(FLAGS)	Return immediately if the
+		RET	NZ	printer is being used.
+		LD	DE,+0DD9	Pre-load the machine stack
+		PUSH	DE	with the address of 'CL-SET'.
+		LD	A,B	Transfer the line number.
+		BIT	0,(TV-FLAG)	Jump forward if considering
+		JP	NZ,0D02,PO-SCR-4	'INPUT ... AT ..'.
+		CP	(DF-SZ)	Return, via CL-SET, if the line
+		JR	C,0C86,REPORT-6	number is greater than the value
+		RET	NZ	of DF-SZ; give report 5 if it is
+				less; otherwise continue.
+		BIT	4,(TV-FLAG)	Jump forward unless dealing
+		JR	Z,0C88,PO-SCR-2	with an 'automatic listing'.
+		LD	E,(BREG)	Fetch the line counter.
+		DEC	E	Decrease this counter.
+		JR	Z,0CD2,PO-SCR-3	Jump forward if the listing
+				is to be scrolled.
+		LD	A,+00	Otherwise open channel 'K',
+		CALL	1601,CHAN-OPEN	restore the stack pointer,
+		LD	SP,(LIST-SP)	flag that the automatic
+		RES	4,(TV-FLAG)	listing has finished and
+		RET		return via CL-SET.
+
+Report 5 - Out of screen
+
+0C86 REPORT-S	RST	0008,ERROR-1	Call the error handling
+		DEFB	+04	routine.
+
+Now consider if the prompt 'scroll?' is required.
+
+0C88	PO-SCR-2	DEC	(SCR-CT)	Decrease the scroll counter
+		JR	NZ,0CD2,PO-SCR-3	and proceed to give the prompt
+				only if is becomes zero.
+
+Proceed to give the prompt message.
+
+		LD	A,+18	The counter is reset.
+		SUB	B
+		LD	(SCR-CT),A
+		LD	HL,(ATTR-T)	The current values of ATTR-T
+		PUSH	HL	and MASK-T are saved.
+		LD	A,(P-FLAG)	The current value of P-FLAG
+		PUSH	AF	is saved.
+		LD	A,+FD	Channel 'K' is opened.
+		CALL	1601,CHAN-OPEN
+		XOR	A	The message 'scroll?' is
+		LD	DE,+0CF8	message '0'. This message is
+		CALL	0C0A,PO-MSG	now printed.
+		SET	5,(TV-FLAG)	Signal 'clear the lower screen
+				after a keystroke'.
+		LD	HL,+5C3B	This is FLAGS.
+		SET	3,(HL)	Signal 'L mode'.
+		RES	5,(HL)	Signal 'no key yet'.
+		EXX		Note: DE should be pushed also.
+		CALL	15D4,WAIT-KEY	Fetch a single key code.
+		EXX		Restore the registers.
+		CP	+20	There is a jump forward to
+		JR	Z,0D00,REPORT-D	REPORT-D - 'BREAK - CONT
+		CP	+E2	repeats' - if the keystroke
+		JR	Z,0D00,REPORT-D	was 'BREAK', 'STOP', 'N' or
+		OR	+20	'n'; otherwise accept the
+		CP	+6E	keystroke as indicating the
+		JR	Z,0D00,REPORT-D	need to scroll the display.
+		LD	A,+FE	Open channel 'S'.
+		CALL	1601,CHAN-OPEN
+		POP	AF	Restore the value of

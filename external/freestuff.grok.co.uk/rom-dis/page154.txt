@@ -1,0 +1,57 @@
+The parameters of the string variable are fetched and complete simple strings separated from 'sliced' strings and array strings.
+
+2B72	L-DELETE$	LD	HL,(DEST)	Fetch the 'start'. Note: This
+				line is redundant.
+		LD	BC,(STRLEN)	Fetch the 'length'.
+		BIT	0,(FLAGX)	Jump if dealing with a complete
+		JR	NZ,2BAF,L-ADD$	simple string; the old string will
+				need to be 'deleted' in this case
+				only.
+
+When dealing with a 'slice' of an existing simple string, a 'slice' of a string from an array of strings or a complete string from an array of strings there are two distinct stages involved. The first is to build up the 'new' string in the work space, lengthening or shortening it as required. The second stage is then to copy the 'new' string to its allotted room in the variables area.
+However do nothing if the string has no 'length'.
+
+		LD	A,B	Return if the string is
+		OR	C	a null string.
+		RET	Z
+
+Then make the required number of spaces available in the work space.
+
+		PUSH	HL	Save the 'start' (DEST).
+		RST	0030,BC-SPACES	Make the necessary amount of
+				room in the work space.
+		PUSH	DE	Save the pointer to the
+				first location.
+		PUSH	BC	Save the 'length' for use later
+				on.
+		LD	D,H	Make DE point to the last
+		LD	E,L	location.
+		INC	HL	Make HL point 'one past' the
+				new locations.
+		LD	(HL),+20	Enter a 'space' character.
+		LDDR		Copy this character into all the
+				new locations. Finish with HL
+				pointing to the first new
+				location.
+
+The parameters of the string being handled are now fetched from the calculator stack.
+		PUSH	HL	Save the pointer briefly.
+		CALL	2BF1,STK-FETCH	Fetch the 'new' parameters.
+		POP	HL	Restore the pointer.
+
+Note: At this point the required amount of room has been made available in the work space for the 'variable in assignment'. e.g. For statement - LET A$(4 to 8)="abcdefg" - five locations have been made.
+The parameters fetched above as a 'last value' represent the string that is to be copied into the new locations with Procrustean lengthening or shortening as required.
+The length of the 'new' string is compared to the length of the room made available for it.
+
+		EX	(SP),HL	'Length' of new area to HL.
+				'Pointer' to new area to stack.
+		AND	A	Compare the two 'lengths'
+		SBC	HL,BC	and jump forward if the 'new'
+		ADD	HL,BC	string will fit into the room.
+		JR	NC,2B9B,L-LENGTH	i.e. No shortening required.
+		LD	B,H	However modify the 'new'
+		LD	C,L	length if it is too long.
+2B9B	L-LENGTH	EX	(SP),HL	'Length' of new area to stack.
+				'Pointer' to new area to HL.
+
+As long as the new string is not a 'null string' it is copied into the work space. Procrustean lengthening is achieved automatically if the 'new' string is shorter than the room available for it.

@@ -1,0 +1,58 @@
+		CALL	0F2C,EDITOR	Now get the INPUT and with
+		RES	7,(FLAGS)	the syntax/run flag indicating
+		CALL	21B9,IN-ASSIGN	syntax, check the INPUT for
+		JR	2161,IN-VAR-4	errors; jump if in order; return
+				to IN-VAR-1 if not.
+215E	IN-VAR-3	CALL	0F2C,EDITOR	Get a 'LINE'.
+All the system variables have to be reset before the actual assignment of a value can be made.
+2161	IN-VAR-4	LD	(K-CUR-hi),+00	The cursor address is reset.
+		CALL	21D6,IN-CHAN-K	The jump is taken if using
+		JR	NZ,2174,IN-VAR-5	other than channel 'K'.
+		CALL	111D,ED-COPY	The input-line is copied to
+		LD	BC,(ECHO-E)	the display and the position
+		CALL	0DD9,CL-SET	in ECHO-E made the current
+				position in the lower screen.
+2174	IN-VARS-5	LD	HL,+5C71	This is FLAGX.
+		RES	5,(HL)	Signal 'edit mode'.
+		BIT	7,(HL)	Jump forward if handling an
+		RES	7,(HL)	INPUT LINE.
+		JR	NZ,219B,IN-VAR-6
+		POP	HL	Drop the address IN-VAR-1.
+		POP	HL	Reset the ERR-SP to its
+		LD	(ERR-SP),HL	original address.
+		POP	HL	Save the original CH-ADD
+		LD	(X-PTR),HL	address in X-PTR.
+		SET	7,(FLAGS)	Now with the syntax/run flag
+		CALL	21B9,IN-ASSIGN	indicating 'run' make the
+				assignment.
+		LD	HL,(X-PTR)	Restore the original address
+		LD	(X-PTR-hi),+00	to CH-ADD and clear X-PTR.
+		LD	(CH-ADD),HL
+		JR	21B2,IN-NEXT-2	Jump forward to see if there
+				are further INPUT items.
+219B	IN-VARS-6	LD	HL,(STKBOT)	The length of the 'LINE' in
+		LD	DE,(WORKSP)	the work space is found.
+		SCF
+		SBC,	HL,DE
+		LD	B,H	DE points to the start and
+		LD	C,L	BC holds the length.
+		CALL	2AB2,STK-ST-$	These parameters are stacked
+		CALL	2AFF,LET	and the actual assignment made.
+		JR	21B2,IN-NEXT-2	Also jump forward to consider
+				further items.
+Further items in the INPUT statement are considered.
+21AF	IN-NEXT-1	CALL	1FFC,PR-ITEM-1	Handle any print items.
+21B2	IN-NEXT-2	CALL	204E,PR-POSN-1	Handle any position controllers.
+		JP	Z,20C1,IN-ITEM-1	Go around the loop again if
+				there are further items;
+		RET		otherwise return.
+
+THE 'IN-ASSIGN' SUBROUTINE
+This subroutine is called twice for each INPUT value. Once with the syntax/run flag reset (syntax) and once with it set (run).
+21B9	IN-ASSIGN	LD	HL,(WORKSP)	Set CH-ADD to point to the
+		LD	(CH-ADD),HL	first location of the work
+		RST	0018,GET-CHAR	space and fetch the character.
+		CP	+E2	Is it a 'STOP'?
+		JR	Z,21D0,IN-STOP	Jump if it is.
+		LD	A,(FLAGX)	Otherwise make the assignment
+		CALL	1C59,VAL-FET-2	of the 'value' to the variable.

@@ -1,0 +1,52 @@
+THE LOUDSPEAKER ROUTINES
+
+The two subroutines in this section are the BEEPER subroutine, that actually controls the loudspeaker, and the BEEP command routine.
+The loudspeaker is activated by having D4 low during an OUT instruction that is using port '254'. When D4 is high in a similar situation the loudspeaker is deactivated. A 'beep' can therefore be produced by regularly changing the level of D4.
+Consider now the note 'middle C' which has the frequency 261.63 hz. In order to get this note the loudspeaker will have to be alternately activated and deactivated every 1/523.26 th. of a second. In the SPECTRUM the system clock is set to run at 3.5 mhz. and the note of 'middle C' will require that the requisite OUT instruction be executed as close as possible to every 6,689 T states. This last value, when reduced slightly for unavoidable overheads, represents the 'length of the timing loop' in the BEEPER subroutine.
+
+THE 'BEEPER' SUBROUTINE
+This subroutine is entered with the DE register pair holding the value 'f*t', where a note of given frequency 'f' is to have a duration of 't' seconds, and the HL register pair holding a value equal to the number of T states in the 'timing loop' divided by '4'.
+i.e. For the note 'middle C' to be produced for one second DE holds +0105 (INT(261.3 * 1)) amd HL holds +066A (derived from 6,689/4 - 30.125).
+
+03B5	BEEPER	DI		Disable the interrupt for the
+				duration of a 'beep'.
+		LD	A,L	Save L temporarily.
+		SRL	L	Each '1' in the L register is
+		SRL	L	to count '4' T states, but take
+				INT (L/4) and count '16' T
+				states instead.
+		CPL		Go back to the original value
+		AND	+03	in L and find how many were
+		LD	C,A	lost by taking INT (L/4).
+		LD	B,+00
+		LD	IX,+03D1	The base address of the timing
+				loop.
+		ADD	IX,BC	Alter the length of the timing
+				loop. Use an earlier starting
+				point for each '1' lost by taking
+				INT (L/4).
+		LD	A,(BORDCR)	Fetch the present border
+		AND	+38	colour and move it to bits
+		RRCA		2, 1 & 0 of the A register.
+		RRCA
+		RRCA
+		OR	+08	Ensure the MIC output is 'off'.
+
+Now enter the sound generation loop. 'DE' complete passes are made, i.e. a pass for each cycle of the note.
+The HL register holds the 'length of the timing loop' with '16' T states being used for each '1' in the L register and '1,024' T states for each '1' in the H register.
+
+03D1	BE-IX+3	NOP		Add '4' T states for each
+03D2	BE-IX+2	NOP		earlier entry port
+03D3	BE-IX+1	NOP		that is used.
+03D4	BE-IX+0	INC	B	The values in the B & C registers
+		INC	C	will come from H & L registers
+				- see below.
+03D6	BE-H&L-LP	DEC	C	The 'timing loop'.
+		JR	NZ,03D6,BE-H&L-LP	i.e. 'BC' * '4' T states.
+		LD	C,+3F	(But note that at the half-cycle
+		DEC	B	point - C will be equal to
+		JP	NZ,03D6,BE-H&L-LP	'L+1'.)
+
+The loudspeaker is now alternately activated and deactivated.
+
+		XOR	+10	Flip bit 4.

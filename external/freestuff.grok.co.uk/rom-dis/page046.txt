@@ -1,0 +1,66 @@
+0E0D	CL-SCR-2	EX	DE,HL	The result of this
+		LD	HL,+F8E0	manipulation is to leave HL
+		ADD	HL,DE	unchanged and DE pointing to
+		EX	DE,HL	the required destination.
+		LD	BC,+0020	There are +20 characters.
+		DEC	A	Decrease the counter as one line
+				is being dealt with.
+		LDIR		Now move the thirty two bytes.
+
+The pixel lines within the 'thirds' can now be scrolled. The A register holds, on the first pass, +01 - +07, +09 - +0F or +11 - +17.
+
+0E19	CL-SCR-3	EX	DE,HL	Again DE is made to point
+		LD	HL,+FFE0	to the required destination.
+		ADD	HL,DE	This time only thirty two
+		EX	DE,HL	locations away.
+		LD	B,A	Save the line number in B.
+		AND	+07	Now find how many characters
+		RRCA		there are remaining in the
+		RRCA		'third'.
+		RRCA
+		LD	C,A	Pass the 'character total' to the
+				C register.
+		LD	A,B	Fetch the line number.
+		LD	B,+00	BC holds the 'character total'
+		LDIR		and a pixel line from each of the
+				characters is 'scrolled'.
+		LD	B,+07	Now prepare to increment the
+				address to jump across a 'third'
+				boundary.
+		ADD	HL,BC	Increase HL by +0700.
+		AND	+F8	Jump back if there are any
+		JR	NZ,0E0D,CL-SCR-2 'thirds' left to consider.
+
+Now find if the loop has been used eight times - once for each pixel line.
+
+		POP	HL	Fetch the original address.
+		INC	H	Address the next pixel line.
+		POP	BC	Fetch the counters.
+		DEC	C	Decrease the pixel line counter
+		JR	NZ,0E05,CL-SR-1	and jump back unless eight lines
+				have been moved.
+
+Next the attribute bytes are scrolled. Note that the B register still holds the number of lines to be scrolled and the C register holds zero.
+
+		CALL	0E88,CL-ATTR	The required address in the
+				attribute area and the number
+				of characters in 'B' lines are
+				found.
+		LD	HL,+FFE0	The displacement for all
+		ADD	HL,DE	the attribute bytes is
+		EX	DE,HL	thirty two locations away.
+		LDIR		The attribute bytes are
+				'scrolled'.
+
+It remains now to clear the bottom line of the display.
+
+		LD	B,+01	The B register is loaded with
+				+01 and CL-LINE is entered.
+
+THE 'CLEAR LINES' SUBROUTINE
+This subroutine will clear the bottom 'B' lines of the display.
+
+0E44	CL-LINE	PUSH	BC	The line number is saved for the
+				duration of the subroutine.
+		CALL	0E9B,CL-ADDR	The starting address for the line
+				is formed in HL.

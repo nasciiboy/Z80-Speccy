@@ -1,0 +1,55 @@
+		INC	HL	frame counter are incremented
+		LD	(FRAMES),HL	every 20ms. (U.K.) The highest
+		LD	A,H	byte of the frame counter is
+		OR	L	only incremented when the
+		JR	NZ,0048,KEY-INT	value of the lower two bytes
+		INC	(FRAMES-3)	is zero.
+0048	KEY-INT	PUSH	BC	Save the current values held
+		PUSH	DE	in these registers.
+		CALL	02BF,KEYBOARD	Now scan the keyboard.
+		POP	DE	Restore the values.
+		POP	BC
+		POP	HL
+		POP	AF
+		EI		The maskable interrupt is en-
+		RET		abled before returning.
+
+THE 'ERROR-2' ROUTINE
+The return address to the interpreter points to the 'DEFB' that signifies which error has occurred. This 'DEFB' is fetched and transferred to ERR-NR. The machine stack is cleared before jumping forward to clear the calculator stack.
+0053	ERROR-2	POP	HL	The address on the stack points
+		LD	L,(HL)	to the error code.
+0055	ERROR-3	LD	(ERR-NR),L	It is transferred to ERR-NR.
+		LD	SP,(ERR-SP)	The machine is cleared before
+		JP	16C5,SET-STK	exiting via SET-STK.
+		DEFB	+FF,+FF,+FF,+FF	Unused locations.
+		DEFB	+FF,+FF,+FF
+
+THE 'NON-MASKABLE INTERRUPT' ROUTINE
+This routine is not used in the standard Spectrum but the code allows for a system reset to occur following activation of the NMI line. The system variable at 5CB0, named here NMIADD, has to have the value zero for the reset to occur.
+0066	RESET	PUSH	AF	Save the current values held
+		PUSH	HL	in these registers.
+		LD	HL,(NMIADD)	The two bytes of NMIADD
+		LD	A,H	must both be zero for the reset
+		OR	L	to occur.
+		JR	NZ,0070,NO-RESET	Note: This should have been
+				'JR Z'!
+		JP	(HL)	Jump to START.
+0070	NO-RESET	POP	HL	Restore the current values to
+		POP	AF	these registers and return.
+		RETN
+
+THE 'CH-ADD+1' SUBROUTINE
+The address held in CH-ADD is fetched, incremented and restored. The contents of the location now addressed by CH-ADD is fetched. The entry points of TEMP-PTR1 and TEMP-PTR2 are used to set CH-ADD for a temporary period.
+0074	CH-ADD+1	LD	HL,(CH-ADD)	Fetch the address.
+0077	TEMP-PTR1	INC	HL	Increment the pointer.
+0078	TEMP-PTR2	LD	(CH-ADD),HL	Set CH-ADD.
+		LD	A,(HL)	Fetch he addressed value and
+		RET		then return.
+
+THE 'SKIP-OVER' SUBROUTINE
+The value brought to the subroutine in the A register is tested to see if it is printable. Various special codes lead to HL being incremented once, or twice, and CH-ADD amended accordingly.
+007D	SKIP-OVER	CP	+21	Return with the carry flag reset
+		RET	NC	if ordinary character code.
+		CP	+0D	Return if the end of the line
+		RET	Z	has been reached.
+		CP	+10	Return with codes +00 to +0F

@@ -1,0 +1,60 @@
+		ADD	HL,DE	Reform the old value of
+		EX	DE,HL	STKEND and pass it to DE
+		RET		before returning.
+
+THE 'COLLECT A LINE NUMBER' SUBROUTINE
+On entry the HL register pair points to the location under consideration.  If the location holds a value that constitutes a suitable high byte for a line number then the line number is returned in DE.  However if this is not so then the location addressed by DE is tried instead; and should this also be unsuccessful line number zero is returned.
+
+168F	LINE-ZERO	DEFB	+00	Line number zero.
+		DEFB	+00	
+1961	LINE-NO-A	EX	DE,HL	Consider the other pointer.
+		LD	DE,+168F	Use line number zero.
+
+The usual entry point is at LINE-NO.
+
+1695	LINE-NO	LD	A,(HL)	Fetch the high byte and
+		AND	+C0	test it.
+		JR	NZ,1691,LINE-NO-A	Jump back if not suitable.
+		LD	D,(HL)	Fetch the high byte.
+		INC	HL
+		LD	E,(HL)	Fetch the low byte and
+		RET		return.
+
+THE 'RESERVE' SUBROUTINE
+This subroutine is normally called by using RST 0030,BC-SPACES.
+On entry here the last value on the machine stack is WORKSP and the value above it is the number of spaces that is to be 'reserved'.
+This subroutine always makes 'room' between the existing work space and the calculator stack.
+
+169E	RESERVE	LD	HL,(STKBOT)	Fetch the current value of
+		DEC	HL	STKBOT and decrement it to
+				get the last location of the
+				work space.
+		CALL	1655,MAKE-ROOM	Now make 'BC spaces'.
+		INC	HL	Point to the first new space
+		INC	HL	and then the second.
+		POP	BC	Fetch the old value of
+		LD	(WORKSP),BC	WORKSP and restore it.
+		POP	BC	Restore BC - number of spaces.
+		EX	DE,HL	Switch the pointers,
+		INC	HL	Make HL point to the first of
+				the displaced bytes.
+		RET		Now return.
+
+Note: It can also be considered that the subroutine returns with the DE register pair pointing to a 'first extra byte' and the HL register pair pointing to a 'last extra byte', these extra bytes having been added after the original '(HL)+1' location.
+
+THE 'SET-MIN' SUBROUTINE
+This subroutine resets the editing area and the areas after it to their minimum sizes.  In effect it 'clears' the areas.
+
+16B0	SET-MIN	LD	HL,(E-LINE)	Fetch E-LINE.
+		LD	(HL),+0D	Make the editing area hold
+		LD	(K-CUR),HL	only the 'carriage return'
+		INC	HL	character and the end marker.
+		LD	(HL),+80
+		INC	HL	Move on to clear the work
+		LD	(WORKSP),HL	space.
+
+Entering here will 'clear' the work space and the calculator stack.
+
+16BF	SET-WORK	LD	HL,(WORKSP)	Fetch the WORKSP.
+		LD	(STKBOT),HL	This clears the work space.
+

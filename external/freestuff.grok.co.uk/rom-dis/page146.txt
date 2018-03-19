@@ -1,0 +1,60 @@
+The following loop is used to find the parameters of a specified element within an array. The loop is entered at the mid-point - SV-COUNT -, where the element count is set to zero.
+The loop is accessed 'B' times, this being, for a numeric array, equal to the number of dimensions that are being used, but for an array of strings 'B' is one less than the number of dimensions in use as the last subscript Is used to specify a 'slice' of the string.
+
+29C3 	SV-COMMA 	PUSH 	HL 	Save the counter.
+		RST 	0018,GET-CHAR 	Get the present character.
+		POP 	HL 	Restore the counter.
+		CP 	+2C 	Is the present character a ','?
+		JR 	Z,29EA,SV-LOOP 	Jump forward to consider
+				another subscript.
+		BIT 	7,C 	If a line is being executed
+		JR 	Z,2A20,REPORT-3 	then there is an error.
+		BIT 	6,C 	Jump forward if dealing with
+		JR 	NZ,29D8,SV-CLOSE 	an array of strings.
+		CP 	+29 	Is the present character a ')'?
+		JR 	NZ,2A12,SV-RPT-C 	Report an error if not so.
+		RST 	0020,NEXT -CHAR 	Advance CH-ADD.
+		RET 		Return as the syntax is correct.
+
+For an array of strings the present subscript may represent a 'slice', or the subscript for a 'slice' may yet be present in the BASIC line.
+
+29D8 	SV-CLOSE 	CP 	+29 	Is the present character a ')'?
+		JR 	Z,2A48,SV-DIM 	Jump forward and check
+				whether there is another sub-
+				script.
+		CP 	+CC 	Is the present character a 'TO'?
+		JR 	NZ,2A12,SV-RPT-C 	It must not be otherwise.
+29E0 	SV-CH-ADD 	RST 	0018,GET-CHAR 	Get the present character.
+		DEC 	HL 	Point to the preceding
+		LD	(CH-ADD),HL 	character and set CH-ADD.
+		JR 	2A45,SV-SLiCE 	Evaluate the 'slice'.
+
+Enter the loop here.
+
+29E7 	SV-COUNT 	LD 	HL,+0000 	Set the counter to zero.
+29EA 	SV-LOOP 	PUSH 	HL 	Save the counter briefly.
+		RST 	0020,NEXT-CHAR 	Advance CH-ADD.
+		POP 	HL 	Restore the counter.
+		LD 	A,C 	Fetch the discriminator byte.
+		CP 	+C0 	Jump unless checking the
+		JR 	NZ,29FB,SV-MULT 	syntax for an array of strings.
+		RST 	0018,GET-CHAR 	Get the present character.
+		CP 	+29 	Is it a ')'?
+		JR 	Z,2A48.sV-DIM 	Jump forward as finished
+				counting elements.
+		CP 	+CC 	Is to 'TO'?
+		JR 	Z,29E0,SV-CH-ADD 	Jump back if dealing with a
+				'slice'.
+29FB 	SV-MULT 	PUSH 	BC 	Save the dimension-number
+				counter and the discriminator
+				byte.
+		PUSH 	HL 	Save the element-counter.
+		CALL 	2AEE,DE,(DE+1) 	Get a dimension-size Into DE.
+		EX 	(SP),HL 	The counter moves to HL and
+				the variable pointer is stacked.
+		EX 	DE,HL 	The counter moves to DE and
+				the dimension-size to HL.
+		CALL 	2ACC,INT-EXP1 	Evaluate the next subscript.
+		JR 	C,2A20,REPORT-3 	Give an error if out of range.
+		DEC 	BC 	The result of the evaluation is
+				decremented as the counter is to

@@ -1,0 +1,65 @@
+<HTML><Head>
+<TITLE>Thomas Scherrer Minimum Z80 tester </TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A><p>
+<h2>The absolute minimum Z80 CPU test circuit ever seen:
+</h2>
+<hr>
+<center>
+<img src="gfx/z80test2.jpg" border=0 width=425 height=317></a><br>
+</center><p>
+This is how my tester looks like:<br>
+Red wire = +5V (VCC)<br>
+Green wire = GND<br>
+Wellow wire = Clock<br>
+Place a fast capacitor (tantal, 0.1 .. 4.7 uF) from VCC to GND! as close as possible to the CPU<br>
+The small button at the right is used to RESET the CPU<p>
+If you will see a nice PCB version that Floris made <a href="gfx/working.jpg">click here</a><p>
+<center><p>
+<img src="gfx/z80test0.gif" border=0 width=630 height=561></a><br>
+</center><p>
+Remember: NEVER leave inputs unconnected, they can/will confuse the CPU!<br>
+A good idea is to connect unused inputs via a resistor to VCC (about  470 .. 5k) to create a HIGH (inactive) signal level<br>
+All unconnected CPU pins are outputs, try to connect some LEDs here also, 
+pins 18 and 23 are not interesting, ok<p>
+
+CLOCK : 35mS period time, equal to 28Hz<br>
+A0 : 140mS Low, 140mS High<br>
+A1 : 280mS Low, 280mS High<br>
+A2 : 560mS Low, 560mS High<br>
+<p>
+My tester consumed about 60mA at 5.0Volt, with a Z8400A from Zilog.
+<p>
+You will see that the Z80 CPU need a few clocks to execute the RESET.<br>
+You can also test what happens at power-up, with or without clock applied.<br>
+Strange things will happen if you try to give it shorter RESET than clock, 
+weird modes of opperating will then happen,
+eg: higher address pins will have faster clock frequency than A0 !!, 
+the CPU is not damaged ! just give it a RESET longer than 4 clocks.<br>
+this is why you should always use a RESET circuit like 
+<a href="gfx/z80test.gif">this</a>:
+it will give a controlled reset time and no noise when RESET pin 
+is rised to start the CPU<br>
+if you wish to single step clock and reset, then <a href="gfx/clock.gif">use this</a>
+ circuit to generate a good clean clock signal<br>
+---------<br>
+During the last half of the Instruction Opcode Fetch a Refresh address is
+placed on the lower 7 bits of the Address bus.  This can make the upper 9
+bits appear as if they are oscillating in respect to the clock since they
+are driven low during that portion of the cycle.  If you only take the state
+of the address bus when /M1 is active, you will see the appropriate memory
+address is on the bus.
+<br>
+This seems to be different from type of CPU to CPU, mine did what I have measured on A0 to A2 and so far...
+<p>
+When you manage to get this to work, then please continue to the 
+<a href="gfx/z80test.gif">next-step</a><br>
+Done and tested by <a href="contact.htm">me</a> 
+at June the 12th, 1998. 
+<p>
+<hr>
+</body></html>

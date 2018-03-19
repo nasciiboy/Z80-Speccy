@@ -1,0 +1,61 @@
+				long name is reached.
+		INC	HL	Increment the pointer and
+		LD	A,(HL)	fetch the new code.
+		JR	NC,19CE,NEXT-O-2	Jump back unless the previous
+				code was the last code of the
+				variable's name.
+		JR	19DB,NEXT-O-5	Now jump forward (BC =
+				+0005 or +0012).
+19D5	NEXT-O-3	INC	HL	Step past the low byte of the
+				line number.
+19D6	NEXT-O-4	INC	HL	Now point to the low byte
+				of the length.
+		LD	C,(HL)	Fetch the length into the
+		INC	HL	BC register pair.
+		LD	B,(HL)
+		INC	HL	Allow for the inclusive byte.
+
+In all cases the address of the 'next' line or variable is found.
+
+19DB	NEXT-O-5	ADD	HL,BC	Point to the first byte of the
+				'next' line or variable.
+		POP	DE	Fetch the address of the
+				previous one and continue into
+				the 'difference' subroutine.
+
+THE 'DIFFERENCE' SUBROUTINE
+The 'length' between two 'starts' is formed in the BC register pair.  The pointers are reformed but returned exchanged.
+
+19DD	DIFFER	AND	A	Prepare for a true subtraction.
+		SBC	HL,DE	Find the length from one
+		LD	B,H	'start' to the next and pass
+		LD	C,L	it to the BC register pair.
+		ADD	HL,DE	Reform the address and
+		EX	DE,HL	exchange them before
+		RET		returning.
+
+THE 'RECLAIMING' SUBROUTINE
+The entry point RECLAIM-1 is used when the address of the first location to be reclaimed is in the DE register pair and the address of the first location to be left alone is in the HL register pair.  The entry point RECLAIM-2 is used when the HL register pair points to the first location to be reclaimed and the BC register pair holds the number of the bytes that are to be reclaimed.
+
+19E5	RECLAIM-1	CALL	19DD,DIFFER	Use the 'difference' subroutine
+				to develop the appropriate
+				values.
+19E8	RECLAIM-2	PUSH	BC	Save the number of bytes to be
+				reclaimed.
+		LD	A,B	All the system variable
+		CPL		pointers above the area
+		LD	B,A	have to be reduced by 'BC'
+		LD	A,C	so this number is 2's
+		CPL		complemented before the
+		LD	C,A	pointers are altered.
+		INC	BC	
+		CALL	1664,POINTERS
+		EX	DE,HL	Return the 'first location'
+		POP	HL	address to the DE register
+		ADD	HL,DE	pair and reform the address of
+				the first location to the left.
+		PUSH	DE	Save the 'first location'
+		LDIR		whilst the actual reclamation
+		POP	HL	occurs.
+		RET		Now return.
+

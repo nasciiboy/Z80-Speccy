@@ -1,0 +1,47 @@
+THE 'CALCULATE' SUBROUTINE
+
+This subroutine is used to perform floating-point calculations. These can be considered to be of three types:
+
+  i. Binary operations, e.g. addition, where two numbers in floating-point form are added together to give one 'last value'.
+
+ ii. Unary operations, e.g. sin, where the 'last value' is changed to give the appropriate function result as a new 'last value'.
+
+iii. Manipulatory operations, e.g. st-mem-0, where the 'last value' is copied to the first five bytes of the calculator's memory area.
+
+The operations to be performed are specified as a series of data-bytes, the literals, that follow an RST 0028 instruction that calls this subroutine. The last literal in the list is always '38' which leads to an end to the whole operation.
+In the case of a single operation needing to be performed, the operation offset can be passed to the CALCULATOR in the B register, and operation '3B', the SINGLE CALCULATION operation, performed.
+It is also possible to call this subroutine recursively, i.e. from within itself, and in such a case it is possible to use the system variable BREG as a counter that controls how many operations are performed before returning.
+The first part of this subroutine is complicated but essentially it performs the two tasks of setting the registers to hold their required values, and to produce an offset, and possibly a parameter, from the literal that is currently being considered.
+The offset is used to index into the calculator's table of addresses, see above, to find the required subroutine address.
+The parameter is used when the multi-purpose subroutines are called.
+
+Note: A floating-point number may in reality be a set of string parameters.
+
+335B	CALCULATE	CALL	35BF,STK-PNTRS	Presume a unary operation and
+				therefore set HL to point to the
+				start of the 'last value' on the
+				calculator stack and DE one-
+				past this floating-point number
+				(STKEND).
+335E	GEN-ENT-1	LD	A,B	Either, transfer a single
+		LD	(BREG),A	operation offset to BREG
+				temporarily, or, when using the
+				subroutine recursively pass the
+				parameter to BREG to be used
+				as a counter.
+3362	GEN-ENT-2	EXX		The return address of the sub-
+		EX	(SP),HL	routine is store in H'L'. This
+		EXX		saves the pointer to the first
+				literal. Entering the CALCUL-
+				ATOR at GEN-ENT-2 is used
+				whenever BREG is in use as a
+				counter and is not to be
+				disturbed.
+3365	RE-ENTRY	LD	(STKEND),DE	A loop is now entered to handle
+				each literal in the list that
+				follows the calling instruction;
+				so first, always set to STKEND.
+		EXX		Go to the alternate register set,
+		LD	A,(HL)	and fetch the literal for this
+				loop.
+

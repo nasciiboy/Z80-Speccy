@@ -1,0 +1,442 @@
+<HTML><Head><TITLE>Thomas Scherrer IC Pinouts</TITLE></Head>
+<META name="title" content="Z80-Family Pinout">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+<body bgcolor="#ffffff">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A><p>
+<h1><b>Here are some IC pinouts</b></h1>
+<p>
+<hr><a name="04_Z8">
+<h3>Z8 CPU Z86E04/E08 Pin Description:</h3><pre>
+                    _________    _________                    
+                  _|         \__/         |_                  
+        <--> P24 |_|1                   18|_| P23 <-->       
+                  _|                      |_                  
+        <--> P25 |_|2                   17|_| P22 <-->        
+                  _|                      |_                  
+        <--> P26 |_|3                   16|_| P21 <-->        
+                  _|        Z86E04        |_                  
+        <--> P27 |_|4       Z86E08      15|_| P20 <-->        
+                  _|                      |_                  
+             VCC |_|5                   14|_| GND             
+                  _|                      |_                  
+       <-- XTAL2 |_|6                   13|_| P02 <-->        
+                  _|                      |_                  
+       --> XTAL1 |_|7                   12|_| P01 <-->        
+                  _|                      |_                  
+         --> P31 |_|8                   11|_| P00 <-->        
+                  _|                      |_                  
+         --> P32 |_|9                   10|_| P33 <--         
+                   |______________________|
+
+
+<hr><a name="30_Z8">
+<h3>Z8 CPU Z86E30/E31 Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+        <--> P25 |_|1                   28|_| P24 <-->       
+                  _|                      |_                  
+        <--> P26 |_|2                   27|_| P23 <-->        
+                  _|                      |_                  
+        <--> P27 |_|3     EPROM/OTP:    26|_| P22 <-->        
+                  _|        Z86E30        |_                  
+        <--> P04 |_|4       Z86E31      25|_| P21 <-->        
+                  _|      MASK:           |_                  
+        <--> P05 |_|5       Z86C30      24|_| P20 <-->         
+                  _|        Z86C31        |_                  
+        <--> P06 |_|6                   23|_| P03 <-->        
+                  _|                      |_                  
+        <--> P07 |_|7                   22|_| GND
+                  _|                      |_                  
+         +5V VCC |_|8                   21|_| P02 <-->        
+                  _|                      |_                  
+       <-- XTAL2 |_|9                   20|_| P01 <-->        
+                  _|                      |_                  
+       --> XTAL1 |_|10                  19|_| P00 <-->        
+                  _|                      |_                  
+         --> P31 |_|11                  18|_| P30 <--        
+                  _|                      |_                  
+         --> P32 |_|12                  17|_| P36 -->        
+                  _|                      |_                  
+         --> P33 |_|13                  16|_| P37 -->        
+                  _|                      |_                  
+         <-- P34 |_|14                  15|_| P35 -->        
+                   |______________________|
+
+
+<hr><a name="Z80CPU">
+<h3>Z80 CPU Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+        <--  A11 |_|1                   40|_| A10  -->       
+                  _|                      |_                  
+        <--  A12 |_|2                   39|_| A9   -->        
+                  _|                      |_                  
+        <--  A13 |_|3       Z80 CPU     38|_| A8   -->        
+                  _|                      |_                  
+        <--  A14 |_|4                   37|_| A7   -->        
+                  _|                      |_                  
+        <--  A15 |_|5                   36|_| A6   -->
+                  _|                      |_                  
+         --> CLK |_|6                   35|_| A5   -->
+                  _|                      |_
+        <-->  D4 |_|7                   34|_| A4   -->
+                  _|                      |_                  
+        <-->  D3 |_|8                   33|_| A3   -->            
+                  _|                      |_                  
+        <-->  D5 |_|9                   32|_| A2   -->            
+                  _|                      |_                  
+        <-->  D6 |_|10                  31|_| A1   -->            
+                  _|                      |_                  
+             VCC |_|11                  30|_| A0   -->           
+                  _|                      |_                  
+        <-->  D2 |_|12                  29|_| GND           
+                  _|                      |_                  
+        <-->  D7 |_|13                  28|_| /RFSH -->          
+                  _|                      |_                  
+        <-->  D0 |_|14                  27|_| /M1  -->           
+                  _|                      |_                  
+        <-->  D1 |_|15                  26|_| /RESET <--      
+                  _|                      |_                  
+        --> /INT |_|16                  25|_| /BUSRQ <--      
+                  _|                      |_                  
+        --> /NMI |_|17                  24|_| /WAIT <--      
+                  _|                      |_                  
+       <-- /HALT |_|18                  23|_| /BUSAK -->     
+                  _|                      |_                  
+       <-- /MREQ |_|19                  22|_| /WR  -->       
+                  _|                      |_                  
+       <-- /IORQ |_|20                  21|_| /RD  -->       
+                   |______________________|
+
+
+
+<HR>
+<a name="Z80SMD">
+<h3>Z80 CPU SMD and QFP Pin Description:</h3>
+ A lot of people have been requesting the Z80 pinouts.  Well, here they are,
+directly from the Zilog Z80 Microprocessor Family Databook.  
+<h3>44 pin QFP:</h3>
+1 - CLK         2 - D4          3 - D3          4 - D5          5 - D6
+6 - +5V         7 - D2          8 - D7          9 - D0          10 - D1
+11 - NC         12 - ~INT       13 - ~NMI       14 - ~HALT      15 - ~MREQ
+16 - ~IORQ      17 - NC         18 - ~RD        19 - ~WR        20 - ~BUSACK
+21 - ~WAIT      22 - ~BUSREQ    23 - ~RESET     24 - ~M1        25 - ~RFSH
+26 - GND        27 - A0         28 - A1         29 - A2         30 - A3
+31 - A4         32 - A5         33 - NC         34 - A6         35 - A7
+36 - A8         37 - A9         38 - A10        39 - NC         40 - A11
+41 - A12        42 - A13        43 - A14        44 - A15
+
+
+The "~" stands for "not" ( i.e. active low ).  The pins are counted
+counter-clockwise, pin 1 starting from the bevel ( or the corner dot ).
+This may be different on the Toshiba chip used in the TI so I assume no
+responsibility for anyone frying their calc.
+
+<hr><a name="Z80PIO">
+<h3>Z80 PIO Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+        <-->  D2 |_|1                   40|_| D3  <-->       
+                  _|                      |_                  
+        <-->  D7 |_|2                   39|_| D4  <-->        
+                  _|                      |_                  
+        <-->  D6 |_|3       Z80 PIO     38|_| D5  <-->        
+                  _|                      |_                  
+         --> /CE |_|4                   37|_| /M1   <--         
+                  _|                      |_                  
+         --> C/D |_|5                   36|_| /IORQ <--
+                  _|                      |_                  
+         --> B/A |_|6                   35|_| /RD   <-- 
+                  _|                      |_
+        <--> PA7 |_|7                   34|_| PB7 <-->
+                  _|                      |_
+        <--> PA6 |_|8                   33|_| PB6 <-->            
+                  _|                      |_                  
+        <--> PA5 |_|9                   32|_| PB5 <-->            
+                  _|                      |_                  
+        <--> PA4 |_|10                  31|_| PB4 <-->            
+                  _|                      |_                  
+             GND |_|11                  30|_| PB3 <-->           
+                  _|                      |_                  
+        <--> PA3 |_|12                  29|_| PB2 <-->           
+                  _|                      |_                  
+        <--> PA2 |_|13                  28|_| PB1 <-->          
+                  _|                      |_                  
+        <--> PA1 |_|14                  27|_| PB0 <-->   
+                  _|                      |_                  
+        <--> PA0 |_|15                  26|_| VCC +5V         
+                  _|                      |_                  
+        --> /AOE |_|16                  25|_| CLOCK <--       
+                  _|                      |_                  
+        --> /BOE |_|17                  24|_| INT ENABLE IN <--
+                  _|                      |_                  
+      <-- AREADY |_|18                  23|_| /INT -->       
+                  _|                      |_                  
+         <--  D0 |_|19                  22|_| INT ENABLE OUT -->
+                  _|                      |_                  
+         <--  D1 |_|20                  21|_| BREADY -->     
+                   |______________________|
+
+C/D  CONTROL=1, DATA=0
+B/A  PORT B=1, PORT A=0
+
+
+<hr><a name="8255">
+<h3>8255 PIO Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+        <--> PA3 |_|1                   40|_| PA4 <-->       
+                  _|                      |_                  
+        <--> PA2 |_|2                   39|_| PA5 <-->        
+                  _|                      |_                  
+        <--> PA1 |_|3        8255       38|_| PA6 <-->        
+                  _|        82C55         |_                  
+        <--> PA0 |_|4                   37|_| PA7 <-->        
+                  _|                      |_                  
+         --> /RD |_|5                   36|_| /WR <--   <b>(*NOTE)</b>
+                  _|                      |_                  
+         --> /CS |_|6                   35|_| RES <--  ACTIVE HI
+                  _|                      |_                  
+             GND |_|7                   34|_| D0  <-->
+                  _|                      |_                  
+         -->  A1 |_|8                   33|_| D1  <-->            
+                  _|                      |_                  
+         -->  A0 |_|9                   32|_| D2  <-->            
+                  _|                      |_                  
+        <--> PC7 |_|10                  31|_| D3  <-->            
+                  _|                      |_                  
+        <--> PC6 |_|11                  30|_| D4  <-->           
+                  _|                      |_                  
+        <--> PC5 |_|12                  29|_| D5  <-->           
+                  _|                      |_                  
+        <--> PC4 |_|13                  28|_| D6  <-->           
+                  _|                      |_                  
+        <--> PC0 |_|14                  27|_| D7  <-->           
+                  _|                      |_                  
+        <--> PC1 |_|15                  26|_| VCC             
+                  _|                      |_                  
+        <--> PC2 |_|16                  25|_| PB7 <-->        
+                  _|                      |_                  
+        <--> PC3 |_|17                  24|_| PB6 <-->       
+                  _|                      |_                  
+        <--> PB0 |_|18                  23|_| PB5 <-->       
+                  _|                      |_                  
+        <--> PB1 |_|19                  22|_| PB4 <-->       
+                  _|                      |_                  
+        <--> PB2 |_|20                  21|_| PB3 <-->       
+                   |______________________|
+
+
+ 
+<hr><a name="16C550">
+<h3>16C550, 16C450, 8250 UART Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+        <-->  D0 |_|1                   40|_| VCC +5V
+                  _|                      |_                  
+        <-->  D1 |_|2                   39|_| /RI  <--
+                  _|                      |_                 
+        <-->  D2 |_|3       16C550      38|_| /CD  <-- 
+                  _|        16C450        |_                  
+        <-->  D3 |_|4        8250       37|_| /DSR <--
+                  _|        serial        |_                  
+        <-->  D4 |_|5      interface    36|_| /CTS <--
+                  _|                      |_                  
+        <-->  D5 |_|6                   35|_| RESET <--
+                  _|                      |_                  
+        <-->  D6 |_|7                   34|_| /OP1 -->
+                  _|                      |_                  
+        <-->  D7 |_|8                   33|_| /DTR -->            
+                  _|                      |_                  
+        --> RCLK |_|9                   32|_| /RTS -->            
+                  _|                      |_                  
+         -->  RX |_|10                  31|_| /OP2 -->            
+                  _|                      |_                  
+         <--  TX |_|11                  30|_| INT  -->           
+                  _|                      |_                  
+         --> CS0 |_|12                  29|_| /RXRDY -->         
+                  _|                      |_                  
+         --> CS1 |_|13                  28|_| A0  <--            
+                  _|                      |_                  
+        --> /CS2 |_|14                  27|_| A1  <--            
+                  _|                      |_                  
+        <-- BOUT |_|15                  26|_| A2  <--         
+                  _|                      |_                  
+        --> XTAL1|_|16                  25|_| /AS <--         
+                  _|                      |_                  
+        <-- XTAL2|_|17                  24|_| /TXRDY -->     
+                  _|                      |_                  
+         --> /WR |_|18                  23|_| /DIS -->       
+                  _|                      |_                  
+         -->  WR |_|19                  22|_| RD  <--        
+                  _|                      |_                  
+             GND |_|20                  21|_| /RD <--        
+                   |______________________|
+
+D0-D7   Data bus in/out.
+
+RCLK    Recieve Clock Input. (normaly connected to BOUT)
+
+RX      Serial Data Input (mark=high=1 and space=low=0)
+
+TX      Serial Data Output.
+
+CS0     Chip Select 0 input (Active high)
+CS1     Chip Select 1 input (Active high)
+CS2     Chip Select 2 input (Active low) (CS0=1 and CS1=1 and CS2=0 will enable data transfer)
+
+BOUT    Baud rate generator clock output (16*baudrate)
+
+XTAL1   Crystal input 1 or external clock input.
+
+XTAL2   Crystal input 2 or buffered clock output.
+
+/WR     Write strobe (active low)
+
+WR      Write strobe (active high)
+
+GND     Signal and power ground.
+
+/RD     Read strobe (active low)
+
+RD      Read strobe (active high)
+
+/DDIS   Drive disable output (active low)
+
+/TXRDY  Transmit ready output (active low) goes low when TX-FIFO is full
+
+/AS     Address strobe input (active low) if not used tie low.
+
+A2      Address select line 2 input, to select internal registers.
+A1      Address select line 1 input, to select internal registers.
+A0      Address select line 0 input, to select internal registers.
+
+/RXRDY  Recieve ready output (active low) goes low when RX-FIFO is full
+
+INT     Interrupt output (active high) this pin can be programmed to go high on conditions.
+
+/OP2    General purpose output2 (active low)
+
+/RTS    Request to send output (active low)
+
+/DTR    Data terminal ready output (active low)
+
+/OP1    General purpose output1 (active low)
+
+RESET   Master reset input (active high)
+
+/CTS    Clear to send input (active low)
+
+/DSR    Data set ready input (active low)
+
+/CD     Carrier detect input (active low)
+
+/RI     Ring detect indicator input (active low)
+
+VCC     Power supply input +5Volt.
+
+
+<hr><a name="27C256">
+<h3>27C256 EPROM Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+    <b>(*Note)</b>  VPP |_|1                   28|_| VCC +5V        
+                  _|                      |_                  
+         --> A12 |_|2                   27|_| A14 <--         
+                  _|                      |_                  
+         -->  A7 |_|3       27C256      26|_| A13 <--         
+                  _|         EPROM        |_                  
+         -->  A6 |_|4                   25|_| A8  <--         
+                  _|                      |_                  
+         -->  A5 |_|5                   24|_| A9  <--          
+                  _|                      |_                  
+         -->  A4 |_|6                   23|_| A11 <--         
+                  _|                      |_                  
+         -->  A3 |_|7                   22|_| /OE <--
+                  _|                      |_                  
+         -->  A2 |_|8                   21|_| A10 <--         
+                  _|                      |_                  
+         -->  A1 |_|9                   20|_| /CE <--         
+                  _|                      |_                  
+         -->  A0 |_|10                  19|_| D7  -->        
+                  _|                      |_                 
+         <--  D0 |_|11               a   18|_| D6  -->       
+                  _|                      |_                  
+         <--  D1 |_|12                  17|_| D5  -->        
+                  _|                      |_                 
+         <--  D2 |_|13                  16|_| D4  -->        
+                  _|                      |_                 
+             GND |_|14                  15|_| D3  -->        
+                   |______________________|
+
+<b>(*Note)</b> VPP shuld be high, on some EPROMs the output is disabled when VPP=low, tie it high always. 
+
+
+<hr><a name="84256">
+<h3>84256 RAM Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+         --> A14 |_|1                   28|_| VCC +5V        
+                  _|                      |_                  
+         --> A12 |_|2                   27|_| /WE <--         
+                  _|                      |_                  
+         -->  A7 |_|3        84256      26|_| A13 <--         
+                  _|          RAM         |_                  
+         -->  A6 |_|4                   25|_| A8  <--         
+                  _|       32 KBytes      |_                  
+         -->  A5 |_|5                   24|_| A9  <--          
+                  _|                      |_                  
+         -->  A4 |_|6                   23|_| A11 <--         
+                  _|                      |_                  
+         -->  A3 |_|7                   22|_| /OE <--
+                  _|                      |_                  
+         -->  A2 |_|8                   21|_| A10 <--         
+                  _|                      |_                  
+         -->  A1 |_|9                   20|_| /CE <--         
+                  _|                      |_                  
+         -->  A0 |_|10                  19|_| D7 <-->        
+                  _|                      |_                 
+         <--> D0 |_|11                  18|_| D6 <-->       
+                  _|                      |_                  
+         <--> D1 |_|12                  17|_| D5 <-->        
+                  _|                      |_                 
+         <--> D2 |_|13                  16|_| D4 <-->        
+                  _|                      |_                 
+             GND |_|14                  15|_| D3 <-->        
+                   |______________________|
+
+<hr><a name="8416">
+<h3>8416 RAM Pin Description:</h3>
+                    _________    _________
+                  _|         \__/         |_                  
+         -->  A7 |_|1                   24|_| VCC +5V         
+                  _|       yPD446         |_                  
+         -->  A6 |_|2      TC5517       23|_| A8  <--         
+                  _|       HM6116         |_                  
+         -->  A5 |_|3      MB8416       22|_| A9  <--          
+                  _|         RAM          |_                  
+         -->  A4 |_|4                   21|_| /WE <--         
+                  _|       16384 Bit      |_                  
+         -->  A3 |_|5      2048 Bytes   20|_| /OE <--
+                  _|                      |_                  
+         -->  A2 |_|6                   19|_| A10 <--         
+                  _|                      |_                  
+         -->  A1 |_|7                   18|_| /CE <--         
+                  _|                      |_                  
+         -->  A0 |_|8                   17|_| D7 <-->        
+                  _|                      |_                 
+         <--> D0 |_|9                   16|_| D6 <-->       
+                  _|                      |_                  
+         <--> D1 |_|10                  15|_| D5 <-->        
+                  _|                      |_                 
+         <--> D2 |_|11                  14|_| D4 <-->        
+                  _|                      |_                 
+             GND |_|12                  13|_| D3 <-->        
+                   |______________________|
+
+
+</pre>
+<hr><center><b> 
+</body></html>

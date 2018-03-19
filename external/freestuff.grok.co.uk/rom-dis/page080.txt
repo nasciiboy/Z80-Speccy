@@ -1,0 +1,64 @@
+1988		INC	HL	Not used.
+		INC	HL
+		INC	HL
+198B	EACH-STMT	LD	(CH-ADD),HL	Set CH-ADD to the current byte.
+		LD	C,+00	Set a 'quotes off' flag.
+
+Enter a loop to handle each statement in the BASIC line.
+
+1990	EACH-S-1	DEC	D	Decrease 'D' and return if
+		RET	Z	the required statement has
+				been found.
+		RST	0020,NEXT-CHAR	Fetch the next character code
+		CP	E	and jump if it does not match
+		JR	NZ,199A,EACH-S-3	the given token code.
+		AND	A	But should it match then
+		RET		return with the carry and the
+				zero flags both reset.
+
+Now enter another loop to consider the individual characters in the line to find where the statement ends.
+
+1998	EACH-S-2	INC	HL	Update the pointer and fetch
+		LD	A,(HL)	the new code.
+199A	EACH-S-3	CALL	18B6,NUMBER	Step over any number.
+		LD	(CH-ADD),HL	Update CH-ADD.
+		CP	+22	Jump forward if the character
+		JR	NZ,19A5,EACH-S-4	is not a '"'.
+		DEC	C	Otherwise set the 'quotes flag'.
+19A5	EACH-S-4	CP	+3A	Jump forward if the character
+		JR	Z,19AD,EACH-S-5	is a ':'.
+		CP	+CB	Jump forward unless the code
+		JR	NZ,19B1,EACH-S-6	is the token 'THEN'.
+19AD	EACH-S-5	BIT	0,C	Read the 'quotes flag' and
+		JR	Z,1990,EACH-S-1	jump back at the end of each
+				statement (including after
+				'THEN').
+19B1	EACH-S-6	CP	+0D	Jump back unless at the end
+		JR	NZ,1998,EACH-S-2	of a BASIC line.
+		DEC	D	Decrease the statement
+		SCF		counter and set the carry
+		RET		flag before returning.
+
+THE 'NEXT-ONE' SUBROUTINE
+This subroutine can be used to find the 'next line' in the program area or the 'next variable' in the variables area.  The subroutine caters for the six different types of variable that are used in the SPECTRUM system.
+
+19B8	NEXT-ONE	PUSH	HL	Save the address of the
+				current line or variable.
+		LD	A,(HL)	Fetch the first byte.
+		CP	+40	Jump forward  if searching
+		JR	C,19D5,NEXT-O-3	for a 'next line'.
+		BIT	5,A	Jump forward if searching for
+		JR	Z,19D6,NEXT-O-4	the next string or array variable.
+		ADD	A,A	Jump forward with simple
+		JP	M.19C7,NEXT-O-1	numeric and FOR-NEXT
+				variables.
+		CCF		Long name numeric variables
+				only.
+19C7	NEXT-O-1	LD	BC,+0005	A numeric variable will
+		JR	NC,19CE,NEXT-O-2	occupy five locations but a
+		LD	C,+12	FOR-NEXT control variable
+				will need eighteen locations.
+19CE	NEXT-O-2	RLA		The carry flag becomes reset
+				for long named variables only;
+				until the final character of the
+

@@ -1,0 +1,58 @@
+		LD	(CH-ADD),HL	location before the first
+				character to be considered.
+		LD	D,A	The statement number is
+				fetched.
+		LD	E,+00	The E register is cleared in case
+				EACH-STMT is used.
+		LD	(NSPPC),+FF	Signal 'no jump'.
+		DEC	D	The statement number minus
+		LD	(SUBPPC),D	one goes into SUBPPC.
+		JP	Z,1B28,STMT-LOOP	A first statement can now be
+				considered.
+		INC	D	However for later statements
+		CALL	198B,EACH-STMT	the 'starting address' has to be
+				found.
+		JR	Z,1BF4,STMT-NEXT	Jump forward unless the state-
+				ment does not exist.
+
+Report N - 'Statement lost'
+
+1BEC	REPORT-N	RST	0008,ERROR-1	Call the error handling
+		DEFB	+16	routine.
+
+THE 'CHECK-END' SUBROUTINE
+This is an important routine and is called from many places in the monitor program when the syntax of the edit-line is being checked. The purpose of the routine is to give an error report if the end of a statement has not been reached and to move on to the next statement if the syntax is correct.
+
+1BEE	CHECK-END	CALL	2530,SYNTAX-Z	Do not proceed unless
+		RET	NZ	checking syntax.
+		POP	BC	Drop the addresses of
+		POP	BC	SCAN-LOOP & STMT-RET
+				before continuing into
+				STMT-NEXT.
+
+THE 'STMT-NEXT' ROUTINE
+If the present character is a 'carriage return' then the 'next statement' is on the 'next line'; if ' : ' it is on the same line; but if any other character is found then there is an error in syntax.
+
+1BF4	STMT-NEXT	RST	0018,GET-CHAR	Fetch the present character.
+		CP	+0D	Consider the 'next line' if
+		JR	Z,1BB3,LINE-END	it is a 'carriage return'.
+		CP	+3A	Consider the 'next statement'
+		JP	Z,1B28,STMT-LOOP	if it is a ' : '.
+		JP	1C8A,REPORT-C	Otherwise there has been a
+				syntax error.
+
+THE 'COMMAND CLASS' TABLE
+
+address	offset	class number	address	offset	class number
+1C01	0F	CLASS-00-1C10	1C07	7B	CLASS-06,1C82
+1C02	1D	CLASS-01,1C1F	1C08	8E	CLASS-07,1C96
+1C03	4B	CLASS-02,1C4E	1C09	71	CLASS-08,1C7A
+1C04	09	CLASS-03,1C0D	1C0A	B4	CLASS-09,1CBE
+1C05	67	CLASS-04,1C6C	1C0B	81	CLASS-0A,1C8C
+1C06	0B	CLASS-05,1C11	1C0C	CF	CLASS-0B,1CDB
+
+THE 'COMMAND CLASSES - 00, 03 & 05'
+The commands of class-03 may, or may not, be followed by a number. e.g. RUN & RUN 200.
+
+1C0D	CLASS-03	CALL	1CDE,FETCH-NUM	A number is fetched but zero
+				is used in cases of default.

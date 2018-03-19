@@ -1,0 +1,55 @@
+		JR	C,30BE,HL-END	Jump if overflow.
+		RL	C	Rotate bit 7 of C into the carry.
+		RLA		Rotate the carry bit into bit 0
+				and bit 7 into the carry flag.
+		JR	NC,30BC,HL-AGAIN	Jump if the carry flag is reset.
+		ADD	HL,DE	Otherwise add DE in once.
+		JR	C,30BE,HL-END	Jump if overflow.
+30BC	HL-AGAIN	DJNZ	30B1,HL-LOOP	Until 16 passes have been made.
+30BE	HL-END	POP	BC	Restore BC.
+		RET		Finished.
+
+THE 'PREPARE TO MULTIPLY OR DIVIDE' SUBROUTINE
+This subroutine prepares a floating-point number for multiplication or division, returning with carry set if the number is zero, getting the sign of the result into the A register, and replacing the sign bit in the number by the true numeric bit, 1.
+30C0	PREP-M/D	CALL	34E9,TEST-ZERO	If the number is zero, return
+		RET	C	with the carry flag set.
+		INC	HL	Point to the sign byte.
+		XOR	(HL)	Get sign for result into A (like
+				signs give plus, unlike give
+				minus); also reset the carry flag.
+		SET	7,(HL)	Set the true numeric bit.
+		DEC	HL	Point to the exponent again.
+		RET		Return with carry flag reset.
+
+THE 'MULTIPLICATION' OPERATION
+(Offset 04 - see CALCULATE below: 'multiply')
+This subroutine first tests whether the two numbers to be multiplied are 'small integers'. If they are, it uses INT-FETCH to get them from the stack, HL=HL*DE to multiply them and INT-STORE to return the result to the stack. Any overflow of this 'short multiplication' (i.e. if the result is not itself a 'small integer') causes a jump to multiplication in full five byte floating-point form (see below).
+30CA	multiply	LD	A,(DE)	Test whether the first bytes of
+		OR	(HL)	both numbers are zero.
+		JR	NZ,30F0,MULT-LONG	If not, jump for 'long' multi-
+				plication.
+		PUSH	DE	Save the pointers: to the second
+				number.
+		PUSH	HL	And to the first number.
+		PUSH	DE	And to the second number yet
+				again.
+		CALL	2D7F,INT-FETCH	Fetch sign in C, number in DE.
+		EX	DE,HL	Number to HL now.
+		EX	(SP),HL	Number to stack, second
+				pointer to HL.
+		LD	B,C	Save first sign in B.
+		CALL	2D7F,INT-FETCH	Fetch second sign in C, number
+				in DE.
+		LD	A,B	Form sign of result in A: like
+		XOR	C	signs give plus (00), unlike give
+				minus (FF).
+		LD	C,A	Store sign of result in C.
+		POP	HL	Restore the first number to HL.
+		CALL	30A9,HL=HL*DE	Perform the actual multipli-
+				cation.
+		EX	DE,HL	Store the result in DE.
+		POP	HL	Restore the pointer to the first
+				number.
+		JR	C,30EF,MULT-OFLW	Jump on overflow to 'full'
+				multiplication.
+30E5		LD	A,D	These 5 bytes ensure that

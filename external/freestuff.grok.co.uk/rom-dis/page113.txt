@@ -1,0 +1,56 @@
+				is reduced to the control
+				character range (+10 to +15).
+		PUSH	AF	The control character code is
+		CALL	1C82,EXPT-1NUM	preserved whilst the parameter
+		POP	AF	is moved to the calculator stack.
+		AND	A	A return is made at this point
+		CALL	1FC3,UNSTACK-Z	if syntax is being checked.
+		PUSH	AF	The control character code is
+		CALL	1E94,FIND-INT1	preserved whilst the parameter
+		LD	D,A	is moved to the D register.
+		POP	AF
+		RST	0010,PRINT-A-1	The control character is sent
+				out.
+		LD	A,D	Then the parameter is fetched
+		RST	0010,PRINT-A-1	and sent out before
+		RET		returning.
+ii. The colour system variables - ATTR-T, MASK-T & P-FLAG - are altered as required. This subroutine is called by PRINT-OUT. On entry the control character code is in the A register and the parameter is in the D register.
+Note that all changes are to the 'temporary' system variables.
+2211	CO-TEMP-5	SUB	+11	Reduce the range and jump
+		ADC	A,+00	forward with INK & PAPER.
+		JR	Z,2234,CO-TEMP-7
+		SUB	+02	Reduce the range once again
+		ADC	A,+00	and jump forward with FLASH
+		JR	Z,2273,CO-TEMP-C	& BRIGHT.
+The colour control code will now be +01 for INVERSE and +02 for OVER and the system variable P-FLAG is altered accordingly.
+		CP	+01	Prepare to jump with OVER.
+		LD	A,D	Fetch the parameter.
+		LD	B,+01	Prepare the mask for OVER.
+		JR	NZ,2228,CO-TEMP-6	Now jump.
+		RLCA		Bit 2 of the A register is to be
+		RLCA		reset for INVERSE 0 and set for
+		LD	B,+04	INVERSE 1; the mask is to have
+				bit 2 set.
+2228	CO-TEMP-6	LD	C,A	Save the A register whilst the
+				range is tested.
+		LD	A,D	The correct range for
+		CP	+02	INVERSE and OVER is only
+		JR	NC,2244,REPORT-K	'0-1'.
+		LD	A,C	Fetch the A register.
+		LD	HL,+5C91	It is P-FLAG that is to be
+				changed.
+		JR	226C,CO-CHANGE	Exit via CO-CHANGE and alter
+				P-FLAG using 'B' as a mask.
+				i.e. Bit 0 for OVER & bit 2
+				for INVERSE'
+PAPER & INK are dealt with by the following routine. On entry the carry flag is set for INK.
+2234	CO-TEMP-7	LD	A,D	Fetch the parameter.
+		LD	B,+07	Prepare the mask for INK.
+		JR	C,223E,CO-TEMP-8	Jump forward with INK.
+		RLCA		Multiply the parameter for
+		RLCA		PAPER by eight.
+		RLCA
+		LD	B,+38	Prepare the mask for PAPER.
+223E	CO-TEMP-8	LD	C,A	Save the parameter in the C
+				register whilst the range of the
+				parameter is tested.

@@ -1,0 +1,64 @@
+		CP	+18	Jump forward unless the 'E'
+		JR	NZ,032C,K-MAIN	key was SYMBOL SHIFT.
+		BIT	7,B	However accept SYMBOL SHIFT
+		RET	NZ	and another key; return with
+				SYMBOL SHIFT only.
+
+The 'main code' is found by indexing into the main key table.
+
+032C	K-MAIN	LD	HL,+0205	The base address of the table.
+		ADD	HL,DE	Index into the table and fetch
+		LD	A,(HL)	the 'main code'.
+		SCF		Signal 'valid keystroke'
+		RET		before returning.
+
+THE 'KEYBOARD DECODING' SUBROUTINE
+This subroutine is entered with the 'main code' in the E register, the value of FLAGS in the D register, the value of MODE in the C register and the 'shift byte' in the B register.
+By considering these four values and referring, as necessary, to the six key tables a 'final code' is produced. This is returned in the A register.
+
+0333	K-DECODE	LD	A,E	Copy the 'main code'.
+		CP	+3A	Jump forward if a digit key is
+		JR	C,0367,K-DIGIT	being considered; also SPACE,
+				ENTER & both shifts.
+		DEP	C	Decrement the MODE value.
+		JP	M,034F,K-KLC-LET	Jump forward, as needed, for
+		JR	Z,0341,K-E-LET	modes 'K', 'L', 'C' & 'E'.
+
+Only 'graphics' mode remains and the 'final code' for letter keys in graphics mode is computed from the 'main code'.
+
+		ADD	A,+4F	Add the offset.
+		RET		Return with the 'final code'.
+
+Letter keys in extended mode are considered next.
+
+0341	K-E-LET	LD	HL,+01EB	The base address for table 'b'.
+		INC	B	Jump forward to use this table
+		JR	Z,034A,K-LOOK-UP	if neither shift key is being
+				pressed.
+		LD	HL,+0205	Otherwise use the base address
+				for table 'c'.
+
+Key tables 'b-f' are all served by the following look-up routine. In all cases a 'final code' is found and returned.
+
+034A	K-LOOK-UP	LD	D,+00	Clear the D register.
+		ADD	HL,DE	Index the required table
+		LD	A,(HL)	and fetch the 'final code'.
+		RET		Then return.
+
+Letter keys in 'K', 'L' or 'C' modes are now considered. But first the special SYMBOL SHIFT codes have to be dealt with.
+
+034F	K-KLC-LET	LD	HL,+0229	The base address for table 'e'
+		BIT	0,B	Jump back if using the SYMBOL
+		JR	Z,034A,K-LOOK-UP	SHIFT key and a letter key.
+		BIT	3,D	Jump forward if currently in
+		JR	Z,0364,K-TOKENS	'K' mode.
+		BIT	3,(FLAGS2)	If CAPS LOCK is set then
+		RET	NZ	return with the 'main code'
+		INC	B	Also return in the same manner
+		RET	NZ	if CAPS SHIFT is being pressed.
+		ADD	A,+20	However if lower case codes are
+		RET		required then +20 has to be
+				added to the 'main code' to give
+				the correct 'final code'.
+
+The 'final code' values for tokens are found by adding +A5 to the 'main code'.

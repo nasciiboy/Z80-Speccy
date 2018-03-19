@@ -1,0 +1,62 @@
+177C		DEFB	53 08	- channel 'S', offset +08, address 1785
+177E		DEFB	50 0A	- channel 'P', offset +0A, address 1789
+1780		DEFB	00	- end marker;
+
+THE 'OPEN-K' SUBROUTINE
+
+1781	OPEN-K	LD	E,+01	The data bytes will be +01
+		JR	178B,OPEN-END	& +00.
+
+THE 'OPEN-S' SUBROUTINE
+
+1785	OPEN-S	LD	E,+06	The data bytes will be +06
+		JR	178B,OPEN-END	& +00.
+
+THE 'OPEN-P' SUBROUTINE
+
+1789	OPEN-P	LD	E,+10	The data bytes will be +10
+				& +00.
+178B	OPEN-END	DEC	BC	Decrease the length of the
+		LD	A,B	expression and give an error
+		OR	C	if it was not a single
+		JR	NZ,1765,REPORT-F	character; otherwise clear the
+		LD	D,A	D register, fetch HL and
+		POP	HL	return.
+		RET
+
+THE 'CAT, ERASE, FORMAT & MOVE' COMMAND ROUTINES
+In the standard SPECTRUM system the use of these commands leads to the production of report O - Invalid stream.
+
+1793	CAT-ETC.	JR	1725,REPORT-O	Give this report.
+
+THE 'LIST & LLIST' COMMAND ROUTINES
+The routines in this part of the 16K program are used to produce listings of the current BASIC program.  Each line has to have its line number evaluated, its tokens expanded and the appropriate cursors positioned.
+The entry point AUTO-LIST is used by both the MAIN EXECUTION routine and the EDITOR to produce a single page of the listing.
+
+1795	AUTO-LIST	LD	(LIST-SP),SP	The stack pointer is saved
+				allowing the machine stack to
+				be reset when the listing is
+				finished.  (see PO-SCR,0C55)
+		LD	(TV-FLAG),+10	Signal 'automatic listing in the
+				main screen'.
+		CALL	0DAF,CL-ALL	Clear this part of the screen.
+		SET	0,(FLAGS)	Switch to the editing area.
+		LD	B,(DF-SZ)	Now clear the the lower part
+		CALL	0E44,CL-LINE	of the screen as well.
+		RES	0,(FLAGS)	Then switch back.
+		SET	0,(FLAGS2)	Signal 'screen is clear'.
+		LD	HL,(E-PPC)	Now fetch the the 'current' line
+		LD	DE,(S-TOP)	number and the 'automatic'
+				line number.
+		AND	A	If the 'current' number is
+		SBC	HL,DE	less than the 'automatic'
+		ADD	HL,DE	number then jump forward to
+		JE	C,17E1,AUTO-L-2	update the 'automatic' number.
+
+The 'automatic' number has now to be altered to give a listing with the 'current' line appearing near the bottom of the screen.
+
+		PUSH	DE	Save the 'automatic' number.
+		CALL	196E,LINE-ADDR	Find the address of the
+		LD	DE,+02C0	start of the 'current' line
+		EX	DE,HL	and produce an address roughly
+

@@ -1,0 +1,63 @@
+0AD9	PO-ABLE	CALL	0B24,PO-ANY	Print the character(s)
+				and continue into PO-STORE.
+
+THE 'POSITION STORE' SUBROUTINE
+The new position's 'line & column' values and the 'pixel' address are stored in the appropriate system variables.
+
+0ADC	PO-STORE	BIT	1,(FLAGS)	Jump forward if handling
+		JR	NZ,0AFC,PO-ST-PR	the printer.
+		BIT	0,(TV-FLAG)	Jump forward if handling the
+		JR	NZ,0AF0,PO-ST-E	lower part of the screen.
+		LD	(S-POSN),BC	Save the values that relate
+		LD	(DF-CC),HL	to the main part of the
+		RET		screen. Then return.
+0AF0	PO-ST-E	LD	(S-POSNL),BC	Save the values that relate
+		LD	(ECHO-E),BC	to the lower part of the
+		LD	(DF-CCL),HL	screen.
+		RET		Then return.
+0AFC	PO-ST-PR	LD	(P-POSN),C	Save the values that relate
+		LD	(PR-CC),HL	to the printer buffer.
+		RET		Then return.
+
+THE 'POSITION FETCH' SUBROUTINE
+The current position's parameters are fetched from the appropriate system variables.
+
+0B03	PO-FETCH	BIT	1,(FLAGS)	Jump forward if handling
+		JR	NZ,0B1D,PO-F-PR	the printer.
+		LD	BC,(S-POSN)	Fetch the values relating
+		LD	HL,(DF-CC)	to the main part of the
+		BIT	0,(TV-FLAG)	screen and return if this
+		RET	Z	was the intention.
+		LD	BC,(S-POSNL)	Otherwise fetch the values
+		LD	HL,(DF-CCL)	relating to the lower part
+		RET		of the screen.
+0B10	PO-F-PR	LD	C,(P-POSN)	Fetch the values relating
+		LD	HL,(PR-CC)	to the printer buffer.
+		RET
+
+THE 'PRINT ANY CHARACTER(S)' SUBROUTINE
+Ordinary character codes, token codes and user-defined graphic codes, and graphic codes are dealt with separately.
+
+0B24	PO-ANY	CP	+80	Jump forward with ordinary
+		JR	C,0B65,PO-CHAR	character codes.
+		CP	+90	Jump forward with token
+		JR	NC,0B52,PO-T&UDG	codes and UDG codes.
+		LD	B,A	Move the graphic code.
+		CALL	0B38,PO-GR-1	Construct the graphic form.
+		CALL	0B03,PO-FETCH	HL has been disturbed so
+				'fetch' again.
+		LD	DE,+5C92	Make DE point to the start of the
+				graphic form; i.e. MEMBOT.
+		JR	0B7F,PO-ALL	Jump forward to print the
+				graphic character.
+
+Graphic characters are constructed in an Ad Hoc manner in the calculator's memory area; i.e. MEM-0 & MEM-1.
+
+0B38	PO-GR-1	LD	HL,+5C92	This is MEMBOT.
+		CALL	0B3E,PO-GR-2	In effect call the following
+				subroutine twice.
+0B3E	PO-GR-2	RR	B	Determine bit 0 (and later bit 2)
+		SBC	A,A	of the graphic code.
+		AND	+0F	The A register will hold +00 or
+				+0F depending on the value of
+				the bit in the code.

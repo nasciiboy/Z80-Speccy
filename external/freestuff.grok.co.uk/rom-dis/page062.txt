@@ -1,0 +1,64 @@
+		RST	0018	Fetch the first character of
+		CP	+0D	the line and see if the line is
+				'carriage return only'.
+		JR	Z,12A2,MAIN-EXEC	If it is then jump back.
+
+The 'edit-line' must start with a direct BASIC command so this line becomes the first line to be interpreted.
+
+		BIT	0,(FLAGS2)	Clear the whole display unless
+		CALL	NZ,0DAF,CL-ALL	the flag says it is unnecessary.
+		CALL	0D6E,CLS-LOWER	Clear the lower part anyway.
+		LD	A,+19	Set the appropriate value
+		SUB	(S-POSN-hi)	for the scroll counter.
+		LD	(SCR-CT),A
+		SET	7,(FLAGS)	Signal 'line execution'.
+		LD	(ERR-NR),+FF	Ensure ERR-NR is correct.
+		LD	(NSPPC),+01	Deal with the first statement in
+				the line.
+		CALL	1B8A,PROG-RUN	Now the line is interpreted.
+				Note: The address 1303 goes on
+				to the machine stack and is
+				addressed by ERR-SP.
+
+After the line has been interpreted and all the actions consequential to it have been completed a return is made to MAIN-4, so that a report can be made.
+
+1303	MAIN-4	HALT		The maskable interrupt must be
+				enabled.
+		RES	5,(FLAGS)	Signal 'ready for a new key'.
+		BIT	1,(FLAGS2)	Empty the printer buffer if
+		CALL	NZ,0ECD,COPY-BUFF	it has been used.
+		LD	A,(ERR-NR)	Fetch the error number and
+		INC	A	increment it.
+1313	MAIN-G	PUSH	AF	Save the new value.
+		LD	HL,+0000	The system variables
+		LD	(FLAGX),H	FLAGX, X-PTR-hi &
+		LD	(X-PTR-hi),H	DEFADD are all set to zero.
+		LD	(DEFADD),HL	
+		LD	HL,+0001	Ensure that stream +00
+		LD	(STRMS-6),HL	points to channel 'K'
+		CALL	16B0,SET-MIN	Clear all the work areas and the
+				calculator stack.
+		RES	5,(FLAGX)	Signal 'editing mode'.
+		CALL	0D6E,CLS-LOWER	Clear the lower screen.
+		SET	5,(TV-FLAG)	Signal 'the lower screen will
+				require clearing'.
+		POP	AF	Fetch the report value.
+		LD	B,A	Make a copy in B.
+		CP	+0A	Jump forward with report
+		JR	C,133C,MAIN-5	numbers '0 to 9'.
+		ADD	A,+07	Add the ASCII letter
+				offset value.
+133C	MAIN-5	CALL	15EF,OUT-CODE	Print the report code and
+		LD	A,+20	follow it with a 'space'.
+		RST	0010,PRINT-A-1
+		LD	A,B	Fetch the report value and
+		LD	DE,+1391	use it to identify the
+		CALL	0C0A,PO-MSG	required report message.
+		XOR	A	Print the message and follow
+		LD	DE,+1536	it by a 'comma' and a 'space'.
+		CALL	0C0A,PO-MSG	
+		LD	BC,(PPC)	Now fetch the current line
+		CALL	1A1B,OUT-NUM1	number and print it as well.
+		LD	A,+3A	Follow it by a ':'
+		RST	0010,PRINT-A-1
+

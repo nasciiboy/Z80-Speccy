@@ -1,0 +1,94 @@
+<HTML>
+<HEAD>
+<TITLE>Z80 interrupt mode 2</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="author" content="Jonathan Graham Harston">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80 interrupt mode 2">
+</HEAD>
+<body bgcolor="#FFFFFF">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT="98" WIDTH="198" border="0"></A>
+<A NAME="TOP">
+
+
+<H1>Z80 interrupt mode 2</H1>
+<P><I>by <B>Jonathan Graham Harston</B></I></P>
+<P>
+When an interupt occurs, the CPU jumps to the address stored in
+memory at I*256+databus. However, what happens to bit 0? If I=&FF
+and the data bus is &FF, is the vector fetched from &FFFE/&FFFF
+(ie, bit zero forced to 0) or from &FFFF/&0000 ? I have seen
+documentation, programs and (importantly!) emulators written
+declaring both to be true.
+<BR><BR>
+Zaks says bit 0 is forced to zero (p504). Leventhal says bit 0 is
+forced to zero (p12-5). Penfold says "bit 0 is always 0" without
+saying if it is forced to zero (p34), or the hardware should
+always *supply* a zero. Zilog is silent (p145).
+ <BR><BR>
+With different emulators I have found some force bit 0 to zero,
+some do not. Because of the variation in different emulators'
+implementation of IM2, I have had to write odd interupt code to
+cope with them. This is what BBC BASIC for the ZX Spectrum uses:
+ <BR><BR>
+<PRE>
+.IRQFix                       ; I needs to be set to &FD
+FDF7 E5         PUSH HL
+FDF8 2A FE FF   LD HL,(&FFFE) ; Save HL and get IRQV
+FDFB E3         EX (SP),HL    ; Restore HL and jump to IRQV
+FDFC C9         RET
+FDFD C3 F7 FD   JP &FDF7
+FE00 FD         DEFB &FD
+ </PRE>
+The consequence of this is that, with the databus at &FF:
+ <BR><BR>
+* If bit zero is forced to zero, IRQs vector via &FDFE/&FDFF and
+  thence to &FDF7.
+ <BR><BR>
+* If bit zero is not forced to zero, IRQs vector via &FDFF/&FE00
+  and thence to &FDFD.
+ <BR><BR>
+Consequently, setting &FDFD to &C9 would NOP out the interrupt
+code if bit zero is /not/ forced to zero. I tested this and got
+the following results:
+ <BR><PRE>
+Sinclair Spectrum 48K
+ 
+Acorn BBC BASIC Version 2.20
+(C) Copyright R.T.Russell 1983
+>PRINT ~!&FDFD                       Confirm contents of memory
+  FDFDF7C3
+>10REPEAT PRINT TIME:VDU 11:UNTIL 0  Print TIME continously
+>RUN                                 Initial test
+    11666                            Continuously updated TIME displayed
+ 
+Escape at line 20                    Press Escape to stop program
+>?&FDFD=&C9:RUN                      Set RET and test
+    11978                            Static display
+                                     Also, no response to interrupt
+                                     driven keyboard, so no response
+                                     to Escape
+</PRE>
+ 
+Interrupt code is not being executed, which means the RET is being
+jumped to. The only way this can happen is if IRQs are being
+vectored to &FDFD, via &FDFE/&FE00, which can only be happening if
+bit zero is not being forced to zero.
+ <BR><BR>
+Consequently, contrary to stated documentation, bit zero is /not/
+forced to zero, an IM2 interupt jumps to I*256+databus, not to
+(I*256+databus) AND 0xFFFE. If you want to reply on an even
+address, you must use hardware to supply an even address.
+<BR><BR>
+-- <BR>
+<A HREF="http://mdfs.net/User/JGH/">J.G.Harston  - mdfs.net/User/JGH</A>
+</P>
+<HR>
+<A HREF="index.htm">Back to main page</A>.
+<BR>
+
+</BODY>
+</HTML>
+
+

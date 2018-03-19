@@ -1,0 +1,66 @@
+		SBC	HL,DE	a 'screen before it' (negated).
+		EX	(SP),HL	Save the 'result' on the machine
+		CALL	196E,LINE-ADDR	stack whilst the 'automatic' line
+				address is also found (in HL).
+		POP	BC	The 'result' goes to the BC
+				register pair.
+
+A loop is now entered.  The 'automatic' line number is increased on each pass until it is likely that the 'current' line will show on a listing.
+
+17CE	AUTO-L-1	PUSH	BC	Save the 'result'.
+		CALL	19B8,NEXT-ONE	Find the address of the start
+				of the line after the present
+				'automatic' line (in DE).
+		POP	BC	Restore the 'resut'.
+		ADD	HL,BC	Perform the computation and
+		JR	C,17E4,AUTO-L-3	jump forward if finished.
+		EX	DE,HL	Move the next line's address
+		LD	D,(HL)	to the HL register pair and
+		INC	HL	collect its line number.
+		LD	E,(HL)
+		DEC	HL
+		LD	(S-TOP),DE	Now S-TOP can be updated and
+		JR	17CE,AUTO-L-1	the test repeated with the new
+				line.
+
+Now the 'automatic' listing can be made.
+
+17E1	AUTO-L-2	LD	(S-TOP),HL	When E-PPC is less than S-TOP.
+17E4	AUTO-L-3	LD	HL,(S-TOP)	Fetch the top line's number
+		CALL	196E,LINE-ADDR	and hence its address.
+		JR	Z,17ED,AUTO-L-4	If the line cannot be found
+		EX	DE,HL	use DE instead.
+17ED	AUTO-L-4	CALL	1833,LIST-ALL	The listing is produced.
+		RES	4,(TV-FLAG)	The return will be to here
+		RET		unless scrolling was needed to
+				show the current line.
+
+THE 'LLIST' ENTRY POINT
+The printer channel will need to be opened.
+
+17F5	LLIST	LD	A,+03	Use stream +03.
+		JR	17FB,LIST-1	Jump forward.
+
+THE 'LIST' ENTRY POINT
+The 'main screen' channel will need to be opened.
+
+17F9	LIST	LD	A,+02	Use stream +02.
+17FB	LIST-1	LD	(TV-FLAG),+00	Signal 'an ordinary listing in
+				the main part of the screen'.
+		CALL	2530,STNTAX-Z	Open the channel unless
+		CALL	NZ,1601,CHAN-OPEN	checking syntax.
+		RST	0018,GET-CHAR	With the present character in
+		CALL	2070,STR-ALTER	the A register see if the stream
+				is to be changed.
+		JR	C,181F,LIST-4	Jump forward if unchanged.
+		RST	0018,GET-CHAR	Is the present character
+		CP	+3B	a ';'?
+		JR	Z,1814,LIST-2	Jump if it is.
+		CP	+2C	Is it a ','?
+		JR	NZ,181A,LIST-3	Jump if it is not.
+1814	LIST-2	RST	0020,NEXT-CHAR	A numeric expression must
+		CALL	1C82,EXPT-1NUM	follow, e.g. LIST #5,20
+		JR	1822,LIST-5	Jump forward with it.
+181A	LIST-3	CALL	1CE6,USE-ZERO	Otherwise use zero and
+		JR	1822,LIST-5	also jump forward.
+

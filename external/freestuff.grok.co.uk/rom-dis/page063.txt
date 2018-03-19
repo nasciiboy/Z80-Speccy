@@ -1,0 +1,64 @@
+		LD	C,(SUBPPC)	Fetch the current statement
+		LD	B,+00	number into the BC register
+		CALL	1A1B,OUT-NUM1	pair and print it.
+		CALL	1097,CLEAR-SP	Clear the editing area.
+		LD	A,(ERR-NR)	Fetch the error number again.
+		INC	A	Increment it as usual.
+		JR	Z,1386,MAIN-9	If the program was completed
+				successfully there cannot be
+				any 'CONTinuing' so jump.
+		CP	+09	If the program halted with
+		JR	Z,1373,MAIN-6	'STOP statement' or 'BREAK
+		CP	+15	into program' CONTinuing will
+		JR	NZ,1376,MAIN-7	be from the next statement;
+1373	MAIN-6	INC	(SUBPPC)	otherwise SUBPPC is unchanged.
+1376	MAIN-7	LD	BC,+0003	The system variables OLDPPC
+		LD	DE,+5C70	& OSPCC have now to be made
+				to hold the CONTinuing line
+				and statement numbers.
+		LD	HL,+5C44	The values used will be those in
+		BIT	7,(NSPPC)	PPC & SUBPPC unless NSPPC
+		JR	Z,1384,MAIN-8	indicates that the 'break'
+		ADD	HL,BC	occurred before a 'jump'.
+1384	MAIN-8	LDDR		(i.e. after a GO TO statement
+				etc.)
+1386	MAIN-9	LD	(NSPPC),+FF	NSPPC is reset to indicate
+				'no jump'.
+		RES	3,(FLAGS)	'K mode' is selected.
+		JP	12AC,MAIN-2	And finally the jump back is
+				made but no program listing
+				will appear until requested.
+
+THE REPORT MESSAGES
+Each message is given with the last character inverted (+80 hex.).
+
+1391		DEFB	+80	- initial byte is stepped over.
+1392	Report 0			- 'OK'
+1394	Report 1			- 'NEXT without FOR'
+13A4	Report 2			- 'Variable not found'
+13B6	Report 3			- 'Subscript wrong'
+13C6	Report 4			- 'Out of memory'
+13D2	Report 5			- 'Out of screen'
+13DF	Report 6			- 'Number too big'
+13ED	Report 7			- 'RETURN without GOSUB'
+1401	Report 8			- 'End of file'
+140C	Report 9			- 'STOP statement'
+141A	Report A			- 'Invalid argument'
+142A	Report B			- 'Integer out of range'
+143E	Report C			- 'Nonsense in BASIC'
+144F	Report D			- 'BREAK - CONT repeats'
+1463	Report E			- 'Out of DATA'
+146E	Report F			- 'Invalid file name'
+147F	Report G			- 'No room for line'
+148F	Report H			- 'STOP in INPUT'
+149C	Report I			- 'FOR without NEXT'
+14AC	Report J			- 'Invalid I/O device'
+14BE	Report K			- 'Invalid colour'
+14CC	Report L			- 'BREAK into program'
+14DE	Report M			- 'RAMTOP no good'
+14EC	Report N			- 'Statement lost'
+14FA	Report O			- 'Invalid stream'
+1508	Report P			- 'FN without DEF'
+1516	Report Q			- 'Parameter error'
+1525	Report R			- 'Tape loading error'
+

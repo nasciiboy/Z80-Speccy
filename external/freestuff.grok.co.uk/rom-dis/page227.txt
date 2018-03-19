@@ -1,0 +1,41 @@
+An alternative subroutine for SIN X:
+	It is straightforward to produce the full expansion of the Chebyshev polynomials and
+this can be written in BASIC as follows:
+
+	550 	LET T=(32*Z*Z*Z*Z*Z-40*Z*Z*Z+10*Z)*A(1)
+			+(16*Z*Z*Z*Z-16*Z*Z+2)*A(2)
+			+(8*Z*Z*Z-6*Z)*A(3)
+			+(4*Z*Z-2)*A(4)
+			+2*Z *A(5)
+			+A(6)
+	560 	RETURN
+
+This subroutine is called instead of the SERIES GENERATOR and can be seen to be of
+a similar accuracy.
+
+An alternative subroutine for EXP X:
+     The full expansion for EXP X is:
+     
+	550 	LET T=(128*Z*Z*Z*Z*Z*Z*Z-224*Z*Z*Z*Z*Z+112*Z*Z*Z-14*Z)*A(1)
+			+(64*Z*Z*Z*Z*Z*Z-96*Z*Z*Z*Z+36*Z*Z-2)*A(2)
+			+(32*Z*Z*Z*Z*Z-40*Z*Z*Z+10*Z)*A(3)
+			+(16*Z*Z*Z*Z-16*Z*Z+2)*A(4)
+			+(8*Z*Z*Z-6*Z)*A(5)
+			+(4*Z*Z-2)*A(6)
+			+2*Z*A(7)
+			+A(8)
+	560 	RETURN
+
+The expansion for LN X and A TN X, given algebraically, will be:
+			(2048z11-5632z9+5632z7-2464z5+440z3-22z) * A (1)
+	+		(1024z10-2560z8+2240z6-800z4+100z2-2) * A(2)
+	+		(512z9-1152z7+864z5_240z3+18z) * A(3)
+	+		(256z8-512z6+320z4-64z2+2) * A(4)
+	+		(128z7-224z5+112z3-14z) * A(5)
+	+		(64z6-96z4+36z2-2) * A(6)
+	+		(32z5-40z3+10z) * A(7)
+	+		(16z4-16z2+2) * A(8)
+	+		(8z3-6z) * A(9)
+	+		(4z2-2) * A(10)
+	+		(2z) * A(11)
+	+		A(12)

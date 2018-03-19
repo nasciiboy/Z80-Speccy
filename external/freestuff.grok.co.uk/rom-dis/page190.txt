@@ -1,0 +1,55 @@
+THE FLOATING-POINT CALCULATOR
+
+THE TABLE OF CONSTANTS
+This first table holds the five useful and frequently needed numbers zero, one, a half, a half of pi and ten. The numbers are held in a condensed form which is expanded by the STACK LITERALS subroutine, see below, to give the required floating-point form.
+		data:	constant	when expanded gives:
+				exp. mantissa: (Hex.)
+32C5	stk-zero	DEFB +00	zero	00 00 00 00 00
+		DEFB +B0
+		DEFB +00
+
+32C8	stk-one	DEFB +40	one	00 00 01 00 00
+		DEFB +B0
+		DEFB +00
+		DEFB +01
+
+32CC	stk-half	DEFB +30	a half	80 00 00 00 00
+		DEFB +00
+
+32CE	stk-pi/2	DEFB +F1	a half of pi	81 49 0F DA A2
+		DEFB +49
+		DEFB +0F
+		DEFB +DA
+		DEFB +A2
+
+32D3	stk-ten	DEFB +40	ten	00 00 0A 00 00
+		DEFB +B0
+		DEFB +00
+		DEFB +0A
+
+
+THE TABLE OF ADDRESSES:
+This second table is a look-up table of the addresses of the sixty-six operational subroutines of the calculator. The offsets used to index into the table are derived either from the operation codes used in SCANNING, see 2734, etc., or from the literals that follow a RST 0028 instruction.
+
+	offset	label	address		offset	label	address
+32D7	00	jump-true	8F	3319	21	tan	DA
+			36				37
+32D9	01	exchange	3C	331B	22	asn	33
+			34				38
+32DB	02	delete	A1	331D	23	acs	43
+			33				38
+32DD	03	subtract	0F	331F	24	atn	E2
+			30				37
+21DF	04	multiply	CA	3321	25	ln	13
+			30				37
+32E1	05	division	AF	3323	26	exp	C4
+			31				36
+32E3	06	to-power	51	3325	27	int	AF
+			38				36
+32E5	07	or	1B	3327	28	sqr	4A
+			35				38
+32E7	08	no-&-no	24	3329	29	sgn	92
+			35				34
+32E9	09	no-l-eql	3B	332B	2A	abs	6A
+			35				34
+

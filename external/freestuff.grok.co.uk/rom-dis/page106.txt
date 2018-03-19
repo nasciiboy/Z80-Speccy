@@ -1,0 +1,56 @@
+		RST	0020,NEXT-CHAR	The next character is fetched.
+		CP	+3D	It must be an '='.
+		JR	NZ,1FBD,DEF-FN-7
+		RST	0020,NEXT-CHAR	Fetch the next character.
+		LD	A,(FLAGS)	Save the nature - numeric or
+		PUSH	AF	string - of the variable.
+		CALL	2F4B,SCANNING	Now consider the definition
+				as an expression.
+		POP	AF	Fetch the nature of the
+		XOR	(FLAGS)	variable and check that it
+		AND	+40	is of the same type as found
+				for the definition.
+1FBD	DEF-FN-7	JP	NZ,1C8A,REPORT-C	Give an error report if it
+				is required.
+		CALL	1BEE,CHECK-END	Exit via the CHECK-END
+				subroutine. (Thereby moving
+				on to consider the next state-
+				ment in the line.)
+
+THE 'UNSTACK-Z' SUBROUTINE
+This subroutine is called in several instances in order to 'return early' from a subroutine when checking syntax. The reason for this is to avoid actually printing characters or passing values to/from the calculator stack.
+1FC3	UNSTACK-Z	CALL	2530,SYNTAX-Z	Is syntax being checked?
+		POP	HL	Fetch the return address but
+		RET	Z	ignore it in 'syntax-time'.
+		JP	(HL)	In 'run-time' make a simple
+				return to the calling routine.
+
+THE 'LPRINT & PRINT' COMMAND ROUTINES
+The appropriate channel is opened as necessary and the items to be printed are considered in turn.
+1FC9	LPRINT	LD	A,+03	Prepare to open channel 'P'.
+		JR	1FCF,PRINT-1	Jump forward.
+1FCD	PRINT	LD	A,+02	Prepare to open channel 'S'.
+1FCF	PRINT-1	CALL	2530,SYNTAX-Z	Unless syntax is being
+		CALL	NZ,1601,CHAN-OPEN	checked open a channel.
+		CALL	0D4D,TEMPS	Set the temporary colour
+				system variables.
+		CALL	1FDF,PRINT-2	Call the print controlling
+				subroutine.
+		CALL	1BEE,CHECK-END	Move on to consider the next
+		RET		statement; via CHECK-END IF
+				checking syntax.
+The print controlling subroutine is called by the PRINT, LPRINT and INPUT command routines.
+1FDF	PRINT-2	RST	0018,GET-CHAR	Get the first character.
+		CALL	2045,PR-END-Z	Jump forward if already at the
+		JR	Z,1FF2,PRINT-4	end of the item list.
+Now enter a loop to deal with the 'position controllers' and the print items.
+1FE5	PRINT-3	CALL	204E,PR-POSN-1	Deal with any consecutive
+		JR	Z,1FE5,PRINT-3	position controllers.
+		CALL	1FFC,PR-ITEM-1	Deal with a single print item.
+		CALL	204E,PR-POSN-1	Check for further position
+		JR	Z,1FE5,PRINT-3	controllers and print items
+				until there are none left.
+1FF2	PRINT-4	CP	+29	Return now if the present
+		RET	Z	character is a ')'; otherwise
+				consider performing a 'carriage
+				return'.

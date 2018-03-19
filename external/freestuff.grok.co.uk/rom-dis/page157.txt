@@ -1,0 +1,59 @@
+THE 'STK-FETCH' SUBROUTINE
+This important subroutine collects the 'last value' from the calculator stack. The five bytes can be either a floating-point number, in 'short' or 'long' form, or set of parameters that define a string.
+
+28F1	STK-FETCH	LD	HL,(STKEND)	Get STKEND.
+		DEC	HL	Back one;
+		LD	B,(HL)	The fifth value.
+		DEC	HL	Back one.
+		LD	C,(HL)	The fourth one.
+		DEC	HL	Back one.
+		LD	D,(HL)	The third value.
+		DEC	HL	Back one.
+		LD	E,(HL)	The second value.
+		DEC	HL	Back one.
+		LD	A,(HL)	The first value.
+		LD	(STKEND),HL	Reset STKEND to its new
+				position
+		RET		Finished.
+
+
+THE 'DIM' COMMAND ROUTINE
+This routine establishes new arrays in the variables area. The routine starts by searching the existing variables area to determine whether there is an existing array with the same name. If such an array is found then it is 'reclaimed' before the new array is established.
+A new array will have all its elements set to zero, if it is a numeric array, or to 'spaces', if it is an array of strings.
+
+2C02	DIM	CALL	28B2,LOOK-VARS	Search the variables area.
+2C05	D-RPORT-C	JP	NZ,1C8A,REPORT-C	Give report C as there has been
+				an error.
+		CALL	2530,SYNTAX-Z	Jump forward if in
+		JR	NZ,2C15,D-RUN	'run time'.
+		RES	6,C	Test the syntax for string arrays
+				as if they were numeric.
+		CALL	2996,STK-VAR	Check the syntax of the
+				parenthesised expression.
+		CALL	1BEE,CHECK-END	Move on to consider the
+				next statement as the syntax
+				was satisfactory.
+
+An 'existing array' is reclaimed.
+
+2C15	D-RUN	JR	C,2C1F,D-LETTER	Jump forward if there is no
+				'existing array'.
+		PUSH	BC	Save the discriminator byte.
+		CALL	19B8,NEXT-ONEFind the start of the next
+				variable
+		CALL	19E8,RECLAIM-2	Reclaim the 'existing array'.
+		POP	BC	Restore the discriminator byte.
+
+The initial parameters of the new array are found.
+
+2C1F	D-LETTER	SET	7,C	Set bit 7 in the discriminator
+				byte.
+		LD	B,+00	Make the domension counter
+				zero.
+		PUSH	BC	Save the counter and the
+				discriminator byte.
+		LD	HL,+0001	The HL register pair is to
+		BIT	6,C	hold the size of the elements
+		JR	NZ,2C2D,D-SIZE	in the array, '1' for a string
+		LD	L,+05	array/ '5' for a numeric array.
+2C2D	D-SIZE	EX	DE,HL	Element size DE.

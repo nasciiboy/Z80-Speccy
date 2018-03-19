@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+<TITLE>Z80 NICD/NIMH Computer</TITLE>
+</HEAD>
+<BODY LINK="#0000FF" VLINK="#800080" BACKGROUND="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" BORDER=0 HEIGHT=97 WIDTH=198></A>
+<HR>
+<P><B><FONT SIZE=+3>Z80 NICD/NIMH Computer</FONT></B>
+<BR>This project is made by me <A HREF="contact.htm">Thomas
+Scherrer</A> and Kenny Andersen<BR>
+<HR>
+<P><B><FONT FACE="Arial"><FONT SIZE=+1>Features:</FONT></FONT></B>
+<BR>&nbsp;
+<DL>
+<LI>
+Battery charge and discharge. Automatic or manual condition.</LI>
+
+<LI>
+Current: 50mA to 1275mA. (5mA resolution)</LI>
+
+<LI>
+Amount of battery cells: 1 to 10 (1.2 to 12 volt)</LI>
+
+<LI>
+Battery capacity: 50mAh to 9999mAh (optimized around 500mAh to 1200mAh)</LI>
+
+<LI>
+Voltmeter : 0 - 25.5 Volt (100mV resolution)</LI>
+
+<LI>
+Capacity measurement precision: 1% @1A discharge.</LI>
+
+<LI>
+Battery backed up system and data memory, lithium 3V.</LI>
+
+<LI>
+LCD with 40 characters in two lines, with fluorescent back-light.</LI>
+
+<LI>
+12 digit keypad input.</LI>
+
+<LI>
+Serial port, control it by a remote PC or terminal. Baud rates from 1200
+to 56000 ( this software is not complete yet)</LI>
+
+<LI>
+Data-Bank with capability of storing battery-settings and last 10 capacity
+measurements, of up to 100 different batteries. Ideal for hobby clubs with
+lots of batteries: Write a number on your battery and store the data of
+the battery (mAh, amount of cells, desired discharge current and desired
+charge time) in the memory.</LI>
+
+<LI>
+Audio Alarm in case of wrong battery polarity.</LI>
+
+<LI>
+Password protection, anti theft system!! You can set up a time to use the
+unit before the password is needed again. No worries lending it out to
+a stranger. After a user defined amount of time, the unit is password locked.</LI>
+</DL>
+
+
+<P>&nbsp;
+<BR>&nbsp;
+<BR>&nbsp;
+
+<P><B><FONT FACE="Arial"><FONT SIZE=+1>Software:</FONT></FONT></B>
+
+<P>&nbsp;Total security : The charge or discharge will continue after e.g.
+main supply failure.
+<BR>Easy to use menu system software.
+<BR>Structured, moduled&nbsp; programming. Easy to alter or adapt the software
+to other hardware requirements (e.g. other display, keyboard, A/D converter,
+etc.)
+<BR>Watchdog reset system, and low-voltage reset.
+
+<P>The source is 360Kb, divided into:
+<BR>1. Main program: 290Kb, 7141 lines. most comments is in Danish (sorry!!)
+if there's a big interest I will translate.. not!!
+<BR>2. Sound sample data: 56Kb, 814 lines.
+<BR>3. All text used data file: 12Kb, 356 lines.
+<HR>
+
+<P><B><FONT FACE="Arial"><FONT SIZE=+1>The PCB</FONT></FONT></B>
+
+<P>&nbsp;If someone are interested in this project, we still have some
+PCB's for the active Z80 homebuilder on stock..
+<CENTER></CENTER>
+
+<CENTER><IMG SRC="gfx/nicd-top.jpg" ALT="PCB component side" HEIGHT=429 WIDTH=630></CENTER>
+
+<CENTER>The full mounted PCB, top view.</CENTER>
+&nbsp;
+
+<P><A HREF="gfx/nicd-raw.jpg">See the raw PCB unmounted</A>
+<BR>Some more text here about the hardware....
+<BR>and schematics !!
+<BR>&nbsp;
+<CENTER><IMG SRC="gfx/nicd-bot.jpg" ALT="PCB solder side" HEIGHT=401 WIDTH=627></CENTER>
+
+<CENTER>The PCB bottom view, solder side.</CENTER>
+
+<P>There is some fixes to the PCB..
+<BR>1: Cut the wrong GND connection,
+<BR>2: Drill out the wrong VIA.
+<BR>3: Here the GND is missing, so don’t mount the capacitors here.
+<BR>Some more text here about the other fixes!! Ok..
+<BR>
+<HR>
+<B><FONT FACE="Arial"><FONT SIZE=+1>Download Area</FONT></FONT></B>
+<p>
+<A HREF="zip/z80nicd-source.zip">Download the complete source file zip'ed</A>
+ Latest version requeres 40caracteres 2lines LCD, menus and comments are in Danish, use TASM to assemble it.
+<p>
+<A HREF="zip/nicdpeel.zip">Download the source files for the PEEL</A>
+ Requeres special programmer.
+<P>
+<A HREF="nicd1.txt">Read about NICD batteries 1</a><br>
+<A HREF="nicd2.txt">Read about NICD batteries 2</a><br>
+<A HREF="nicd3.txt">Read about NICD batteries 3</a><br>
+<hr>
+</BODY>
+</HTML>

@@ -1,0 +1,52 @@
+		DEFB	+30,not	X, Y, SIN (G/2), (0/1)
+		DEFB	+30,not	X, Y, SIN (G/2), (1/0)
+		DEFB	+00,jump-true	X, Y, SIN (G/2)
+		DEFB	+06,to DR-SIN-NZ	(If SIN (G/2)=0 i.e. G = 2*N*PI
+		DEFB	+02,delete	just draw a straight line).
+		DEFB	+38,end-calc	X, Y
+		JP	2477,LINE-DRAW	Line X0, Y0 to X0+X, Y0+Y.
+23A3	DR-SIN-NZ	DEFB	+C0,st-mem0	(SIN (G/2) is copied to mem-0)
+		DEFB	+02,delete	X, Y are now on the stack.
+		DEFB	+C1,st-mem-1	(Y is copied to mem-1).
+		DEFB	+02,delete	X
+		DEFB	+31,duplicate	X, X
+		DEFB	+2A,abs	X, X' (X' = ABS X)
+		DEFB	+E1,get-mem-1	X, X', Y
+		DEFB	+01,exchange	X, Y, X'
+		DEFB	+E1,get-mem-1	X, Y, X', Y
+		DEFB	+2A,abs	X, Y, X', Y' (Y' = ABS Y)
+		DEFB	+0F,addition	X, Y, X'+Y'
+		DEFB	+E0,get-mem-0	X, Y, X'+Y', SIN (G/2)
+		DEFB	+05,division	X, Y, (X'+Y')/SIN (G/2)=Z', say
+		DEFB	+2A,abs	X, Y, Z (Z = ABS Z')
+		DEFB	+E0,get-mem-0	X, Y, Z, SIN (G/2)
+		DEFB	+01,exchange	X, Y, SIN (G/2), Z
+		DEFB	+3D,re-stack	(Z is re-stacked to make sure
+		DEFB	+38,end-calc	that its exponent is available).
+		LD	A,(HL)	Get exponent of Z.
+		CP	+81	If Z is greater than or equal 
+		JR	NC,23C1,DR-PRMS	to 1, jump.
+		RST	0028,FP-CALC	X, Y, SIN (G/2), Z
+		DEFB	+02,delete	X, Y, SIN (G/2)
+		DEFB	+02,delete	X, Y
+		DEFB	+38,end-calc	Just draw the line from X0, Y0
+		JP	2477,LINE-DRAW	to X0+X, Y0+Y.
+
+ii.  Just calls CD-PRMS1. This subroutine saves in the B register the number of shorter arcs required for the complete arc, viz. A=4*INT (G'*SQR Z/8)+4, where G' = mod G, or 252 if this expression exceeds 252 (as can happen with a large chord and a small angle). So A is 4, 8, 12, ... , up to 252. The subroutine also stores in mem-0 to mem-4 the quantities G/A, SIN (G/2*A), 0, COS (G/A), SIN (G/A).
+
+23C1	DR-PRMS	CALL	247D,CD-PRMS1	The subroutine is called.
+
+iii. Sets up the rest of the parameters as follow. The stack will hold these 4 items, reading up to the top: X0+X and Y0+Y as end of last arc; then X0 and Y0 as beginning of first arc. Mem-0 will hold X0 and mem-5 Y0. Mem-1 and mem-2 will hold the initial displacements for the first arc, U and V; and mem-3 and mem-4 will hold COS (G/A) and SIN (G/A) for use in the arc-drawing loop.
+The formulae for U and V can be explained as follows. Instead of stepping along the final chord, of length L, say, with displacements X and Y, we want to step along an initial chord (which may be longer) of length L*W, where W=SIN (G/2*A)/SIN (G/2), with displacements X*W and Y*W, but turned through an angle - (G/2 - G/2*A), hence with true displacements:
+     U = Y*W*SIN (G/2 - G/2*A) + X*W*COS (G/2 - G/2*A)
+     Y = Y*W*COS (G/2 - G/2*A) - X*W*SIN (G/2 - G/2*A)
+These formulae cam be checked from a diagram, using the normal expansion of COS (P - Q) and SIN (P - Q), where Q = G/2 - G/2*A
+
+234C		PUSH	BC	Save the arc-counter in B.
+		RST	0028,FP-CALC	X,Y,SIN(G/2),Z
+		DEFB	+02,delete	X,Y,SIN(G/2)
+		DEFB	+E1,get-mem-1	X,Y,SIN(G/2),SIN(G/2*A)
+		DEFB	+01,exchange	X,Y,SIN(G/2*A),SIN(G/2)
+		DEFB	+05,division	X,Y,SIN(G/2*A)/SIN(G/2)=W
+		DEFB	+C1,st-mem-1	(W is copied to mem-1).
+

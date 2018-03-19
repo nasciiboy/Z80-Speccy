@@ -1,0 +1,62 @@
+THE 'STK-VAR' SUBROUTINE
+This subroutine is usually used either to find the parameters that define an existing string entry in the variables area or to return in the HL register pair the base address of a particular element or an array of numbers. When called from DIM the subroutine only checks the syntax of the BASIC statement.
+
+Note that the parameters that define a string may be altered by calling SLICING if this should be specified.
+
+Initially the A and the B registers are cleared and bit 7 of the C register is tested to determine whether syntax is being checked.
+
+2996	STK-VAR	XOR	A	Clear the array flag.
+		LD	B,A	Clear the B register for later.
+		BIT	7,C	Jump forward if syntax is
+		JR	NZ,29E7,SV-COUNT	being checked.
+
+Next, simple strings are separated from array variables.
+
+		BIT	7,(HL)	Jump forward if dealing with
+		JR	NZ,29AE,SV-ARRAYS	an array variable.
+
+The parameters for a simple string are readily found.
+
+		INC	A	Signal 'a simple string'.
+29A1	SV-SIMPLE$	INC	HL	Move along the entry.
+		LD	C,(HL)	Pick up the low length counter.
+		INC	HL	Advance the pointer.
+		LD	B,(HL)	Pick up the high length
+				pointer.
+		INC	HL	Advance the pointer.
+		EX	DE,HL	Transfer the pointer to the
+				actual string.
+		CALL	2AB2,STK-STORE	Pass these parameters to the
+				calculator stack.
+		RST	0018,GET-CHAR	Fetch the present character
+				and jump forward to see if a
+		JP	2A49,SV-SLICE?	'slice' is required.
+
+The base address of an element in an array is now found. Initially the 'number of dimensions' is collected.
+
+29AE	SV-ARRAYS	INC	HL	Step past the length bytes.
+		INC	HL
+		INC	HL
+		LD	B,(HL)	Collect the 'number of
+				dimensions'.
+		BIT	6,C	Jump forward if handling an
+		JR	Z,29C0,SV-PTR	array of numbers.
+
+If an array of strings has its 'number of dimensions' equal to '1' then such an array can be handled as a simple string.
+
+		DEC	B	Decrease the 'number of
+		JR	Z,29A1,SV-SIMPLES	dimensions' and jump if the
+				number is now zero.
+
+Next a check is made to ensure that in the BASIC line the variable is followed by a subscript.
+
+		EX	DE,HL	Save the pointer in DE.
+		RST	0018,GET-CHAR	Get the present character.
+		CP	+28	Is it a '('?
+		JR	NZ,2A20,REPORT-3	Report the error if it is not so.
+		EX	DE,HL	Restore the pointer.
+
+For both numeric arrays and arrays of strings the variable pointer is transferred to the DE register pair before the subscript is evaluated.
+
+29C0	SV-PTR	EX	DE,HL	Pass the pointer to DE.
+		JR	29E7,SV-COUNT	Jump forward.

@@ -1,0 +1,64 @@
+0A80	PO-CHANGE	LD	HL,(CURCHL)	HL will point to the 'output'
+				routine address.
+		LD	(HL),E	Enter the new 'output'
+		INC	HL	routine address and thereby
+		LD	(HL),D	force the next character code
+		RET		to be considered as an operand.
+
+Once the operands have been collected the routine continues.
+
+0A87	PO-CONT	LD	DE,+09F4	Restore the original address
+		CALL	0A80,PO-CHANGE	for PRINT-OUT (+09F4).
+		LD	HL,(TVDATA)	Fetch the control code and the
+				first operand if there are indeed
+				two operands.
+		LD	D,A	The 'last' operand and the
+		LD	A,L	control code are moved.
+		CP	+16	Jump forward if handling
+		JP	C,2211,CO-TEMPS	INK to OVER.
+		JR	NZ,0AC2,PO-TAB	Jump forward if handling TAB.
+
+Now deal with the AT control character.
+
+		LD	B,H	The line number.
+		LD	C,D	The column number.
+		LD	A,+1F	Reverse the column number;
+		SUB	C	i.e. +00 - +1F becomes +1F -
+				+00.
+		JR	C,0AAC,PO-AT-ERR	Must be in range.
+		ADD	A,+02	Add in the offset to give
+		LD	C,A	C holding +21 - +22.
+		BIT	1,(FLAGS)	Jump forward if handling the
+		JR	NZ,0ABF,PO-AT-SET	printer.
+		LD	A,+16	Reverse the line number;
+		SUB	B	i.e. +00 - +15 becomes +16 -
+				+01.
+0AAC	PO-AT-ERR	JP	C,1E9F,REPORT-B	If appropriate jump forward.
+		INC	A	The range +16 - +01 becomes
+		LD	B,A	+17 - +02.
+		INC	B	Andnow +18 - +03.
+		BIT	0,(TV-FLAG)	If printing in the lower part
+		JP	NZ,0C55,PO-SCR	of the screen then consider
+				whether scrolling is needed.
+		CP	(DF-SZ)	Give report 5 - Out of screen,
+		JP	C,0C86,REPORT-5	if required.
+0ABF	PO-AT-SET	JP	0D09,CL-SET	Return via CL-SET & PO-STORE.
+
+And the TAB control character.
+
+0AC2	PO-TAB	LD	A,H	Fetch the first operand.
+OAC3	PO-FILL	CALL	0B03,PO-FETCH	The current print position.
+		ADD	A,C	Add the current column value.
+		DEC	A	Find how many 'spaces', modulo
+		AND	+1F	32, are required and return
+		RET	Z	if the result is zero.
+		LD	D,A	Use 0 as the counter.
+		SET	0,(FLAGS)	Suppress 'leading space'.
+0A00	PO-SPACE	LD	A,+20	Print 'D number' of
+		CALL	0C3B,PO-SAVE	spaces.
+		DEC	D
+		JR	NZ,0AD0,PO-SPACE
+		RET		Now finished.
+
+PRINTABLE CHARACTER CODES.
+The required character (or characters) is printed by calling PO-ANY followed by PO-STORE.

@@ -1,0 +1,56 @@
+		AND	A
+		RRA		Now 010b7b6b5b4b3.
+		XOR	B
+		AND	+F8	Finally 010b7b6b2b1b0, so that
+		XOR	B	H becomes 64 + 8*INT (B/64) +
+		LD	H,A	B (mod 8), the high byte of the
+		LD	A,C	pixel address. C contains X.
+		RLCA		A starts as c7c6c5c4c3c2c1c0.
+		RLCA
+		RLCA		And is now c2c1c0c7c6c5c4c3.
+		XOR	B
+		AND	+C7
+		XOR	B	Now c2c1b5b4b3c5c4c3.
+		RLCA
+		RLCA		Finally b5b4b3c7c6c5c4c3, so
+		LD	L,A	that L becomes 32*INT (B(mod
+		LD	A,C	64)/8) + INT(x/8), the low byte.
+		AND	+07	A holds x(mod 8): so the pixel
+		RET		is bit (A - 7) within the byte.
+
+THE 'POINT' SUBROUTINE
+This subroutine is called by the POINT function in SCANNING. It is entered with the co-ordinates of a pixel on the calculator stack, and returns a last value of 1 if that pixel is ink colour, and 0 if it is paper colour.
+22CB	POINT-SUB	CALL	2307,STK-TO-BC	Y co-ordinate to B, x to C.
+		CALL	22AA,PIXEL-ADD	Pixel address to HL.
+		LD	B,A	B will count A+1 loops to get
+		INC	B	the wanted bit of (HL) to
+		LD	A,(HL)	location 0.
+22D4	POINT-LP	RLCA		The shifts.
+		DJNZ	22D4,POINT-LP
+		AND	+01	The bit is 1 for ink, 0 for paper.
+		JP	2D28,STACK-A	It is put on the calculator stack.
+
+THE 'PLOT' COMMAND ROUTINE
+This routine consists of a main subroutine plus one line to call it and one line to exit from it. The main routine is used twice by CIRCLE and the subroutine is called by DRAW. The routine is entered with the co-ordinates of a pixel on the calculator stack. It finds the address of that pixel and plots it, taking account of the status of INVERSE and OVER held in the P-FLAG.
+22DC	PLOT	CALL	2307,STK-TO-BC	Y co-ordinate to B, x to C.
+		CALL	22E5,PLOT-SUB	The subroutine is called.
+		JP	0D4D,TEMPS	Exit, setting temporary colours.
+22E5	PLOT-SUB	LD	(COORDS),BC	The system variable is set.
+		CALL	22AA,PIXEL-ADD	Pixel address to HL.
+		LD	B,A	B will count A+1 loops to get a
+		INC	B	zero to the correct place in A.
+		LD	A,+FE	The zero is entered.
+22F0	PLOT-LOOP	RRCA		Then lined up with the pixel
+		DJNZ	22F0,PLOT-LOOP	bit position in the byte.
+		LD	B,A	Then copied to B.
+		LD	A,(HL)	The pixel-byte is obtained in A.
+		LD	C,(P-FLAG)	P-FLAG is obtained and first
+		BIT	0,C	tested for OVER.
+		JR	NZ,22FD,PL-TST-IN	Jump if OVER 1.
+		AND	B	OVER 0 first makes the pixel
+				zero.
+22FD	PL-TST-IN	BIT	2,C	Test for INVERSE.
+		JR	NZ,2303,PLOT-END	INVERSE 1 just leaves the pixel
+				as it was (OVER 1) or zero
+				(OVER 0).
+		XOR	B	INVERSE 0 leaves the pixel

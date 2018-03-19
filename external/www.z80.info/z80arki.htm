@@ -1,0 +1,70 @@
+<HTML><Head>
+<TITLE>Z80 CPU architecture</TITLE>
+<META name="title" content="Z80-architecture">
+<META name="keywords" content="Z80,Programming,Hardware,Software,assembler">
+<META name="description" content="Z80,Programming, Hardware, Software, assembler">
+</Head><body>
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<hr>
+<P><B><FONT SIZE=6>Z80 CPU architecture</FONT></B><BR>
+<BR>
+<P>The Z80 <A HREF="uehlp.htm#CPU">CPU</A> is an 8-bit processor which was constructed in the 
+beginning of July 1976, with ideas from Intel 8080.
+That was before the Intel Company started, and made a better 8080-processor,
+ with backward compatibility and with a lot of new instructions. </P>
+<P>The interesting thing about the Z80-CPU is that you can already see the beginning to
+what was about to become pipelined constructions.
+The Z80 CPU became soon a very popular processor for small systems - especially later on
+when the processor was reduced in prize.
+Now a Z80-processor costs about a dollar, and many are using it out of tradition,
+which makes it even more popular. If you look at the homepage of Zilog,
+then you will see that today there is a lot of new variants of chips for Z80 systems,
+used in a wide range of applications. </P>
+<H3>&nbsp;</H3>
+<H3>Processor architecture:</H3>
+<P>The Z80 CPU has a very interesting architecture. First of all it has "fetch/execute overlapping",
+which means that it's possible to get (fetch) next instruction from memory while the first instruction are executed.
+This system are also used in the Intel 8080, and other processors from that time.
+Another thing that are typical from that time is that those processors are <A HREF="uehlp.htm#CISC">CISC</A>-processors,
+and that they have variable instructions length.
+The Z80 CPU instructions length can be from <B>one</B> to <B>four</B> bytes long.
+To increase the Z80 CPU speed most instructions are only one byte long. 252 instructions are one byte,
+the rest are 2, 3 or 4 bytes long. </P>
+<P ALIGN="CENTER"><IMG SRC="gfx/fig225.gif" WIDTH=422 HEIGHT=249><BR>
+Fig 1. Fetch/execute overlap. </P>
+<P>Another aspect in processor- architecture are the number of internal registers,
+and if they are dedicated to special purposes. The Z80 CPU internal organization is made visible on the figure below: </P>
+<P ALIGN="CENTER"><IMG SRC="gfx/fig214.gif" WIDTH=768 HEIGHT=440><BR>
+Fig 2. Z80 CPU internal organization.</P>
+<P>It shows on the figure:  20 - 8-bits registers, and 4 - 16-bits registers.
+The four 16-bits registers are: <B>PC</B> (<B>P</B>rogram <B>C</B>ounter),
+<B>SP</B> (<B>S</B>tack <B>P</B>ointer) and the two Index-registers, <B>IX</B> and <B>IY</B>. </P>
+<P>The 20 - 8-bit registers are grouped into two banks with 10 registers.
+8 which  can be used together as 4 - 16-bit register-pairs,  an 8-bit accumulator and a 8-bit flag-register. The Accumulator <B>A</B>, are used for all calculations. The <B>F</B>-register (flags) are used to determine if the result is positive, negative, zero etc... </P>
+<P>The Register-pairs <B>BC</B> and <B>DE</B> are mostly used for counters and storage of part-results.
+The Register-pair <B>HL</B> can be used in a wide range of instructions mostly as addressing (pointing to memory).
+The forgotten registers <B>W</B> and <B>Z</B> are only used for internal operations in the processor,
+like jump to new addresses. (The CPU can only transfer 8 bits at a time, so to transfer (load) a 16-bit address,
+it will first store it in <B>WZ</B>) .</P>
+<P>The registers  <B>B, C, D, E, F, H, L, W</B> and <B>Z</B> can be changed very fast with  <B>B', C', D', E', F', H', L', W'</B> and <B>Z',</B>
+with the instruction EXX. For this purpose a <A HREF="uehlp.htm#MUX">MUX</A> is used, which is the fastest way to change the value in 9 registers with 9 others.
+The <B>A</B> and <B>F</B> are switched with <B>A'</B> and <B>F'</B> with the instruction EX AF,AF'.
+This  finesse are mostly used with interrupt routines, so that the main program are using the main set of registers
+and the interrupt routine are using the EXX registers, this speeds up the interrupt routine,
+which can be important in embedded applications. </P>
+<P>The Z80 CPU has with Intel, inspired to the global processor development
+and are still alive today more than 20 years after it's construction
+and it seems like it will continue to live many years more. </P>
+<P>
+Info source:  Programming the Z80 by Rodney Zaks. From SYBEX (ISBN: 0-89588-094-6)<br>
+Figures:<p>
+
+<LI>Figure 2.25 from that book.</LI>
+<LI>Figure 2.14 from that book.</LI>
+<P>
+This page was original made by <A HREF="http://www.cs.umu.se/~di95gpt/dark/">Gunnar</A> in Swedish.<br>
+And then translated to English by <A HREF="contact.htm">me</A><br>
+I have also translated and shaped the graphic figures.
+<hr>
+</body></html>

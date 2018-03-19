@@ -1,0 +1,65 @@
+THE 'ARCTAN' FUNCTION
+(Offset 24: 'atn')
+
+This subroutine handles the function ATN X and is the last of the four routines that use SERIES GENERATOR to produce Chebyshev polynomials. It returns a real number between -PI/2 and PI/2, which is equal to the value in radians of the angle whose tan is X.
+The approximation to ATN X is found as follows:
+
+i. The values W and Y are found for three cases of X, such that:
+if -1 < X < 1	then W = 0	& Y = X	- case i.
+if -1 < =X	then W = PI/2	& Y = -1/X	- case ii.
+if X < =-1	then W = -PI/2	& Y = -1/X	- case iii.
+
+In each case, -1 < =Y < =1, as required for the series to converge.
+
+ii. The argument Z is formed, such that:
+if -1 < X < 1	then Z = 2*Y*Y-1 = 2*X*X-1	- case i.
+if 1 < X	then Z = 2*Y*Y-1 = 2/(X*X)-1	- case ii.
+if X < =-1	then Z = 2*Y*Y-1 = 2/(X*X)-1	- case iii.
+
+iii. The SERIES GENERATOR is used to produce the required function.
+
+iv. Finally a simple multiplication and addition give ATN X.
+
+Perform stage i.
+
+37E2	atn	CALL	3297,RE-STACK	Use the full floating-point form
+				of X.
+		LD	A,(HL)	Fetch the exponent of X.
+		CP	+81	
+		JR	C,37F8,SMALL	Jump forward for case i: Y = X.
+		RST	0028,FP-CALC	X
+		DEFB	+A1,stk-one	X, 1
+		DEFB	+1B,negate	X,-1
+		DEFB	+01,exchange	-1, X
+		DEFB	+05,division	-1/X
+		DEFB	+31,duplicate	-1/X, -1/X
+		DEFB	+36,less-0	-1/X, (1/0)
+		DEFB	+A3,stk-pi/2	-1/X, (1/0), PI/2
+		DEFB	+01,exchange	-1/X, PI/2, (1/0)
+		DEFB	+00,jump-true	-1/X, PI/2
+		DEFB	+06, to 37FA,CASES	Jump forward for case ii:
+				Y = -1/X  W = PI/2
+		DEFB	+1B,negate	-1/X, -PI/2
+		DEFB	+33,jump	-1/X, -PI/2
+		DEFB	+03,to 37FA,CASES	Jump forward for case iii:
+				Y = -1/X  W = -PI/2
+37F8	SMALL	RST	0028,FP-CALC	Y
+		DEFB	+A0,stk-zero	Y, 0
+				Continue for case i: W = 0
+
+Perform step ii.
+
+37FA	CASES	DEFB	+01,exchange	W, Y
+		DEFB	+31,duplicate	W, Y, Y
+		DEFB	+31,duplicate	W, Y, Y, Y
+		DEFB	+04,multiplty	W, Y, Y*Y
+		DEFB	+31,duplicate	W, Y, Y*Y, Y*Y
+		DEFB	+0F,addition	W, Y, 2*Y*Y
+		DEFB	+A1,stk-one	W, Y, 2*Y*Y, 1
+		DEFB	+03,subtract	W, Y, 2*Y*Y-1 = Z
+
+Perform step iii, passing to the SERIES GENERATOR the parameter '12' decimal, and the twelve constants required.
+
+		DEFB	+8C,series-0C	W, Y, Z
+	1.	DEFB	+10,exponent+60	
+		DEFB	+B2,(+00,+00,+00)	

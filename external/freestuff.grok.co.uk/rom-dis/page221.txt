@@ -1,0 +1,39 @@
+		DEFB 	+09,to 386A,ONE 	Y
+
+The jump is made if X = 0 and Y = 0, otherwise proceed.
+		DEFB 	+A0,stk-zero 	Y,0
+		DEFB 	+01,exchange 	0,Y
+		DEFB 	+37,greater-0	0,(1/0)
+		DEFB 	+00,jump-true 	0
+		DEFB 	+06,to 386C,LAST 	0
+
+The jump is made if X = 0 and Y is positive, otherwise proceed.
+		DEFB 	+A1,stk-one 	0,1
+		DEFB 	+01,exchange 	1,0
+		DEFB 	+05,division 	Exit via 'division' as dividing by
+				zero gives 'arithmetic overflow'.
+
+The result is to be 1 for the operation.
+
+386A 	ONE 	DEFB +02,delete	-
+		DEFB +A1,stk-one 	1
+
+Now return with the 'last value' on the stack being 0**Y.
+
+386C 	LAST 	DEFB +38,end-calc 	(1/0)
+		RET 		Finished: 'last value' is 0 or 1.
+
+386E - 3CFF These locations are 'spare'. They all hold +FF.
+
+3D00 - 3FFF These locations hold the 'character set'. There are 8 byte representations
+for all the characters with codes +20 (space) to +7F (©).
+	e.g. the letter 'A' has the representation 00 3C 42 42 7E 42 42 00 and thereby the
+form:
+00000000
+00111100
+01000010
+01000010
+01111110
+01000010
+01000010
+00000000

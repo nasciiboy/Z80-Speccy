@@ -1,0 +1,66 @@
+		JR	NZ,046C,REPORT-B
+		LD	A,B	Fetch the low-byte and test
+				it further.
+		ADD	A,+3C
+		JP	P,0425,BE-i-OK	Accept -60<=i<=67.
+		JP	PO,046C,REPORT-B	Reject -128 to -61.
+
+Note: The range +70 to +127 will be rejected later on.
+
+The correct frequency for the 'pitch' i can now be found.
+
+0425	BE-i-OK	LD	B,+FA	Start '6' octaves below middle C.
+0427	BE-OCTAVE	INC	B	Repeatedly reduce i in order to
+		SUB	+0C	find the correct octave.
+		JR	NC,0427,BE-OCTAVE
+		ADD	A,+0C	Ass back the last subtraction.
+		PUSH	BC	Save the octave number.
+		LD	HL,+046E	The base address of the 'semi-
+				tone table'.
+		CALL	3406,LOC-MEM	Consider the table and pass the
+		CALL	33B4,STACK-NUM	'A th.' value to the calculator
+				stack. (Call it C.)
+
+Now the fractional part of the 'pitch' can be taken into consideration.
+
+		RST	0028,FP-CALC	t, pK+1, C
+		DEFB	+04,multiply	t, C(pK+1)
+		DEFB	+38,end-calc
+
+The final frequency f is found by modifying the 'last value' according to the octave number.
+
+		POP	AF	Fetch the octave number.
+		ADD	A,(HL)	Multiply the 'last value' by
+		LD	(HL),A	'2 to the power of the octave
+				number'.
+		RST	0028,FP-CALC	t, f
+		DEFB	+C0,st-mem-0	The frequency is put aside for
+		DEFB	+02,delete	the moment in mem-0.
+
+Attention is now turned to the 'duration'.
+		DEFB	+31,duplicate	t, t
+		DEFB	+38,end-calc
+		CALL	1E94,FIND-INT1	The value 'INT t' must be in
+		CP	+0B	the range +00 to +0A.
+		JR	NC,046C,REPORT-B
+
+The number of complete cycles in the 'beep' is given by 'f*t' so this value is now found.
+
+		RST	0028,FP-CALC	t
+		DEFB	+E0,get-mem-0	t, f
+		DEFB	+04,multiply	f*t
+
+The result is left on the calculator stack whilst the length of the 'timing loop' required for the 'beep' is computed;
+
+		DEFB	+E0,get-mem-0	f*t
+		DEFB	+34,stk-data	The value '3.5 * 10^6/8'
+		DEFB	+80,four bytes	is formed on the top of
+		DEFB	+43,exponent +93	the calculator stack.
+		DEFB	+55,+9F,+80,(+00)	f*t, f, 437,500 (dec.)
+		DEFB	+01,exchange	f*t, 437,500, f
+		DEFB	+05,division	f*t, 437,500/f
+		DEFB	+34,stk-data
+		DEFB	+35,exponent +85
+		DEFB	+71,(+00,+00,+00)	f*t, 437,500/f, 30.125 (dec.)
+		DEFB	+03,subtract	f*t, 437,500/f - 30.125
+		DEFB	+38,end-calc

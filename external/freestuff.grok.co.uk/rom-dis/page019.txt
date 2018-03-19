@@ -1,0 +1,65 @@
+		LD	C,A
+		LD	H,+00	Initialise the 'parity matching'
+				byte to zero.
+		LD	B,+B0	Set the timing constant for the
+				flag byte.
+		JR	05C8,LD-MARKER	Jump forward into the byte
+				LOADING loop.
+
+The byte LOADing loop is used to fetch the bytes one at a time. The flag byte is first. This is followed by the data bytes and the last byte is the 'parity' byte.
+
+05A9	LD-LOOP	EX	AF,A'F'	Fetch the flags.
+		JR	NZ,05B3,LD-FLAG	Jump forward only when
+				handling the first byte.
+		JR	NC,05BD,LD-VERIFY	Jump forward if VERIFYing a
+				tape.
+		LD	(IX+00),L	Make the actual LOAD when
+				required.
+		JR	05C2,LD-NEXT	Jump forward to LOAD the
+				next byte.
+05B3	LD-FLAG	RL	C	Keep the carry flag in a safe
+				place temporarily.
+		XOR	L	Return now if the type flag does
+		RET	NZ	not match the first byte on the
+				tape. (Carry flag reset.)
+		LD	A,C	Restore the carry flag now.
+		RRA
+		LD	C,A
+		INC	DE	Increase the counter to
+		JR	05CA,LD-DEC	compensate for its 'decrease'
+				after the jump.
+
+If a data block is being verified then the freshly loaded byte is tested against the original byte.
+
+05BD	LD-VERlFY	LD	A,(IX+00)	Fetch the original byte.
+		XOR	L	Match it against the new byte.
+		RET	NZ	Return if 'no match'. (Carry
+				flag reset.)
+
+A new byte can now be collected from the tape.
+
+05C2	LD-NEXT	INC	IX	Increase the 'destination'.
+05C4	LD-DEC	DEC	DE	Decrease the 'counter'.
+		EX 	AF,A'F' 	Save the flags.
+		LD	B,+B2 	Set the timing constant.
+05C8	LD-MARKER	LD 	L,+01 	Clear the 'object' register apart
+				from a 'marker' bit.
+
+The 'LD-8-BITS' loop is used to build up a byte in the L register.
+
+05CA	LD-8-BITS	CALL	05E3,LD-EDGE-2	Find the length of the 'off' 
+				and 'on' pulses of the next bit.
+		RET	NC	Return if the time period is
+				exceeded. (Carry flag reset.)
+		LD	A,+C5	Compare the length against
+				approx. 2,400 T states; resetting
+		CP	B	the carry flag for a '0' and
+				setting it fore '1'.
+		RL	L	Include the new bit in the L
+				register.
+		LD	B,+B0	Set the timing constant for the
+				next bit.
+		JP	NC,05CA,LD-8-BITS	Jump back whilst there are still
+				bits to be fetched.
+
+The 'parity matching' byte has to be updated with each new byte.

@@ -1,0 +1,64 @@
+Come here if the stream was unaltered.
+
+181F	LIST-4	CALL	1CDE,FETCH-NUM	Fetch any line or use zero if
+				none supplied.
+1822	LIST-5	CALL	1BEE,CHECK-END	If checking the syntax of the
+				edit-line move on to the next
+				statement.
+		CALL	1E99,FIND-INT	Line number to BC.
+		LD	A,B	High byte to A.
+		AND	+3F	Limit the high byte to the
+		LD	H,A	correct range and pass the
+		LD	L,C	whole line number to HL.
+		LD	(E-PPC),HL	Set E-PPC and find the address
+		CALL	196E,LINE-ADDR	of the start of this line or the
+				first line after it if the actual
+				line does not exist.
+		LD	E,+01	Flag 'before the current line'.
+
+Now the controlling loop for printing a series of lines is entered.
+
+1835	LIST-ALL	CALL	1855,OUT-LINE	Print the whole of a BASIC line.
+		RST	0010,PRINT-A-1	This will be a 'carriage return'.
+		BIT	4,(TV-FLAG)	Jump back unless dealing
+		JR	Z,1835,LIST-ALL	with an automatic listing.
+		LD	A,(DF-SZ)	Also jump back if there is
+		SUB	(S-POSN-hi)	still part of the main screen
+		JR	NZ,1835,LIST-ALL	that can be used.
+		XOR	E	A return can be made at this
+		RET	Z	point if the screen is full and the
+				current line has been printed
+				(E = +00)
+		PUSH	HL	However if the current line is
+		PUSH	DE	missing from the listing
+		LD	HL,+5C6C	then S-TOP has to be updated
+		CALL	190F,LN-FETCH	and a further line printed
+		POP	DE	(using scrolling).
+		POP	HL
+		JR	1835,LIST-ALL
+
+THE 'PRINT A WHOLE BASIC LINE' SUBROUTINE
+The HL register pair points to the start of the line - the location holding the high byte of the line number.
+Before the line number is printed it is tested to determine whether it comes before the 'current' line, is the 'current' line or comes after.
+
+1855	OUT-LINE	LD	BC,(E-PPC)	Fetch the 'current' line
+		CALL	1980,CP-LINES	number and comapare it.
+		LD	D,+3E	Pre-load the D register with the
+				current line cursor.
+		JR	Z,1865,OUT-LINE1	Jump forward if printing the
+				'current' line.
+		LD	DE,+0000	Load the D register with zero
+				(it is not the cursor) and
+		RL	E	set E to hold +01 if the line is
+				before the 'current' line and +00
+				if after.  (The carry flag comes
+				from CP-LINES.)
+1865	OUT-LINE	LD	(BREG),E	Save the line marker.
+		LD	A,(HL)	Fetch the high byte of the
+		CP	+40	line number and make a full
+		POP	BC	return if the listing has been
+		RET	NC	finished.
+		PUSH	BC
+		CALL	1A28,OUT-NUM-2	The line number can now be
+				printed - with leading spaces.
+

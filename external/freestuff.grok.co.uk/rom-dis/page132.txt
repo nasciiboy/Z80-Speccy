@@ -1,0 +1,61 @@
+		JR	Z,2665,S-INK$-EN	Jump if required.
+		CALL	028E,KEY-SCAN	Fetch a key-value in DE.
+		LD	C,+00	Prepare empty string; stack it if
+		JR	NZ,2660,S-IK$-STK	too many keys pressed.
+		CALL	031E,K-TEST	Test the key value; stack empty
+		JR	NC,2660,S-IK$-STK	string if unsatisfactory.
+		DEC	D	+FF to D for L made (bit 3 set).
+		LD	E,A	Key-value to E for decoding.
+		CALL	0333,K-DECODE	Decode the key-value.
+		PUSH	AF	Save the ASCII value briefly.
+		LD	BC,+OO01	One space is needed in the work
+				space.
+		RST	0030,BC-SPACES	Make it now.
+		POP	AF	Restore the ASCII value.
+		LD	(DE),A	Prepare to stack it as a string.
+		LD	C,+01	Its length is one.
+2660	S-IK$-STK	LD	B,+00	Complete the length parameter.
+		CALL	2AB2,STK-STO-$	Stack the required string.
+2665	S-INK$-EN	JP	2712,S-CONT-2	Jump forward.
+2668	S-SCREEN$	CALL	2522,S-2-COORD	Check that 2 co-ordinates are
+				given.
+		CALL	NZ,2535,S-SCRN$-S	Call the subroutine unless
+		RST	0020,NEXT-CHAR	checking syntax; then get next
+		JP	25DB,S-STRING	character and jump back.
+2672	S-ATTR	CALL	2522,5-2-COORD	Check that 2 co-ordinates are
+				given.
+		CALL	NZ,2580,S-ATTR-S	Call the subroutine unless
+		RST	0020,NEXT-CHAR	checking syntax; then get the
+		JR	26C3,S-NUMERIC	next character and jump
+				forward.
+267B	S-POINT	CALL	2522,S-2-COORD	Check that 2 co-ordinates are
+				given.
+		CALL	NZ,22CB,POINT-SUB	Call the subroutine unless
+		RST	0020,NEXT-CHAR	checking syntax; then get the
+		JR	26C3,S-NUMERIC	next character and jump
+				forward.
+2684	S-ALPHNUM	CALL	2C88,ALPHANUM	Is the character alphanumeric?
+		JR	NC,26DF,S-NEGATE	Jump if not a letter or a digit.
+		CP	+41	Now jump if it a letter;
+		JR	NC,26C9,S-LETTER	otherwise continue on into
+				S-DECIMAL.
+
+The 'scanning DECIMAL routine' which follows deals with a decimal point or a number that starts with a digit. It also takes care of the expression 'BIN', which is dealt with in the 'decimal to floating-point' subroutine.
+
+268D	S-DECIMAL	CALL	2530,SYNTAX-Z	Jump forward if a line is
+	(EQU. S-BIN)	JR	NZ,2685,S-STK-DEC	being executed.
+
+The action taken is now very different for syntax checking and line execution. If syntax is being checked then the floating-point form has to be calculated and copied into the actual BASIC line. However when a line is being executed the floating-point form will always be available so it is copied to the calculator stack to form a 'last value'.
+
+During syntax checking:
+		CALL	2C9B,DEC-TO-FP	The floating-point form is
+				found.
+		RST	0018,GET-CHAR	Set HL to point one past the
+				last digit.
+		LD	BC,+0006	Six locations are required.
+		CALL	1655,MAKE-ROOM	Make the room in the BASIC
+				line.
+		INC	HL	Point to the first free space.
+		LD	(HL),+0E	Enter the number marker code.
+		INC	HL	Point to the second location.
+		EX	DE,HL	This pointer is wanted in DE.

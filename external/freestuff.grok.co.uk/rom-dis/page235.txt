@@ -1,0 +1,62 @@
+address 	routine  	page
+
+2AF4 	GET-HL*DE 	151
+2AFF 	LET command 	151
+2BF1 	STK-FETCH 	157
+2C02 	DIM command 	157
+2C88 	ALPHANUM 	159
+2C8D 	ALPHA    	159
+2C9B 	Decimal to floating-point 	160
+2D1B 	NUMERIC  	161
+2D22 	STK-DIGIT 	162
+2D28 	STACK-A  	162
+2D2B 	STACK-BC 	162
+2D3B 	Integer to floating-point 	162
+
+THE ARITHMETIC ROUTINES
+2D4F 	E-format to floating-point 	164
+2D7F 	INT-FETCH 	165
+2D8E 	INT-STORE 	165
+2DA2 	Floating-point to BC 	166
+2DC1 	LOG (2^A) 	166
+2DD5 	Floating-point to A 	167
+2DE3 	Print a floating-point number 	167
+2F8B 	CA=10*A+C 	173
+2F9B 	Prepare to add 	174
+2FBA 	Fetch two numbers 	174
+2FDD 	Shift addend 	175
+3004 	ADD-BACK 	176
+300F 	Subtraction (03) 	176
+3014 	Addition (0F) 	176
+30A9 	HL=HL*DE 	179
+30C0	Prepare to multiply or divide 	180
+30CA 	Multiplication (04) 	180
+31AF 	Division (05) 	184
+3124 	Integer truncation towards zero (3A)	186
+3293 	Re-stack two 	188
+3297 	RE-STACK (3D) 	188
+
+THE FLOATING-POINT CALCULATOR
+32C5 	Table of constants 	190
+32D7 	Table of addresses 	190
+335B 	CALCULATE 	192
+33A1 	Delete (02) 	194
+33A2 	Single operation (3B) 	194
+33A9 	Test 5-spaces 	194
+33B4 	Stack number 	194
+33C0 	Move a floating-point number (31) 	195
+33C6 	Stack literals (34) 	195
+33F7 	Skip constants 	196
+3406 	Memory location 	196
+340F 	Get from memory area (E0 etc.) 	197
+341B 	Stack a constant (A0 etc.) 	197
+342D 	Store in memory area (C0 etc.) 	197
+343C 	EXCHANGE (01) 	198
+3449 	Series generator (86 etc.) 	198
+346A 	Absolute magnitude (2A) 	199
+346E 	Unary minus (1B) 	199
+3492 	Signum (29) 	200
+34A5 	IN (2C)  	200
+34AC 	PEEK (2B) 	201
+34B3 	USR number (2D) 	201
+34BC 	USR string (19) 	201

@@ -1,0 +1,60 @@
+		DEFB	+E0,get-mem-0	N, INT (N/M),M
+		DEFB	+01,exchange	N, M, INT (N/M)
+		DEFB	+C0,st-mem-0	N, M, INT (N/M)	mem-0 holds
+				INT (N/M)
+		DEFB	+04,multiply	N, M*INT (N/M)
+		DEFB	+03,subtract	n-M*INT (N/M)
+		DEFB	+E0,get-mem-0	n-M*INT (N/M), INT (N/M)
+		DEFB	+38,end-calc	
+		RET		Finished.
+
+THE 'INT' FUNCTION
+(Offset 27: 'int')
+
+This subroutine handles the function INT X and returns a 'last value' that is the 'integer part' of the value supplied. Thus INT 2.4 gives 2 but as the subroutine always rounds the result down INT -2.4 gives -3.
+The subroutine uses the INTEGER TRUNCATION TOWARDS ZERO subroutine at 3214 to produce I (X) such that I (2.4) gives 2 and I (-2.4) gives -2. Thus, INT X is gives by I (X) for values of X that are greater than or equal to zero, and I (X)-1 for negative values of X that are not already integers, when the result is, of course, I (X).
+
+36AF	int	RST	0028,FP-CALC	X
+		DEFB	+31,duplicate	X, X
+		DEFB	+36,less-0	X, (1/0)
+		DEFB	+00,jump-true	X
+		DEFB	+04, to 36B7,X-NEG	X
+
+For values of X that have been shown to be greater than or equal to zero there is no jump and I (X) is readily found.
+
+		DEFB	+3A,truncate	I (X)
+		DEFB	+38,end-calc	
+		RET		Finished.
+
+when X is a negative integer I (X) is returned, otherwise I (X)-1 is returned.
+36B7	X-NEG	DEFB	+31,duplicate	X, X
+		DEFB	+3A,truncate	X, I (X)
+		DEFB	+C0,st-mem-0	X, I (X)	mem-0 holds I (X)
+		DEFB	+03,subtract	X-I (X)
+		DEFB	+E0,get-mem-0	X-I (X), I (X)
+		DEFB	+01,exchange	I (X), X-I (X)
+		DEFB	+30,not	I (X), (1/0)
+		DEFB	+00,jump-true	I (X)
+		DEFB	+03,to 36C2,EXIT	I (X)
+
+The jump is made for values of X that are negative integers, otherwise there is no jump and I (X)-1 is calculated.
+
+		DEFB	+A1,stk-one	I (X), 1
+		DEFB	+03,subtract	I (X)-1
+
+In either case the subroutine finishes with;
+
+36C2	EXIT	DEFB	+38,end-calc	I (X) or I (X)-1
+	RET
+
+THE 'EXPONENTIAL' FUNCTION
+(Offset 26: 'exp')
+
+This subroutine handles the function EXP X and is the first of four routines that use SERIES GENERATOR to produce Chebyshev polynomials.
+The approximation to EXP X is found as follows:
+
+i. X is divided by LN 2 to give Y, so that 2 to the power Y is now the required result.
+
+ii. The value N is found, such that N=INT Y.
+
+iii. The value W is found, such that W=Y-N, where 0 <=W <=1, as required for the series to converge.

@@ -1,0 +1,55 @@
+		LD	A,H	Fetch the 'parity matching'
+		XOR	L	byte and include the new byte.
+		LD	H,A	Save it once again.
+Passes round the loop are made until the 'counter' reaches zero. At that point the 'parity matching' byte should be holding zero.
+		LD	A,D	Make a further pass if the DE
+		OR	E	register pair does not hold
+		JR	NZ,05A9,LD-LOOP	zero.
+		LD	A,H	Fetch the 'parity matching'
+				byte.
+		CP	+01	Return with the carry flat set
+		RET		if the value is zero.
+				(Carry flag reset if in error.)
+
+THE 'LD-EDGE-2' AND 'LD-EDGE-1' SUBROUTINES
+These two subroutines form the most important part of the LOAD/VERIFY operation.
+	The subroutines are entered with a timing constant in the B register, and the previous border colour and 'edge-type' in the C register.
+	The subroutines return with the carry flag set if the required number of 'edges' have been found in the time allowed; and the change to the value in the B register shows just how long it took to find the 'edge(s)'.
+	The carry flag will be reset if there is an error. The zero flag then signals 'BREAK pressed' by being reset, or 'time-up' by being set.
+	The entry point LD-EDGE-2 is used when the length of a complete pulse is required and LD-EDGE-1 is used to find the time before the next 'edge'.
+
+05E3	LD-EDGE-2	CALL	05E7,LD-EDGE-1	In effect call LD-EDGE-1 twice;
+		RET	NC	returning in between if there
+				is an error.
+05E7	LD-EDGE-1	LD	A,+16	Wait 358 T states before
+05E9	LD-DELAY	DEC	A	entering the sampling loop.
+		JR	NZ,05E9,LD-DELAY
+		AND	A
+
+The sampling loop is now entered. The value in the B register is incremented for each pass; 'time-up' is given when B reaches zero.
+
+05ED	LD-SAMPLE	INC	B	Count each pass.
+		RET	Z	Return carry reset & zero set if
+				'time-up'.
+		LD	A,+7F	Read from port +7FFE.
+		IN	A,(+FE)	i.e. BREAK & EAR.
+		RRA		Shift the byte.
+		RET	NC	Return carry reset & zero reset
+				if BREAK was pressed.
+		XOR	C	Now test the byte against the
+		AND	+20	'last edge-type'; jump back
+		JR	Z,05ED,LD-SAMPLE	unless it has changed.
+
+A new 'edge' has been found within the time period allowed for the search. So change the border colour and set the carry flag.
+
+		LD	A,C	Change the 'last edge-type'
+		CPL		and border colour.
+		LD	C,A
+		AND	+07	Keep only the border colour.
+		OR	+08	Signal 'MIC off'.
+		OUT	(+FE),A	Change the border colour (RED/
+				CYAN or BLUE/YELLOW).
+		SCF		Signal the successful search
+		RET		before returning.
+
+Note: The LD-EDGE-1 subroutine takes 465 T states, plus an additional 58 T states for each unsuccessful pass around the sampling loop.

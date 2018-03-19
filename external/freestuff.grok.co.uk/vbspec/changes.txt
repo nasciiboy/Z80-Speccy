@@ -1,0 +1,180 @@
+    Filename: changes.txt
+       Title: vbSpec Change Log
+  Maintainer: Chris Cowley <ccowley@grok.co.uk>
+Last updated: 28/Jan/2003
+
+vbSpec 1.7  -- 28th January 2003
+================================
+1. vbSpec can now write TAP files as well as reading them.
+2. New "Save Binary..." menu option to save any area of addressable
+   memory as a raw binary file (potentially useful for debugging and
+   disassembling games).
+3. Now supports "Amiga 2- Button Mouse in Kempston Joystick port".
+   This method of adding mouse support to a spectrum is very popular
+   within the Russian demo scene.
+4. The "Kempston Mouse Interface" support had transposed left and
+   right mouse buttons. Now fixed.
+5. Some optimisation. Including a faster DAA routine (let's see if
+   anyone ever notices!).
+6. Fixed a nasty bug that sometimes caused invalid Z80 snapshots to
+   be saved.
+
+vbSpec 1.62 -- 2nd December 2002
+=================================
+1. Fixed tape sound during TZX playback.
+2. Inlined some more functions in the Z80 core to improve performance:
+   GetAF, GetBC, GetH, GetL, inc16, qdec8, etc.
+3. Window positions (Main Window, ZX Printer Window, Tape Controls
+   Window) are now saved/restored each time vbSpec is run.
+
+vbSpec 1.61 -- 28th November 2002
+=================================
+1. Fixed the annoying "clicking/popping" noises that used to occur
+   at various points when using vbSpec (thanks to Simon Owen and
+   Simon Haynes for their assistance with this).
+2. Fixed the .z80 file compression routine, which sometimes
+   produced invalid .z80 files (thanks to Mark Woodmass for
+   his assistance).
+3. Port #FF in TC2048 mode is now decoded correctly (thanks to
+   Andrew Owen and Frederick Meunier for their help).
+4. Added some additional sanity checking when loading .z80 files.
+5. Fixed a bug that sometimes caused the "Use SE Basic ROM"
+   checkbox to be greyed out when it shouldn't be.
+6. Optimised the sound routines a little to get rid of latency and
+   improve performance.
+
+vbSpec 1.60 -- 26th Novemeber 2002
+==================================
+1. Some fixes to the TZX support for DRB-format TZX blocks.
+2. Added emulation of the Sinclair ZX Printer/Alphacom 32 printer.
+3. Added emulation of the Kempston Mouse Interface.
+4. Added "Most Recently Used" file list support.
+5. Added command line snapshot/tape/rom loading support.
+6. Optimized the pokeb subroutines (submitted by Mark Woodmass).
+7. Optimized many of the Z80 opcode subroutines (submitted by
+   Gonchuki).
+8. Added inline versions of some functions (such as PUSH PC and POP
+   PC) to "help" the VB optimizer (submitted by Gonchuki).
+9. The hDC property of the Spectrum display window is now stored as
+   a 32-bit long rather than being re-read during each display update.
+   (submitted by Gonchuki).
+10.Now creates and reads TC2048 .z80 snapshots that are compatible
+   with FUSE (the Free Unix Spectrum Emulator).
+11.Some changes to the user interface (vbSpec is now dependent upon
+   the Microsoft Windows Common Controls OCX - MSCOMCTL.OCX)
+12.Performed various miscellaneous minor bug fixes.
+   
+vbSpec 1.50 -- 25th August 2002
+===============================
+1. Added support for loading TZX files, as submitted by Mark Woodmass.
+2. Added a simple TZX tape interface.
+3. Fixed a very minor bug in the LDIR/LDDR support (the undocumented
+   flag bits 3 and 5 where not updated properly by these opcodes).
+4. Fixed a minor bug in the CALL xx,nn opcodes (return address was 
+   being pushed onto the stack after the CALL was actioned, which
+   caused problems in some obscure self-modifying code). Bug identified
+   and fixed by Mark Woodmass.
+5. Improved the accuracy of the TC2048 keyboard emulation (the TC2048's
+   compatibility problems with games such as Uridium are now correctly
+   emulated!). Thanks to Fredrick Meunier for the description of the
+   TC2048 keyboard port.
+
+vbSpec 1.40 -- 29th February 2002
+=================================
+1. Added scanline-accurate display rendering, so that games and demos that
+   use tricks to display multi-colour graphics now look right.
+2. Added emulation of contended memory. Memory between $4000 and $7FFF is
+   shared between the ULA (which updates the video display) and the CPU,
+   and any code or data in this area of memory can sometimes be accessed
+   more slowly than the rest of RAM.
+3. Added support for saving screenshots in Windows .BMP format and Spectrum
+   .SCR format.
+4. Added support for loading .SCR screenshots. vbSpec will also open Timex
+   hi-resolution and hi-colour screen images, and is capable of converting
+   standard Spectrum .SCR files to the Timex hi-colour format.
+5. Some more minor performance optimizations.
+6. Fixed some undocumented opcode timings. Some of the DD/FD opcodes were
+   erroneously set-up to take 9 tstates rather than 8.
+
+vbSpec 1.30 -- 1st February 2002
+================================
+1. Added support for the TC2048 colour computer. Thanks to Andrew Owen for
+   providing technical information, test code, beta-testing and
+   encouragement!
+2. Speeded-up the Z80 emulation by using labels and gotos (yeuch!) in place
+   of the huge 'select case' statements. There are now only 8 compares per
+   instruction fetch rather than up to 256 that we required by the old
+   code. This has improved performance considerably. Thanks to Bob Woodring
+   for the idea.
+3. Added support for loading .TAP files (open a .tap file, then type
+   LOAD "" to load it, as you would on a real Spectrum).
+4. Added support for Windows drag and drop. You can down drag .sna, .z80,
+   .tap or .rom files from any drag&drop capable Windows program onto vbSpec.
+5. Fixed some minor bugs in the Z80 emulation (timing issues related to 
+   undocumented opcodes).
+6. Many optimisations and improvements to the Z80 emulation and the display
+   code.
+  
+
+vbSpec 1.20 -- 15th May 2000
+============================
+Many new features (thanks to James Bagg for implementing AY-3-8912 sound):-
+
+1. Added support for emulation of the 48K Spectrum's beeper (uses waveOut*
+   Windows API functions, so requires vbSpec to be compiled with USE_WINAPI
+   defined).
+2. Added support for emulation of the Spectrum 128 and Spectrum +2.
+3. Added support for emulation of the 128/+2 sound chip (AY-3-8912), as with
+   the beeper sound, this requires USE_WINAPI to be defined when compiling.
+4. Speed imrovements to the WINAPI display rountine -- the display now blits
+   the smallest possible rectangular area of the display that encompasses all
+   of the changes between frames. The addition of the sound and 128K support
+   has slowed things down a little down -- you'll need a 266MHz PII with a
+   reasonably good display card to run the emulator at full speed.
+5. Improved the code that controls the speed of emulation -- this helps to
+   ensure that the sound is reproduced properly, as well as ensuring that 
+   games run more smoothly.
+6. Added the ability to load 128K .Z80 and .SNA snapshots.
+7. Added the ability to save snapshots (both 48K and 128K snapshots can be
+   saved in either .SNA or .Z80 format).
+8. Added the ability to save ROM images. This causes the bottom 16KB of
+   the currently paged-in memory to be saved as a raw binary image.
+9. The 'R' register was not being properly initialised when loading certain
+   snapshots -- this caused problems with a few games. Now fixed.
+
+vbSpec 1.10 -- 18th April 2000
+==============================
+Some new features, and a massive performance increase:-
+
+1. Added USE_WINAPI conditional compiler directive. If defined, a version of
+   vbSpec that uses Windows API functions to increase speed and functionality
+   will be compiled. Leaving USE_WINAPI undefined produces a 100% native VB
+   build that is slower and slightly less functional.
+2. Added a new WINAPI display routine that uses the StrechDIBits() API to
+   produce a fast, buffered display which can be scaled to various sizes using
+   a new "Display options..." dialog.
+3. Improved the performance of the native VB display routines by using a
+   lookup table that maps X+Y screen coorindates to a Spectrum memory location.
+   Various other performance improvements to the VB display code have also
+   been added.
+4. Improved the performance of the VB display routines by using a lookup table
+   containing RGB values for the 15 Spectrum colours.
+5. Greatly improved the speed of the Z80 emulation by getting rid of all of the
+   floating point division and Int() calls and replacing them with integer
+   division (example: "Int(X / 256&)" becomes "(X \ 256&)".
+6. Greatly improved the speed of the Z80 emulation and screen updating by
+   replacing all Integer and Byte variables with Longs.
+7. Replaced all occurences of Iif() with block If statements for a further 
+   performance increase.
+8. Added the ability to customise the emulation speed via a new "Options..."
+   dialog.
+9. Modified the keyboard routine to support numeric keypad, backspace, ';',
+   and various other keys.
+10.Fixed some bugs in the Z80 emulation. For example: RL (IX+d) and RL (IY+d).
+11.Added support for some additional undocumented Z80 opcodes:-
+   LD B,RES 0,(IX+d) and various similar DDCB and FDCB instructions.
+12.Fixed broken implementation of the 'R' register.
+
+vbSpec 1.00 -- 8th February 2000
+================================
+Initial public release

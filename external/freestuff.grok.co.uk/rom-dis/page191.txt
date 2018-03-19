@@ -1,0 +1,56 @@
+32EB	0A	no-gr-eq	3B	332D	2B	peek	AC
+			35				34
+32ED	0B	nos-neql	3B	332F	2C	in	A5
+			35				34
+32EF	0C	no-grtr	3B	3331	2D	usr-no	B3
+			35				34
+32F1	0D	no-less	3B	3333	2E	str$	1F
+			35				36
+32F3	0E	nos-eql	3B	3335	2F	chr$	C9
+			35				35
+32F5	0F	addition	14	3337	30	not	01
+			30				35
+32F7	10	str-&-no	2D	3339	31	duplicate	C0
+			35				33
+32F9	11	str-l-eql	3B	333B	32	n-mod-m	A0
+			35				36
+32FB	12	str-gr-eq	3B	333D	33	jump	86
+			35				36
+32FD	13	strs-neql	3B	333F	34	stk-data	C6
+			35				33
+32FF	14	str-grtr	3B	3341	35	dec-jr-nz	7A
+			35				36
+3301	15	str-less	3B	3343	36	less-0	06
+			35				35
+3303	16	strs-eql	3B	3345	37	greater-0	F9
+			35				34
+3305	17	strs-add	9C	3347	38	end-calc	9B
+			35				36
+3307	18	val$	DE	3349	39	get-argt	83
+			35				37
+3309	19	usr-$	BC	334B	3A	truncate	14
+			34				32
+330B	1A	read-in	45	334D	3B	fp-calc-2	A2
+			36				33
+330D	1B	negate	6E	334F	3C	e-to-fp	4F
+			34				2D
+330F	1C	code	69	3351	3D	re-stack	97
+			36				32
+3311	1D	val	DE	3353	3E	series-06	49
+			45			etc.	34
+3313	1E	len	74	3355	3F	stk-zero	1B
+			36			etc.	34
+3315	1F	sin	B5	3357	40	st-mem-0	2D
+			37			etc.	34
+3317	20	cos	AA	3359	41	get-mem-0	0F
+			37			etc.	34
+
+
+Note: The last four subroutines are multi-purpose subroutines and are entered with a parameter that is a copy of the right hand five bits of the original literal. The full set follows:
+Offset 3E:	series-06, series-08, & series-0C; literals 86,88 & 8C.
+Offset 3F:	stk-zero, stk-one, stk-half, stk-pi/2 & stk-ten; literals A0 to A4.
+Offset 40:	st-mem-0, st-mem-1, st-mem-2, st-mem-3, st-mem-4 & st-mem-5;
+	literals C0 to C5.
+Offset 41:	get-mem-0, get-mem-1, get-mem-2, get-mem-3, get-mem-4 & get-mem-5;
+	literals E0 to E5.
+

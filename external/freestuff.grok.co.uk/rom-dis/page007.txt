@@ -1,0 +1,60 @@
+		BIT	7,(HL)	Continue if the set is 'free' but
+		RET	Z	exit from the KEYBOARD
+				subroutine if not.
+
+The new key is to be accepted. But before the system variable LAST-K can be filled, the KSTATE system variables, of the set being used, have to be initialised to handle any repeats and the key's code has to be decoded.
+
+02F1	K-NEW	LD	E,A	The code is passed to the
+		LD	(HL),A	E register and to KSTATE0/4.
+		INC	HL	The '5 call counter' for this
+		LD	(HL),+05	set is reset to '5'.
+		INC	HL	The third system variable of
+		LD	A,(REPDEL)	the set holds the REPDEL value
+		LD	(HL),A	(normally 0.7 secs.).
+		INC	HL	Point to KSTATE3/7.
+
+The decoding of a 'main code' depends upon the present state of MODE, bit 3 of FLAGS and the 'shift byte'.
+
+		LD	C,(MODE)	Fetch MODE.
+		LD	D,(FLAGS)	Fetch FLAGS.
+		PUSH	HL	Save the pointer whilst the
+		CALL	0333,K-DECODE	'main code' is decoded.
+		POP	HL
+		LD	(HL),A	The final code value is saved in
+				KSTATE3/7; from where it is
+				collected in case of a repeat.
+
+The next three instruction lines are common to the handling of both 'new keys' and 'repeat keys'.
+
+0308	K-END	LD	(LAST-K),A	Enter the final code value into
+		SET	5,(FLAGS)	LAST-K and signal 'a new key'.
+		RET		Finally return.
+
+THE 'REPEATING KEY' SUBROUTINE
+A key will 'repeat' on the first occassion after the delay period - REPDEL (normally 0.7 secs.) and on subsequent occassions after the delay period - REPPER (normally 0.1 secs.).
+
+0310	K-REPEAT	INC	HL	Point to the '5 call counter'
+		LD	(HL),+05	of the set being used and reset
+				it to '5'.
+		INC	HL	Point to the third system vari-
+		DEC	(HL)	able - the REPDEL/REPPER
+				value, and decrement it.
+		RET	NZ	Exit from the KEYBOARD
+				subroutine if the delay period
+				has not passed.
+		LD	A,(REPPER)	However once it has passed the
+		LD	(HL),A	delay period for the next repeat
+				is to be REPPER.
+		INC	HL	The repeat has been accepted
+		LD	A,(HL)	so the final code value is fetched
+				from KSTATE3/7 and passed
+		JR	0308,K-END	to K-END.
+
+THE 'K-TEST' SUBROUTINE
+The key value is tested and a return made if 'no-key' or 'shift-only'; otherwise the 'main code' for that key is found.
+
+031E	K-TEST	LD	B,D	Copy the shift byte.
+		LD	D,+00	Clear the D register for later.
+		LD	A,E	Move the key number.
+		CP	+27	Return now if the key was
+		RET	NC	'CAPS SHIFT' only or 'no-key'.

@@ -1,0 +1,68 @@
+The many different parameters, if any, that follow the command are now considered. Start by handling 'xxx "name" DATA'.
+
+0652	SA-DATA	RST	0018,GET-CHAR	Is the present code the
+		CP	+E4	token 'DATA'?
+		JR	NZ,06A0,SA-SCR$	Jump if not.
+		LD	A,(T-ADDR-lo)	However it is not possible
+		CP	+03	to have 'MERGE name DATA'.
+		JP	Z,1C8A,REPORT-C
+		RST	0020,NEXT-CHAR	Advance CH-ADD.
+		CALL	28B2,LOOK-VARS	Look in the variables area for
+				the array.
+		SET	7,C	Set bit 7 of the array's name.
+		JR	NC,0672,SA-V-OLD	Jump if handling an existing
+				array.
+		LD	HL,+0000	Signal 'using a new array'.
+		LD	A,(T-ADDR-lo)	Consider the value in T-ADDR
+		DEC	A	and give an error if trying to
+		JR	Z,0685,SA-V-NEW	SAVE or VERIFY a new array.
+
+Report 2 - Variable not found
+
+0670	REPORT-2	RST	0008,ERROR-1	Call the error handling
+		DEFB	+01	routine.
+
+Continue with the handling of an existing array.
+
+0672	SA-V-OLD	JP	NZ,1C8A,REPORT-C	Note: This fails to exclude
+				simple strings.
+		CALL	2530,SYNTAX-Z	Jump forward if checking
+		JR	Z,0692,SA-DATA-1	syntax.
+		INC	HL	Point to the 'low length' of the
+				variable.
+		LD	A,(HL)	The low length byte goes into
+		LD	(IX+0B),A	the work space; followed by
+		INC	HL	the high length byte.
+		LD	A,(HL)
+		LD	(IX+0C),A
+		INC	HL	Step past the length bytes.
+
+The next part is common to both 'old' and 'new' arrays.Note: Syntax path error.
+
+0685	SA-V-NEW	LD	(IX+0E),C	Copy the array's name.
+		LD	A,+01	Assume an array of numbers.
+		BIT	6,C	Jump if it is so.
+		JR	Z,068F,SA-V-TYPE
+		INC	A	It is an array of characters.
+068F	SA-V-TYPE	LD	(IX+00),A	Save the 'type' in the first
+				location of the header area.
+
+The last part of the statement is examined before joining the other pathways.
+
+0692	SA-DATA-1	EX	DE,HL	Save the pointer in DE.
+		RST	0020,NEXT-CHAR	Is the next character
+		CP	+29	a ')' ?
+		JR	NZ,0672,SA-V-OLD	Give report C if it is not.
+		RST	0020,NEXT-CHAR	Advance CH-ADD.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+				if checking syntax.
+		EX	DE,HL	Return the pointer to the HL
+		JP	075A,SA-ALL	register pair before jumping
+				forward. (The pointer indicates
+				the start of an existing array's
+				contents.)
+
+Now consider 'SCREEN$'.
+
+06A0	SA-SCR$	CP	+AA	Is the present code the
+				token SCREEN$'.

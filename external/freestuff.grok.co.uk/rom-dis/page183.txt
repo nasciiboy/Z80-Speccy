@@ -1,0 +1,58 @@
+The remainder of the subroutine deals with normalisation and is common to all the arithmetic routines.
+3155	TEST-NORM	JR	NC,316C,NORMALISE	If no carry then normalise now.
+		LD	A,(HL)	Else, deal with underflow (zero
+		AND	A	result) or near underflow
+3159	NEAR-ZERO	LD	A,+80	(result 2**-128):
+		JR	Z,315E,SKIP-ZERO	return exponent to A, test if A
+315D	ZERO-RSLT	XOR	A	is zero (case 2**-128) and if so
+315E	SKIP-ZERO	EXX		produce 2**-128 if number is
+		AND	D	normal; otherwise produce zero.
+		CALL	2FFB,ZEROS-4/5	The exponent must then be set
+		RLCA		to zero (for zero) or 1 (for
+				2**-128).
+		LD	(HL),A	Restore the exponent byte.
+		JR	C,3195,OFLOW-CLR	Jump if case 2**-128.
+		INC	HL	Otherwise, put zero into second
+		LD	(HL),A	byte of result on the calculator
+		DEC	HL	stack.
+		JR	3195,OFLOW-CLR	Jump forward to transfer the
+				result.
+The actual normalisation operation.
+316C	NORMALISE	LD	B,+20	Normalise the result by up to 32
+316E	SHIFT-ONE	EXX		decimal, Hex.20, shifts left of
+		BIT	7,D	D'E'DE (with A adjoined) until
+		EXX		bit 7 of D' is set. A holds zero
+		JR	NZ,3186,NORML-NOW	after addition so no precision is
+		RLCA		gained or lost; A holds the fifth
+		RL	E	byte from B' after multiplica-
+		RL	D	tion or division; but as only
+		EXX		about 32 bits can be correct, no
+		RL	E	precision is lost. Note that A is
+		RL	D	rotated circularly, with branch
+		EXX		at carry .... eventually a random
+				process.
+		DEC	(HL)	The exponent is decremented
+				on each shift.
+		JR	Z,3159,NEAR-ZERO	If the exponent becomes zero,
+				then number from 2**-129 are
+				rounded up to 2**-128.
+		DJNZ	316E,SHIFT-ONE	Loop back, up to 32 times.
+		JR	315D,ZERO-RSLT	If bit 7 never became 1 then the
+				whole result is to be zero.
+Finish the normalisation by considering the 'carry'.
+3186	NORML-NOW	RLA		After normalisation add back
+		JR	NC,3195,OFLW-CLR	any final carry that went into A.
+		CALL	3004,ADD-BACK	Jump forward if the carry does
+		JR	NZ,3195,OFLW-CLR	not ripple right back.
+		EXX		If it should ripple right back
+		LD	D,+80	then set mantissa to 0.5 and
+		EXX		increment the exponent.
+		INC	(HL)	This action may lead to arith-
+		JR	Z,31AD,REPORT-6	metic overflow (final case).
+The final part of the subroutine involves passing the result to the bytes reserved for it on the calculator stack and resetting the pointers.
+3195	OFLOW-CLR	PUSH	HL	Save the result pointer.
+		INC	HL	Point to the sign byte in the
+				result.
+		EXX		The result is moved from its
+		PUSH	DE	present registers, D'E'DE, to
+		EXX		BCDE; and then to ACDE.

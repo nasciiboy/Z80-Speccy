@@ -1,0 +1,78 @@
+<html><head>
+<title>DonTronics - Z80 Page. </title>
+</head>
+<BODY BACKGROUND="gfx/zand.jpg">
+<a href="http://www.dontronics.com"><img SRC="gfx/dtlogomi.gif" ALT="DonTronics Home Page" BORDER=0 height=26 width=142 align=TEXTTOP></a><b>
+<font size=+2>Z80 Page by Don McKenzie</font></b>
+<h3>This is what is left of my love affair with the Z80. The page is presented as is,
+and no user support is available.</h3>PBUFF was a printer buffer that could be configured from 8K to 4Mb of DRAM.
+Hardware Interfacing was done with only a single 74LS00 and a 74LS04. The magic was achieved with software
+and no hardware multiplexing was used.
+<p>&nbsp;Source code is included to prove that it was possible, and yes, I am the only person I know that was able to do it. :-)<p>
+&nbsp; The first set of 256K rams I saw, I got running in PBUFF, as I did with the 1Mb, and 4Mb types.
+I figured I didn't have to change the hardware until after 64Mb ram sizes.<p>&nbsp;
+DRAM could be 1, 2, 4, or 8 DIP chips, or 30 pin Simm modules.
+I think I had 11 memory sizes.<p>&nbsp;
+PBUFF started in approx. Nov-1984 and had about an 11 year run.<p>&nbsp;
+ZLOAD was a development system based on PBUFF. It used a JumpROM at address 0000H, that set the hardware and software jumps to 8000H.
+Your code was assembled for 8000H. At 8000H there was a battery backedRAM, so programming was simply done via a Printer port to this Ram.
+ When the final program was achieved, it could be assembled for 0000H, and burnt into a ROM.<p>&nbsp;
+This meant that EPROM Emulators were a thing of the past for Z80's.
+A simple board plugged into the EPROM socket of PBUFF to make ZLOAD functional.<p>&nbsp;
+I also tuned an 8080 Tiny Basic program to work with my PBUFFboard.<p>&nbsp;
+An LED moving message board is also included, but circuits aren't available.<p>
+<a href="zip/z80dram.zip">Download all files.</a>395K<p>
+<a href="zip/pbuff_k.pdf">Download PDF circuitfor PBUFF.</a> 97K<h3>As stated above, none of the below is current information, or supportedin any way.</h3>
+<hr><pre>
+UPDATED&nbsp;&nbsp; 1-Oct-1993(c)&nbsp;&nbsp;
+(Orig Ver 1.0 20-Nov-84)"PBUFF" 64K TO 4Mb CENTRONICS PARALLEL TO PARALLEL PRINTER BUFFER KITS.
+When I first advertised this kit in Jan. 85 it was a basic 8K to 64K buffer.
+The 256K version was featured in Australian Electronics Monthly magazine inMar. 87 as the star project.
+The 1Mb version appeared in Silicon Chipmagazine in Oct. 89. The current Rev. K board has additional provision toinstall an alternative 256K/1Mb/4Mb&nbsp;
+SIPP/SIMM type MEMORY MODULE. Thatmeans, you can either install standard 16 or 18 pin by 1 bit Drams, or a MEMORY MODULE.
+Both 8 byte and 9 byte type MODULES can be used. The software ignores the ninth byte.
+PBUFF Supports a mixture of 64K/256K/1Mb/4Mb DIP/SIMM/SIPP DRAMs in 10memory sizes up to 4Mb.
+Supports 64K, 128K, 256K, 320K, 512K, 1024K, 1088K, 1280K, 2048K, and 4096K (4Mb).
+Needs user wired 74LS139 decoder chip for some intermediate memory sizes.
+Some memory sizes can be done with acombination of standard Drams and a MEMORY MODULE.
+EG:- 512K can be done using a set of 8 by 41256s and a 256K MEMORY MODULE.
+Standard assemblyinstructions covers all memory size installations.
+This version increasessaturation loading time by more than 50 per cent over ealier versions.
+This represents a load rate of over 300K per minute using a PC/AT as the host anda 3.58mhz crystal in PBUFF.
+Instructions are given to increase the speed of PBUFF to a possible 10Mhz clock frequency.
+This reflects a load rate ofaround 900K per minute. My "PBUFF" printer buffer kit sales now exceed 4000 units worldwide, which Ibelieve speaks for itself.
+These kits have a single/multiple copy facility, Hexadecimal output mode, OPTIONAL hardware pause, DATA/STATUS LED, powerconnector for SERIAL board expansion,
+and extensive ROM diagnostic routine sto aid kit builders. This buffer installs in-line to your printer using standard centronicssignals.
+I have designed it so that it can be powered up with an existing +5volt supply, or an external input voltage of 9 volts AC or DC.
+Any plug-packcapable of supplying 400mA or more will suit this project.
+If a SERIAL boardis to be fitted, then a 9 volt @ 1 amp A/C supply must be used.
+PBUFF also supports the C3P1 and FPIO (front panel input/output) boards.
+It has kit builder diagnostics which includes static ram test, 555 timer test, printer test before Drams are installed,
+and individual DRAM fault checking. A respectable Hex dump format is provided.
+This complies to a normal utility type format of ADDRESS, HEX data, and ASCII data in three separate columns,
+with auto flush of the last block of data when the computer goes to sleepfor eight seconds, and a last byte in file indicator.
+It auto senses theDRAM type and sets it's routines accordingly.I am selling this unit in what I call a "PBUFF SHORT FORM KIT".
+Thisconsists of:- One bare double sided plated through printed circuit board.One EPROM programmed with PBUFF Ver 5.1E.
+Full assembly instructions,includes circuit, operator instructions, the memory doubler circuit details,and hardware debugging section.
+All text is supplied on an MS-DOS format3.5" floppy. This includes a test program that will verify the memory sizeand load rate of your buffer,
+plus the current ROM file as a backup.You provide all other parts and labour. You must have in your tool kit amulti-meter,
+and if you do run into real trouble, a Logic Probe may berequired.Check my ORDER FORM for the current price of the PBUFF SHORT FORM KIT.
+Howmuch are you really up for? You have to provide a suitable case, power-pack,(or transformer) centronics connectors and cables, plus approx.
+$30-$40worth of additional components, plus your memory chips. If you are ahardware hacker like me, you already have most of the components.
+The printed circuit board has been designed to mount straight into the DICKSMITH Instrument case,
+CAT H-2505 PBUFF accepts from 64K up to 4Mb ofcharacters from a centronics printer port, and stores it until your printerhas completed it's task.
+This releases your computer for other work.PBUFF is running on all types of computers from the early TRS-80's andApples to the latest IBM PC/XT/AT/386/486 and compatible clones,
+Amiga, Macintosh Plus, Microbees, VZ200/300, Tandy Color (using serial boardaddition), In fact we have yet to find a true CENTRONICS port that itdoesn't run off.
+Connector J1 on the PBUFF board is an extension of the Z80 chip pinout andis used for connection to FPIO &amp; C3P1 boards, or user prototype boards.
+A 40pin dual row male header can be soldered into this position.The cheapest printer cable that you can buy today is an IBM type DB25 to 36pin Centronics.
+The PBUFF board makes use of IBM cables and standardconnectors to save cost and simplify construction of cable interfacing.
+Headers are also provided for IBM standard flat ribbon cable pinout so thatthe unit can easily be installed inside a desktop if required.
+The input and output wiring has now been taken care of on the main PBUFFboard. Older boards had a separate Back Panel I/O board.
+This was known asthe BPIO board. Reference may still be given to this board on some of myother assembly instructions.
+What I have really done is to join the artworkof my PBUFF board to the BPIO board so that it becomes one board, andincluded the electrical connections in the artwork to save on header andconnector costs.
+Header J2 connects pin for pin to header J7. If isolationis required for Serial or other switch boards, the tracks must be cutbetween the points marked "A" and "A" on the component side of the board.
+This bus is called the PBUFF I/O bus. To re-connect this bus for any reason,26 pin male headers can be soldered into the J2 and J7 positions,
+and a short length of 26 wire flat ribbon cable that has two IDC crimp headersattached to either end can be inserted onto the male header pins.
+<hr>
+<br>Copyright &copy; 1996-2000 <i>DonTronics</i><br>&nbsp;</blockquote>
+</body></html>

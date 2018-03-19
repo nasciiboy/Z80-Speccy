@@ -1,0 +1,59 @@
+THE 'EXPECT NUMERIC/STRING EXPRESSIONS' SUBROUTINE
+There is a series of short subroutines that are used to fetch the result of evaluating the next expression. The result from a single expression is returned as a 'last value' on the calculator stack.
+	The entry point NEXT-2NUM is used when CH-ADD needs updating to point to the start of the first expression.
+
+1C79	NEXT-2NUM	RST	0020,NEXT-CHAR	Advance CH-ADD.
+
+The entry point EXPT-2NUM (EQU. CLASS-08) allows for two numeric expressions, separated by a comma, to be evaluated.
+
+1C7A	EXPT-2NUM	CALL	1C82,EXPT-1NUM	Evaluate each expression in
+	(CLASS-08)			turn - so evaluate the first.
+		CP	+2C	Give an error report if the
+		JR	NZ,1C8A	separator is not a comma.
+		RST	0020,NEXT-CHAR	Advance CH-ADD.
+
+The entry point EXPT-1NUM (EQU. CLASS-06) allows for a single numeric expression to be evaluated.
+
+1C82	EXPT-1NUM	CALL	24FB,SCANNING	Evaluate the next expression.
+	(CLASS-06)
+		BIT	6,(FLAGS)	Return as long as the result was
+		RET	NZ	numeric; otherwise it is an error.
+
+Report C - Nonsense in BASIC
+
+1C8A	REPORT-C	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0B	routine.
+
+The entry point EXPT-EXP (EQU. CLASS-0A) allows for a single string expression to be evaluated.
+
+1C8C	EXPT-EXP	CALL	24FB,SCANNING	Evaluate the next expression.
+	(CLASS-0A)
+		BIT	6,(FLAGS)	This time return if the result
+		RET	Z	indicates a string; otherwise
+		JR	1C8A,REPORT-C	give an error report.
+
+THE 'SET PERMANENT COLOURS' SUBROUTINE (EQU. CLASS-07)
+This subroutine allows for the current temporary colours to be made permanent. As command class 07 it is in effect the command routine for the six colour item commands.
+
+1C96	PERMS	BIT	7,(FLAGS)	The syntax/run flag is read.
+	(CLASS-07)
+		RES	0,(TV-FLAG)	Signal 'main screen'.
+		CALL	NZ,0D4D,TEMPS	Only during a 'run' call TEMPS
+				to ensure the temporary colours
+				are the main screen colours.
+		POP	AF	Drop the return address -
+				SCAN-LOOP.
+		LD	A,(T-ADDR)	Fetch the low byte of T-ADDR
+				and subtract +13 to give the
+		SUB	+13	range +D9 to +DE which are the
+				token codes for INK to OVER.
+		CALL	21FC,CO-TEMP-4	Jump forward to change the
+				temporary colours as directed
+				by the BASIC statement.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+				if checking syntax.
+		LD	HL,(ATTR-T)	Now the temporary colour
+		LD	(ATTR-P),HL	values are made permanent
+				(both ATTR-P & MASK-P).
+		LD	HL,+5C91	This is P-FLAG; and that too
+		LD	A,(HL)	has to be considered.

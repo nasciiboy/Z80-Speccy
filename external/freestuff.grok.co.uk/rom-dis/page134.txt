@@ -1,0 +1,59 @@
+		LD	BC,+1018	Priority 16 dec, operation code
+				+18 hex.
+		CP	+AE	Is it 'VAL$'?
+		JR	Z,270D,S-PUSH-PO	Jump forward if it is 'VAL$'.
+
+The present character must now represent one of the functions CODE to NOT, with codes +AF to +C3.
+
+		SUB	+AF	The range of the functions is
+				changed from +AF to +C3 to
+				range +00 to +14 hex.
+		JP	C,1C8A,REPORT-C	Report an error if out of range.
+
+The function 'NOT' is identified and dealt with separately from the others.
+
+		LD	BC,+04F0	Priority +04, operation code
+				+F0.
+		CP	+14	Is it the function 'NOT'?
+		JR	Z,270D,S-PUSH-PO	Jump if it is so.
+		JP	NC,1C8A,REPORT-C	Check the range again.
+
+The remaining functions have priority 16 decimal. The operation codes for these functions are now calculated. Functions that operate on strings need bit 6 reset and functions that give string results need bit 7 reset in their operation codes.
+
+		LD	B,+10	Priority 16 decimal.
+		ADD	A,+DC	The function range is now +DC
+				+EF.
+		LD	C,A	Transfer the operation code.
+		CP	+DF	Separate CODE, VAL and LEN
+		JR	NC,2707.S-NO-TO-S	which operate on strings to give
+		RES	6,C	numerical results.
+2707	S-NO-TO-S	CP	+EE	Separate STR$ and CHR$
+		JR	C,2700,S-PUSH-PO	which operate on numbers to
+				give string results.
+		RES	7,C	Mark the operation codes.
+				The other operation codes have
+				bits 6 and 7 both set.
+
+The priority code and the operation code for the function being considered are now pushed on to the machine stack. A hierarchy of operations is thereby built up.
+
+270D	S-PUSH-PO	PUSH	BC	Stack the priority and operation
+		RST	0020,NEXT-CHAR	codes before moving on to
+		JP	24FF,S-LOOP-1	consider the next part of the
+				expression.
+
+The scanning of the line now continues. The present argument may be followed by a '(', a binary operator or, if the end of the expression has been reached, then e.g. a carriage return character or a colon, a separator or a 'THEN'.
+
+2712	S-CONT-2	RST	0018,GET-CHAR	Fetch the present character.
+2713	S-CONT-3	CP	+28	Jump forward if it is not a '(',
+		JR	NZ,2723,S-OPERTR	which indicates a parenthesised
+				expression.
+
+If the 'last value' is numeric then the parenthesised expression is a true sub-expression and must be evaluated by itself. However if the 'last value' is a string then the parenthesised expression represents an element of an array or a slice of a string. A call to SLICING modifies the parameters of the string as required.
+
+		BIT	6,(FLAGS)	Jump forward if dealing with a
+		JR	NZ,2734,S-LOOP	numeric parenthesised
+				expression.
+		CALL	2A52,SLICING	Modify the parameters of the
+				'last value'.
+		RST	0020,NEXT-CHAR	Move on to consider the next
+		JR	2713,S-CONT-3	character.

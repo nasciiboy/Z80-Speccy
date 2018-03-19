@@ -1,0 +1,68 @@
+		JR	NZ,06C3,SA-CODE	Jump if not.
+		LD	A,(T-ADDR-lo)	However it is not possible to
+		CP	+03	have 'MERGE name SCREEN$'.
+		JP	Z,1C8A,REPORT-C
+		RST	0020,NEXT-CHAR	Advance CH-ADD.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+				if checking syntax.
+		LD	(IX+0B),+00	The display area and the
+		LD	(IX+0C),+1B	attribute area occupy +1800
+				locations and these locations
+		LD	HL,+4000	start at +4000; these details
+		LD	(IX+0D),L	are passed to the header area
+		LD	(IX+0E),H	in the work space.
+		JR	0710,SA-TYPE-3	Jump forward.
+
+Now consider 'CODE'.
+
+06C3	SA-CODE	CP	+AF	Is the present code the token
+				'CODE'?
+		JR	NZ,0716,SA-LINE	Jump if not.
+		LD	A,(T-ADDR-lo)	However it is not possible to
+		CP	+03	have 'MERGE name CODE'.
+		JP	Z,1C8A,REPORT-C
+		RST	0020,NEXT-CHAR	Advance CH-ADD.
+		CALL	2048,PR-ST-END	Jump forward if the statement
+		JR	NZ,06E1,SA-CODE-1	has not finished.
+		LD	A,(T-ADDR-lo)	However it is not possible to
+		AND	A	have 'SAVE name CODE' by
+		JP	Z,1C8A,REPORT-C	itself.
+		CALL	1CE6,USE-ZERO	Put a zero on the calculator
+				stack - for the 'start'.
+		JR	06F0,SA-CODE-2	Jump forward.
+
+Look for a 'starting address'.
+
+06E1	SA-CODE-1	CALL	1C82,EXPT-1NUM	Fetch the first number.
+		RST	0018,GET-CHAR	Is the present character a ','
+		CP	+2C	or not?
+		JR	Z,06F5,SA-CODE-3	Jump if it is - the number was
+				a 'starting address'.
+		LD	A,(T-ADDR-lo)	However refuse 'SAVE name
+		AND	A	CODE' that does not have a
+		JP	Z,1C8A,REPORT-C	'start' and a 'length'.
+06F0	SA-CODE-2	CALL	1CE6,USE-ZERO	Put a zero on the calculator
+				stack - for the 'length'.
+		JR	06F9,SA-CODE-4	Jump forward.
+
+Fetch the 'length' as it was specified.
+
+06F5	SA-CODE-3	RST	0020,NEXT-CHAR	Advance CH-ADD.
+		CALL	1C82,EXPT-1NUM	Fetch the 'length'.
+
+The parameters are now stored in the header area of the work space.
+
+06F9	SA-CODE-4	CALL	1BEE,CHECK-END	But move on to the next state-
+				ment now if checking syntax.
+		CALL	1E99,FIND-INT2	Compress the 'length' into
+		LD	(IX+0B),C	the BC register pair and
+		LD	(IX+0C),B	store it.
+		CALL	1E99,FIND-INT2	Compress the 'starting address'
+		LD	(IX+0D),C	into the BC register pair
+		LD	(IX+0E),B	and store it.
+		LD	H,B	Transfer the 'pointer' to the
+		LD	L,C	HL register pair as usual.
+
+'SCREEN$' and 'CODE' are both of type 3.
+
+0710	SA-TYPE-3	LD	(IX+00),+03	Enter the 'type' number.

@@ -1,0 +1,57 @@
+195A	OUT-CH-1	CP	+22	Accept for printing all
+		JR	NZ,1968,OUT-CH-2	characters except '"'.
+		PUSH	AF	Save the character code whilst
+				changing the 'quote mode'.
+		LD	A,(FLAGS2)	Fetch FLAGS2 and flip
+		XOR	+04	bit 2.
+		LD	(FLAGS2),A	Enter the amended value and
+		POP	AF	restore the character code.
+1968	OUT-CH-2	SET	2,(FLAGS)	Signal 'the next character is
+				to be printed in L-mode'.
+196D	OUT-CH-3	RST	0010,PRINT-A-1	The present character is
+		RET		printed before returning.
+
+Note: It is the consequence of the tests on the present character that determines whether the next character is to be "printed in 'K' or 'L' mode".
+Also note how the program does not cater for ':' in REM statements.
+
+THE 'LINE-ADDR' SUBROUTINE
+For a given line number, in the HL register pair, this subroutine returns the starting address of that line or the 'first line after', in the HL register pair, and the start of the previous line in the DE register pair.
+If the line number is being used the zero flag will be set.  However if the 'first line after' is substituted then the zero flag is returned reset.
+
+196E	LINE-ADDR	PUSH	HL	Save the given line number.
+		LD	HL,(PROG)	Fetch the system variable
+		LD	D,H	PROG and transfer the address
+		LD	E,L	to the DE register pair.
+
+Now enter a loop to test the line number of each line of the program against the given line number until the line number is matched or exceeded.
+
+1974	LINE-AD-1	POP	BC	The given line number.
+		CALL	1980,CP-LINES	Compare the given line number
+				against the addressd line
+		RET	NC	number.  Return if carry reset;
+		PUSH	BC	otherwise address the next
+		CALL	19B8,NEXT-ONE	line's number.
+		EX	DE,HL	Switch the pointers and
+		JR	1974,LINE-AD-1	jump back to consider the next
+				line of the program.
+
+THE 'COMPARE LINE NUMBERS' SUBROUTINE
+The given line number in the BC register pair is matched against the addressed line number.
+
+1980	CP-LINES	LD	A,(HL)	Fetch the high byte of the
+		CP	B	addressed line number and
+		RET	NZ	compare it.  Return if they do
+				not match.
+		INC	HL	Next compare the low bytes.
+		LD	A,(HL)	Return with the carry flag
+		DEC	HL	set if the addressed line
+		CP	C	number has yet to reach the
+		RET		given line number.
+
+THE 'FIND EACH STATEMENT' SUBROUTINE
+This subroutine has two distinct functions.
+
+i. It can be used to find the 'D'th. statement in a BASIC line - returning with the HL register pair addressing the location before the start of the statement and the zero flag set.
+
+ii. Also the subroutine can be used to find a statement, if any, that starts with a given token code (in the E register).
+

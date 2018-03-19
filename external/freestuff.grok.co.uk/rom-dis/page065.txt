@@ -1,0 +1,62 @@
+		EX	DE,HL	Destination into HL &
+				number into DE.
+		POP	BC	Fetch the new line's length.
+		LD	(HL),B	The high length byte.
+		DEC	HL	
+		LD	(HL),C	The low length byte.
+		DEC	HL	
+		LD	(HL),E	The low line number byte.
+		DEC	HL
+		LD	(HL),D	The high line number byte.
+15AB	MAIN-ADD2	POP	AF	Drop the address of REPORT-G.
+		JP	12A2,MAIN-EXEC	Jump back and this time do
+				produce and automatic listing.
+
+THE 'INITIAL CHANNEL INFORMATION'
+Initially there are four channels - 'K', 'S', 'R', & 'P' - for communicating with the 'keyboard', 'screen', 'work space' and 'printer'.  For each channel the output routine address comes before the input routine address and the channel's code.
+
+15AF	DEFB	F4 09		- PRINT-OUT
+	DEFB	A8 10		- KEY-INPUT
+	DEFB	4B		- 'K'
+15B4	DEFB	F4 09		- PRINT-OUT
+	DEFB	C4 15		- REPORT-J
+	DEFB	53		- 'S'
+15B9	DEFB	81 0F		- ADD-CHAR
+	DEFB	C4 15		- REPORT-J
+	DEFB	52		- 'R'
+15BE	DEFB	F4 09		- PRINT-OUT
+	DEFB	C4 15		- REPORT-J
+	DEFB	50		- 'P'
+15C3	DEFB	80		- End marker.
+
+Report J - Invalid I/O device
+15C4	REPORT-J	RST	0008,ERROR-1	Call the error handling
+		DEFB	+12	routine
+
+THE 'INITIAL STREAM DATA'
+Initially there are seven streams - +FD to +03.
+
+15C6	DEFB	01 00		- stream +FD leads to channel 'K'
+15C8	DEFB	06 00		- stream +FE   "         "    'S'
+15CA	DEFB	0B 00		- stream +FF   "         "    'R'
+15CC	DEFB	01 00		- stream +00   "         "    'K'
+15CE	DEFB	01 00		- stream +01   "         "    'K'
+15D0	DEFB	06 00		- stream +02   "         "    'S'
+15D2	DEFB	10 00		- stream +03   "         "    'P'
+
+THE 'WAIT-KEY' SUBROUTINE
+This subroutine is the controlling subroutine for calling the current input subroutine.
+
+15D4	WAIT-KEY	BIT	5,(TV-FLAG)	Jump forward if the flag
+		JR	NZ,15DE,WAIT-KEY1	indicates the lower screen
+				does not require clearing.
+		SET	3,(TV-FLAG)	Otherwise signal 'consider
+				the mode as having changed'.
+15DE	WAIT-KEY1	CALL	15E6,INPUT-AD	Call the input subroutine
+				indirectly via INPUT-AD.
+		RET 	C	Return with acceptable codes.
+		JR	Z,15DE,WAIT-KEY1	Both the carry flag and the
+				zero flag are reset if 'no key is
+				being pressed'; otherwise
+				signal an error.
+

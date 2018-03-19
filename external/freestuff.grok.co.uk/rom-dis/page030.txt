@@ -1,0 +1,66 @@
+		LD	C,A	turn and test it.
+		CP	+80	Return when all the variables
+		RET	Z	have been considered.
+		PUSH	HL	Save the current new pointer.
+		LD	HL,(VARS)	Fetch VARS (for the old
+				program).
+
+Now enter an inner loop to search the existing variables area.
+
+08F9	ME-OLD-VP	LD	A,(HL)	Fetch each variable name and
+		CP	+80	test it.
+		JR	Z,0923,ME-VAR-L2	Jump forward once the end
+				marker is found. (Make an
+				'addition'.)
+		CP	c	Compare the names 0 st. bytes).
+		JR	Z,0909,ME-OLD-v2	Jump forward to consider it
+				further; returning here if it
+				proves not to match fully.
+0901	ME-OLD-V1	PUSH	BC	Save the new variable's name
+		CALL	19B8,NEXT-ONE	whilst the next 'old variable'
+		POP	BC	is located.
+		EX	DE,HL	Restore the pointer to the
+		JR	08F9,ME-OLD-VP	D E register pair and go round
+				the loop again.
+
+The old and new variables match with respect to their first bytes but variables with long names will need to be matched fully.
+
+0909	ME-OLD-V2	AND	+E0	Consider bits 7, 6 & 5 only.
+		CP	+A0	Accept all the variable types
+		JR	NZ,0921,ME-VAR-L1	except 'long named variables'.
+		POP	DE	Make DE point to the first
+		PUSH	DE	character of the 'new name'.
+		PUSH	HL	Save the pointer to the 'old
+				name'.
+
+Enter a loop to compare the letters of the long names.
+
+0912	ME-OLD-V3	INC	HL	Update both the 'oid'and the
+		INC	DE	new' pointers.
+		LD	A,(DE)	Compare the two letters
+		CP	(HL)
+		JR	NZ,091E,ME-OLD-V4	Jump forward if the match
+				fails.
+		RLA		Go round the loop until the
+		JR	NC,0912,ME-OLD-V3	'last character' is found.
+		POP	HL	Fetch the pointer to the
+				start of the 'old' name and
+		JR	0921,ME-VAR-L1	jump forward - successful.
+091E	ME-OLD-V4	POP	HL	Fetch the pointer and jump
+		JR	0901,ME-OLD-V1	back - unsuccessful.
+
+Come here if the match was found.
+
+0921	ME-VAR-L1	LD	A,+FF	Signal 'replace' variable.
+
+And here if not. (A holds +80 - variable to be 'added'.)
+	
+0923	ME-VAR-L2	POP	DE	Fetch pointer to 'new' name.
+		EX	DE,HL	Switch over the registers.
+		INC	A	The zero flag is to be set if there
+				is to be a 'replacement'; reset
+				for an 'addition'.
+		SCF		Signal 'handling variables'.
+		CALL	092C,ME-ENTER	Now make the entry.
+		JR	08F0,ME-VAR-LP	Go round the loop to consider
+				the next new variable.

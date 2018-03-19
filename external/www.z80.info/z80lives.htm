@@ -1,0 +1,744 @@
+<HTML>
+<HEAD><TITLE>The Z80 Lives!</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+<META NAME="AUTHOR" CONTENT="Jack Ganssle"></HEAD>
+<BODY background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A><p>
+<CENTER>
+<TABLE BORDER=0 WIDTH=520>
+<TR VALIGN=TOP><TD><font color="blue"><H1>The Z80 Lives!</h1></font></TD></TD></TABLE>
+
+<TABLE BORDER=0 WIDTH=480><TR VALIGN=TOP><TD>
+
+<address>
+
+<font size=-1>About the author: Jack Ganssle, now principal consultant of TGG, is engaged in a mission to help embedded developers create better products faster. For information about embedded courses and seminars check out <a href="http://www.ganssle.com">www.ganssle.com</a>. </font>
+
+<p>Copyright 1992, Jack G. Ganssle 
+
+</ADDRESS>
+
+<HR>
+
+<H3>Abstract</H3>
+
+<P>
+
+The Z80 and its derivatives continues to be tremendously successful.
+
+Here's the current state of the art.
+
+<P>
+
+Published in Embedded Systems Programming, March 1992
+
+<p><ul>
+
+<li><a href= "z80_home.htm"> Return</a> to the Z80 home page
+<li><a href= "http://www.softaid.net/embedded.html">Go To Softaid's</a> home page</a></ul>
+
+<HR>
+
+<P>
+
+I get really nervous reading the trade press. Magazines will have
+
+you believe that the only viable processor for even the simplest
+
+applications is a 50 Mhz 486 or a screaming RISC machine. How
+
+many designers are using these CPUs in their embedded designs?
+
+
+
+<P>
+
+At the Embedded Systems Conference Andy Rappaport made a convincing
+
+argument that one day we'll have infinite MIPs for zero dollars.
+
+Until that time I remain convinced that smaller CPUs, those that
+
+address the price sensitivity of so many embedded products, will
+
+dominate new designs. 
+
+<P>
+
+Personally, I prefer 8 and 16 bit CPUs. They're cheap, they're
+
+cheap to interface to, and they are easy to work with. The processor
+
+itself costs about 1/50 of a 68030 or 80386. Remember that 16
+
+and 32 bit machines will have 2 or 4 ROM and RAM chips per word,
+
+compared to 1 for an 8 bit processor, greatly increasing memory
+
+costs.
+
+<P>
+
+In fact, an 8 bit processor exactly matches the bus width of the
+
+vast majority of memories and peripherals. An 8 bit bus uses memory
+
+efficiently (handling byte data in a 16 bit word is wasteful).
+
+Simpler circuitry, with fewer components, can be used.
+
+<P>
+
+16 and 32 bit busses are often used to move more data in parallel.
+
+A wider instruction word, handled in a single machine cycle, means
+
+more complex operations can be accomplished in less time. Larger
+
+addresses can be used efficiently, giving the machine access to
+
+more memory. The benefit is speed at the penalty of more cost.
+
+<P>
+
+EDN's annual Microprocessor survey came out in December. Though
+
+I didn't count the number of current micros, the sheer bulk of
+
+the survey is an impressive testimonial to the huge number of
+
+different choices available to the embedded designer.
+
+<P>
+
+I feel four processor families can satisfy most embedded designs.
+
+I'll leave out 4 bit choices, as these applications are often
+
+so specialized that a custom or semi-custom chip is often the
+
+most cost effective solution. My choices are the 8051 family,
+
+the Z80 family, the 80186 (and V-Series) families, and the 68000
+
+and its derivatives. 
+
+<P>
+
+Occasionally I'll do an article about members of each family.
+
+This month's choice is the Z80.
+
+<H5>Current Z80 Technology</H5>
+
+
+
+<P>
+
+The Z80 is essentially unchanged from the original version introduced
+
+in the mid-70s. Now CMOS versions are common, and clock rates
+
+have skyrocketed. Zilog's newest offering runs at 20 Mhz. This
+
+speed is no panacea - it comes at the price of expensive ROMs
+
+and RAMs. Still, even at 6 to 10 Mhz the Z80 has respectable performance.
+
+It would be a terrible Windows machine, but is more than adequate
+
+for an awful lot of embedded systems.
+
+<P>
+
+The Z80 itself is attractive due to its low cost and wide availability.
+
+It's pretty easy to find Z80s for less than a buck. Tools are
+
+everywhere. Though its index instructions are a little crude,
+
+it is a far better C machine than, say, the 8051.
+
+<P>
+
+The Z80 in isolation would be a dead-end line. What makes it interesting
+
+is the high integration derivatives CPUs spawned by the architecture.
+
+All four of the processor families I mentioned earlier exist in
+
+multiple proliferation versions. A processor by itself is useful;
+
+one integrated with a number of on-chip peripherals is compelling.
+
+<P>
+
+The 64180 is a Hitachi-supplied Z80 core with numerous on-chip
+
+&quot;extras&quot;. Zilog's version is the Z180, which is essentially
+
+the same part. As of this writing, Zilog sells parts running at
+
+speeds to 15 Mhz.
+
+<P>
+
+The 64180/Z180 microprocessor integrates many of the functions
+
+traditionally assigned to peripheral circuitry onto a single chip.
+
+The designers picked an architecture compatible with the Z80,
+
+giving Z80 users a completely software compatible upgrade path.
+
+Old Z80 designs can be converted to the 64180 with essentially
+
+no loss in software investment. New designs will benefit from
+
+the processor's low cost, powerful instruction set, minute power
+
+consumption, and high level of integration.
+
+<H5>64180 Description</H5>
+
+
+
+<P>
+
+64180 peripherals include two 16 bit counter/timers, programmable
+
+refresh and wait state generation, a pair of DMA controllers,
+
+and three serial ports with on-chip baud rate generation. Toss
+
+in a little memory and some parallel I/O and you have a complete
+
+computer.
+
+<P>
+
+Like the Z80, the 64180 supports 16 bit I/O addresses. Whenever
+
+an IN A,(C) or OUT (C),A instruction is executed, both the Z80
+
+and 64180 issue the contents of C as the low order port address,
+
+and the contents of B as the high 8 bits of the address. Unlike
+
+the Z80, for which few users ever needed more than an 8 bit address,
+
+16 bit port addresses are crucial to the chip's operation.
+
+<P>
+
+The 64180's internal peripherals are all accessed via reads and
+
+writes to I/O ports. Each device is assigned a set of unique port
+
+addresses, whose upper 8 bits is always zero. In other words,
+
+to read or write an internal I/O device your program must issue
+
+an IN or OUT with a 16 bit port address, and that address must
+
+be less than 256. 
+
+<P>
+
+The 64180 reserves 64 I/O addresses for dealing with the internal
+
+I/O addresses. On reset, these addresses are from 0000 to 003F.
+
+It is possible to set the starting address of the I/O registers
+
+to any of four values: 0000, 0040, 0080, and 00C0. This is particularly
+
+useful if the internal register conflicts with a port in the user's
+
+external hardware. 
+
+<H5>CPU Bus Programmability</H5>
+
+
+
+<P>
+
+The 64180 permits dynamic selection of several bus parameters,
+
+including memory wait states, I/O wait states, and refresh rate.
+
+<P>
+
+Like the Z80, the 64180 automatically generates refresh cycles
+
+to keep dynamic memories alive. Now that statics are available
+
+inexpensively in large configurations, refresh just degrades processor
+
+performance. On the 64180 the programmer can select the refresh
+
+rate. Refresh can be altogether disabled if desired.
+
+<P>
+
+The Refresh Control Register enables refresh, sets the rate, and
+
+optionally adds a wait state during refresh for slow memories.
+
+The fastest possible refresh is set at reset with the wait state
+
+enabled. While nicely Z80 compatible, this results in a significant
+
+performance degradation. If refresh is not needed, it should be
+
+disabled. 
+
+<P>
+
+The 64180's refresh controller generates an 8 bit refresh address
+
+(the Z80 generates a 7 bit address). Unfortunately, 1 Mb dynamic
+
+RAM chips all need a 9 bit refresh address. It's pretty easy to
+
+place a divider on bit 8 of the address to generate refresh bit
+
+9.
+
+<H5>Timers</H5>
+
+
+
+<P>
+
+The 64180 has two independent 16 bit timers that both count the
+
+CPU's clock. Each can be programmed to generate an interrupt when
+
+the count reaches zero. The timers are automatically reloaded
+
+with an initial value at a count of 0.
+
+<P>
+
+Each timer has a 16 bit data register that can be read or written
+
+to set/examine the current count value, and a 16 bit reload register
+
+that is loaded into the data register when a count of 0 is reached.
+
+
+
+<P>
+
+Using the timers is quite simple. The data registers are set to
+
+an initial value, the reload registers are set to the reload value
+
+(usually the same number as the initial data register contents),
+
+and the proper mode is set in the Control register.
+
+<H5>Serial Ports </H5>
+
+
+
+<P>
+
+The 64180 contains three serial devices. Two of these are traditional
+
+asynchronous UARTs (ASCI 0 and ASCI 1). The third is a clocked
+
+port for synchronous applications.
+
+<P>
+
+Each ASCI (Asyncronous Communications Interface) supports full
+
+duplex, 7 or 8 data bits, 1 or 2 stop bits, all forms of parity,
+
+some modem control signals, and separately controllable baud rate
+
+generation. Interrupts can be generated on a received character,
+
+data error, or transmit buffer empty condition.
+
+<P>
+
+The clocked Serial I/O port (CSI/O) is a simple synchronous port
+
+that supports half duplex 8 bit communications. It is not complete
+
+enough to drive SDLC or other complex synchronous links, but can
+
+drive the serial bus used by the 8051 and other processors.
+
+<H5>Interrupt Structure</H5>
+
+
+
+<P>
+
+Like the Z80, the 64180 can run in one of three interrupt modes
+
+(0, 1, and 2). In addition, it supports a number of new interrupt
+
+sources.
+
+<P>
+
+Four external sources of interrupts are available. NMI and INT0
+
+correspond with the Z80's nonmaskable NMI and maskable INTR inputs.
+
+These behave in exactly the same manner as on the Z80. INT0 can
+
+run in mode 0, 1, or 2, depending on the selection made via the
+
+IM instruction.
+
+<P>
+
+Two new external inputs, INT1 and INT2, always function in mode
+
+2 (vectored), regardless of the specified IM mode. When asserted,
+
+the CPU branches to a table to fetch the address of the processing
+
+routine.
+
+<P>
+
+Similarly, all interrupts from internal I/O devices are always
+
+handled in mode 2. 
+
+<P>
+
+On the Z80, all mode 2 vectors are taken from a table in the memory
+
+page specified by the setting of the I register (which can be
+
+accessed by the LD I,A instruction). The interrupting device must
+
+put the low order 8 bits of the vector address on the bus during
+
+the interrupt acknowledge cycle. This remains the case on the
+
+64180 for the external INT0 interrupt source. However, the INT1,
+
+INT2, and internal devices work somewhat differently.
+
+<P>
+
+A new register (IL) specifies bits 5, 6, and 7 of the vector table
+
+for INT0, INT1 and internal interrupts. The upper 8 bits of the
+
+vector are still given by the I register, just as on the Z80.
+
+Note that INT0 does not use the IL register in forming the vector
+
+address, to maintain Z80 compatibility.
+
+<P>
+
+INT1, INT2, and the internal interrupts are assigned fixed offsets
+
+from the start of the table formed by I and IL. 
+
+<H5>Instruction Set</H5>
+
+
+
+<P>
+
+The 64180 processor runs every Z80 instruction exactly as a Z80
+
+does, though a bit faster. All registers are handled the same,
+
+all flags are identical (which is not quite the case between the
+
+8085 and Z80), and all addressing modes are the same. This makes
+
+the transition to the 64180 for Z80 programmers quite easy. A
+
+few new instructions are useful in some applications.
+
+<P>
+
+The SLP instruction puts the 64180 in an ultra low power mode.
+
+Sleep mode can only be exited by the receipt of an interrupt,
+
+or by reset. SLP can also be used for ultra-low latency response
+
+to interrupts, as any interrupt during a SLP just exist sleep
+
+mode without executing an interrupt cycle.
+
+<P>
+
+An 8 bit unsigned multiply instruction gives a 16 bit result.
+
+Using only 17 T-states, it is a very fast way to multiply two
+
+small numbers. It takes any register pair (BC, DE, HL, or SP),
+
+multiplies the upper register by the lower one, and returns the
+
+result in the pair.
+
+<P>
+
+The four versions of the TST instruction all perform non-destructive
+
+bitwise ANDs of the argument against the accumulator. TSTIO takes
+
+as its argument an 8 bit I/O port address. The upper 8 bits of
+
+the 16 bit port specifier are automatically set to 0. 
+
+<H5>Memory Management</H5>
+
+
+
+<P>
+
+One of the biggest advantages of a 16 bit processor over an 8
+
+bit one is its ability to address a large address space. Most
+
+8 bit computers are limited to 64k of memory, whereas a 16 bit
+
+CPU generally supports 1 to 16 Mb. The memory may be cumbersome
+
+to access, as in the 8088 series, but it is available. A large
+
+memory space is important for big data structures and programs.
+
+
+
+<P>
+
+The MMU is the mechanism by which the 64180 can access an address
+
+space larger than 64k, but still maintain compatibility with the
+
+Z80 instruction set. All instructions, in all modes, always issue
+
+16 bit addresses. The MMU converts every one of these 16 bit addresses
+
+to 20 bits. 
+
+<P>
+
+The memory connected to the 64180 is its &quot;physical memory&quot;;
+
+it is the entire universe of memory available to the processor.
+
+The memory that can be addressed with any one map, or configuration,
+
+of the MMU is called the &quot;logical&quot; address space. Every
+
+address generated by a user's program is a logical address. The
+
+MMU's role is to translate these logical addresses into physical
+
+ones. If, for example, the user's program tries to reference location
+
+0, this is a reference to logical address 0. The actual, physical,
+
+address accessed will be a function of the mapping of the MMU.
+
+It may indeed use physical address 0; on power up, the MMU translates
+
+every logical address to exactly the same physical address (which
+
+simulates the Z80). 
+
+<P>
+
+Every address reference made by a program is passed through the
+
+MMU before being placed on the CPU's pins. If the address matches
+
+a range previously programmed into the MMU, then the MMU will
+
+add an offset to that address, forming the physical address. Since
+
+the offset is a 20 bit number the device can access up to 1 Mb
+
+of memory.
+
+<P>
+
+The 64180's MMU lets the user segment the memory into up to three
+
+different areas. For instance, references to logical addresses
+
+0 to 3FFFh could access physical addresses 0 to 3FFFh, references
+
+to 4000h to 7FFFh could access physical addresses 10000h to 13FFFh,
+
+and the last half of the logical space could access physical addresses
+
+40000h to 47FFFh.  Virtually any combination is possible.
+
+<P>
+
+A more complete discussion of the MMU is beyond the scope of this
+
+article. Many vendors have helpful application notes. Some compilers
+
+even automatically support MMU, remapping it dynamically to let
+
+you code huge programs.
+
+<H5>Other Z80-Like CPUs</H5>
+
+
+
+<P>
+
+The 64180/Z180 is not the only high integration derivative of
+
+the 64180. Both Zilog and Toshiba sell a number of Z80-like devices
+
+with differing mixes of peripherals and memory. The range of processors
+
+grows daily.
+
+<P>
+
+Both Toshiba and Zilog sell the 84013 and 84015, which are Z80
+
+cores with conventional Z80 peripherals integrated on-board. While
+
+not as popular as the 64180/Z180, these processors are natural
+
+migration paths for current users of Z80s wishing to reduce systems
+
+costs.
+
+<P>
+
+Both the 84013 and the 84015 include one SIO (Z80-specific Serial
+
+I/O), and one CTC (again, a Z80-specific timer part). The SIO
+
+and CTC are functionally identical to the discrete chip SIO/CTC
+
+used in so many older designs. In addition, the newer parts include
+
+a watchdog timer and clock generator.
+
+<P>
+
+The 84015 comes (unfortunately, to my way of thinking) in a 100
+
+pin quad flat pack. To take advantage of the extra pins the vendors
+
+added in a Z80-like PIO (parallel I/O) port, with 16 parallel
+
+lines and 4 handshaking likes.
+
+<P>
+
+Zilog and Toshiba sell a number of other Z80-like parts, which
+
+are of more interest to our hardware brethren than to programmers.
+
+The 84C50 is a Z80 with 2k of RAM. The 84C01 is a Z80 with integrated
+
+clock circuits.
+
+<P>
+
+Toshiba's TMP 90 line are properly not Z80 parts, as the machine
+
+code instruction encoding is different than the Z80. However,
+
+it does maintain source compatibility, so could be considered
+
+Z80-like. The TMP 90 line includes dozens of family members, each
+
+having a different mix of peripherals and on-board memory.
+
+<P>
+
+Typically, a TMP 90 part comes with ROM (up to 32k), RAM (up to
+
+1k), 4 to 6 analog to digital channels, one or more timers, parallel
+
+I/O, and DMA. Pulse width modulation channels (worthy of an article
+
+in themselves) and zero crossing detectors are also included.
+
+<P>
+
+The TMP 90 parts are especially nice because of their on-board
+
+ROM and RAM. This is a cheap way to make high volume single chip
+
+systems. Some of the parts come in PROM versions, making prototyping
+
+much more economical.
+
+<H5>Summary</H5>
+
+
+
+<P>
+
+Does anyone really know what processors most designers use? I
+
+believe this is a mystery. 
+
+<P>
+
+Chip vendors track volume sales of CPUs to determine which ones
+
+outsell the others. They're happy to sell 100 million CPUs to
+
+one customer. This tells us nothing about the number of designers
+
+working with a chip. A thousand applications being produced in
+
+hundred quantities amounts to few chip sales, but lots of engineering.
+
+<P>
+
+What processors do you use? Why? Let me know and I'll pass the
+
+information on to your fellow readers.
+
+
+
+<P>
+
+</TD></TD></TABLE>
+
+<p><img src="http://www.softaid.net/emulate/banner1.gif">
+
+<TABLE BORDER=0 WIDTH=480><TR VALIGN=TOP><TD>
+
+<br>
+<p>
+<IMG SRC="http://www.softaid.net/emulate/dance.gif" WIDTH=30 HEIGHT=30>
+
+<font size=+2><font color="blue">Softaid</font><font size=+1> - Extraordinary Emulators for 8 and 16 bit CPUs <font size=-1>
+
+<br><i>8310 Guilford Road, Columbia, MD USA. 
+
+<br>Phone: (410) 290-7760, Fax: (410) 381-3253
+
+<br><A href="mailto:info@softaid.com">Email</A> info@softaid.com
+
+</i>
+
+</TD></TD></TABLE>
+</body></HTML>

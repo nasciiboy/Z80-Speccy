@@ -1,0 +1,62 @@
+0BD3	PR-ALL-6	EX	AF,A'F'	Save the printer flag again.
+		LD	A,+20	The required increment value.
+		ADD	A,E	Add the value and pass the
+		LD	E,A	result back to the E register.
+		EX	AF,A'F'	Fetch the flag.
+		JR	0BC1,PR-ALL-5	Jump back into the loop.
+
+THE 'SET ATTRIBUTE BYTE' SUBROUTINE
+The appropriate attribute byte is identified and fetched. The new value is formed by manipulating the old value, ATTR-T, MASK-T and P-FLAG. Finally this new value is copied to the attribute area.
+
+0BDB	PO-ATTR	LD	A,H	The high byte of the
+		RRCA		destination address is
+		RRCA		divided by eight and ANDed
+		RRCA		with +03 to determine which
+		AND	+03	third of the screen is being
+				addressed; i.e. 00,01 or 02.
+		OR	+58	The high byte for the
+		LD	H,A	attribute area is then formed.
+		LD	DE,(ATTR-T)	D holds ATTR-T, and
+				E holds MASK-T.
+		LD	A,(HL)	The old attribute value.
+		XOR	E	The values of MASK-T and
+		AND	D	ATTR-R are taken into
+		XOR	E	account.
+		BIT	6,(P-FLAG)	Jump forward unless dealing
+		JR	Z,0BFA,PO-ATTR-1	with PAPER 9.
+		AND	+C7	The old paper colour is ignored
+				and depending on whether the
+		BIT	2,A	ink colour is light or dark
+		JR	NZ,0BFA,PO-ATTR-1	the new paper colour will be
+		XOR	+38	black (000) or white (111).
+0BFA	PO-ATTR-1	BIT	4,(P-FLAG)	Jump forward unless dealing
+		JR	Z,0C08,PO-ATTR-2	with INK 9.
+		AND	+F8	The old ink colour is ignored and
+				depending on whether the paper
+		BIT	5,A	colour is light or dark the new
+		JR	NZ,0C08,PO-ATTR-2	ink colour will be black (000)
+		XOR	+07	or white (111).
+0C08	PO-ATTR-2	LD	(HL),A	Enter the new attribute value
+		RET		and return.
+
+ThE 'MESSAGE PRINTING' SUBROUTINE
+This subroutine is used to print messages and tokens. The A register holds the 'entry number' of the message or token in a table. The DE register pair holds the base address	of the table.
+
+OC0A	PO-MSG	PUSH	HL	The high byte of the last
+		LD	H,+00	entry on the machine stack is
+		EX	(SP),HL	made zero so as to suppress
+				trailing spaces (see below).
+		JR	0C14,PO-TABLE	Jump forward.
+
+Enter here when expanding token codes.
+
+0C10	PO-TOKENS	LD	DE,+0095	The base address of the token
+				table.
+		PUSH AF	Save the code on the stack.
+				(Range +00 - +5A; RND - COPY).
+
+The table is searched and the correct entry printed.
+
+0C14	PO-TABLE	CALL	0C41,PO-SEARCH	Locate the required entry.
+		JR	C,0C22,PO-EACH	Print the message/token.
+		LD	A,+20	A 'space' will be printed

@@ -1,0 +1,60 @@
+2FBA	FETCH-TWO	PUSH	HL	HL is preserved.
+		PUSH	AF	AF is preserved.
+
+Call the five bytes of the first number	- M1, M2, M3, M4 & M5.
+and the second number	- N1, N2, N3, N4 & N5.
+
+		LD	C,(HL)	M1 to C.
+		INC	HL	Next.
+		LD	B,(HL)	M2 to B.
+		LD	(HL),A	Copy the sign of the result to
+				(HL).
+		INC	HL	Next.
+		LD	A,C	M1 to A.
+		LD	C,(HL)	M3 to C.
+		PUSH	BC	Save M2 & M3 on the machine
+				stack.
+		INC	HL	Next.
+		LD	C,(HL)	M4 to C.
+		INC	HL	Next.
+		LD	B,(HL)	M5 to B.
+		EX	DE,HL	HL now points to N1.
+		LD	D,A	M1 to D.
+		LD	E,(HL)	N1 to E.
+		PUSH	DE	Save M1 & N1 on the machine
+				stack.
+		INC	HL	Next.
+		LD	D,(HL)	N2 to D.
+		INC	HL	Next.
+		LD	E,(HL)	N3 to E.
+		PUSH	DE	Save N2 &N3 on the machine
+				stack.
+		EXX		Get the exchange registers.
+		POP	DE	N2 to D' & N3 to E'.
+		POP	HL	M1 to H' & N1 to L'.
+		POP	BC	M2 to B' & M3 to C'.
+		EXX		Get the original set of registers.
+		INC	HL	Next.
+		LD	D,(HL)	N4 to D.
+		INC	HL	Next.
+		LD	E,(HL)	N5 to E.
+		POP	AF	Restore the original AF.
+		POP	HL	Restore the original HL.
+		RET		Finished.
+
+Summary:	M1 - M5 are in H', B', C', C, B.
+	N1 - N5 are in: L', D', E', D, E.
+	HL points to the first byte of the first number.
+
+THE 'SHIFT ADDEND' SUBROUTINE
+This subroutine shifts a floating-point number up to 32 decimal, Hex.20, places right to line it up properly for addition. The number with the smaller exponent has been put in the addend position before this subroutine is called. Any overflow to the right, into the carry, is added back into the number. If the exponent difference is greater than 32 decimal, or the carry ripples right back to the beginning of the number then the number is set to zero so that the addition will not alter the other number (the augend).
+
+2FDD	SHIFT-FP	AND	A	If the exponent difference is
+		RET	Z	zero, the subroutine returns at
+		CP	+21	once. If the difference is greater
+		JR	NC,2FF9,ADDEND-0	than Hex.20, jump forward.
+		PUSH	BC	Save BC briefly.
+		LD	B,A	Transfer the exponent difference
+				to B to count the shifts right.
+2FE5	ONE-SHIFT	EXX		Arithmetic shift right for L',
+		SRA	L	preserving the sign marker bits.

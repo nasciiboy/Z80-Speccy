@@ -1,0 +1,55 @@
+		RST	0018,GET-CHAR	Get the present character
+		CP	+0D	and check it is a 'carriage
+		RET	Z	return'. Return if it is.
+Report C - Nonsense in BASIC
+21CE	REPORT-C	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0B	routine.
+Come here if the INPUT line starts with 'STOP'.
+21D0	IN-STOP	CALL	2530,SYNTAX-Z	But do not give the error
+		RET	Z	report on the syntax-pass.
+Report H - STOP in INPUT
+21D4	REPORT-H	RST	0008,ERROR-1	Call the error handling
+		DEFB	+10	routine.
+
+THE 'IN-CHAN-K' SUBROUTINE
+This subroutine returns with the zero flag reset only if channel 'K' is being used.
+21D6	IN-CHAN-K	LD	HL,(CURCHL)	The base address of the
+		INC	HL	channel information for the
+		INC	HL	current channel is fetched
+		INC	HL	and the channel code compared
+		INC	HL	to the character 'K'.
+		LD	A,(HL)
+		CP	+4B
+		RET	Return afterwards.
+
+THE 'COLOUR ITEM' ROUTINES
+This set of routines can be readily divided into two parts:
+i. The embedded colour item' handler.
+ii. The 'colour system variable' handler.
+i. Embedded colour items are handled by calling the PRINT-OUT subroutine as required.
+A loop is entered to handle each item in turn. The entry point is at CO-TEMP-2.
+21E1	CO-TEMP-1	RST	0020,NEXT-CHAR	Consider the next character
+				in the BASIC statement.
+21E2	CO-TEMP-2	CALL	21F2,CO-TEMP-3	Jump forward to see if the
+				present code represents an
+				embedded 'temporary' colour
+		RET	C	item. Return carry set if not a
+				colour item.
+		RST	0018,GET-CHAR	Fetch the present character.
+		CP	+2C	Jump back if it is either a
+		JR	Z,21E1,CO-TEMP-1	',' or a ';'; otherwise
+		CP	+3B	there has been an error.
+		JR	Z,21E1,CO-TEMP-1
+		JP	1C8A,REPORT-C	Exit via 'report C'.
+21F2	CO-TEMP-3	CP	+D9	Return with the carry flag
+		RET	C	Set if the code is not in the
+		CP	+DF	range +D9 to +DE (INK to
+				OVER).
+		CCF
+		RET	C
+		PUSH	AF	The colour item code is
+		RST	0020,NEXT-CHAR	preserved whilst CH-ADD is
+		POP	AF	advanced to address the
+				parameter that follows it.
+The colour item code and the parameter are now 'printed' by calling PRINT-OUT on two occasions.
+21FC	CO-TEMP-4	SUB	+C9	The token range (+D9 to +DE)

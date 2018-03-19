@@ -1,0 +1,46 @@
+THE 'MOVE A FLOATING-POINT NUMBER' SUBROUTINE
+(Offset 31: 'duplicate')
+
+This subroutine moves a floating-point number to the top of the calculator stack (3 cases) or from the top of the stack to the calculator's memory area (1 case). It is also called through the calculator when it simply duplicates the number at the top of the calculator stack, the 'last value', thereby extending the stack by five bytes.
+
+33C0	MOVE-FP	CALL	33A9,TEST-5-SP	A test is made for room.
+		LDIR		Move the five bytes involved.
+		RET		Finished.
+		
+
+THE 'STACK LITERALS' SUBROUTINE
+(Offset 34: 'stk-data')
+
+This subroutine places on the calculator stack, as a 'last value', the floating-point number supplied to it as 2, 3, 4 or 5 literals.
+When called by using offset '34' the literals follow the '34' in the list of literals; when called by the SERIES GENERATOR, see below, the literals are supplied by the sub-routine that called for a series to be generated; and when called by SKIP CONSTANTS & STACK A CONSTANT the literals are obtained from the calculator's table of constants (32C5-32D6).
+In each case, the first literal supplied is divided by Hex.40, and the integer quotient plus 1 determines whether 1, 2, 3 or 4 further literals will be taken from the source to form the mantissa of the number. Any unfilled bytes of the five bytes that go to form a 5-byte floating-point number are set to zero. The first literal is also used to determine the exponent, after reducing mod Hex.40, unless the remainder is zero, in which case the second literal is used, as it stands, without reducing mod Hex.40. In either case, Hex.50 is added to the literal, giving the augmented exponent byte, e (the true exponent e' plus Hex.80). The rest of the 5 bytes are stacked, including any zeros needed, and the subroutine returns.
+
+33C6	STK-DATA	LD	H,D	This subroutine performs the
+		LD	L,E	manipulatory operation of
+				adding a 'last value' to the cal-
+				culator stack; hence HL is set to
+				point one-past the present
+				'last value' and hence point to
+				the result.
+33C8	STK-CONST	CALL	33A9,TEST-5-SP	Now test that there is indeed
+				room.
+		EXX		Go to the alternate register set
+		PUSH	HL	and stack the pointer to the
+		EXX		next literal.
+		EX	(SP),HL	Switch over the result pointer
+				and the next literal pointer.
+		PUSH	BC	Save BC briefly.
+		LD	A,(HL)	The first literal is put into A
+		AND	+C0	and divided by Hex.40 to give
+		RLCA		the integer values 0, 1, 2 or 3.
+		RLCA
+		LD	C,A	The integer value is transferred
+		INC	C	to C and incremented, thereby
+				giving the range 1, 2, 3 or 4 for
+				the number of literals that will
+				be needed.
+		LD	A,(HL)	The literal is fetch anew,
+		AND	+3F	reduced mod Hex.40 and dis-
+		JR	NZ,33DE,FORM-EXP	carded as inappropriate if the
+		INC	HL	remainder if zero; in which case
+

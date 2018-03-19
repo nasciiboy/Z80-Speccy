@@ -1,0 +1,56 @@
+HL points to the second number from the top, the augend/multiplier/dividend. DE points to the number at the top of the calculator stack, the addend/multiplicand/divisor. Afterwards HL points to the resultant 'last value' whose address can also be considered to be STKEND - 5.
+But the addition subroutine first tests whether the 2 numbers to be added are 'small integers'. If they are, it adds them quite simply in HL and BC, and puts the result directly on the stack. No twos complementing is needed before or after the addition, since such numbers are held on the stack in twos complement form, ready for addition.
+
+3014	addition	LD	A,(DE)	Test whether the first bytes of
+		OR	(HL)	both numbers are zero.
+		JR	NZ,303E,FULL-ADDN	If not, jump for full addition.
+		PUSH	DE	Save the pointer to the second
+				number.
+		INC	HL	Point to the second byte of the
+		PUSH	HL	first number and save that
+				pointer too.
+		INC	HL	Point to the less significant
+				byte.
+		LD	E,(HL)	Fetch it in E.
+		INC	HL	Point to the more significant
+				byte.
+		LD	D,(HL)	Fetch it in D.
+		INC	HL	Move on to the second byte of
+		INC	HL	the second number.
+		INC	HL	
+		LD	A,(HL)	Fetch it in A (this is the sign
+				byte).
+		INC	HL	Point to the less significant
+				byte.
+		LD	C,(HL)	Fetch it in C.
+		INC	HL	Point to the more significant
+				byte.
+		LD	B,(HL)	Fetch is in B.
+		POP	HL	Fetch the pointer to the sign
+		EX	DE,HL	byte of the first number; put it
+				in DE, and the number in HL.
+		ADD	HL,BC	Perform the addition: result in
+				HL.
+		EX	DE,HL	Result to DE, sign byte to HL.
+		ADC	A,(HL)	Add the sign bytes and the carry
+		RRCA		into A; this will detect any
+				overflow.
+		ADC	A,+00	A non-zero A now indicates
+				overflow.
+		JR	NZ,303C,ADDN-OFLW	Jump to reset the pointers and
+				to do full addition.
+		SBC	A,A	Define the correct sign byte for
+				the result.
+3032		LD	(HL),A	Store it on the stack.
+		INC	HL	Point to the next location.
+		LD	(HL),E	Store the low byte of the result.
+		INC	HL	Point to the next location.
+		LD	(HL),D	Store the high byte of the
+				result.
+		DEC	HL	Move the pointer back to
+		DEC	HL	address the first byte of the
+		DEC	HL	result.
+		POP	DE	Restore STKEND to DE.
+		RET		Finished.
+
+Note that the number -65536 decimal can arise here in the form 00 FF 00 00 00 as the result of the addition of two smaller negative integers, e.g. -65000 and -536. It is simply stacked in this form. This is a mistake. The Spectrum system cannot handle this number.

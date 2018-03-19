@@ -1,0 +1,66 @@
+Entering here will 'clear' only the calculator stack.
+
+16C5	SET-STK	LD	HL,(STKBOT)	Fetch STKBOT.
+		LD	(STKEND),HL	This clears the stack.
+
+In all cases make MEM address the calculator's memory area.
+
+		PUSH	HL	Save STKEND.
+		LD	HL,+5C92	The base of the memory area.
+		LD	(MEM),HL	Set MEM to this address.
+		POP	HL	Restore STKEND to the HL
+		RET		register pair before returning.
+
+THE 'RECLAIM THE EDIT-LINE' SUBROUTINE'
+
+16D4	REC-EDIT	LD	DE,(E-LINE)	Fetch E-LINE.
+		JP	19E5,RECLAIM-1	Reclaim the memory.
+
+THE 'INDEXER' SUBROUTNE
+This subroutine is used on several occasions to look through tables.  The entry point is at INDEXER.
+
+16DB	INDEXER-1	INC	HL	Move on to consider the next
+				pair of entries.
+16DC	INDEXER	LD	A,(HL)	Fetch the first of a pair of
+		AND	A	entries but return if it is
+		RET	Z	zero - the end marker.
+		CP	C	Compare it to the supplied
+				code.
+		INC	HL	Point to the second entry.
+		JR	NZ,16DB,INDEXER-1	Jump back if the correct entry
+				has not been found.
+		SCF		The carry flag is set upon a
+		RET		successful search.
+
+THE 'CLOSE #' COMMAND ROUTINE
+This command allows the user to CLOSE streams.  However for streams +00 to +03 the 'initial' stream data is restored and these streams cannot therefore be CLOSEd.
+
+16E5	CLOSE	CALL	171E,STR-DATA	The existing data for the stream
+				is fetched.
+		CALL	1701,CLOSE-2	Check the code in that
+				stream's channel.
+		LD	BC,+0000	Prepare to make the stream's
+				data zero.
+		LD	DE,+A3E2	Prepare to identify the use of
+		EX	DE,HL	streams +00 to +03.
+		ADD	HL,DE	The carry flag will be set with
+				streams +04 to +0F.
+		JR	C,16FC,CLOSE-1	Jump forward with these
+		LD	BC,+15D4	streams; otherwise find the
+		ADD	HL,BC	correct entry in the 'initial
+				stream data' table.
+		LD	C,(HL)	Fetch the initial data
+		INC	HL	for streams +00 to +03.
+		LD	B,(HL)
+16FC	CLOSE-1	EX	DE,HL	Now enter the data; either
+		LD	(HL),C	zero & zero, or the initial
+		INC	HL	values.
+		LD	(HL),B
+		RET
+
+THE 'CLOSE-2' SUBROUTINE
+The code of the channel associated with the stream being closed has to be 'K', 'S', or 'P'.
+
+1701	CLOSE-2	PUSH	HL	Save the address of the
+				stream's data.
+

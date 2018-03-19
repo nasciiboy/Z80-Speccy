@@ -1,0 +1,66 @@
+Overwrite the system variables when coming from START and initialise the user-defined graphics area.
+
+		LD	(P-RAMT),HL	Top of physical RAM.
+		LD	DE,+3EAF	Last byte of 'U' in character
+				set.
+		LD	BC,+00A8	There are this number of bytes
+				in twenty one letters.
+		EX	DE,HL	Switch the pointers.
+		LDDR		Now copy the character forms
+				of the letter 'A' to 'U'.
+		EX	DE,HL	Switch the pointers back.
+		INC	HL	Point to the first byte.
+		LD	(UDG),HL	Now set UDG.
+		DEC	HL	Down one location.
+		LD	BC,+0040	Set the system variables
+		LD	(RASP/PIP),BC	RASP & PIP.
+
+The remainder of the routine is common to both the START and the NEW operations.
+1219	RAM-SET	LD	(RAMTOP),HL	Set RAMTOP.
+		LD	HL,+3C00	Initialise the system variable
+		LD	(CHARS),HL	CHARS.
+
+Next the machine stack is set up.		
+
+		LD	HL,(RAMTOP)	The top location is made to
+		LD	(HL),+3E	hold +3E.
+		DEC	HL	The next location is left holding
+				zero.
+		LD	SP,HL	These two locations represent
+				the 'last entry'.
+		DEC	HL	Step down two locations to
+		DEC	HL	find the correct value for
+		LD	(ERR-SP),HL	ERR-SP.
+
+The initialisation routine continues with:
+
+		IM	1	Interrupt mode 1 is used.
+		LD	IY,+5C3A	IY holds +ERR-NR always.
+		EI		The maskable interrupt can now
+				be enabled.  The real-time clock
+				will be updated and the keyboard
+				scanned every 1/50th of a
+				second.
+		LD	HL,+5CB6	The base address of the
+		LD	(CHANS),HL	channel information area.
+		LD	DE,15AF	The initial channel data
+		LD	BC,+0015	is moved from the table
+		EX	DE,HL	(15AF) to the channel
+		LDIR		information area.
+		EX	DE,HL	The system variable DATADD
+		DEC	HL	is made to point to the last
+		LD	(DATADD),HL	location of the channel data.
+		INC	HL	And PROG & VARS to the
+		LD	(PROG),HL	the location after that.
+		LD	(VARS),HL
+		LD	(HL),+80	The end-marker of the
+				variables area.
+		INC	HL	Move on one location to find
+		LD	(E-LINE),HL	the value for E-LINE.
+		LF	(HL),+0D	Make the edit-line be a single
+		INC	HL	'carriage return' character.
+		LD	(HL),+80	Now enter an end-marker.
+		INC	HL	Move on one location to find
+		LD	(WORKSP),HL	the value for WORKSP, STKBOT
+		LD	(STKBOT),HL	& STKEND.
+

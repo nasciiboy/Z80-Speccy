@@ -1,0 +1,62 @@
+address	routine	page
+
+1716 	CLOSE stream look-up table 	71
+171E 	Stream data 	71
+1736 	OPEN # command 	71
+177A 	OPEN stream look-up table 	72
+1793 	CAT, ERASE, FORMAT & MOVE commands 	73
+1795 	LIST & LLIST commands 	73
+1795 	AUTO-LIST 	73
+17F5 	LLIST    	74
+17F9 	LIST     	74
+1855 	Print a whole BASIC line 	75
+18B6 	NUMBER   	76
+18C1 	Print a flashing character 	77
+18E1 	Print the cursor 	77
+190F 	LN-FETCH 	77
+1925 	Printing characters in a BASIC line 	78
+196E 	LINE-ADDR 	79
+1980 	Compare line numbers 	79
+1988 	Find each statement 	79
+19B8 	NEXT-ONE 	80
+19DD 	Difference 	81
+19E5 	Reclaiming 	81
+19FB 	E-LINE-NO 	82
+1A1B 	Report and line number printing 	82
+
+BASIC LINE AND COMMAND INTERPRETATION
+1A48 	Syntax tables 	84
+1B17 	Main parser (BASIC interpreter)	86
+1B28 	Statement loop 	87
+1B52 	SCAN-LOOP 	87
+1B6F 	SEPARATOR 	88
+1B76 	STMT-RET 	88
+1B8A 	LINE-RUN 	88
+1B9E 	LINE-NEW 	88
+1BB2 	REM command 	89
+1BB3 	LINE-END 	89
+1BBF 	LINE-USE 	89
+1BD1 	NEXT-LINE 	89
+1BEE 	CHECK-END 	90
+1BF4 	STMT-NEXT 	90
+1C01 	Command class table 	90
+1C0D 	Command classes - 00, 03 & 05	90
+1C16 	JUMP-C-R 	91
+1C1F 	Command classes - 01, 02 & 04	91
+1C22 	Variable In assignment 	91
+1C56 	Fetch a value 	92
+1C79 	Expect numeric/string expressions 	93
+1C96 	Set permanent colours (class 07) 	93
+1CBE 	Command class - 09 	94
+1CDB 	Command class - 0B 	94
+1CDE 	Fetch a number 	94
+1CEE 	STOP command 	95
+1CF0 	IF command 	95
+1D03 	FOR command 	95
+1086 	LOOK-PROG 	96
+1DAB 	NEXT command 	97
+1DDA 	NEXT-LOOP 	97
+1DEC 	READ command 	99
+1E27 	DATA command 	100
+1E39 	PASS-BY  	100
+1E42 	RESTORE command 	100

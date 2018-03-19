@@ -1,0 +1,59 @@
+		CALL	24FB,SCANNING	The string is treated as a 'next
+				expression' and a 'last value'
+				produced.
+		POP	HL	The original value of CH-ADD is
+		LD	(CH-ADD),HL	restored.
+		JR	35BF,STK-PNTRS	The subroutine exits via STK-
+				PNTRS which resets the pointers.
+
+THE 'STR$' FUNCTION
+(Offset 2E: 'str$')
+
+This subroutine handles the function STR$ X and returns a 'last value' which is a set of parameters that define a string containing what would appear on the screen if X were displayed by a PRINT command.
+
+361F	str$	LD	BC,+0001	One space is made in the work
+		RST	0030,BC-SPACES	space and its address is copied
+		LD	(K-CUR),HL	to K-CUR, the address of the
+				cursor.
+		PUSH	HL	This address is saved on the
+				stack too.
+		LD	HL,(CURCHL)	The current channel address is
+		PUSH	HL	saved on the machine stack.
+		LD	A,+FF	Channel 'R' is opened, allowing
+		CALL	1601,CHAN-OPEN	the string to be 'printed' out
+				into the work space.
+		CALL	2DE3,PRINT-FP	The 'last value', X, is now
+				printed out in the work space
+				amd the work space is expanded
+				with each character.
+		POP	HL	Restore CURCHL to HL and
+		CALL	1615,CHAN-FLAG	restore the flags that are
+				appropriate to it.
+		POP	DE	Restore the start address of the
+				string.
+		LD	HL,(K-CUR)	Now the cursor address is one
+		AND	A	past the end of the string and
+		SBC	HL,DE	hence the difference is the
+				length.
+		LD	B,H	Transfer the length to BC.
+		LD	C,L	
+		CALL	2AB2,STK-STO-$	Pass the parameters of the new
+				string to the calculator stack.
+		EX	DE,HL	Reset the pointers.
+		RET		Finished.
+
+Note: See PRINT-FP for an explanation of the 'PRINT "A"+STR$ 0.1' error.
+
+THE 'READ-IN' SUBROUTINE
+(Offset 1A: 'read-in')
+
+This subroutine is called via the calculator offset through the first line of the S-INKEY$ routine in SCANNING. It appears to provide for the reading in of data through different streams from those available on the standard Spectrum. Like INKEY$ the subroutine returns a string.
+
+3654	read-in	CALL	1E94,FIND-INT1	The numerical parameter is
+				compressed into the A register.
+		CP	+10	Is it smaller than 16 decimal?
+		JP	NC,1E9F,REPORT-B	If not , report the error.
+		LD	HL,(CURCHL)	The current channel address is
+		PUSH	HL	saved on the machine stack.
+		CALL	1601,CHAN-OPEN	The channel specified by the
+				parameter is opened.

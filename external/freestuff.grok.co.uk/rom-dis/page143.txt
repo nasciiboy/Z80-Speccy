@@ -1,0 +1,66 @@
+		EX	DE,HL	Switch the two pointers.
+		POP	BC	Get B & C back.
+		JR	2900,V-EACH	Go around the loop again.
+
+Come here if no entry was found with the correct name.
+
+2932	V-80-BYTE	SET	7,B	Signal 'variable not found'.
+
+Come here if checking syntax.
+
+2934	V-SYNTAX	POP	DE	Drop the pointer to the
+				2nd. character.
+		RST	0018,GET-CHAR	Fetch the present character.
+		CP	+28	Is it a '('?
+		JR	Z,2943,V-PASS	Jump forward.
+		SET	5,B	Indicate not dealing with an
+		JR	294B,V-END	array and jump forward.
+
+Come here when an entry with the correct name was found.
+
+293E	V-FOUND-1	POP	DE	Drop the saved variable pointer.
+293F	V-FOUND2	POP	DE	Drop the 2nd character pointer.
+		POP	DE	Drop the first letter pointer.
+		PUSH	HL	Save the 'last' letter pointer.
+		RST	0018,GET-CHAR	Fetch the current character.
+
+If the matching variable name has more than a single letter then the other characters must be passed-over.
+
+Note: This appears to have been done already at V-CHAR.
+
+2943	V-PASS	CALL	2C88,ALPHANUM	Is it alphanumeric?
+		JR	NC,294B,V-END	Jump when the end of the name
+				has been found.
+		RST	0020,NEXT-CHAR	Fetch the next character.
+		JR	2943,V-PASS	Go back and test it.
+
+The exit-parameters are now set.
+
+294B	V-END	POP	HL	HL holds the pointer to the
+				letter of a short name or the
+				'last' character of a long name.
+		RL	B	Rotate the whole register.
+		BIT	6,B	Specify the state of bit 6.
+		RET		Finished.
+
+The exit-parameters for the subroutine can be summarised as follows: The system variable CH-ADD points to the first location after the name of the variable as it occurs in the BASIC line.
+
+When 'variable not found':
+
+i. The carry flag is set.
+
+ii. The zero flag is set only when the search was for an array variable.
+
+iii. The HL register pair points to the first letter of the name of the variable as it occurs in the BASIC line.
+
+When 'variable found':
+
+i. The carry flag is reset.
+
+ii. The zero flag is set for both simple string variables and all array variables.
+
+iii. The HL register pair points to the letter of a 'short' name, or the last character of a 'long' name, of the existing entry that was found in the variables area.
+
+In all cases bits 5 & 6 of the C register indicate the type of variable being handled. Bit 7 is the complement of the SYNTAX/RUN flag. But only when the subroutine is used in 'runtime' will bits 0 to 4 hold the code of the variable's letter.
+
+In syntax time the return is always made with the carry flag reset. The zero flag is set for arrays and reset for all other variables, except that a simple string name incorrectly followed by a '$' sets the zero flag and, in the case of SAVE "name" DATA a$(), passes syntax as well.

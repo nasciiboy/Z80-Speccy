@@ -1,0 +1,51 @@
+		RR	B	intp B' to be picked up on
+		POP	AF	normalisation.
+		RR	B
+		EXX
+		POP	BC	Restore the exponent bytes, M1
+				& N1.
+		POP	HL	Restore the pointer to the result.
+		LD	A,B	Get the difference between the
+		SUB	C	two exponent bytes into A and
+				set the carry flag if required.
+		JP	313D,DIVN-EXPT	Exit via DIVN-EXPT.
+
+THE 'INTEGER TRUNCATION TOWARDS ZERO' SUBROUTINE
+(Offset 3A - see CALCULATE below: 'truncate')
+This subroutine (say I(x)) returns the result of integer truncation of x, the 'last value', towards zero. Thus I(2.4) is 2 and I(-2.4) is -2. The subroutine returns at once if x is in the form of a 'short integer'. It returns zero if the exponent byte of x if less than 81 hex (ABS x is less than 1). If I(x) is a 'short integer' the subroutine returns it in that form. It returns x if the exponent byte is A0 hex or greater (x has no significant non-integral part). Otherwise the correct number of bytes of x are set to zero and, if needed, one more byte is split with a mask.
+3214	truncate	LD	A,(HL)	 Get the exponent byte of X into
+				A.
+		AND	A	If A is zero, return since x is
+		RET	Z	already a small integer.
+		CP	+81	Compare e, the exponent, to
+				81 hex.
+		JR	NC,3221,T-GR-ZERO	Jump if e is greater than 80 hex.
+		LD	(HL),+00	Else, set the exponent to zero;
+		LD	A,+20	enter 32 decimal, 20 hex, into A
+		JR	3272,NIL-BYTES	and jump forward to NIL-
+				BYTES to make all the bits of
+				x be zero.
+3221	T-GR-ZERO	CP	+91	Compare e to 91 hex, 145
+				decimal.
+3223		JR	NZ,323F,T-SMALL	Jump if e not 91 hex.
+The next 26 bytes seem designed to test whether x is in fact -65536 decimal, i.e. 91 80 00 00 00, and if it is, to set it to 00 FF 00 00 00. This is a mistake. As already stated at byte 303B above, the Spectrum system cannot handle this number. The result here is simply to make INT (-65536) return the value -1. This is a pity, since the number would have been perfectly all right if left alone. The remedy would seem to be simply to omit the 28 bytes from 3223 above to 323E inclusive from the program.
+3225		INC	HL	HL is pointed at the fourth byte
+		INC	HL	of x, where the 17 bits of the
+		INC	HL	integer part of x end after the
+				first bit.
+		LD	A,+80	The first bit is obtained in A.
+		AND	(HL)	using 80 hex as a mask.
+		DEC	HL	That bit and the previous 8 bits
+		OR	(HL)	are tested together for zero.
+		DEC	HL	HL is pointed at the second
+				byte of x.
+		JR	NZ,3233,T-FIRST	If already non-zero, the test can
+				end.
+		LD	A,+80	Otherwise, the test for -65536 is
+		XOR	(HL)	now completed: 91 80 00 00 00
+				will leave the zero flag set now.
+3233	T-FIRST	DEC	HL	Hl is pointed at the first byte of
+				x.
+		JR	NZ,326C,T-EXPNENT	If zero reset, the jump is made.
+		LD	(HL),A	The first byte is set to zero.
+		INC	HL	HL points to the second byte.

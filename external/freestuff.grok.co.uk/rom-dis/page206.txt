@@ -1,0 +1,61 @@
+359C	strs-add	CALL	2BF1,STK-FETCH	The parameters of the second
+		PUSH	DE	string are fetched and saved.
+		PUSH	BC	
+		CALL	2BF1,STK-FETCH	The parameters of the first
+				string are fetched.
+		POP	HL	
+		PUSH	HL	The lengths are now in HL and
+				BC.
+		PUSH	DE	The parameters of the first
+		PUSH	BC	string are saved.
+		ADD	HL,BC	The total length of the two
+		LD	B,H	strings is calculated and passed
+		LD	C,L	to BC.
+		RST	0030,BC-SPACES	Sufficient room is made
+				available.
+		CALL	2AB2,STK-STORE	The parameters of the new
+				string are passed to the
+				calculator stack.
+		POP	BC	The parameters of the first
+		POP	HL	string are retrieved and the
+		LD	A,B	string copied to the work space
+		OR	C	as long as it is not a null string.
+		JR	Z,35B7,OTHER-STR	
+		LDIR		
+35B7	OTHER-STR	POP	BC	Exactly the same procedure is
+		POP	HL	followed for the second string
+		LD	A,B	thereby giving 'A$+B$'.
+		OR	C	
+		JR	Z,35BF,STK-PNTRS	
+		LDIR		
+
+THE 'STK-PNTRS' SUBROUTINE
+This subroutine resets the HL register pair to point to the first byte of the 'last value', i.e. STKEND-5, and the DE register pair to point one-past the 'last value', i.e. STKEND.
+
+35BF	STK-PNTRS	LD	HL,(STKEND)	Fetch the current value of
+				STKEND.
+		LD	DE,+FFFB	Set DE to -5, twos complement.
+		PUSH	HL	Stack the value for STKEND.
+		ADD	HL,DE	Calculate STKEND-5.
+		POP	DE	DE now holds STKEND and HL
+		RET		
+
+THE 'CHR$' FUNCTION
+(Offset 2F: 'chrs')
+
+This subroutine handles the function CHR$ X and creates a single character string in the work space.
+
+35C9	chrs	CALL 2DD5,FP-TO-A	The 'last value' is compressed
+				into the A register.
+		JR	C,35DC,REPORT-B	Give the error report if X was
+				greater than 255 decimal, or
+		JR	NZ,35DC,REPORT-B	X was a negative number.
+		PUSH	AF	Save the compressed value of X.
+		LD	BC,+0001	Make one space available in the
+		POP	AF	Fetch the value.
+		LD	(DE),A	Copy the value to the work
+				space.
+		CALL	2AB2,STK-STORE	Pass the parameters of the new
+				string to the calculator stack.
+		EX	DE,HL	Reset the pointers.
+		RET		Finished.

@@ -1,0 +1,58 @@
+		DEFB	+38,end-calc	i, f
+
+Note that the stack is now unbalanced. An extra byte 'DEFB +02, delete' is needed at 2E25, immediately after the RST 0028. Now an expression like "2" +STR$ 0.5 is evaluated incorrectly as 0.5; the zero left on the stack displaces the "2" and is treated as a null string. Similarly all the string comparisons can yield incorrect values if the second string takes the form STR$ x where x is numerically less than 1; e.g. the expression "50"<STR$ 0 .1 yields the logical value "true"; once again "" is used instead of "50".
+
+		LD	A,(HL)	The exponent byte e of f is
+				copied to A.
+		SUB	+7E	A becomes e - 126 dec i.e.
+				e'+2, where e' is the true
+				exponent of f.
+		CALL	2DC1,LOG (2^A)	The construction A = ABS INT
+				(LOG (2^A)) is performed
+				(LOG is to base 10); i.e. A=n,
+		LD	D,A	say: n is copied from A to D.
+		LD	A,(mem-5-2nd)	The current count is collected
+		SUB	D	from the second byte of mem-5
+		LD	(mem-5-2nd),A	and n is subtracted from it.
+		LD	A,D	n is copied from D to A.
+		CALL	2D4F,E-TO-FP	y=f*10^n is formed and
+				stacked.
+		RST	0028,FP-CALC	i, y
+		DEFB	+31,duplicate	i, ,y,y
+		DEFB	+27,int	i, y, (INT (y) = i2
+		DEFB	+C1,st-mem-1	(i2 is copied to mem-1).
+		DEFB	+03,subtract	i, y - i2
+		DEFB	+E1,get-mem-1	i, y - i2, i2
+		DEFB	+38,end-calc	i, f2, i2 (f2 = y - i2)
+		CALL	2DD5,FP-TO-A	i2 is transferred from the stack
+				to A.
+		PUSH	HL	The pointer to f2 is saved.
+		LD	(mem-3-1st),A	i2 is stored in the first byte of
+				mem-3: a digit for printing.
+		DEC	A	i2 will not count as a digit for
+		RLA		printing if it is zero; A is
+		SBC	A,A	manipulated so that zero will
+		INC	A	produce zero but a non-zero
+				digit will produce 1.
+		LD	HL,+5CAB	The zero or one is inserted into
+		LD	(HL),A	the first byte of mem-5 (the no.
+		INC	HL	of digits for printing) and added
+		ADD	A,(HL)	to the second byte of mem-5
+		LD	(HL),A	(the number of digits before the
+				decimal).
+		POP	HL	The pointer to f2 is restored.
+		JP	2ECF,PF-FRACTN	Jump to store f2 in buffer (HL
+				now points to f2, DE to i2).
+
+iv. Numbers greater than 2 ^ 27 are similarly multiplied by 2 ^ (-n+7), reducing the number of digits before the decimal to 8, and the loop is re-entered at PF-LOOP.
+
+2E56	PF-LARGE	SUB	+80	e - 80 hex = e', the true
+				exponent of i.
+		CP	+1C	Is e' less than 28 decimal?
+		JR	C,2E6F,PF-MEDIUM	Jump if it is less.
+		CALL	2DC1,LOG (2^A)	n is formed in A.
+		SUB	+07	And reduced to n - 7.
+		LD	B,A	Then copied to B.
+		LD	HL,+5CAC	n - 7 is added in to the second
+		ADD	A,(HL)	byte of mem-5, the number of
+		LD	(HL),A	digits required before the

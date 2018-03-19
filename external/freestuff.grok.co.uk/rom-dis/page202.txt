@@ -1,0 +1,62 @@
+34D3	USR-RANGE	DEC	A	Now make the range 0 to 20
+				decimal in each case.
+		ADD	A,A	Multiply by 8 to get an offset
+		ADD	A,A	for the address.
+		ADD	A,A	
+		CP	+A8	Test the range of the offset.
+		JR	NC,34E7,REPORT-A	Give report A if out of range.
+		LD	BC,(UDG)	Fetch the address of the first
+				user-defined graphic in BC.
+		ADD	A,C	Add C to the offset.
+		LD	C,A	Store the result back in C.
+		JR	NC,34E4,USR-STACK	Jump if there is no carry.
+		INC	B	Increment B to complete the
+				address.
+		JP	2D2B,STACK-BC	Jump to stack the address.
+
+REPORT A - Invalid argument.
+
+34E7	REPORT-A	RST	0008,ERROR-1	Call the error handling
+		DEFB	+09	routine.
+
+
+THE 'TEST-ZERO' SUBROUTINE
+This subroutine is called at least nine times to test whether a floating-point number is zero. This test requires that the first four bytes of the number should each be zero. The subroutine returns with the carry flag set if the number was in fact zero.
+
+34E9	TEST-ZERO	PUSH	HL	Save HL on the stack.
+		PUSH	BC	Save BC on the stack.
+		LD	B,A	Save the value of A in B.
+		LD	A,(HL)	Get the first byte.
+		INC	HL	Point to the second byte.
+		OR	(HL)	OR first byte with second.
+		INC	HL	Point to the third byte.
+		OR	(HL)	OR the result with the third
+				byte.
+		INC	HL	Point to the fourth byte.
+		OR	(HL)	OR the result with the fourth
+				byte.
+		LD	A,B	Restore the original value of A.
+		POP	BC	And of BC.
+		POP	HL	Restore the pointer to the
+				number to HL.
+		RET	NZ	Return with carry reset if any of
+				the four bytes was non-zero.
+		SCF		Set the carry flag to indicate
+		RET		that the number was zero, and
+				return.
+
+THE 'GREATER THAN ZERO' OPERATION
+(Offset 37: 'greater-0')
+
+This subroutine returns a 'last value' of one if the present 'last value' is greater than zero and zero otherwise. It is also used by other subroutines to 'jump on plus'.
+
+34F9	GREATER-0	CALL	34E9,TEST-ZERO	Is the 'last-value' zero?
+		RET	C	If so, return.
+		LD	A,+FF	Jump forward to LESS THAN
+		JR	3507,SIGN-TO-C	ZERO but signal the opposite
+				action is needed.
+
+THE 'NOT' FUNCTION
+(Offset 30: 'not')
+
+This subroutine returns a 'last value' of one if the present 'last value' is zero and zero otherwise. It is also used by other subroutines to 'jump on zero'.

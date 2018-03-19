@@ -1,0 +1,31 @@
+In article <4067nl$55b@saba.info.ucla.edu>,
+Mike Loving <loving@plover.cs.ucla.edu> wrote:
+>Ralph Mason (ralph.mason@liffe.com) wrote:
+>: Has anyone here ever built a board that uses a software refresh DRAM
+>: scheme.  What I'm thinking of trying is generating an interrupt using
+>: a timer and then refreshing x rows every time.
+>
+>: I've not seen this done before ( but then I'm fairly new in this game
+>: ) but I can't see any reason it wouldn't work. I would appreciate any
+>: details of anyones past experiences.
+>
+>
+>I've done it, it works.  Even on a 2.5MHz Z-80.  I built a printer buffer
+>in about 1985 that did this.  I used a z80 (which has an built-in "refresh"
+>scheme, but that only puts out 7 bits of address and I needed 8).
+
+You should have used the Z80 built in refresh.  If you need 8 bits all you
+need is to interrupt at half the maximum refresh interval and invert the
+upper bit of the refresh register.  Your interrupt routine looks like this:
+
+        PUSH    AF
+        LD      A,R
+        XOR     80H
+        LD      R,A
+        POP     AF
+        EI
+        RETI
+
+If your DRAM needs 256 refreshes every 4ms, you just need an interrupt every
+2ms.  If you're using only a 2.5MHz clock, this would cost you .003% of your
+Z80 capacity (assuming 75 clocks to handle the interrupt).

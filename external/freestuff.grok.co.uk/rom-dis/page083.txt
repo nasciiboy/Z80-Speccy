@@ -1,0 +1,7 @@
+		LD	A,L	Move any remaining part of
+				the number to the A register.
+1A42	OUT-NUM-4	CALL	15EF,OUT-CODE	Print the digit.
+		POP	HL	Restore the registers
+		POP	DE	before returning.
+		RET
+

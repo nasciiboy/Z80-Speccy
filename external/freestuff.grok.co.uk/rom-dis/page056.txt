@@ -1,0 +1,64 @@
+		RET	C
+		SUB	+0D	Reduce the range.
+		LD	HL,+5C41	This is MODE.
+		CP	(HL)	Has it been changed?
+		LD	(HL),A	Enter the new 'mode' code.
+		JR	NZ,10F4,KEY-FLAG	Jump if it has changed;
+		LD	(HL),+00	otherwise make it 'L mode'.
+10F4	KEY-FLAG	SET 3,(TV-FLAG)	Signal 'the mode might have
+				changed.
+		CP	A	Reset the carry flag and
+		RET		return.
+
+The control key codes (apart from FLASH, BRIGHT & INVERSE) are manipulated.
+
+10FA	KEY-CONTR	LD 	B,A 	Save the code.
+		AND	+07	Make the C register hold the
+		LD 	C,A 	parameter. (+00 to +07)
+		LD 	A,+10 	A now holds the INK code.
+		BIT	3,B	But if the code was an
+		JR 	NZ,1105,KEY-DATA	'unshifted' code then make A
+		INC	A	hold the PAPER code.
+
+The parameter is saved in K-DATA and the channel address changed from KEY-INPUT to KEY-NEXT.
+
+1105	KEY-DATA	LD	(K-DATA),C	Save the parameter.
+		LD	DE,+110D	This is KEY-NEXT.
+		JR	1113,KEY-CHAN	Jump forward.
+
+Note:	On the first pass entering at KEY-INPUT the A register is returned holding a control code' and then on the next pass, entering at KEY-NEXT, it is the parameter that is returned.
+
+1100	KEY-NEXT	LD	A,(K-DATA)	Fetch the parameter.
+		LD	DE,+10A8	This is KEY-INPUT.
+
+Now set the input address in the first channel area.
+
+1113	KEY-CHAN	LD	HL,(CHANS)	Fetch the channel address.
+		INC	HL
+		INC	HL
+		LD	(HL),E	Now set the input address.
+		INC	HL
+		LD	(HL),D
+
+Finally exit with the required code in the A register.
+
+1118	KEY-DONE	SCF		Show a code has been found
+		RET		and return.
+
+THE 'LOWER SCREEN COPYING' SUBROUTINE
+This subroutine is called whenever the line in the editing area or the INPUT area is to be printed in the lower part of the screen.
+
+1110	ED-COPY	CALL	0D4D,TEMPS	Use the permanent colours.
+		RES	3,(TV-FLAG)	Signal that the 'mode is to be
+		RES	5,(TV-FLAG)	considered unchanged' and the
+				'lower screen does not need
+				clearing'.
+		LD	HL,(S-POSNL)	Save the current value of
+		PUSH	HL	S-POSNL.
+		LD	HL,(ERR-SP)	Keep the current value of
+		PUSH	HL	ERR-SP.
+		LD	HL,+1167	This is ED-FULL.
+		PUSH	HL	Push this address on to the
+		LD	(ERR-SP),SP	machine stack to make ED-FULL
+				the entry point following an
+				error.

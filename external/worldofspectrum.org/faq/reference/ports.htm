@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Hardware Ports</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="../emulators/emulators.htm">Emulators</a> |
+<a title="Reference" href="reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">Hardware Ports</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+
+<div class="pageNavigation">|
+<a href="ports.htm#Systems">Systems</a> |
+<a href="ports.htm#Audio">Audio</a> |
+<a href="ports.htm#Memory">Memory</a> |
+<a href="ports.htm#Disk">Disk Controllers</a> |
+<a href="ports.htm#Interfaces">Interfaces</a> |
+<a href="ports.htm#Other">Other</a> |</div>
+
+<p>When an port is read from (with 'IN') or written to (with 'OUT'), it will activate a number of devices external to the
+<a href="z80reference.htm">Z80</a>, depending on the port address. In general, devices respond if certain bits in
+the binary representation port number are set and/or reset, rather than to a specific port number; this is known as
+'partial decoding'. Whilst this makes the decoding hardware easier to make, it does mean that a considerable amount of
+congestion has occured in the space available for new peripherals to respond to if they do not wish to clash with any current devices.</p>
+<p>The next complication is to do with the <a href="z80reference.htm">Z80</a>'s I/O instructions: it is quicker and easier to select
+the low 8 bits of the port number than it is to select the high 8 bits; this means that, when outputting to peripherals for which the upper 8 bits
+make no difference, this will often be left unset, and may contain garbage. Thus, the 48K <a href="pinouts.htm#ULA">ULA</a>, which
+responds to all even port addresses, is often referred to as <a href="48kreference.htm#PortFE">Port 0xfe</a>, rather than the full
+16-bit port 0xfffe.<br /><br />
+Listed below are some of the available peripherals (including those like the <a href="pinouts.htm#ULA">ULA</a>,
+which are in every machine), and the bit fields to which they respond. In the table, '-' means 'don't care', '0' means the
+bit must be reset for the peripheral to respond, and '1' means it must be set.<br /><br />
+All definitions shown below were provided by <a href="../../cdn-cgi/l/email-protection#205745424d4153544552605a580d535045435452554d0e4e45540e52454d4f56450e54484953">Erik Kunze</a>, author of the
+<a href="../emulators/unix.htm">XZX-Pro</a> emulator.</p>
+<ul>
+
+<li><strong><a id="Systems">Systems</a></strong>:
+<ul>
+<li><strong>Peripheral</strong>: 48K <a href="pinouts.htm#ULA">ULA</a>.<br />
+<strong>Port</strong>: <tt>---- ---- ---- ---0</tt> (<a href="48kreference.htm#PortFE">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: Timex <a href="hardware.htm#TS2068">TS2068</a> ULA.<br />
+<strong>Port</strong>: <tt>---- ---- 1111 1110</tt> (Same as 48K ULA).<br /><br /></li>
+<li><strong>Peripheral</strong>: Timex <a href="hardware.htm#TS2068">TS2068</a> Display mode.<br />
+<strong>Port</strong>: <tt>---- ---- 1111 1111</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: Timex <a href="hardware.htm#TS2068">TS2068</a> Horizontal Select Register.<br />
+<strong>Port</strong>: <tt>---- ---- 1111 0100</tt><br /><br /></li>
+</ul>
+</li>
+
+
+<li><strong><a id="Audio">Audio</a></strong>:
+<ul>
+<li><strong>Peripheral</strong>: 128K <a href="pinouts.htm#AY">AY</a> Register.<br />
+<strong>Port</strong>: <tt>11-- ---- ---- --0-</tt> (<a href="128kreference.htm#Sound">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: 128K <a href="pinouts.htm#AY">AY</a> (Data).<br />
+<strong>Port</strong>: <tt>10-- ---- ---- --0-</tt> (<a href="128kreference.htm#Sound">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: Timex TS2068 <a href="pinouts.htm#AY">AY</a> Register.<br />
+<strong>Port</strong>: <tt>---- ---- 1111 0101</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: Timex TS2068 <a href="pinouts.htm#AY">AY</a> (Data).<br />
+<strong>Port</strong>: <tt>---- ---- 1111 0110</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: Fuller Audio Box.
+<pre>/* Definitions for Fuller Audio Box */
+#define P_FULLER_CONTROL                0x3f    /* AY control */
+#define P_FULLER_DATA                   0x5f    /* AY data */
+#define P_FULLER_JOY                    0x7f    /* Joystick */</pre>
+</li></ul>
+</li>
+
+
+<li><strong><a id="Memory">Memory</a></strong>:
+<ul>
+<li><strong>Peripheral</strong>: ZX Spectrum 128K / +2 Memory Control<br />
+<strong>Port</strong>: <tt>0--- ---- ---- --0-</tt> (<a href="128kreference.htm#ZX128Memory">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: ZX Spectrum +2A / +3 Primary Memory Control<br />
+<strong>Port</strong>: <tt>01-- ---- ---- --0-</tt> (<a href="128kreference.htm#Plus3Memory">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: ZX Spectrum +2A / +3 Secondary Memory Control.<br />
+<strong>Port</strong>: <tt>0001 ---- ---- --0-</tt> (<a href="128kreference.htm#Plus3Memory">More information</a>).<br /><br /></li>
+</ul>
+</li>
+
+
+<li><strong><a id="Disk">Disk Controllers</a></strong>:
+<ul>
+<li><strong>Peripheral</strong>: +3 FDC (Data).<br />
+<strong>Port</strong>: <tt>0011 ---- ---- --0-</tt> (<a href="diskreference.htm#ZX">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: +3 FDC (Status).<br />
+<strong>Port</strong>: <tt>0010 ---- ---- --0-</tt> (<a href="diskreference.htm#ZX">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: Beta 128.
+<pre>/* Definitions for Beta 128 */
+#define P_TRDOS_CMD                     0x1f    /* Command */
+#define P_TRDOS_STATE                   0x1f    /* State */
+#define P_TRDOS_TRACK                   0x3f    /* Track */
+#define P_TRDOS_SECTOR                  0x5f    /* Sector */
+#define P_TRDOS_DATA                    0x7f    /* Data */
+#define P_TRDOS_SYSTEM                  0xff    /* System */</pre>
+</li>
+<li><strong>Peripheral</strong>: +D.
+<pre>/* Definitions for +D */
+#define P_PLUSD_CMD                     0xe3    /* Command */
+#define P_PLUSD_STATE                   0xe3    /* State */
+#define P_PLUSD_PAGE                    0xe7    /* Memory paging */
+#define P_PLUSD_TRACK                   0xeb    /* Track */
+#define P_PLUSD_SYSTEM                  0xef    /* System register */
+#define P_PLUSD_SECTOR                  0xf3    /* Sector */
+#define P_PLUSD_PRINTER                 0xf7    /* Printer data/ready */
+#define P_PLUSD_DATA                    0xfb    /* Data */</pre>
+</li>
+<li><strong>Peripheral</strong>: D80.
+<pre>/* Definitions for D80 */
+#define P_D80_CMD                       0x81    /* Command (write) */
+#define P_D80_STATE                     0x81    /* State (read) */
+#define P_D80_TRACK                     0x83    /* Track (read/write) */
+#define P_D80_SECTOR                    0x85    /* Sector (read/write) */
+#define P_D80_DATA                      0x87    /* Data (read/write) */
+#define P_D80_SYSTEM                    0x89    /* System register (write)*/</pre>
+</li>
+<li><strong>Peripheral</strong>: JLO (Status/Command).<br />
+<strong>Port</strong>: <tt>---- ---- 1000 1111</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: JLO (Track).<br />
+<strong>Port</strong>: <tt>---- ---- 1001 1111</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: JLO (Sector).<br />
+<strong>Port</strong>: <tt>---- ---- 1010 1111</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: JLO (Data).<br />
+<strong>Port</strong>: <tt>---- ---- 1011 1111</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: JLO (Select).<br />
+<strong>Port</strong>: <tt>---- ---- 1011 0111</tt><br /><br /></li>
+</ul>
+</li>
+
+
+<li><strong><a>Interfaces</a></strong>:
+<ul>
+<li><strong>Peripheral</strong>: +3 Centronics Interface.<br />
+<strong>Port</strong>: <tt>0000 ---- ---- --0-</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: Aerco Centronics Interface.<br />
+<strong>Port</strong>: <tt>---- ---- 0111 1111</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: ZX Interface I (RS232/Network).<br />
+<strong>Port</strong>: <tt>---- ---- ---1 0---</tt> (<a href="48kreference.htm#PortF7">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: ZX Interface I (Control).<br />
+<strong>Port</strong>: <tt>---- ---- ---0 1---</tt> (<a href="48kreference.htm#PortEF">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: ZX Interface I (Microdrive).<br />
+<strong>Port</strong>: <tt>---- ---- ---0 0---</tt> (<a href="48kreference.htm#PortE7">More information</a>).<br /><br /></li>
+<li><strong>Peripheral</strong>: <a href="peripherals.htm#Joysticks">Kempston Joystick</a>.<br />
+<strong>Port</strong>: <tt>---- ---- 000- ----</tt> (<a href="48kreference.htm#Joysticks">More information</a>).
+<pre>/* Definitions for Kempston joystick */
+#define P_KEMPSTON                      0x1f    /* Port address */
+#define B_KEMPSTON                      0x20    /* ---- ---- --0- ---- */</pre>
+</li>
+<li><strong>Peripheral</strong>: Sinclair Interface II Joysticks.
+<pre>/* Definitions for Sinclair Joysticks (Interface II) */
+#define P_SINCLAIR1                     0xeffe  /* Port address */
+#define B_SINCLAIR1                     0x1000  /* ---0 ---- ---- ---- */
+#define P_SINCLAIR2                     0xf7fe  /* Port address */
+#define B_SINCLAIR2                     0x0800  /* ---- 0--- ---- ---- */</pre>
+</li>
+<li><strong>Peripheral</strong>: Multiface I.
+<pre>/* Definitions for Multiface I */
+#define P_MF1_IN                        0x9f    /* Port address */
+#define P_MF1_OUT                       0x1f    /* Port address */</pre>
+</li>
+<li><strong>Peripheral</strong>: Multiface 128.
+<pre>/* Definitions for Multiface 128 */
+#define P_MF128_IN                      0xbf    /* Port address */
+#define P_MF128_IN_V2                   0x9f    /* Port address (Disciple)     
+*/
+#define P_MF128_OUT                     0x3f    /* Port address */</pre>
+</li>
+ <li><strong>Peripheral</strong>: Multiface 3.
+<pre>/* Definitions for Multiface 3 */
+#define P_MF3_IN                        0x3f    /* Port address */
+#define P_MF3_OUT                       0xbf    /* Port address */
+#define P_MF3_BUTTON                    0x3f    /* Port address */
+#define P_MF3_P7FFD                     0x7f3f  /* Port address */
+#define P_MF3_P1FFD                     0x1f3f  /* Port address */</pre>
+</li>
+</ul>
+</li>
+
+
+<li><strong><a>Other</a></strong>:
+<ul>
+<li><strong>Peripheral</strong>: <a href="peripherals.htm#ZXPrinter">ZX Printer</a>.<br />
+<strong>Port</strong>: <tt>---- ---- ---- -0--</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: Timex
+<a href="peripherals.htm#TS2040">TS2040</a> / <a href="peripherals.htm#Alphacom">Alphacom 32</a> Printers.<br />
+<strong>Port</strong>: <tt>---- ---- 1111 1011</tt><br /><br /></li>
+<li><strong>Peripheral</strong>: ZX LPrint III.
+<pre>* Definitions for ZX LPrint III */
+#define P_LPRINT_ON                     0xfb    /* Page in LPRINT ROM */
+#define B_LPRINT_ON                     0x84    /* ---- ---- 1--- -0-- */
+#define P_LPRINT_OFF                    0x7b    /* Page out LPRINT ROM */
+#define B_LPRINT_OFF                    0x84    /* ---- ---- 0--- -0-- */</pre>
+</li>
+<li><strong>Peripheral</strong>: Grafpad (British Micro).
+<pre>/* Definitions for Grafpad (British Micro) */
+#define P_GRAFPAD_PEN                   0xff3f  /* Pen up/down */
+#define P_GRAFPAD_X                     0xffbf  /* Pen position X coordinate   
+*/
+#define P_GRAFPAD_Y                     0xff7f  /* Pen position Y coordinate   
+*/</pre>
+</li>
+<li><strong>Peripheral</strong>: Kempston Mouse.
+<pre>/* Definitions for Kempston Mouse */
+#define P_KMOUSE_BUTTONS                0xfadf  /* Port address */
+#define B_KMOUSE_BUTTONS                0x0120  /* ---- ---0 --0- ---- */
+#define P_KMOUSE_X                      0xfbdf  /* Port address */
+#define B_KMOUSE_X                      0x0520  /* ---- -0-1 --0- ---- */
+#define P_KMOUSE_Y                      0xffdf  /* Port address */
+#define B_KMOUSE_Y                      0x0520  /* ---- -1-1 --0- ---- */</pre>
+</li>
+</ul>
+</li>
+
+</ul>
+<div class="pageNavigation">| special thanks to <a href="../emulators/windows.htm#Spectaculator">Jonathan Needle</a> for providing updated ZX Spectrum 128K / +2 Memory entries |</div>
+
+<div class="pageNavigation">|
+<a href="ports.htm#Systems">Systems</a> |
+<a href="ports.htm#Audio">Audio</a> |
+<a href="ports.htm#Memory">Memory</a> |
+<a href="ports.htm#Disk">Disk Controllers</a> |
+<a href="ports.htm#Interfaces">Interfaces</a> |
+<a href="ports.htm#Other">Other</a> |</div>
+
+</td>
+</tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: ports.htm,v 1.8 2005/02/14 23:14:00 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+<script data-cfasync="false" src="../../cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script></body>
+</html>

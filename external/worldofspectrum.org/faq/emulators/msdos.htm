@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Emulators - MS-DOS</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="emulators.htm">Emulators</a> |
+<a title="Reference" href="../reference/reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">Emulators - MS-DOS</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+
+<p><strong><a id="DOS">MS-DOS</a></strong><br />
+There are 5 emulators currently listed for MS-DOS:</p>
+<ul>
+
+<li><a href="http://www.ramsoft.bbk.org/">RealSpec</a> v0.96.16<br /><br />
+<strong>Emulates</strong>: 16K / 48K / 128K / +2 / +2A / +3 ZX Spectrums. Didaktik, Pentagon and Scorpion clones.<br />
+<strong>Tape/Disk Formats</strong>: <a href="../reference/z80format.htm">.z80</a> (with Scorpion extensions),
+<a href="../reference/formats.htm#SNA">.sna</a>, <a href="../reference/formats.htm#SLT">.slt</a>, .sp,
+<a href="../reference/formats.htm#TAP">.tap</a>, <a href="../reference/formats.htm#TZX">.tzx</a>, .rzx, .wav, .csw,
+.mgt, .img (DISCiPLE/+D), <a href="../reference/formats.htm#TRD">.trd</a>, .scl (TR-DOS), .mbd (MB-02+), .opd,
+<a href="../reference/formats.htm#DSK">.dsk</a>, .d80, <a href="../reference/formats.htm#MDR">.mdr</a>, .wdr,
+<a href="../reference/formats.htm#AIR">.air</a>, <a href="../reference/formats.htm#POK">.pok</a> and .rom<br /><br />
+<strong>Requirements</strong>: 200 MHz Pentium / AMD equivalent. 8Mb RAM or above. MS-DOS, Windows 9x, Me, 2000 or XP (see comments)<br />
+<strong>Created by</strong>: <a href="../../cdn-cgi/l/email-protection#a5d7c4c8d6cac3d1e5c7c7ce8bcad7c28bd7c0c8cad3c08bd1cdccd69ad6d0c7cfc0c6d198f7c0c4c9f6d5c0c6d1d7d0c8">RamSoft</a><br />
+<strong>Last updated</strong>: September 10th, 2002<br /><br />
+<strong>Comments</strong>: Undoubtedly the most comprehensive emulator available, RealSpec is also considered by many to be the most
+accurate. All undocumented features of the Z80A processor are precisely emulated, as is the behaviour of the flag register.
+Video modes are reproduced faithfully, and can be extensively configured.<br /><br />
+Also emulates the <a href="../reference/peripherals.htm#Miscellaneous">Multiface 1 / 128</a>, Multiprint, the MGT DISCiPLE disc
+interface, the
+<a href="../reference/diskreference.htm#Discovery">Opus Discovery</a>,
+<a href="../reference/peripherals.htm#WafaDrive">Rotronics Wafadrive</a>,
+<a href="../reference/peripherals.htm#InterfaceI">ZX Interface I</a>
+(with networking support) and
+<a href="../reference/peripherals.htm#ZXMicrodrive">Microdrives</a>, the Beta 128 disc interface, the
+<a href="../reference/peripherals.htm#Mice">Kempston Mouse</a>, several different audio interfaces, and more.
+Audio is well emulated, and can be extensively configured. In addition to the file formats listed, RealSpec can load and/or save various
+audio, video and image files.<br /><br />
+Extensive (and superby detailed) documentation is included, with additional reference information for the emulator, supported
+hardware and file formats being available from the RamSoft
+<a href="http://www.ramsoft.bbk.org/">web site</a>. Versions suitable for use with AMD or Intel Pentium processors are available, as is a
+(reduced functionality) <a href="windows.htm">recompiled version</a> for Microsoft Windows. The MS-DOS version will run under
+MS-DOS emulation on Microsoft Windows 2000 / XP platforms, with limitations (no sound) - use the recompiled version instead, or install a suitable
+sound-card emulator (see the RamSoft <a href="http://www.ramsoft.bbk.org/">web site</a> for further details).<br /><br /></li>
+
+
+<li><a href="ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/pc/dos/x128v94s.zip">x128</a> v0.94<br /><br />
+<strong>Emulates</strong>: 48K / 128K / +2 / +2A and +3 ZX Spectrums, Pentagon 128 and Scorpion 256. Partial emulation of the Russian Profi+ clones, the
+<a href="../reference/peripherals.htm#InterfaceI">ZX Interface I</a> and ZX81 is included.<br /><br />
+<strong>Tape/Disk Formats</strong>: <a href="../reference/z80format.htm">.z80</a>,
+<a href="../reference/formats.htm#SNA">.sna</a>, <a href="../reference/formats.htm#SLT">.slt</a>,
+<a href="../reference/formats.htm#TZX">.tzx</a>, <a href="../reference/formats.htm#TAP">.tap</a>,
+<a href="../reference/formats.htm#TRD">.trd</a>, <a href="../reference/formats.htm#DSK">.dsk</a>, .fdd, .fdi, .mgt, .scl, .d80,
+<a href="../reference/formats.htm#POK">.pok</a> , .000 files. Supports .voc audio
+formats. ZX81 emulation includes support for .p and .81 files.<br /><br />
+<strong>Requirements</strong>: MS-DOS. Pentium processor recommended.<br />
+<strong>Created by</strong>: <a href="../../cdn-cgi/l/email-protection#610b0c020a0018210b0c0a504f0713040412041317044f020e4f140a4f13040c0e17044f15090812">James McKay</a>.<br />
+<strong>Last updated</strong>: February 9th, 2002<br /><br />
+<strong>Comments</strong>: Includes emulation of the DISCiPLE and BetaDisk interfaces, Kempston, AMX, AY and Amiga mice, Multiface 128 and MF3,
+Kempston, Sinclair, Cursor and Fuller <a href="../reference/peripherals.htm#Joysticks">Joystick Interfaces</a>. Screen images can
+be saved in .pcx format. Provides variable emulation speed (in %) and multiple video
+mode options. Also runs under MS-DOS emulation with Microsoft Windows 95, 98, Me. Will also work with NT4.0, 2000 and XP with
+VDMSound installed. Source code is available for v0.5, as is a Unix port (no longer in development) and AmigaOS.<br /><br /></li>
+
+
+<li><a href="ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/pc/dos/z80-400.zip">Z80</a> v4.00<br /><br />
+<strong>Emulates</strong>: 48K / 128K ZX Spectrums.<br />
+<strong>Tape/Disk Formats</strong>: <a href="../reference/formats.htm#SNA">.sna</a>,
+<a href="../reference/z80format.htm">.z80</a>,
+<a href="../reference/formats.htm#TAP">.tap</a> and
+<a href="../reference/formats.htm#TZX">.tzx</a> files.<br />
+<strong>Requirements</strong>: Essentially, any system capable of running MS-DOS.<br />
+<strong>Created by</strong>: Gerton Lunter.<br />
+<strong>Last updated</strong>: March 16th, 1999<br /><br />
+<strong>Comments</strong>: Also emulates the <a href="../reference/peripherals.htm#Speech">Currah µSpeech</a>,
+<a href="../reference/peripherals.htm#Printers">ZX Printer</a>,
+<a href="../reference/peripherals.htm#ZXMicrodrive">ZX Microdrive</a>, DISCiPLE interface, Cheetah SpecDrum,
+<a href="../reference/peripherals.htm#Miscellaneous">Multiface 128</a> (includes ROMs), Kempston and Cursor
+<a href="../reference/peripherals.htm#Joysticks">Joystick Interfaces</a>. Features an integrated assembler, disassembler
+and monitor with labels and multiple complex breakpoints. Screen images can be saved as .gif files. Extensively documented. A
+Windows version is also available. Released as Shareware, but apparently no longer regularly maintained.<br /><br /></li>
+
+
+<li><a href="http://www.worldofspectrum.org/warajevo/index.html">Warajevo</a> v2.5.1<br /><br />
+<strong>Emulates</strong>: 48K / 128K / +2 ZX Spectrums, Timex TS2068.<br />
+<strong>Tape/Disk Formats</strong>: <a href="../reference/formats.htm#TAP">.tap</a> (non-standard - see documentation), .blk, .spc,
+.ltp, <a href="../reference/formats.htm#TZX">.tzx</a>, Museum .zxs, ZX32 .zxs, .zxt, .voc,
+<a href="../reference/formats.htm#SLT">.slt</a>, .san 48/128, .sp, .prg, .sem, .sit, .snp,
+<a href="../reference/formats.htm#MDR">.mdr</a>, <a href="../reference/formats.htm#SCR">.scr</a> and
+<a href="../reference/formats.htm#DCK">.dck</a> Automatic conversion of .voc,
+<a href="../reference/formats.htm#SNA">.sna</a>, <a href="../reference/formats.htm#SLT">.slt</a>, .blk and .snp files on open.<br /><br />
+<strong>Requirements</strong>: Minimal - essentially any stystem capable of running MS-DOS.<br />
+<strong>Created by</strong>: <a href="../../cdn-cgi/l/email-protection#671d0d12150e042712130e04490902134905064915020a08110249130f0e14">Zeljko Juric</a> and
+<a href="../../cdn-cgi/l/email-protection#d2bfb7b5b3a0bbb0bb92baa1beffa1b3a0b3b8b7a4bdfcb1bdbffca0b7bfbda4b7fca6babba1">Samir Ribic</a> (<a href="../../cdn-cgi/l/email-protection#a1ccc4c6c0d3c8c3c8e1c9c4d3ccc4d28fd2c88fd3c4ccced7c48fd5c9c8d2">alternate</a>)<br />
+<strong>Last updated</strong>: November 25th, 1998<br /><br />
+<strong>Comments</strong>: Supports networking, emulates the
+<a href="../reference/peripherals.htm#InterfaceI">ZX Interface I</a>, <a href="../reference/peripherals.htm#Printers">ZX Printer</a>
+and 128K ZX Spectrum MIDI connections. Very extensively documented (Bosnian and English) Released as Shareware, with Source code
+available on registration. Also runs under MS-DOS emulation (DOS Box) with Microsoft Windows 95, 98, Me. Will also work with NT4.0, 2000 and XP,
+but sound emulation is affected. There are several important pre-requisites described in the documentation that you should read carefully before
+running Warajevo through MS-DOS emulation.<br /><br /></li>
+
+
+<li><a href="http://z80stealth.emuunlim.com/">Z80 Stealth</a> v0.503<br /><br />
+<strong>Emulates</strong>: 128K ZX Spectrum, Pentagon 128/512, Scorpion ZS 256.<br />
+<strong>Tape/Disk Formats</strong>: <a href="../reference/z80format.htm">.z80</a>,
+<a href="../reference/formats.htm#SNA">.sna</a>, <a href="../reference/formats.htm#SLT">.slt</a>, .sp, .prg, .ach, .sit,
+<a href="../reference/formats.htm#TAP">.tap</a>, <a href="../reference/formats.htm#TRD">.trd</a> and .scl files. Audio
+formats include .wav and .voc.<br />
+<strong>Requirements</strong>: MS-DOS. Pentium 300 or above.<br />
+<strong>Created by</strong>: <a href="../../cdn-cgi/l/email-protection#3558471b5e5c475c595975584140185b50411b47401b4750585a43501b415d5c46">Kirill Kolpakov</a>.<br />
+<strong>Last updated</strong>: December 25th, 2001<br /><br />
+<strong>Comments</strong>: Perfect sound emulation is claimed - note that this is one of the few emulators that supports the
+<a href="http://mektukor.oszk.hu/porta/szint/muszaki/szamtech/hardver/speccy/html/sphw-e.htm">General Sound</a>
+card. Incomplete emulation of the Russian Profi 1024 and KAY 1024 clones
+<a href="../reference/z80format.htm">.z80</a> format is enhanced to support the Pentagon, Scorpion, KAY and
+Profi machines. Also runs under MS-DOS emulation with Microsoft Windows 95, 98 and Me. A collection of Games, Magazines and Demos
+are available from the Z80 Stealth <a href="http://z80stealth.emuunlim.com/">web site</a>.<br /><br /></li>
+
+</ul>
+
+</td>
+</tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: msdos.htm,v 1.7 2004/07/05 08:20:12 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+<script data-cfasync="false" src="../../cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script></body>
+</html>

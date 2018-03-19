@@ -1,0 +1,64 @@
+		LD	B,+00	B is set to +00 hex for 'negate'.
+
+'ABS' enters here.
+
+3474	NEG-TEST	LD	A,(HL)	If the first byte is zero, the
+		AND	A	jump is made to deal with a
+		JR	Z,3483,INT-CASE	'small integer'.
+		INC	HL	Point to the second byte.
+		LD	A,B	Get +FF for 'abs', +00 for
+				'negate'.
+		AND	+80	Now +80 for 'abs', +00 for
+				'negate'.
+		OR	(HL)	This sets bit 7 for 'abs', but
+				changes nothing for 'negate'.
+		RLA		Now bit 7 is changed, leading to
+		CCF		bit 7 of byte 2 reset for 'abs',
+		RRA		and simply changed for 'negate'.
+		LD	(HL),A	The new second byte is stored.
+		DEC	HL	HL points to the first byte
+				again.
+		RET		Finished.
+
+The 'integer case' does a similar operation with the sign byte.
+
+3483	INT-CASE	PUSH	DE	Save STKEND in DE.
+		PUSH	HL	Save pointer to the number in
+				HL.
+		CALL	2D7F,INT-FETCH	Fetch the sign in C, the number
+				in DE.
+		POP	HL	Restore the pointer to the
+				number in HL.
+		LD	A,B	Get +FF for 'abs', +00 for
+				'negate'.
+		OR	C	Now +FF for 'abs', no change for
+				'negate'
+		CPL		Now +00 for 'abs', and a changed byte
+		LD	C,A	for 'negate': store it in C.
+		CALL	2D8E,INT-STORE	Store result on the stack.
+		POP	DE	Return STKEND to DE.
+		RET		
+
+THE 'SIGNUM' FUNCTION
+(Offset 29: 'sgn')
+
+This subroutine handles the function SGN X and therefore returns a 'last value' of 1 if X is positive, zero if X is zero and -1 if X is negative.
+
+3492	sgn	CALL 34E9,TEST-ZERO	If X is zero, just return with
+		RET	C	zero as the 'last value'.
+		PUSH	DE	Save the pointer to STKEND.
+		LD	DE,+0001	Store 1 in DE.
+		INC	HL	Point to the second byte of X.
+		RL	(HL)	Rotate bit 7 into the carry flag.
+		DEC	HL	Point to the destination again.
+		SBC	A,A	Set C to zero for positive X and
+		LD	C,A	to FF hex for negative X.
+		CALL	2D8E,INT-STORE	Stack 1 or -1 as required.
+		POP	DE	Restore the pointer to
+				STKEND'
+		RET		Finished.
+
+THE 'IN' FUNCTION
+(Offset 2C: 'in')
+
+This subroutine handles the function IN X. It inputs at processor level from port X, loading BC with X and performing the instruction IN A,(C).

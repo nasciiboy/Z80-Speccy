@@ -1,0 +1,467 @@
+<HTML><HEAD>
+<TITLE>Thomas Scherrer Z80-Family Official Support Page</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators,Zilog">
+<META name="description" content="Thomas Scherrer Z80-Family Official Support Page">
+<META name="author" content="Thomas Scherrer">
+<META name="changedby" content="Gaby Chaudry">
+</HEAD>
+<BODY BGCOLOR="#FFFFFF"> 
+
+<a NAME="TOP">
+
+<center>
+<img SRC="gfx/logotes4.gif" HEIGHT="166" WIDTH="626" border="0"></a>
+<h2>Official Support-Page:<br>
+Hardware - Software - Utilities - FAQ - Docs<br> 
+for<br>
+<b>Z80-Family</b></h2>
+</center>
+Last updated:<b>January 2018</b>
+<p>
+<hr>
+The purpose of this page and its sub pages about <b>members of Z80 family (and close relatives)</b>
+is to collect and share information and good ideas. 
+I know there are lots of people out there, who have developed some good utilities and hardware solutions.
+Now we all can share this infomation.
+<br>
+This page contain docs, FAQs, source code, (cross-)assemblers, (cross-)compilers, utilities, 
+etc. as well as links to other Z80 relevant stuff.
+<br>Some of the info found here is property of Zilog, like hardware docs, instruction sets, and some of the software available. 
+<a HREF="zopy.htm">Read the copyright notice.</a>
+<br>
+If you know an URL matching the subject of this WWW-page, tell me, and give recommendations 
+where to place best.
+<br>
+Some of the links here are no more online and some are not yet correct: they are marked with a ??? sequence;
+in case you know the appropriate URL: I'm ready for an update. 
+<BR>Please report all updates,
+corrections and suggestions to the webmaster <A HREF="contact.htm">Gaby Chaudry</A>.
+
+<BR>
+Be aware of the fact that <B>many products</B> mentioned in this series
+of Z80 related documents <B>are nowadays out of production</B>: if you
+want to start a project, don't forget to check where to get the
+parts from, and what the conditions are ...
+<P><center><a HREF="legal.htm"> Yes I have read the legal info </a></center></P>
+<HR>
+
+<P><B><FONT COLOR="red">Breaking News!</FONT></B>
+Sharp has built a Z80 CPU on glass. Learn more about it in their press release 
+<A HREF="sharp/z80_glas.htm">
+Z80 8-Bit CPU Formed on Glass Substrate</A>.
+</P>
+
+
+<hr>
+<a NAME="TOC">
+<b><h2>Table-of-Contents:</h2></b>
+<ul>
+<li><a HREF="index.htm#GENERAL">General Information about Z80-Family</a>
+<li><b>Basic Information:</b>
+<ul>
+<li><a HREF="index.htm#BASICS_ARCH">Architecture</a>
+<li><a HREF="index.htm#BASICS_DATA">Data Sheets</a>
+<li><a HREF="index.htm#BASICS_INST">Instruction Set</a>
+<li><a HREF="index.htm#BASICS_HARD">Hardware</a>
+<ul>
+<li><a HREF="index.htm#BASICS_HARD_PIN">Chip Pinouts</a>
+<li><a HREF="index.htm#BASICS_HARD_SCHEMA">Circuit Schematics</a>
+</ul>
+<LI><A HREF="index.htm#BASICS_SOFT_TUTOR_ASM">Software Tutorials</A>
+</ul>
+<li><b>Special Items:</b>
+<ul>
+<li><a HREF="index.htm#SPECIAL_Z80">Special Items (Z80)</a>
+</ul>
+<li><a HREF="z80os.htm">Operating Systems for Z80</a>
+<LI><A HREF="z80bus.htm">System Busses for Z80 Family</A>
+<LI>Products based on Z80 Family
+<UL>
+<LI><A HREF="z80bms.htm">Boards, Modules and Sub-Systems</A>
+<LI><A HREF="z80cs.htm">Computer Systems</A>
+<LI><A HREF="z80gm.htm">Game Machines</A>
+<LI><A HREF="z80vdt.htm">Video Display Terminals</A>
+</UL>
+<li><a HREF="index.htm#SRC_OFFER">Source Offers</a>
+<li><a HREF="index.htm#SRC_REQUEST">Source Requests</a>
+<li><a HREF="z80r4d.htm">Requests for Documents</a> <b>Documents which would be nice to have online.</b>
+<li><a HREF="homebrew.htm">Projects, Homebrew z80 systems</a>
+<li><a HREF="z80sdt.htm">Software Development Tools</a> Assemblers, Compilers, Simulators, and more.
+<li><a HREF="z80emu.htm">Emulators and I.C.E.</a>
+<li><a HREF="index.htm#DISTRIBUTOR">Chip Distributors</a>
+<li><a HREF="uemsc.htm">Miscellaneous and more general Stuff</a>
+<li><a HREF="z80ohp.htm">Other's Home Pages with Z80 Stuff</a>
+<li><a HREF="z80m_l.htm">(Z80) Mailing Lists you may subscribe to</a>
+<li><a HREF="z80nws.htm">Usenet Newsgroups (somewhat) related to Z80</a>
+<li><a HREF="z80mag.htm">Magazines for Z80 Users</a>
+<li><a HREF="z80lit.htm">Literature about Z80 (in List Form)</a> Thanks To Leonhard Schneider
+<li><a HREF="z80books.htm">Literature about Z80 (in Table Form)</a> Thanks To Dines
+<LI><A HREF="index.htm#VARIOUS">Various useful z80 related sites</A>
+</ul>
+
+<hr>
+<hr>
+
+<a NAME="GENERAL">
+<h3><b>General Information about Z80-Family</b></h3>
+<ul>
+<li><a HREF="z80cpus.htm">Z80 CPU Pictures</a> See what we are talking about.
+<LI><A HREF="z80cpue.htm">Zilog inside!</A> An even closer view (for VERY curious folks :-)
+<li><a HREF="z80lives.htm">Z80 Lives!</a> by Jack G. Ganssle
+<li><a HREF="z80brief.htm">Brief Description and Introduction to the Z80 CPU</a>
+<li><a HREF="http://www.zilog.com">Zilog, Inc.</a> Thanks to Zilog, they made it (the chip)
+<li><a HREF="z80382bd.htm">Zilog Z80382 8-Bit Microprocessor</a> Brief Description, Block Diagram and Pinout
+<LI><A HREF="zip/ZilogProductSpecsDatabook129-143.pdf">Z80 Family Questions &amp; Answers</A>, from Zilog Product Specs Databook.
+</ul>
+<hr>
+
+<a NAME="BASICS_ARCH">
+<h3><b>Basic Information (Architecture)</b></h3>
+<ul>
+<li><a HREF="gfx/z80block.gif">Z80 CPU simplified Block Diagram</a> See some of the internal stuff in the CPU
+<li><a HREF="z80arki.htm">Z80 CPU Architecture Block Diagram</a> with info about the registers.
+<LI><A HREF="z80architektur.htm">Z80 CPU Architecture Block Diagram ( German ) </a> 
+by <A HREF="mailto:axel.schnell@fh-duesseldorf.de">Axel Schnell</A>
+<LI><A HREF="gfx/z84c015.gif">Z80C015 CPU Architecture Block Diagram ( German ) </a> 
+Integrated Z80 with PIO SIO CTC all in one IC
+<LI><A HREF="zip/z80pps.zip">PowerPoint Presentation of the Z80 CPU internal block diagram</A>,
+showing active lines and microinstructions in each T state
+during execution of 4 assembler instructions and INT request (Italian and English).
+<LI><A HREF="http://www.righto.com/2013/09/the-z-80-has-4-bit-alu-heres-how-it.html" TARGET="_new">
+The z80 has a 4-bit ALU</A>, by Ken Shirriff.
+</ul>
+
+<hr>
+
+<A NAME="BASICS_DATA">
+<H3><B>Basic Information (Data Sheets)</B></H3>
+<UL>
+<LI><A HREF="zip/z80data.zip">Z80 CPU DATASHEET (ZIP'ed PDF file)</A>
+<LI><A HREF="zip/z80.pdf">Zilog Z80 CPU (PDF)</A> 
+<!--
+<LI><A HREF="http://www.s100-manuals.com/gaby/zilog/z80_technical_manual_1977.pdf">
+Zilog Z80 CPU Technical Manual (1977)</A> -->
+<LI><A HREF="zip/z80b8400.pdf">SGS Thompson Z80 CPU Data Sheet (PDF)</A> 
+- <A HREF="zip/z80b8400_OCR.pdf">And here's the OCR'd version</A>, thanks to Alan Laughton!.
+<LI><A HREF="zip/z80cpu_um.pdf">Zilog Z80 CPU user manual (PDF)</A> 
+<LI><A HREF="zip/um0081.pdf">Zilog Z80 CPU Peripherals user manual (PDF)</A>
+(includes Z80 CTC PIO CTC DMA)
+<LI><A HREF="zip/z80ctc.pdf">Zilog Z80 CTC user manual (PDF)</A>
+<LI><A HREF="zip/82c55.zip">Intel's 82C55 PPI (Zip'ed PDF file)</A>
+<LI><A HREF="zip/16550.zip">16C550 and SC16C750 UART (ZIP'ed PDF files)</A>
+<LI><A HREF="zip/z80pio.zip">Z80 PIO (ZIP'ed GIF files)</A> the whole Zilog data sheet
+<LI><A HREF="zip/z80piomn.pdf">Z80 PIO User's Guide in PDF format</A> <B> NEW !!</B>
+<LI><A HREF="zip/z80piomn.doc">Z80 PIO User's Guide in MS Word 97 format</A> <B> NEW !!</B>
+<!--
+<LI><A HREF="http://www.s100-manuals.com/gaby/zilog/z280_manual.pdf">Zilog Z280 Preliminary 
+Technical Manual</A> (PDF file 20M) -->
+<BR><BR> 
+<LI>
+
+<P><B>Z80 family data sheets at Zilog.com (external links)</B></P>
+<UL>
+
+
+<LI><A HREF="http://www.zilog.com/docs/z80/ps0178.pdf">Z8400/Z84C00 Product Specification</A>
+Z80 CPU (35 pages)
+
+<LI><A HREF="http://www.zilog.com/docs/z80/ps0179.pdf">Z8410/Z84C10 Product Specification</A>
+Z80 DMA Controller (25 pages)
+
+<LI><A HREF="http://www.zilog.com/docs/z80/ps0180.pdf">Z8420/Z84C20 Product Specification</A>
+Z80 PIO (16 pages)
+
+<LI><A HREF="http://www.zilog.com/docs/z80/ps0181.pdf">Z8430/Z84C30 Product Specification</A>
+Z80 CTC (16 pages)
+
+<LI><A HREF="http://www.zilog.com/docs/z80/ps0183.pdf">Z8440/Z84C40 Product Specification</A>
+Z80 SIO (24 pages)
+
+
+<LI><A HREF="http://www.zilog.com/docs/z80/ps0182.pdf">ps0182.pdf (65 pages)</A>
+<BR>
+and
+<BR><A HREF="http://www.zilog.com/docs/z80/dc2992.pdf">dc2992.pdf (27 pages)</A>
+Z84013/Z84015/Z84C13/Z84C15 Product Specification -
+Intelligent Peripheral Controller a Z80 with SIO, CTC, PIO, watchdog, power-on-rest
+
+<LI><A HREF="http://www.zilog.com/docs/z80/ps0118.pdf">Z84C90 Product Specification</A>
+Z80 KIO (SIO, PIO, CTC in 1 package)
+
+</UL>
+</UL>
+
+<HR>
+
+<A NAME="BASICS_INST">
+<H3><B>Basic Information (Instruction Set)</B></H3>
+<UL>
+<LI><A HREF="z80code.htm">Introduction into Z80 Instruction Set</A>
+        Be aware of the fact that style how statements are arranged
+	in examples reflects non-standard features offered by ZINT 
+	<A HREF="z80sdt.htm#SDT_SIM_PCDOS_ZINT">
+	Z80-Interpreter</A>
+<LI><A HREF="z80syntx.htm">Z80 Assembler Syntax</A> with detailed information about 
+instructions, still under construction!
+
+<LI><A HREF="z80-op.txt">Z80 Instruction Set Summary</A> with brief explanations 
+<LI><A HREF="z80opcod.txt">Z80 OpCode Formation Rules</A> rudimentary
+<LI><A HREF="zip/z80prog.zip">Z80 programming guide</A>
+  based upon the original Zilog manuals and restructuring of the data. 
+  Contains both an HTML version of the enclosed
+  table and a GIF image of the z80 machine code quick reference. By Mary Bell.
+
+<LI><A HREF="http://t.eeems.ca/ASMin28Days/ref/z80is.html">
+Learn TI-83 Plus Assembly In 28 Days</A> - Z80 Instruction Set, by Sean McLaughlin.
+
+<LI><A HREF="http://clrhome.org/table/"> Z80 instruction set table</A>. Set of seven tables organized by opcode for all of the Z80's instructions.
+
+<LI><A HREF="zip/z80table.zip">The Complete Z80 Table</A> (including all undocumented instructions) (XLS and PDF).
+
+<LI><A HREF="decoding.htm">Decoding Z80 Opcodes</A>
+- of use to disassembler and emulator writers, by Christian Dinu (<FONT COLOR="red"><B>NEW!!</B></FONT>).
+
+<LI>Z80 Instruction Set, sorted in various ways and combinations:
+<UL>
+<LI><A HREF="z80inst.txt">Alphabetically sorted</A> Showing # of T-states and brief explanation 
+of instructions
+<LI><A HREF="z80href.txt">Alphabetically sorted</A> showing flags affected and brief explanation 
+of instructions
+<LI><A HREF="z80time.txt"> Alphabetically sorted</A> Showing # of T-states and size of 
+instructions
+
+<LI>(<A HREF="z80code.txt">combination of the three texts mentioned above</A>, including some corrections and
+supplements, <FONT COLOR="red"><B>NEW!!</B></FONT>.)
+<P></P>
+<LI><A HREF="z80sflag.htm">Alphabetically sorted ( HTML )</A> Explaining Flag Affection</A>
+<LI><A HREF="z80flag.htm"> Alphabetically sorted ( HTML )</A> Showing # of T-states and 
+telling which flags are affected
+<LI><A HREF="z80ins.txt">Z80 instruction breakdown by machine code</A> See what's goes on 
+in each machine cycle. Thanks to Alvin and Vaggelis.
+<LI><A HREF="zip/Z80-LD-table.pdf">Z80 loading table</A>, by Piotr S.
+
+</UL>        
+
+<LI>Use one of these lists to disassemble "by hand":
+<UL>
+<LI><A HREF="disz80.txt">Z80 Instruction Set, OpCode # sorted (Hex)</A>
+<LI><A HREF="opcodes.txt">Z80 Instruction Set, OpCode # sorted (Hex)</A>
+<LI><A HREF="z80inst2.txt">Z80 Instruction Set, OpCode # sorted (Hex and Decimal)</A>
+<LI><A HREF="z80sean.txt">Complete Opcode List (including undocumented ones)</A> Showing # of T-states, M-Cycles, M1-Cycles
+<LI><A HREF="zip/z80-documented.pdf">The Documented un-documented instructions (PDF)</A> <B>Thanks Sean!</B>
+<LI><A HREF="z80oplist.txt">Full Z80 Opcode List Including Undocumented Opcodes</a> By J.G.Harston
+<LI><A HREF="zip/z80sean.zip"> A Word95 document with all the instruction tables</A> Good reading here.
+<LI><A HREF="http://zoofware.com/z80-opcode-to-mnemonic/">z80 Opcode to Mnemonic Translator</A>,
+written in C, by James Ball (currently offline)
+<LI><A Href="zip/z80_opcode.xls">Z80 opcodes Excel sheet</A>.
+</UL>
+</UL>
+
+<HR>
+
+<A NAME="BASICS_HARD">
+<A NAME="BASICS_HARD_PIN">
+<H3><B>Basic Information (Chips' Pinouts)</B></H3>
+<UL>
+<A NAME="BASICS_HARD_PIN_Z80">
+<LI><A HREF="zinout.htm#Z80CPU">Z8400 CPU</A> Z80 CPU
+<LI><a HREF="8410.txt">Z8410 DMA</a>
+<LI><a HREF="z80pio.htm">Z8420 PIO</A> (Parallel Input/Output controller)
+<LI><a HREF="z80ctc.htm">Z8430 CTC</A> (Counter/Timer Controller)
+<LI><a HREF="z80sio.htm">Z8440 SIO</A> (Serial Input/Output controller)
+<LI><a HREF="z80dart.htm">Z8470 DART</a> (Dual Asynchronous Receiver/Transmitter)
+<LI><a HREF="8530.txt">Z8530 SCC</a> Zilog Serial Communications Controller
+<LI><a href="cpu280.txt">Z80280 MPU</a> (by Tilmann Reh)
+<LI><a href="http://oldcomputers.dyndns.org/public/pub/rechner/zilog/z280/index.html">information 
+about the z280</A>, including manuals and various articles about the Reh CPU280.
+<LI><a HREF="z80gboy.txt">Info about the GAMEBOY CPU</a>
+<LI>R800 made by Ascii Japan, used for MSX Turbo R (made by Panasonic) <a href="zip/r800.zip">Download full software doc</a>
+<LI><A HREF="zinout.htm#8255"> 8255 PPI</A> Pin Description
+<LI><A HREF="zinout.htm#16C550"> 16C550 Serial UART Pinout + info</A>
+<LI><a HREF="gfx/eprom.gif">EPROM</a> All 24 and 28 pins EPROM pinout 2708 - 27512
+<LI><A HREF="mostek.htm">Mostek peripheral chips</A> block diagrams and pinouts.
+<LI><A HREF="http://cratel.wichita.edu/cratel/ECE238Spr08/references?action=AttachFile&do=view&target=gbspec.txt">Everything You Always Wanted To Know About GAMEBOY</A>.
+<LI><A HREF="http://www.righto.com/2014/09/why-z-80s-data-pins-are-scrambled.html" TARGET="_new">
+Why the Z-80's data pins are scrambled</A>, by Ken Shirriff.
+</UL>
+
+<HR>
+
+<a NAME="BASICS_HARD_SCHEMA">
+<h3><b>Basic Information (Circuit Schematics)</b></h3>
+<ul>
+<li><a HREF="uegates.htm">Digital GATES</a> All about digital gates, truth tables and schematic symbols.
+<li><a HREF="uexosc.htm">Crystal Oscillator Circuit</a> How to make one yourself
+<li><a HREF="z80test0.htm">Z80 tester</a> Schematics over the absolute beginner construction with a Z80 CPU.
+<li><a HREF="gfx/z80test.gif">Z80 Schematic</a> This is a system example with PARALLEL, SERIAL, RAM and ROM
+<li><a HREF="zip/z80-2.zip">Z80 Schematic (Protel)</a> The schematic above in the original Protel format
+<li><a HREF="z80core3.htm">3 GIFs with Z80 Circuits</a> Z80 CPU and Memory, CTC, SIO, and drivers for RS-232 interface
+<li><a HREF="z80core4.htm">Z80 system circuit</a> Z80 CPU with EPROM, RAM and PIO, by M.Kimura 
+<li><a HREF="gfx/nascom1main.gif">Z80 Nascom 1 Main</a>  
+<li><a HREF="gfx/nascom1video.gif">Z80 Nascom 1 Video Section</a>  
+<li><a HREF="gfx/emilio_sch.gif">Z80 system for HAM radio</a> by Emilio 
+<li><a HREF="gfx/jean3.gif">Z80 system</a> by Douglas, with flash rom and Z80 PIO
+<li><a HREF="z80core5.htm">Z80 Arcade game</a> "Moon Cresta" by Gremlin Industries
+<li>Sinclair ZX Spectrum+3 and +2A by Amstrad plc., 
+<a HREF="gfx/plus31.gif">part1</A> and <a HREF="gfx/plus32.gif">part2</a>. <BR>
+Both parts put together in one schematic: <a href="gfx/Circuit_diagram_2A_3A.gif">parts 1 and 2</A>. 
+</ul>
+
+<hr>
+
+<A NAME="BASICS_SOFT_TUTOR_ASM">
+<H3><B>Software Tutorials</B></H3>
+<UL>
+<li><a HREF="lesson1.htm">Z80 ASM Lessons</a> Don't get confused by term "ASM86"
+<LI><A HREF="z80code.htm">Introduction into Z80 Instruction Set</A> based on ZINT
+<LI><A HREF="http://www.train-z.de/train-z/pdf/howto_program_the_Z80-SIO.pdf">How to program the z80 SIO</A>, 
+by Mario Blunk.
+<LI><A HREF="http://www.train-z.de/train-z/pdf/howto_program_the_Z80-CTC.pdf">
+How to program the z80 CTC</A>, by Mario Blunk.
+<LI><A HREF="http://www.train-z.de/train-z/pdf/howto_program_I2C.pdf">
+I²C programming using the Z80 PIO</A>, by Mario Blunk.
+</UL>
+
+<HR>
+
+<a NAME="SPECIAL">
+<a NAME="SPECIAL_Z80">
+<h3><b>Special Items (Z80)</b></h3>
+<ul>
+<li><a HREF="z80_faq.htm">My Z80 FAQ, Frequently Asked Questions</a>
+<li><a HREF="z80info.htm">Z80 Information</a> Read about the R register, undoc + more
+<LI><A HREF="gfx/z80mem.gif">Z80 & Memory chip select ( GIF )</A>
+<LI><A HREF="z80mem.txt">Z80 & Memory ( TXT )</A>
+<LI><A HREF="z80reset.txt">Z80 & Reset ( TXT )</A>
+<li><a HREF="z80_rfrs.txt">Z80 DRAM Refresh ( TXT )</a>
+<LI><A HREF="sint.htm">Byte saving, conditional RST7 on Z80</A>
+<LI><A HREF="bytesave.htm">More byte saving code</A>, by Johan Koelman
+<LI>Bugs and Errors in Offical Z80 Documentation:
+<UL>
+<LI><A HREF="z80bugs.htm">Known BUGS ( HTML ) </A>
+<LI><A HREF="http://www.msxnet.org/tech">
+	Errors in the Official Z80 Documentation</A>
+</UL>
+<LI>Undocumented Z80 Opcodes:
+<UL>
+<LI><A HREF="z80undoc.htm">Z80 Undocumented Instructions</A>
+<LI><A HREF="z80undoc.txt">Z80 Undocumented Instructions</A> Effects on flags, by Mark G. Rison
+<LI><A HREF="z80undoc2.txt">Z80 Undocumented Instructions</A> Some postings
+<LI><A HREF="z80undoc3.txt">Z80 Undocumented Opcodes</A> By Sean Young
+</UL>
+<li><a HREF="z255pro.htm">8255 PIO Programming info</a>
+<li><a HREF="http://www.ganssle.com">Articles</a> by Jack G. Ganssle, Search and you will find Z80 stuff
+<LI><A HREF="http://www.primrosebank.net/computers/z80/z80_special_reset.htm">Z80 Special Reset</A>, by Tony Brewer.
+<LI><A HREF="interrup.htm">Interrupt Behaviour of the Z80 CPU - 
+Interrupt and reset timing</A> 
+<LI><A HREF="interrup2.htm">Interrupt mode 2 - what happens to bit 0?</A>
+<LI><A HREF="zip/z80-interrupts.pdf">
+Zilog Application note "Z80 Family Program Interrupt Structure"</A>, May 1978 - thanks to John Gill for that.
+<UL>
+<LI><A HREF="zip/z80-interrupts_rewritten.pdf">
+The above document rewritten by Mario Blunk</A>, now in a searchable PDF format.
+</LI>
+</UL>
+<LI><A HREF="http://web.archive.org/web/*/www.barleywood.com">barleywood.com</A>
+Guide to Z80 I/O Programming: 
+The source of the following documents (link points to a mirror at archive.org)
+
+<UL>
+<LI><A HREF="1653.htm">Z80 Family Interrupt Structure</A>
+
+<LI><A HREF="1656.htm">Serial Communications using RS232</A>
+</ul>
+<LI><A HREF="http://www.righto.com/search/label/Z-80" TARGET="_new">Reverse engineering ARM1 instruction
+sequencing</A>, compared with the Z-80 and 6502.
+<LI><A HREF="http://www.righto.com/2014/10/how-z80s-registers-are-implemented-down.html" TARGET="_new">
+Down to the silicon: how the Z80's registers are implemented</A>.
+</ul>
+
+<hr>
+
+<a NAME="SRC_OFFER">
+<h3><b><font SIZE=+2>Source Code Examples ... </font></b></h3>
+<b>... in Assembly Language:</b>
+<ul>
+<li><a HREF="z80asm.htm">Z80 Source</a> Some routines for beginners (source not yet commented) 
+<li><a HREF="z80sourc.txt">Z80 Source</a> Some routines for the more trained
+<li><a HREF="z80prog.htm">Z80 Programming</a>
+<li><a HREF="zip/pcdn.zip">PCDN.ZIP</a> PC Download Z80-ASM. 
+Routines for the Z80 SIO Serial port 
+by Dave Baldwin, The Computer Journal</a>
+<li><a HREF="zip/math.zip">Z80 Math.zip</a> Floating-Point Math Package 
+for GameBoy or Z80 in Assembler, by Jeff Frohwein
+<LI><A HREF="zip/math48.zip">Math48.zip</A> 48 bit floating point mathematical package 
+for Z-80 based microcomputers, by Anders Hejlsberg.
+<li><a HREF="zip/z80asm.zip">Z80 ASM.zip</a> A great Z80 ASM package with: 
+8251 Uart intel hex transfer, LCD drivers, random, forth.
+<LI><A HREF="http://www.sixtyfourbit.org/Z80.htm">A system to receive and transmit packets throught 
+a PCM-30 8bit timeslot using a SIO device</A>, by Riccardo Pompeo.
+<LI><A HREF="pseudo-random.txt">Pseudo-random number generator</A>, by A.J.Moss.
+</ul>
+
+<hr>
+
+<a NAME="SRC_REQUEST">
+<h3><b>Source Code Requests from you:</b></h3>
+<ul>
+<li><a HREF="z80req.htm">Z80 Software Request</a>
+</ul>
+
+
+<hr>
+
+<a NAME="DISTRIBUTOR">
+<h3><b>Chip Distributors</b></h3>
+<ul>
+<LI><A HREF="http://www.stocknsource.com" TARGET="_new">Specialized in hard to find ICs and Semiconductors</A>
+<LI><A HREF="http://www.futurlec.com/" TARGET="_new">Electronic Components and Semiconductors</A>, including
+<A HREF="http://www.futurlec.com/ICZ80Series.shtml" TARGET="_new">Z80 Series Microprocessors</A> 
+and
+<A HREF="http://www.futurlec.com/Z8_Training.shtml" TARGET="_new">Training Boards.</A>
+<LI><a
+href="http://www.4starelectronics.com/">Obsolete Electronic Components</a>
+<LI>
+z80 components at Oxygen Electronics, LLC: <BR>
+<A HREF="http://www.o2xygen.com/parts/images/Z/1.htm">Component Image List [Z] page 1</A><BR>
+<A HREF="http://www.o2xygen.com/parts/images/Z/2.htm">Component Image List [Z] page 2</A><BR>
+<A HREF="http://www.o2xygen.com/parts/images/Z/3.htm">Component Image List [Z] page 3</A>
+<LI>
+<A HREF="http://www.proactivecomponents.com/" TARGET="_new">ProActiveComponents</A>, obsolete, hard to find, and long lead time military and commercial electronic parts and hardware.
+
+<LI><A HREF="http://www.jameco.com/" TARGET="_new">Jameco Electronics</A> - Electronic Components Distributor.
+
+<LI><A HREF="http://www.galco.com/" TARGET="_new">Galco Industrial Electronics</A>. 
+
+<LI><A HREF="http://www.earthtron.com/" TARGET="_new">EarthTron LLC</A>, distributor for many hard to find and obsolete electronic parts. 
+
+<LI><A HREF="http://www.marchelectronics.com/" TARGET="_new">March Electronics</A>, a major electronics component distributor since 1972.
+
+</ul>
+
+<hr>
+
+<a NAME="VARIOUS">
+<h3><B>Various useful sites</B></H3>
+<UL>
+<LI><A HREF="http://www.datasheetdir.com/" TARGET="_new">Electronic components data sheets</A></LI>
+<LI><a href="http://www.electroniq.net" title="Electronics Projects, Circuits Diagrams and Schematics" target="_new">Free electronics projects, circuits diagrams and schematics</a> </LI>
+<LI><A HREF="http://www.tracker-software.com/product/pdf-xchange-viewer" target="_new">PDF-XChange Viewer</A> - PDF reader with OCR function.</LI>
+<LI><A HREF="http://www.datasheets360.com/" TARGET="_new">Electronic Component Datasheets and Distributor Pricing</A></LI>
+</UL>
+
+
+<HR>
+
+
+<br><a HREF="index.htm#TOC">Back to Table-of_Contents</a>
+<br><a HREF="index.htm#TOP">Back to Top</a>
+
+<hr>
+</center>
+<BR>
+Last update: January 28, 2018.
+
+</body>
+</html>

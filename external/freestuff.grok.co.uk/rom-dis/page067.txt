@@ -1,0 +1,63 @@
+		ADD	HL,DE	Form the required address in
+				this area.
+
+THE 'CHAN-FLAG' SUBROUTINE
+The appropriate flags for the different channels are set by this subroutine.
+
+1615	CHAN-FLAG	LD	(CURCHL),HL	The HL register pair holds the
+				base address for a particular
+				channel.
+		RES	4,(FLAGS2)	Signal 'using other than channel
+				'K''.
+		INC	HL	Step past the output
+		INC	HL	and the input addresses and
+		INC	HL	make HL point to the
+		INC	HL	channel code.
+		LD	C,(HL)	Fetch the code.
+		LD	HL,+162D	The base address of the 'channel
+				code look-up table'.
+		CALL	16DC,INDEXER	Index into this table and locate
+				the required offset; but return if
+		RET	NC	there is not a matching channel
+				code.
+		LD	D,+00	Pass the offset to the
+		LD	E,(HL)	DE register pair.
+		ADD	HL,DE	Jump forward to the appropriate
+162C	CALL-JUMP	JP	(HL)	flag setting routine.
+
+THE 'CHANNEL CODE LOOK-UP' TABLE
+
+162D	DEFB	4B 06		- channel 'K', offset +06, address 1634
+162F	DEFB	53 12		- channel 'S', offset +12, address 1642
+1631	DEFB	50 1B		- channel 'P', offset +1B, address 164D
+1633	DEFB	00		- end marker.
+
+THE 'CHANNEL 'K' FLAG' SUBROUTINE
+
+1634	CHAN-K	SET	0,(TV-FLAG)	Signal 'using lower screen'.
+		RES	5,(FLAGS)	Signal 'ready for a key'.
+		SET	4,(FLAGS2)	Signal 'using channel 'K''.
+		JR	1646,CHAN-S-1	Jump forward.
+
+THE 'CHANNEL 'S' FLAG' SUBROUTINE
+
+1642	CHAN-S	RES	0,(TV-FLAG)	Signal 'using main screen'.
+1646	CHAN-S-1	RES	1,(FLAGS)	Signal 'printer not being used'.
+		JP	0D4D,TEMPS	Exit via TEMPS so as to set the
+				colour system variables.
+
+THE 'CHANNEL 'P' FLAG' SUBROUTINE
+164D	CHAN-P	SET	1,(FLAGS)	Signal 'printer in use'.
+		RET
+
+THE 'MAKE-ROOM' SUBROUTINE
+This is a very important subroutine.  It is called on many occasions to 'open up' an area.  In all cases the HL register pair points to the location after the place where 'room' is required and the BC register pair holds the length of the 'room' needed.  When a single space only is required then the subroutine is entered at ONE-SPACE.
+
+1652	ONE-SPACE	LD	BC,+0001	Just the single extra location
+				is required.
+1655	MAKE-ROOM	PUSH	HL	Save the pointer.
+		CALL	1F05,TEST-ROOM	Make sure that there is sufficient
+				memory available for the task
+				being undertaken.
+		POP	HL	Restore the pointer.
+

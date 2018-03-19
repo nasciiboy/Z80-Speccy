@@ -1,0 +1,119 @@
+From: jet@centron.com (Johnathan Taylor)
+Date: 22 Mar 95 03:39:41 
+Newsgroups: comp.os.cpm
+Subject: Undocumented Z80 opcode
+
+On (21 Mar 95) cwr@crash.cts.com (Will Rose) wrote to All...
+ c > Does anyone know what the undocumented Z80 opcode DD 54 does?
+ c > I've run across it in a (commercial) assembler, and the CP/M
+ c > emulator I use barfs on it.  (I seem to recall a 64180 barfing 
+ c > on it too, long ago).  Does anyone have a pointer to a list
+ c > of these things?
+
+Those type of instructions are easy to decode:-)
+Simply remove the DD or could be FD prefix and you have the operation code!
+Then simply replace the 16bit or 8bit HL reference with the appropriate part
+of either the IX or IY index registers!
+eg.
+54h -> LD  D,H
+DDh 54h -> LD  D,IXHighByte
+FDh 54h -> LD  D,IYHighByte
+
+register naming conventions for the halves of the index registers are
+
+IXH
+IXL
+IYH
+IYL
+
+Which actually points to the part of HL that the instruction is derived from:-)
+
+------------------------------------ more below
+
+From: billh@comtch.iea.com (Bill Haygood)
+Subject: Re: Undocumented Z80 opcode
+Date: 21 Mar 1995 22:24:46 GMT
+Reply-To: bill@haygood.com
+
+Alan Carter (cartera@x500.bt.co.uk) wrote:
+: Out of ancient memory... Most of the undocumenteed opcodes allow 
+: operations that usually work on HL and DE also work on IX and IY. 
+: DD and DE? are stuck on the front of the regular opcode to make 
+: this happen. There are also undocumented opcodes for accessing 
+: IXH, IXL, IYH and IYL. 
+
+Alan, I'd say you have a good memory.  But, 'DE' == 'SBC n'.  You 
+likely meant 'FD' as the other opcode.
+
+------------------------------------- more below
+
+From: iialan@iifeak.swan.ac.uk (Alan Cox)
+Subject: Re: Undocumented Z80 opcode
+Date: Wed, 22 Mar 1995 10:30:07 GMT
+
+Alan Carter <cartera@x500.bt.co.uk> writes:
+>cwr@crash.cts.com (Will Rose) wrote:
+>> Does anyone know what the undocumented Z80 opcode DD 54 does?
+>> I've run across it in a (commercial) assembler, and the CP/M
+>> emulator I use barfs on it.  (I seem to recall a 64180 barfing 
+>> on it too, long ago).  Does anyone have a pointer to a list
+>> of these things?
+>Out of ancient memory... Most of the undocumenteed opcodes allow 
+>operations that usually work on HL and DE also work on IX and IY. 
+>DD and DE? are stuck on the front of the regular opcode to make 
+>this happen. There are also undocumented opcodes for accessing 
+>IXH, IXL, IYH and IYL. 
+
+General putting the IX/IY prefix in front of an operation on H or L
+makes it work on the relevant IX/IY segment. Thus 
+
+	DB	DD
+	LD	A,L
+
+Loads A with 'X' of IX.
+
+It was a very popular way of tightening games code.
+
+---------------------------------------- more below
+
+From: kkaempf@didymus.rmi.de (Klaus Kaempf)
+Subject: Re: Undocumented Z80 opcode
+Date: Wed, 22 Mar 1995 08:37:58 GMT
+
+And cwr@crash.cts.com (Will Rose) writes:
+>Does anyone know what the undocumented Z80 opcode DD 54 does?
+Yes :-)
+>Does anyone have a pointer to a list of these things?
+I do !
+
+Such a list was posted to comp.os.cpm on Tue, 28 Jul 1992 by Herbert Oppmann
+(herby@memotech.franken.de). According to this list:
+
+	DD 54         / LD      D,HX
+
+which conforms to the other answers that say prepending of DD switches from
+HL to IX.
+
+If there is enough interest, I'll post this list again (~ 20k), or put
+it up for ftp somewhere. I will *not* send this list via e-mail, so don't ask !
+Klaus
+-- 
+proGIS Software                 E-Mail: kkaempf@didymus.rmi.de
+Dipl.-Inform. Klaus Kämpf       Fax:    0241-47067-29
+Jakobstr. 117                   Voice:  0241-47067-11
+D-52064 Aachen                  GERMANY
+
+----------------------------------------- more below
+
+Date: 22 Mar 1995 00:40:00 +0100
+From: proppi@sampo.han.de (Paul Lenz)
+Subject: Re: Undocumented Z80 opcode
+
+cwr@crash.cts.com (Will Rose)  schrieb am 21.03.95:
+
+> Does anyone know what the undocumented Z80 opcode DD 54 does?
+
+54 = LD D,H   -  so DD 54 will be: "Load the high byte of IX into D".
+
+--------------------------------------------------------------------------
+

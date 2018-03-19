@@ -1,0 +1,29 @@
+<HTML><Head>
+<TITLE>Another Z80 system</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A><p>
+<h2>Z80 system, with EPROM, RAM, 8255 PIO</h2>
+<hr>
+<center>
+<img src="gfx/z80core5.gif" border=0></a><br>
+This picture in <a href="gfx/z80core4.gif">bigger</a> format<br>
+<p></center>
+Some EPROMs require 0 or +5 at the VPP pin to enable read, on most 27C256 tire VPP to +5<br>
+The EXO-3 is some sort of an Xtal? Oscillator with selectable divider<br>
+The PST520A is a low-voltage controlled reset<p>
+<pre>
+<B>Memory map:</B>
+EPROM = 0000h - 7fffh
+RAM   = 8000h - ffffh 
+
+<B>IO map:</B>
+Base adr. PIO 1 = 40h
+Base adr. PIO 2 = 80h
+
+</pre>
+<hr>
+</body></html>

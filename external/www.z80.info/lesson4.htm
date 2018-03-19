@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>ASM 86 LESSON 4</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Trent Lillehaugen">
+	<META NAME="CREATED" CONTENT="20070324;17180262">
+	<META NAME="CHANGED" CONTENT="20070324;17193908">
+</HEAD>
+<BODY LANG="de-DE" BACKGROUND="gfx/zand.jpg" DIR="LTR">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, Times"><B><FONT SIZE=6>L</FONT><FONT SIZE=5>ESSON</FONT><FONT SIZE=6>4</FONT><FONT SIZE=5>:</FONT></B></FONT><BR>
+<HR>
+<P STYLE="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <FONT SIZE=4>If..
+Then.. Else statements allow the program to branch off in many
+different directions.&nbsp;ASM does not support these staments
+directly, but using CP along with JR/JPyou can acheive the effect.</FONT><BR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm">&nbsp;<IMG SRC="waveline.gif" NAME="Grafik1" ALIGN=BOTTOM WIDTH=756 HEIGHT=16 BORDER=0></P>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A NAME="LIST"></A><FONT COLOR="#000000"><FONT SIZE=5><I><B>These are
+the instructions/ideas that will be covered in this lesson:</B></I></FONT><BR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="lesson4.htm#CP"><FONT SIZE=5><FONT COLOR="#990000">CP</FONT></A></P>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="lesson4.htm#IFTHEN"><FONT SIZE=5><FONT COLOR="#990000">IF...
+THEN...ELSE</FONT></A></P>
+<P STYLE="margin-bottom: 0cm">&nbsp;</P>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><IMG SRC="waveline.gif" NAME="Grafik2" ALIGN=BOTTOM WIDTH=756 HEIGHT=16 BORDER=0></P>
+<P><A NAME="CP"></A><FONT SIZE=7>CP</FONT><BR>&nbsp; <FONT SIZE=4><FONT FACE="Times New Roman, Times">CP
+simply sets the FLAG register (F) based on the subraction (A-s)</FONT><BR>
+<UL>
+	<LI><FONT SIZE=4>CP <B><I>S&nbsp; </I></B>(where <B><I>S</I></B>
+	= A,F,B,C,D,E,H,L,#,(hl),(iy+#),or (ix+#))</FONT><BR>
+</UL>
+<P><A NAME="IFTHEN"></A><A HREF="lesson4.htm#LIST">back to list of
+instructions</A><BR><IMG SRC="waveline.gif" NAME="Grafik3" ALIGN=BOTTOM WIDTH=756 HEIGHT=16 BORDER=0><BR>&nbsp;<FONT SIZE=7>IF...
+THEN... ELSE</FONT><BR>&nbsp; <FONT SIZE=4><FONT FACE="Times New Roman, Times">To
+acheivean IF... THEN... ELSE statement(s) you must use a CP call
+followed by aJR, JP, or any other instruction that has conditionals
+(ret, call, ...)&nbsp;Here are some examples:</FONT><BR>
+<BLOCKQUOTE><TT>&nbsp; <FONT SIZE=4>ld b,5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;b=5</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>ld a,5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;a=5</FONT></TT><BR><TT>&nbsp;</TT><BR><TT>&nbsp;
+<FONT SIZE=4>cp b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;set
+flags based on (a-b)</FONT></TT><BR><TT>&nbsp; <FONT SIZE=4>jr
+z,AequalsB ;if <B>a=b</B> -&gt; <B>a-b=0</B>,therefore</FONT></TT><BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT SIZE=4>;if
+the <B>Z</B>ero flag is set JUMP to AequalsB</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>:</FONT></TT><BR><TT>&nbsp; <FONT SIZE=4>.</FONT></TT><BR><TT><FONT SIZE=4>AequalsB:
+;</FONT></TT><BR><TT>&nbsp; <FONT SIZE=4>:</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>.</FONT></TT></BLOCKQUOTE>
+<P>&nbsp; <FONT SIZE=4>You can also string them together like this:</FONT><BR>
+<BLOCKQUOTE><TT>&nbsp; <FONT SIZE=4>ld b,6&nbsp; ;.</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>ld c,5&nbsp; ;.</FONT></TT><BR><TT>&nbsp; <FONT SIZE=4>ld
+a,5&nbsp; ;Set the init values</FONT></TT><BR><TT>&nbsp;</TT><BR><TT>&nbsp;
+<FONT SIZE=4>cp b&nbsp;&nbsp;&nbsp; ;<B>IF</B> a=b</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>jr z,AB ;<B>THEN</B> goto AB</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>cp c&nbsp;&nbsp;&nbsp; ;<B>IF</B> a=c</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>jr z,AC ;<B>THEN</B> goto AC</FONT></TT><BR><TT>&nbsp;
+<FONT SIZE=4>jr NONE ;<B>ELSE</B> goto NONE (if it didn'tjump one of
+the other</FONT></TT><BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT SIZE=4>;
+times then it must be an ELSE, NOTE:no conditia</FONT></TT><BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT SIZE=4>;
+listed.&nbsp; Just a straight 'jr NONE')</FONT></TT><BR><TT><FONT SIZE=4>:</FONT></TT><BR><TT><FONT SIZE=4>.</FONT></TT><BR><TT><FONT SIZE=4>AB:</FONT></TT></BLOCKQUOTE>
+<BLOCKQUOTE><TT><FONT SIZE=4>:</FONT></TT><BR><TT><FONT SIZE=4>.</FONT></TT><BR><TT><FONT SIZE=4>AC:</FONT></TT><BR><TT><FONT SIZE=4>:</FONT></TT><BR><TT><FONT SIZE=4>.</FONT></TT><BR><TT><FONT SIZE=4>NONE:</FONT></TT></BLOCKQUOTE>
+<P>&nbsp; <FONT SIZE=4>You've seen how to test for equality.&nbsp;
+now for GREATER THAN, and LESS THAN:</FONT><BR>
+<UL>
+<LI><TT>
+<P> <FONT SIZE=4>
+Compare A and B for =, &lt; and &gt;</FONT><BR>
+<FONT SIZE=4>LD
+B, 7</FONT><BR>
+<FONT SIZE=4>LD
+A, 5</FONT><BR>
+<P><BR>
+</P>
+<FONT SIZE=4>CP
+B                              ; Flags = status(A-B)</FONT><BR>
+<FONT SIZE=4>JP
+Z, A_Equal_To_B        ; IF(a-b)=0 THEN a=b</FONT><BR>
+<FONT SIZE=4>JP
+NC, A_Greater_Than_B    ; IF(a-b)&gt;0 THEN a&gt;b</FONT><BR>
+<FONT SIZE=4>JP
+C, A_Lower_Than_B       ; IF(a-b)&lt;0 THEN a&lt;b</FONT><BR>
+<P><BR>
+</P>
+<FONT SIZE=4>A_Greater_Than_B:</FONT><BR>
+<FONT SIZE=4>(...)</FONT><BR>
+<FONT SIZE=4>JP
+end_compare</FONT><BR>
+<P><BR>
+</P>
+<FONT SIZE=4>A_Lower_Than_B:</FONT><BR>
+<FONT SIZE=4>(...)</FONT><BR>
+<FONT SIZE=4>JP
+end_compare</FONT><BR>
+<P><BR>
+</P>
+<FONT SIZE=4>A_Equal_To_B:</FONT><BR>
+<FONT SIZE=4>(...)</FONT><BR>
+<P><BR>
+</P>
+<FONT SIZE=4>end_compare:</FONT><BR>
+<P><BR>
+</P>
+<FONT SIZE=4>RET</FONT><BR>
+<FONT SIZE=4>END</FONT><BR>
+</TT></LI>
+</UL>
+
+<BLOCKQUOTE><BR><TT><FONT SIZE=4>:</FONT></TT><BR><TT><FONT SIZE=4>:</FONT></TT><BR><TT><FONT SIZE=4>.</FONT></TT></BLOCKQUOTE>
+<P STYLE="margin-bottom: 0cm"><A HREF="lesson4.htm#LIST">back to list of
+instructions</A><BR><IMG SRC="waveline.gif" NAME="Grafik4" ALIGN=BOTTOM WIDTH=756 HEIGHT=16 BORDER=0></P>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="lesson3.htm"><FONT SIZE=4>LESSON3</FONT></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT SIZE=4><A HREF="z80_home.htm">INDEX</A>&nbsp;&nbsp;&nbsp;&nbsp;
+<A HREF="lesson5.htm">LESSON5</A></FONT><BR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm">This is the end of the
+lesson, I do not guarantee any correctness of any statements made
+above.</P>
+</BODY>
+</HTML>

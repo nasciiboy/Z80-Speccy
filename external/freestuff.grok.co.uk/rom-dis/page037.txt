@@ -1,0 +1,63 @@
+		LD	C,A	Save the result in C.
+		RR	B	Determine bit 1 (and later bit 3)
+		SBC	A,A	of the graphic code.
+		AND	+F0	The A register will hold +00
+				or +F0.
+		OR	C	The two results are combined.
+		LD	C,+04	The A register holds half the
+0B4C	PO-GR-3	LD	(HL),A	character form and has to be
+		INC	HL	used four times.
+		DEC	C	This is done for the upper
+		JR	NZ,0B4C,PO-GR-3	half of the character form
+		RET		and then the lower.
+
+Token codes and user-defined graphic codes are now separated.
+
+0B52	PO-T&UDG	SUB	+A5	Jump forward with token codes
+		JR	NC,0B5F,PO-T
+		ADD	A,+15	UDG codes are now +00 - +0F.
+		PUSH	BC	Save the current position
+				values on the machine stack.
+		LD	BC,(UDG)	Fetch the base address of the
+		JR	0B6A,PO-CHAR-2	UDG area and jump forward.
+0B5F	PO-T	CALL	0C10,PO-TOKENS	Now print the token and return
+		JP	0B03,PO-FETCH	via PO-FETCH.
+
+The required character form is identified.
+
+0B65	PO-CHAR	PUSH	BC	The current position is saved.
+		LD	BC,(CHARS)	The base address of the
+				character area is fetched.
+0B6A	PO-CHAR-2	EX	DE,HL	The print address is saved.
+		LD	HL,+5C3B	This is FLAGS.
+		RES	0,(HL)	Allowforaleadingspace
+		CP	+20	Jump forward if the character
+		JR	NZ,0B76,PO-CHAR-3	is not a 'space'.
+		SET	0,(HL)	But 'suppress' if it is.
+0B76	PO-CHAR-3	LD	H,+00	Now pass the character code
+		LD	L,A	to the HL register pair.
+		ADD	HL,HL	The character code is in
+		ADD	HL,HL	effect multiplied by 8.
+		ADD	HL,HL
+		ADD	HL,BC	The base address of the
+				character form is found.
+		POP	BC	The current position is fetched
+		EX	DE,HL	and the base address passed to
+				the DE register pair.
+
+THE 'PRINT ALL CHARACTERS' SUBROUTINE
+This subroutine is used to print all '8*8' bit characters. On entry the DE register pair holds the base address of the character form, the HL register the destination address and the BC register pair the current 'line & column' values.
+
+0B7F	PR-ALL	LD	A,C	Fetch the column number.
+		DEC	A	Move one column rightwards.
+		LD	A,+21	Jump forward unless a new
+		JR	NZ,0893,PR-ALL-1	line is indicated.
+		DEC	B	Move down one line.
+		LD	C,A	Column number is +21.
+		BIT	1 ,(F LAGS)	Jump forward if handling
+		JR	Z,0B93,PR-ALL-1	the screen.
+		PUSH	DE	Save the base address whilst
+		CALL	0ECD,COPY-BUFF	the printer buffer is
+		POP	DE	emptied.
+		LD	A,C	Copy the new column number.
+0B93	PR-ALL-1	CP	C	Test whether a new line is

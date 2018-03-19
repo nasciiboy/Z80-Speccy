@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Disk Reference</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="../emulators/emulators.htm">Emulators</a> |
+<a title="Reference" href="reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">Disk Reference</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+
+<p>The original ZX Spectrum was introduced before floppy disk drives were a realistically affordable option for most
+home users. Within a few years, however, prices had fallen to such an extent that a large number of disk interfaces
+and drives were available that could be readily, and inexpensively, purchased by the 'average' user.<br /><br />
+In the intervening period, a number of alternative systems were developed, including the Rotronics Wafadrive and ZX
+Microdrive. These systems are 'hybrid' designs, being based on endless-loop cassettes. These systems proved very
+popular, and offered high capacity storage with much greater reliability and speed than normal cassettes, without
+costing substantially more in media terms.<br /><br />
+The drives listed below represent a small number of those available.</p>
+<ul>
+
+<li><strong><a id="ZX">ZX Spectrum +3 Disk Drive</a></strong><br />
+The disk drive on the +3 is controlled by three ports:<br /><br />
+<ul>
+<li>0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on. Setting bit 3 low will
+turn them off again. (0x1ffd is also used for <a href="128kreference.htm#Plus3Memory">memory control</a>).</li>
+<li>0x2ffd: Reading from this port will return the main status register of the uPD765A (the FDC used in the +3).</li>
+<li>0x3ffd: Bytes written to this port are sent to the FDC, whilst reading from this port will read bytes from the FDC.<br /><br /></li>
+</ul>
+For more information on the uPD765A, see the CPC Guide section at the <a href="http://andercheran.aiind.upv.es/~amstrad/">
+Unofficial Amstrad WWW Resource</a>, as the Amstrad CPCs used the same FDC; the documents most relevant to the +3 are the first
+two in the 'Disks' section.<br /><br />
+In addition, it is possible to add an Amiga 3.5" drive to a Spectrum +3 by simply wiring the pins
+by name and providing it with an external power source (which can be an Amiga PSU with increased amperage, used to
+power the entire +3 and external drive) There is a public domain formatter around to format it to 720k - this is
+quite useful as 3" disks are now a rarity and were never that reliable.<br /><br /></li>
+
+
+<li><strong><a id="TMX">Timex Disk Drives</a></strong><br />
+There are two versions of the disk system created by Timex Portugal, the FDD and the FDD-3000. Both require a machine
+specific interface. These were sold for the TS2068, TC2068 and TC2048 machines but third parties have subsequently
+supplied interfaces which work with the 128K ZX Spectrum (these are also required for the TC2128 and TC2144).<br /><br />
+Both systems have their own <a href="z80reference.htm">Z80</a> CPU but while the FDD only has 16K of RAM,
+the FDD 3000 has 64K and can be used as a CP/M terminal. The FDD consists of three separate boxes while the FDD-3000
+integrates a PSU and two 3" drives. It is possible, although tricky, to upgrade an FDD to an FDD-3000. Both systems can use
+3.5" and 5.25" drives in place of (or in addition to) the 3" drives.<br /><br />
+The interface uses a logic circuit to page in the 4KB FDD ROM whenever there is a call to 0x0000 or 0x0008 and page it out again whenever
+there is a call to 0x0604. When it is needed the FDD ROM is paged in at 0x0000 and 0x1000 and the area 0x2000-0x3fff holds eight copies of 1K
+of RAM or four copies of 2K of RAM. The disk drive is controlled by port 0xef.<br /><br /></li>
+
+
+<li><strong><a id="Discovery">Opus Discovery</a></strong><br />
+The Opus Discovery provides several different expansions in a single unit, featuring a Joystick port, pass-through expansion
+connector, parallel printer port, a composite video/monitor output and a single 3.5in disk drive that supports disks of up to
+250K in capacity (178K when formatted).<br /><br />
+An upgraded model, the Discovery 2, was also introduced that featured 2 drives. The Discovery 1 could be upgraded to the
+Discovery 2 by returning the system to the manufacturer. The power supply for the Opus replaces the original Sinclair model,
+and is used to power both the interface and the computer.<br /><br />
+Operationally quite similar to the Microdrive (albeit with disks), the same commands are supported by both the Discovery
+and ZX Interface I - this reduces the 'learning-curve' quite dramatically and allows many programs with ZX Interface I &amp; Microdrive
+support to be easily adapted or use without difficulty. The ZX Microdrive is faster, however.<br /><br />
+<ul>
+<li><strong>Documentation</strong>:<br />
+<ul>
+<li><a href="../resources/documents.htm#Peripherals">The Complete Opus Discovery Shadow ROM v2.2 Disassembly</a>.</li>
+<li><a href="../resources/documents.htm#Peripherals">Opus Discovery Block Diagram</a>.</li>
+</ul></li>
+</ul><br />
+The Discovery 1 cost &pound;199.95 when originally introduced and the Discovery 2 cost &pound;329.95. The upgrade from Discovery 1
+to Discovery 2 (known as the Discovery Plus) cost &pound;139.95. Emulation of the Opus Discovery is provided by
+<a href="../emulators/msdos.htm">RealSpec</a> for MS-DOS and Microsoft Windows systems.<br /><br /></li>
+
+
+<li><strong><a id="Crescent">Crescent Quick Disk</a></strong><br />
+Three different versions of the Crescent Quick Disk were introduced; the 128, 128i and 256i. The 128 was intended as an
+add-on drive for existing systems and was not supplied with a disk interface. The 128i includes the required interface, with
+the 256i being a high-capacity version of the 128i. Storage capacities are as the names imply, and each system included an RGB
+socket and RS-423 interface, and are compatible with either the ZX Spectrum or ZX Spectrum +.<br /><br />
+The Crescent 128 cost &pound;99.95 when introduced, with the 128i and 256i costing &pound;129.95 and &pound;229.90
+respectively.<br /><br /></li>
+
+
+
+
+
+<li><strong><a id="Lifetime">MGT Lifetime Disc Drive</a></strong><br />
+Please refer to the <a href="http://www.envytech.co.uk/mgt/">MGT Lifetime FAQ</a>, developed by Damien Guard,
+for full technical details of this device.<br /><br />
+<ul>
+<li><strong>Documentation</strong>:<br />
+<ul>
+<li><a href="http://www.envytech.co.uk/mgt/#documentation">MGT Lifetime User Manual</a>.</li>
+</ul></li>
+</ul><br />
+The FAQ is very comprehensive, with sections detailing how to configure this drive for use with many different types of system.<br /><br /></li>
+
+
+<li><strong><a id="Triton">Triton Quick Disk</a></strong><br />
+The Triton Quick Disk system, produced by Radofin Electronics (who also distributed the Mattel Aquarius), allowed up
+to 100K of data to be saved on double-sided 2.8" disks (50K each side). Data is recorded in a 'spiral' pattern, rather than
+in concentric circles. Compatible with the original ZX Spectrum and ZX Spectrum + systems (and others).<br /><br />
+Up to 2 drives can be connected together (multiple interfaces are required), and the drive features a pass-through
+connector that allows a ZX Printer to be connected if desired.<br /><br />
+<ul>
+<li><strong>Data transmission rate</strong>: 101.6K Bits per second.</li>
+<li><strong>Density</strong>: 4410 BPI.</li>
+<li><strong>Disk type</strong>: 2.8" double-sided.</li>
+<li><strong>Disk capacity</strong>: Up to 100K, 20 sectors per side, 2.5k per sector.</li></ul><br />
+Although marketed as a floppy-disk drive, the Triton Quick Disk can more accurately categorised as a 'stringly-floppy'-style system,
+like the ZX Microdrive and Rotronics Wafadrives, since 'disk' access is sequential rather than random. The maximum seek-time is
+approximately 8 seconds. The Triton Quick Disk originally cost &pound;119.95.<br /><br /></li>
+
+
+<li><strong><a id="Pacer">Omnitronix Pacer</a></strong><br />
+The Omnitronix Pacer system comprises several different parts, each of which could be purchased separately for use with
+compatible products. The disk interface connects to either a ZX Spectrum or ZX Spectrum + via a short ribbon cable attached
+to the edge connector, and supports 5.25", 3.5" and 3" disk drives.<br /><br />
+A complete system could be purchased that included the interface and a 5.25" disk drive, offereing up to 100K of storage on single-sided,
+40 track disks. An enhanced system that included the interface and a 400K capacity 5.25" double-sided 40/80 track disk drive was also available.<br /><br />
+The disk interface cost &pound;79.95, with the complete systems costing &pound;119.95 and &pound;189.95 respectively.<br /><br /></li>
+
+</ul>
+</td></tr>
+
+</table></td>
+<td width="75" /></tr>
+</table>
+
+<div class="pageFooter">$Id: diskreference.htm,v 1.10 2004/07/05 08:20:12 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+</body>
+</html>

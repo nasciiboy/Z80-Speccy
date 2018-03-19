@@ -1,0 +1,62 @@
+Note: Adding 0.5 and taking INT rounds the result to the nearest integer.
+
+		DEFB	+31,duplicate	Y, Y
+		DEFB	+0F,addition	2*Y
+		DEFB	+31,duplicate	2*Y, 2*Y
+		DEFB	+0F,addition	4*Y
+		DEFB	+31,duplicate	4*Y, 4*Y
+		DEFB	+2A,abs	4*Y, ABS (4*Y)
+		DEFB	+A1,stk-one	4*Y, ABS (4*Y), 1
+		DEFB	+03,subtract	4*Y, ABS (4*Y)-1 = Z
+		DEFB	+31,duplicate	4*Y, Z, Z
+		DEFB	+37,greater-0	4*Y, Z, (1/0)
+		DEFB	+C0,st-mem-0	Mem-0 holds the result of the
+				test.
+		DEFB	+00,jump-true	4*Y, Z
+		DEFB	+04, to 37A1,ZPLUS	4*Y, Z
+		DEFB	+02,delete	4*Y
+		DEFB	+38,end-calc	4*Y = V - case i.
+		RET		Finished.
+
+If the jump was made then continue.
+
+37A1	ZPLUS	DEFB	+A1,stk-one	4*Y, Z, 1
+		DEFB	+03,subtract	4*Y, Z-1
+		DEFB	+01,exchange	Z-1,4*Y
+		DEFB	+36,less-0	Z-1,(1/0)
+		DEFB	+00,jump-true	Z-1
+		DEFB	+02,to 37A8,YNEG	Z-1
+		DEFB	+1B,negate	1-Z
+37A8	YNEG	DEFB	+38,end-calc	1-Z = V - case ii.
+				Z-1 = V - case iii.
+		RET		Finished.
+
+THE 'COSINE' FUNCTION
+(Offset 20: 'cos')
+
+This subroutine handles the function COS X and returns a 'last value' 'that is an approximation to COS X.
+The subroutine uses the expression:
+COS X = SIN (PI*W/2), where -1 <=W <=1.
+In deriving W for X the subroutine uses the test result obtained in the previous subroutine and stored for this purpose in mem-0. It then jumps to the SINE, subroutine, entering at C-ENT, to produce a 'last value' of COS X.
+
+37AA	cos	RST	0028,FP-CALC.	X
+		DEFB	+39,get-argt	V
+		DEFB	+2A,abs	ABS V
+		DEFB	+A1,stk-one	ABS V, 1
+		DEFB	+03,subtract	ABS V-1
+		DEFB	+E0,get-mem-0	ABS V-1, (1/0)
+		DEFB	+00,jump-true	ABS V-1
+		DEFB	+06, to 37B7,C-ENT	ABS V-1 = W
+
+If the jump was not made then continue.
+		DEFB	+1B,negate	1-ABS V
+		DEFB	+33,jump	1-ABS V
+		DEFB	+03, to 37B7,C-ENT	1-ABS V = W
+
+THE 'SINE' FUNCTION
+(Offset 1F: 'sin')
+
+This subroutine handles the function SIN X and is the third of the four routines that use SERIES GENERATOR to produce Chebyshev polynomials.
+The approximation to SIN X is found as follows:
+
+i. The argument X is reduced and in this case W = V directly.

@@ -1,0 +1,65 @@
+THE 'CL-ATTR' SUBROUTINE
+This subroutine has two separate functions.
+
+i.  For a given display area address the appropriate attribute address is returned in the DE register pair. Note that the value on entry points to the 'ninth' line of a character.
+
+ii. For a given line number, in the B register, the number of character areas in the display from the start of that line onwards is returned in the BC register pair.
+
+0E88	CL-ATTR	LD	A,H	Fetch the high byte.
+		RRCA		Multiply this value by
+		RRCA		thirty two.
+		RRCA
+		DEC	A	Go back to the 'eight' line.
+		OR	+50	Address the attribute area.
+		LD	H,A	Restore to the high byte and
+		EX	DE,HL	transfer the address to DE.
+		LD	H,C	This is always zero.
+		LD	L,B	The line number.
+		ADD	HL,HL	Multiply by thirty two.
+		ADD	HL,HL
+		ADD	HL,HL
+		ADD	HL,HL
+		ADD	HL,HL
+		LD	B,H	Move the result to the
+		LD	C,L	BC register pair before
+		RET		returning.
+
+THE 'CL-ADDR' SUBROUTINE
+For a given line number, in the B register, the appropriate display file address is formed in the HL register pair.
+
+0E9B	CL-ADDR	LD	A,+18	The line number has to be
+		SUB	B	reversed.
+		LD	D,A	The result is saved in D.
+		RRCA		In effect '(A mod 8) * 32'.
+		RRCA		In a 'third' of the display
+		RRCA		the low byte for the:
+		AND	+E0	1st. line = +00,
+				2nd. line = +20, etc.
+		LD	L,A	The low byte goes into L.
+		LD	A,D	The true line number is fetched.
+		AND	+18	In effect '64 +8 * INT (A/8)'
+		OR	+40	For the upper 'third' of the
+				display the high byte = +40,
+				middle 'third' = +48, and the
+				lower 'third' = +50.
+		LD	H,A	The high byte goes to H.
+		RET		Finished.
+
+THE 'COPY' COMMAND ROUTINE
+The one hundred and seventy six pixel lines of the display are dealt with one by one.
+
+0EAC	COPY	DI		The maskable interrupt is
+				disabled during COPY.
+		LD	B,+B0	The '176' lines.
+		LD	HL,+4000	The base address of the display.
+
+The following loop is now entered.
+
+0EB2	COPY-1	PUSH	HL	Save the base address and
+		PUSH	BC	the number of the line.
+		CALL	0EF4,COPY-LINE	It is called '176' times.
+		POP	BC	Fetch the line number and
+		POP	HL	the base address.
+		INC	H	The base address is updated by
+				'256' locations for each line of
+				pixels.

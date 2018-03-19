@@ -1,0 +1,71 @@
+THE 'ARCCOS' FUNCTION
+(Offset 23: 'acs')
+
+This subroutine handles the function ACS X and returns a real number from zero to PI
+inclusive which is equal to the value in radians of the angle whose cosine is X.
+	This subroutine uses the relation:
+		ACS X = PI/2 - ASN X
+
+3843	acs	RST	0028,FP-CALC	X
+		DEFB	+22,asn	ASN X
+		DEFB	+A3,stk-pi/2	ASN X,PI/2
+		DEFN	+03,subtract	ASN X-PI/2
+		DEFB	+1B,negate	PI/2-ASN X = ACS X
+		DEFB	+38,end-calc
+		RET		Finished: 'last value' = ACS X.
+
+THE 'SQUARE ROOT' FUNCTION
+(Offset 28: 'sqr')
+
+This subroutine handles the function SQR X and returns the positive square root of the
+real number X if X is positive, and zero if X is zero. A negative value of X gives rise to
+report A - invalid argument (via In in the EXPONENTIATION subroutine).
+	This subroutine treats the square root operation as being X**.5 and therefore stacks
+the value .5 and proceeds directly into the EXPONENTIATION subroutine.
+
+384A	sqr	RST	0028,FP-CALC	X
+		DEFB 	+31,duplicate 	X,X
+		DEFB 	+30,not 	X,(1/0)
+		DEFB 	+00,jump-true 	X
+		DEFB 	+1E,to 386C,LAST	X
+
+The jump is made if X = 0, otherwise continue with:
+
+		DEFB 	+A2,stk-half 	X,.5
+		DEFB 	+38,end-calc
+
+and then find the result of X**.5.
+
+THE 'EXPONENTIATION' OPERATION
+(Offset 06: 'to-power')
+
+This subroutine performs the binary operation of raising the first number, X, to the
+power of the second number, Y.
+	The subroutine treats the result X**Y as being equivalent to EXP (Y*LN X). It
+returns this value unless X is zero, in which case it returns 1 if Y is also zero (0**0=1),
+returns zero if Y is positive and reports arithmetic overflow if Y is negative.
+
+3851 	to-power 	RST 	0028,FP-CALC 	X,Y
+		DEFB 	+01,exchange 	Y,X
+		DEFB 	+31,duplicate 	Y,X,X
+		DEFB 	+30,not 	Y,X,(1/0)
+		DEFB 	+00,jump-true 	Y,X
+		DEFB 	+07,to 385D,XIS0 	Y,X
+
+The jump is made if X = 0, otherwise EXP (Y*LN X) is formed.
+
+		DEFB 	+25,ln 	Y,LN X
+		
+Giving report A if X is negative.
+
+		DEFB 	+04,multiply 	Y*LN X
+		DEFB 	+38,end-calc
+		JP 	36C4,EXP 	Exit via EXP to form EXP
+				(Y*LN X).
+
+The value of X is zero so consider the three possible cases involved.
+
+385D 	XIS0 	DEFB 	+02,delete 	Y
+		DEFB 	+31,duplicate 	Y,Y
+		DEFB 	+30,not 	Y,(1/0)
+		DEFB 	+00,jump-true 	Y

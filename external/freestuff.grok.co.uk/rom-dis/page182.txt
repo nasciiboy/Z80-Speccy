@@ -1,0 +1,59 @@
+		EXX		H'L'HL.
+311B	NO-ADD	EXX		Whether multiplicand was added
+		RR	H	or not, shift result right in
+		RR	L	H'L'HL, i.e. the shift is done by
+		EXX		rotating each byte with carry, so
+		RR	H	that any bit that drops into the
+		RR	L	carry is picked up by the next
+				byte, and the shift continued
+				into B'C'CA.
+3125	STRT-MLT	EXX		Shift right the multiplier in
+		RR	B	B'C'CA (see FETCH-TWO &
+				above).
+		RR	C	A final bit dropping into the
+		EXX		carry will trigger another add of
+		RR	C	the multiplicand to the result.
+		RRA
+		DJNZ	3114,MLT-LOOP	Loop 33 times to get all the bits.
+		EX	DE,HL	Move the result from:
+		EXX
+		EX	DE,HL	H'L'HL to D'E'DE.
+		EXX
+Now add the exponents together.
+		POP	BC	Restore the exponents - M1
+				& N1.
+		POP	HL	Restore the pointer to the
+				exponent byte.
+		LD	A,B	Get the sum of the two
+		ADD	A,C	exponent bytes in A, and the
+				correct carry.
+		JR	NZ,313B,MAKE-EXPT	If the sum equals zero then clear
+		AND	A	the carry; else leave it
+				unchanged.
+313B	MAKE-EXPT	DEC	A	Prepare to increase the
+		CCF		exponent by Hex.80.
+The rest of the subroutine is common to both MULTIPLICATION and DIVISION.
+313D	DIVN-EXPT	RLA		These few bytes very cleverly
+		CCF		make the correct exponent
+				byte.
+		RRA		Rotating left then right gets the
+				exponent byte (true exponent
+				plus Hex.80) into A.
+		JP	P,3146,OFLW1-CLR	If the sign flag is reset, no report
+				of arithmetic overflow needed.
+		JR	NC,31AD,REPORT-6	Report the overflow if carry
+				reset.
+		AND	A	Clear the carry now.
+3146	OFLW-1-CLR	INC	A	The exponent byte is now com-
+		JR	NZ,3151,OFLW2-CLR	plete; but if A is zero a further
+		JR	C,3151,OFLW-2-CLR	check for overflow is needed.
+		EXX		If there is no carry set and the
+		BIT	7,D	result is already in normal form
+		EXX		(bit 7 of D' set) then there is
+		JR	NZ,31AD,REPORT-6	overflow to report; but if bit 7
+				of D' is reset, the result in just in
+				range, i.e. just under 2**127.
+3151	OFLW2-CLR	LD	(HL),A	Store the exponent byte, at last.
+		EXX		Pass the fifth result byte to A
+		LD	A,B	for the normalisation sequence,
+		EXX		i.e. the overflow from L into B'.

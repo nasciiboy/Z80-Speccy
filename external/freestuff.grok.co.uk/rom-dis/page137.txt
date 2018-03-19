@@ -1,0 +1,63 @@
+THE TABLE OF OPERATORS
+
+		operator				operator
+location	code	code	operator	location	code	code	operator
+
+2795	2B	CF	+	27A3	3C	CD	<
+2797	2D	C3	-	27A5	C7	C9	<=
+2799	2A	C4	*	27A7	C8	CA	>=
+289B	2F	C5	/	27A9	C9	CB	<>
+279D	5E	C6	^	27AB	C5	C7	OR
+279F	3D	CE	=	27AD	C6	C8	AND
+27A1	3E	CC	>	27AF	00	End marker
+
+THE TABLE OF PRIORITIES (precedence table)
+
+location	priority	operator	location	priority	operator
+27B0	06	-	27B7	05	>=
+27B1	08	*	2788	05	<>
+27B2	08	/	2789	05	>
+27B3	0A	^	27BA	05	<
+27B4	02	OR	2788	05	=
+27B5	03	AND	27BC	06	+
+2786	05	<=
+
+THE 'SCANNING FUNCTION' SUBROUTINE
+
+This subroutine is called by the 'scanning FN routine' to evaluate a user defined function which occurs in a BASIC line. The subroutine can be considered in four stages:
+
+i. The syntax of the FN statement is checked during syntax checking.
+
+ii. During line execution, a search is made of the program area for a DEF FN statement, and the names of the functions are compated, until a match is found - or an error is reported.
+
+iii. The arguments of the FN are evaluated by calls to SCANNING.
+
+iv. The function itself is evaluated by calling SCANNING, which in turn calls LOOK-VARS and so the 'STACK FUNCTION ARGUMENT' subroutine.
+
+278D	S-FN-SBRN	CALL	2530,SYNTAX-Z	Unless syntax is being checked,
+		JR	NZ,27F7,SF-RUN	a jump is made to SF-RUN.
+		RST	0020,NEXT-CHAR	Get the first character of the
+				name.
+		CALL	2C8D,ALPHA	If it is not alphabetic, then
+		JP	NC,1C8A,REPORT-C	report the error.
+		RST	0020,NEXT-CHAR	Get the next character.
+		CP	+24	Is it a '$'?
+		PUSH	AF	Save the zero flag on the stack.
+		JR	NZ,27D0,SF-BRKT-1	Jump if it was not a '$'.
+		RST	0020,NEXT-CHAR	But get the next character if it
+				was.
+2700	SF-BRKT-1	CP	+28	If the character is not a '(', then
+		JR	NZ,27E6,SF-RPRT-C	report the error.
+		RST	0020,NEXT-CHAR	Get the next character.
+		CP	+29	Is it a ')'?
+		JR	Z,27E9,SF-FLAG-6	Jump if it is; there are no argu-
+				ments.
+27D9	SF-ARGMTS	CALL	24FB,SCANNING	Within the loop, call SCANNING
+				to check the syntax of each
+				argument and to insert floating-
+				point numbers.
+		RST	0018,GET-CHAR	Get the character which follows
+		CP	+2C	the argument; if it is not a ','
+		JR	NZ,27E4,SF-BRKT-2	then jump - no more arguments.
+		RST	0020,NEXT-CHAR	Get the first character in the
+				next argument.

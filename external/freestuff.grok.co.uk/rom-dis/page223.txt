@@ -1,0 +1,50 @@
+SIN X
+
+	 10 	REM DEMONSTRATION FOR SIN X
+	 20 	REM USING THE 'SERIES GENERATOR'.
+	 30 	DIM A(6)
+	 40 	LET A(1)=-.000000003
+	 50 	LET A(2)=0.000000592
+	 60 	LET A(3)=-.000068294
+	 70 	LET A(4)=0.004559008
+	 80 	LET A(5)=-.142630785
+	 90 	LET A(6)=1.276278962
+	100 	PRINT
+	110 	PRINT "ENTER START VALUE IN DEGREES"
+	120 	INPUT C
+	130 	CLS
+	140 	LET C=C-10
+	150 	PRINT "BASIC PROGRAM","ROM PROGRAM"
+	160 	PRINT "-------------","-----------"
+	170 	PRINT
+	180 	FOR J=1 TO 4
+	190 	LET C=C+10
+	200! 	LET Y=C/360-INT (C/360+.5)
+	210 	LET W=4*Y
+	220 	IF W > 1 THEN LET W=2-W
+	230 	IF W < -1 THEN LET W=-W-2
+	240 	LET Z=2*W*W-1
+	250 	LET BREG=6
+	260 	REM USE 'SERIES GENERATOR'
+	270 	GO SUB 550
+	280 	PRINT TAB 6; "SIN ";C;" DEGREES"
+	290 	PRINT
+	300 	PRINT T*W,SIN (PI*C/180)
+	310 	PRINT
+	320 	NEXT J
+	330 	GO TO 100
+
+NOTES:
+
+  i. When C is entered this program calculates and prints SIN C degrees, SIN (C+10)
+     degrees, SIN (C+20) degrees and SIN (C+30) degrees. It also prints the values obtain-
+     ed by using the ROM program. For a specimen of results, try entering these values in
+     degrees: 0; 5; 100; -80; -260; 3600; -7200.
+
+ ii. The constants A(1) to A(6) in lines 40 to 90 are given (apart from a factor of 1/2) in
+     Abramowitz and Stegun Handbook of Mathematical Functions (Dover 1965) page
+     76. They can be checked by integrating (SIN (PI*X/2))/X over the interval U=0 to
+     PI, after first multiplying by COS (N*U) for each constant (i.e. N=1,2,...,6) and sub-
+     stituting COS U=2*X*X-1. Each result should then be divided by PI. (This integra-
+     tion can be performed by approximate methods e.g. using Simpson's Rule if there is a
+     reasonable computer or programmable calculator to hand.)

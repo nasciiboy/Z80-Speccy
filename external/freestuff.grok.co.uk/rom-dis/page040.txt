@@ -1,0 +1,61 @@
+		BIT	0,(FLAGS)	before the message/token
+		CALL	Z,0C3B,PO-SAVE	if required.
+
+The characters of the message/token are printed in turn.
+
+0C22	PO-EACH	LD	A,(DE)	Collect a code.
+		AND	+7F	Cancel any 'inverted bit'.
+		CALL	0C3B,PO-SAVE	Print the character.
+		LD	A,(DE)	Collect the code again.
+		INC	DE	Advance the pointer.
+		ADD	A,A	The 'inverted bit' goes to
+		JR	NC,0C22,PO-EACH	the carry flag and signals
+				the end of the message/token;
+				otherwise jump back.
+
+Now consider whether a 'trailing space' is required.
+
+		POP	DE	For messages - D holds +00;
+				for tokens - D holds +00 - +5A.
+		CP	+48	Jump forward if the last
+		JR	Z,0C35,PO-TRSP	character was a '$'.
+		CP	+82	Return if the last character
+		RET	C	was any other before 'A'.
+0C35	PO-TRSP	LD	A,D	Examine the value in D and
+		CP	+03	return if it indicates a
+		RET	C	message, RND, INKEY$ or PI.
+		LD	A,+20	All other cases will require
+				a 'trailing space'.
+
+THE 'PO-SAVE' SUBROUTINE
+This subroutine allows for characters to be printed 'recursively'. The appropriate registers are saved whilst 'PRINT-OUT' is called.
+
+0C3B	PO-SAVE	PUSH	DE	Save the DE register pair.
+		EXX		Save HL & BC.
+		RST	0010,PRINT-A-1	Print the single character.
+		EXX		Restore HL & BC.
+		POP	DE	Restore DE.
+		RET		Finished.
+
+THE 'TABLE SEARCH' SUBROUTINE
+The subroutine returns with the DE register pair pointing to the initial character of the required entry and the carry flag reset if a 'leading space' is to be considered.
+
+0C41	PO-SEARCH	PUSH	AF	Save the 'entry number'.
+		EX	DE,HL	HL now holds the base address.
+		INC	A	Make the range +01 - ?.
+0C44	PO-STEP	BIT	7,(HL)	Wait for an 'inverted
+		INC	HL	character'.
+		JR	Z,0C44,PO-STEP
+		DEC	A	Count through the entries
+		JR	NZ,0C44,PO-STEP	until the correct one is found.
+		EX	DE,HL	DE points to the intial character.
+		POP	AF	Fetch the 'entry number' and
+		CP	+20	return with carry set for the
+		RET	C	first thirty two entries.
+		LD	A,(DE)	However if the intial
+		SUB	+41	character is a letter then a
+		RET		leading space may be needed.
+
+THE 'TEST FOR SCROLL' SUBROUTINE
+This subroutine is called whenever there might be the need to scroll the display. This occurs on three occasions; i. when handling a 'carriage return' character; ii. when using AT in an INPUT line; & iii. when the current line is full and the next line has to be used.
+On entry the B register holds the line number under test.

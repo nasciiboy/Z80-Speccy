@@ -1,0 +1,67 @@
+Report R - Tape loading error
+
+0806	REPORT-R	RST	0008,ERROR-1	Call the error handling
+		DEFB	+1A	routine.
+
+THE 'LOAD' CONTROL ROUTINE
+This routine controls the LOADing of a BASIC program, and its variables, or an array.
+
+0808	LD-CONTRL	LD	E,(IX+0B)	Fetch the 'number of bytes'
+		LD	D,(IX+0C)	as given in the 'new header'.
+		PUSH	HL	Save the 'destination pointer'.
+		LD	A,H	Jump forward unless trying
+		OR	L	to LOAD a previously
+		JR	NZ,0819,LD-CONT-1	undeclared array.
+		INC	DE	Add three bytes to the
+		INC	DE	length - for the name, the
+		INC	DE	low length & the high length
+		EX	DE,HL	of a new variable.
+		JR	0825,LD-CONT-2	Jump forward.
+
+Consider now if there is enough room in memory for the new data block.
+
+0819	LD-CONT-1	LD	L,(IX-06)	Fetch the size of the existing
+		LD	H,(IX-05)	'program+variables or array'.
+		EX	DE,HL
+		SCF		Jump forward if no extra
+		SBC	HL,DE	room will be required; taking
+		JR	C,082E,LD-DATA	into account the reclaiming of
+				the presently used memory.
+
+Make the actual test for room.
+
+0825	LD-CONT-2	LD	DE,+0005	Allow an overhead of five
+		ADD	HL,DE	bytes.
+		LD	B,H	Move the result to the
+		LD	C,L	BC register pair and make
+		CALL	1F05,TEST-ROOM	the test.
+
+Now deal with the LOADing of arrays.
+
+082E	LD-DATA	POP	HL	Fetch the 'pointer' anew.
+		LD	A,(IX+00)	Jump forward if LOADing
+		AND	A	a BASIC program.
+		JR	Z,0873,LD-PROG
+		LD	A,H	Jump forward if LOADing a
+		OR	L	new array.
+		JR	Z,084C,LD-DATA-1
+		DEC	HL	Fetch the 'length' of the
+		LD	B,(HL)	existing array by collecting
+		DEC	HL	the length bytes from the
+		LD	C,(HL)	variables area.
+		DEC	HL	Point to its old name.
+		INC	BC	Add three bytes to the
+		INC	BC	length - one for the name
+		INC	BC	and two for the 'length'.
+		LD	(X-PTR),IX	Save the IX register pair
+		CALL	19E8,RECLAIM-2	temporarily whilst the old
+		LD	IX,(X-PTR)	array is reclaimed.
+
+Space is now made available for the new array - at the end of the present variables area.
+
+084C	LD-DATA-1	LD	HL,(E-LINE)	Find the pointer to the
+		DEC	HL	end-marker of the variables
+				area - the '80-byte'.
+		LD	C,(IX+0B)	Fetch the 'length' of the
+		LD	B,(IX+0C)	new array.
+		PUSH	BC	Save this 'length'.

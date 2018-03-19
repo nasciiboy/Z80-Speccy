@@ -1,0 +1,55 @@
+2273	CO-TEMP-C	SBC	A,A	The zero flag will be set for
+				BRIGHT.
+		LD	A,D	The parameter is fetched and
+		RRCA		rotated.
+		LD	B,+80	Prepare the mask for FLASH.
+		JR	NZ,227D,CO-TEMP-D	Jump forward with FLASH.
+		RRCA		Rotate an extra time and
+		LD	B,+40	prepare the mask for BRIGHT.
+227D	CO-TEMP-D	LD	C,A	Save the value in the C register.
+		LD	A,D	Fetch the parameter and test
+		CP	+08	its range; only '0', '1'
+		JR	Z,2287,CO-TEMP-E	& '8' are allowable.
+		CP	+02
+		JR	NC,2244,REPORT-K
+The system variable ATTR-T can now be altered.
+2287	CO-TEMP-E	LD	A,C	Fetch the value.
+		LD	HL,+5C8F	This is ATTR-T.
+		CALL	226C,CO-CHANGE	Now change the system variable.
+The value in MASK-T is now considered.
+		LD	A,C	The value is fetched anew.
+		RRCA		The set bit of FLASH/BRIGHT
+		RRCA		'8' (bit 3) is moved to
+		RRCA		bit 7 (for FLASH) or bit 6
+				(for BRIGHT).
+		JR	226C,CO-CHANGE	Exit via CO-CHANGE.
+
+THE 'BORDER' COMMAND ROUTINE
+The parameter of the BORDER command is used with an OUT command to actually alter the colour of the border. The parameter is then saved in the system variable BORDCR.
+2294	BORDER	CALL	1E94,FIND-INT1	The parameter is fetched
+		CP	+08	and its range is tested.
+		JR	NC,2244,REPORT-K
+		OUT	(+FE),A	The OUT instruction is then
+				used to set the border colour.
+		RLCA		The parameter is then
+		RLCA		multiplied by eight.
+		RLCA
+		BIT	5,A	If the border colour is a 'light'
+		JR	NZ,22A6,BORDER-1	colour then the INK colour in
+				the editing area is to be black -
+				make the jump.
+		XOR	+07	Change the INK colour.
+22A6	BORDER-1	LD	(BORDCR),A	Set the system variable as
+		RET		required and return.
+
+THE 'PIXEL ADDRESS' SUBROUTINE
+This subroutine is called by the POINT subroutine and by the PLOT command routine. Is is entered with the co-ordinates of a pixel in the BC register pair and returns with HL holding the address of the display file byte which contains that pixel and A pointing to the position of the pixel within the byte.
+22AA	PIXEL-ADD	LD	A,+AF	Test that the y co-ordinate (in
+		SUB	B	B) is not greater than 175.
+		JP	C,24F9,REPORT-B
+		LD	B,A	B now contains 175 minus y.
+		AND	A	A holds b7b6b5b4b3b2b1b0,
+		RRA		the bite of B. And now
+				0b7b6b5b4b3b2b1.
+		SCF
+		RRA		Now 10b7b6b5b4b3b2.

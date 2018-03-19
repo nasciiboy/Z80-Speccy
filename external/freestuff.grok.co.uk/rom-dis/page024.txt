@@ -1,0 +1,63 @@
+		JR	075A,SA-ALL	Rejoin the other pathways.
+
+Now consider 'LINE'; and 'no further parameters'.
+0716	SA-LINE	CP	+CA	Is the present code the token
+				'LINE'?
+		JR	Z,0723,SA-LINE-1	Jump if it is.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+				if checking syntax.
+		LD	(IX+0E),+80	When there are no further
+				parameters an +80 is entered.
+		JR	073A,SA-TYPE-0	Jump forward.
+
+Fetch the 'line number' that must follow 'LINE'.
+
+0723	SA-LINE-1	LD	A,(T-ADDR-lo)	However only allow 'SAVE
+		AND	A	name LINE number'.
+		JP	NZ,1C8A,REPORT-C
+		RST	0020,NEXT-Char	Advance CH-ADD.
+		CALL	1C82,EXPT-1NUM	Pass the number to the
+				calculator stack.
+		CALL	1BEE,CHECK-END	Move on to the next statement
+				if checking syntax.
+		CALL	1E99,FIND-INT2	Compress the 'line number'
+		LD	(IX+0D),C	into the BC register pair
+		LD	(IX+0E),B	and store it.
+
+'LINE' and 'no further parameters' are both of type 0.
+
+073A	SA-TYPE-0	LD	(IX+00),+00	Enter the 'type' number.
+
+The parameters that describe the program, and its variables, are found and stored in the header area of the work space.
+
+		LD	HL,(E-LINE)	The pointer to the end of the
+				variables area.
+		LD	DE,(PROG)	The pointer to the start of the
+				BASIC program.
+		SCF		Now perform the subtraction
+		SBC	HL,DE	to find the length of the
+		LD	(IX+0B),L	'program + variables'; store
+		LD	(IX+0C),H	the result.
+		LD	HL,(VARS)	Repeat the operation but this
+		SBC	HL,DE	time storing the length of the
+		LD	(IX+0F),L	'program' only.
+		LD	(IX+10),H
+		EX	DE,HL	Transfer the 'pointer' to the
+				HL register pair as usual.
+
+In all cases the header information has now been prepared.
+
+	The location 'IX+00' holds the type number.
+	Locations 'IX+01 to IX+0A' holds the name (+FF in 'IX+01' if null).
+	Locations 'IX+0B & IX+0C' hold the number of bytes that are to be found in the 'data block'.
+	Locations 'IX+0D to IX+10' hold a variety of parameters whose exact interpretation depends on the 'type'.
+
+The routine continues with the first task being to separate SAVE from LOAD, VERIFY and MERGE.
+
+075A	SA-ALL	LD	A,(T-ADDR-lo)	Jump forward when handling
+		AND	A	a SAVE command.
+		JP	Z,0970,SA-CONTRL
+
+In the case of a LOAD, VERIFY or MERGE command the first seventeen bytes of the 'header area' in the work space hold the prepared information, as detailed above; and it is now time to fetch a 'header' from the tape.
+
+		PUSH	HL	Save the 'destination' pointer.

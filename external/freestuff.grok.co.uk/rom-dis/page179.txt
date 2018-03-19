@@ -1,0 +1,63 @@
+		EX	DE,HL	The result is now in DED'E.
+		POP	HL	Get the pointer to the
+				exponent.
+		RRA		The test for shift (H', L' were
+		JR	NC,307C,TEST-NEG	Hex. 00 for positive numbers
+				and Hex.FF for negative
+				numbers).
+		LD	A,+01	A counts a single shift right.
+		CALL	2FDD,SHIFT-FP	The shift is called.
+		INC	(HL)	Add 1 to the exponent; this
+		JR	Z,309F,ADD-REP-6	may lead to arithmetic overflow.
+
+307C	TEST-NEG	EXX		Test for negative result: get
+		LD	A,L	sign bit of L' into A (this now
+		AND	+80	correctly indicates the sign of
+		EXX		the result).
+		INC	HL	Store it in the second byte
+		LD	(HL),A	position of the result on
+		DEC	HL	the calculator stack.
+		JR	Z,30A5,GO-NC-MLT	If it is zero, then do not
+				twos complement the result.
+		LD	A,E	Get the first byte.
+		NEG		Negate it.
+		CCF		Complement the carry for
+		LD	E,A	continued negation, and store
+				byte.
+		LD	A,D	Get the next byte.
+		CPL		Ones complement it.
+		ADC	A,+00	Add in the carry for negation.
+		LD	D,A	Store the byte.
+		EXX		Proceed to get next byte into
+		LD	A,E	the A register.
+		CPL		Ones complement it.
+		ADC	A,+00	Add in the carry for negation.
+		LD	E,A	Store the byte.
+		LD	A,D	Get the last byte.
+		CPL		Ones complement it.
+		ADC	A,+00	Add in the carry for negation.
+		JR	NC,30A3,END-COMPL	Done if no carry.
+		RRA		Else, get .5 into mantissa and
+		EXX		add 1 to the exponent; this will
+		INC	(HL)	be needed when two negative
+				numbers add to give an exact
+				power of 2, and it may lead to
+				arithmetic overflow.
+309F	ADD-REP-6	JP	Z,31AD,REPORT-6	Give the error if required.
+		EXX		
+30A3	END-COMPL	LD	D,A	Store the last byte.
+		EXX		
+30A5	G0-NC-MLT	XOR	A	Clear the carry flag.
+		JP	3155,TEST-NORM	Exit via TEST-NORM.
+
+THE 'HL=HL*DE' SUBROUTINE
+This subroutine is called by 'GET-HL*DE' and by 'MULTIPLICATION' to perform the 16-bit multiplication as stated.
+Any overflow of the 16 bits available is dealt with on return from the subroutine.
+
+30A9	HL=HL*DE	PUSH	BC	BC is saved.
+		LD	B,+10	It is to be a 16 bit multipli-
+				cation.
+		LD	A,H	A holds the high byte.
+		LD	C,L	C holds the low byte.
+		LD	HL,+0000	Initialise the result to zero.
+30B1	HL-LOOP	ADD	HL,HL	Double the result.

@@ -1,0 +1,62 @@
+From: rhc00@juts.ccc.amdahl.com (Rick Chalfant)
+Subject: Re: A Couple of Z80 Questions (Schematic description) (0/1)
+Date: Fri, 1 Mar 1996 16:16:08 GMT
+
+In article <4gp2t8$8rp@krel.iea.com>, chubbard@oneworld.owt.com
+(Charles W. Hubbard) says:
+>
+>I am putting together a Z80 system as a learning project.
+[snip]
+>Question number two.  I would eventually like to put about 8k worth of
+>EPROM and 8k (or so) of SRAM on my system.  Can anyone recommend
+>specific part numbers for these components or, alternatively, part
+>numbers of components to stay away from.  I'll be hunting for these
+>chips myself and my plan is just to find some which have READ, WRITE,
+>and ENABLE inputs compatible with the Z80 control signals.  Are there
+>other parameters I need to keep in mind?
+>
+
+Here's a schematic for memory select on a Z80.
+It's in .PCX format and about 32K in size.  It's
+ZIPed and uuencoded for a final download size of 12K.
+
+To print the file, use Windows Paintbrush.
+Set your printer to "landscape" and print
+using a scaling factor of 80 or 90 percent.
+
+Circuit description:
+
+In order to use slow EPROMs on a 4-mHz Z80, I had 
+to cheat a little.  Normally you set up everything
+and then use CS to select the correct device.  That's
+too slow to meet the M1 timing for Z80 instruction
+fetch.
+
+So we do things backwards:  select the chip with CS
+as soon as we see M1 and MREQ, then when/if we get
+a RD or WR, we hit OE or WE, respectively, to complete
+the operation.
+
+This works fine with NEC and Hitachi 2716 EPROMs, but did 
+NOT work with Intel devices.  Don't know why.  I'm a 
+software type, not an EE.  The RAMs were Hitachi 6116-3.
+
+If someone wants to explain why this is a terrible
+design I won't be offended.  But I won't re-wrap it
+either.
+
+I included a 16-pin wire-wrap header on my board because
+the 8Kx8 parts were expensive back when I built it.  It
+was for a robot and I wasn't sure if 16K would be enough,
+so I planned ahead.  The entire program fit in 6K, leaving
+10K for RAM, so I never upgraded to the 8Kx8s.
+
+One of the design considerations was low package count.
+The other half of the '08 AND was used for PIO INT-ENBL
+propagation and the inverter was left over from the
+oscillator.  The other half of the '139 was used for
+I/O chip select logic.
+
+Cheers,
+Rick.C
+mhm 15x3

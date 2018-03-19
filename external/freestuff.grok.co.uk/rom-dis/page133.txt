@@ -1,0 +1,57 @@
+		LD	HL,(STKEND)	Fetch the 'old' STKEND.
+		LD	C,+05	There are 5 bytes to move.
+		AND	A	Clear the carry flag.
+		SBC	HL,BC	The 'new' STKEND='old'
+				STKEND -5.
+		LD	(STKEND),HL	Move the floating-point number
+		LDIR		from the calculator stack to
+				the line.
+		EX	DE,HL	Put the line pointer in HL.
+		DEC	HL	Point to the last byte added.
+		CALL	0077,TEMP-PTR1	This sets CH-ADD.
+		JR	26C3,S-NUMERIC	Jump forward.
+
+During line execution:
+26B5	S-STK-DEC	RST	0018,GET-CHAR	Get the current character.
+26B6	S-SD-SKIP	INC	HL	Now move on to the next
+		LD	A,(HL)	character in turn until
+		CP	+0E	the number marker code
+		JR	NZ,26B6,S-SDSKIP	is found.
+		INC	HL	Point to the first byte of the
+				number.
+		CALL	33B4,STACK-NUM	Move the floating-point number.
+		LD	(CH-ADD),HL	Set CH-ADD.
+
+A numeric result has now been identified, coming from RND, PI, ATTR, POINT or a decimal number, therefore bit 6 of FLAGS must be set.
+
+26C3	S-NUMERIC	SET	6,(FLAGS)	Set the numeric marker flag.
+		JR	26DD,S-CONT-1	Jump forward.
+
+THE SCANNING VARIABLE ROUTINE
+When a variable name has been identified a call is made to LOOK-VARS which looks through those variables that already exist in the variables area (or in the program area at DEF FN statements for a user-defined function FN). If an appropriate numeric value is found then it is copied to the calculator stack using STACK-NUM. However a string or string array entry has to have the appropriate parameters passed to the calculator stack by the STK-VAR subroutine (or in the case of a user-defined function, by the STK-F-ARG subroutine as called from LOOK-VARS).
+
+26C9	S-LETTER	CALL	28B2,LOOK-VARS	Look in the existing variables
+				for the matching entry.
+		JP	C,1C2E,REPORT-2	An error is reported if there is
+				no existing entry.
+		CALL	Z,2996,STK-VARS	Stack the parameters of the
+				string entry/return numeric
+				element base address.
+		LD	A,(FLAGS)	Fetch FLAGS.
+		CP	+C0	Test bits 6 and 7 together.
+		JR	C,26DD,S-CONT-1	One or both bits are reset.
+		INC	HL	A numeric value is to be stacked.
+		CALL	33B4,STACK-NUM	Move the number.
+26DD	S-CONT-1	JR	2712,S-CONT-2	Jump forward.
+
+The character is tested against the code for '-', thus identifying the 'unary minus' operation.
+
+Before the actual test the B register is set to hold the priority +09 and the C register the operation code +D8 that are required for this operation.
+
+26DF	S-NEGATE	LD	BC,+09DB	Priority +09, operation code
+				+D8.
+		CP	+2D	Is it a '-'?
+		JR	Z,270D,S-PUSH-PO	Jump forward if it is 'unary
+				minus'.
+
+Next the character is tested against the code for 'VAL$', with priority 16 decimal and operation code 18 hex.

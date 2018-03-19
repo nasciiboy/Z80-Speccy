@@ -1,0 +1,66 @@
+		PUSH	DE	being used. If it is
+		CALL	Z,0C55,PO-SCR	see if the display requires
+		POP	DE	to be scrolled.
+
+Now consider the present state of INVERSE & OVER'
+
+		PUSH	BC	Save the position values
+		PUSH	HL	and the destination address
+				on the machine stack.
+		LD	A,(P-FLAG)	Fetch P-FLAG and read bit 0.
+		LD	B,+FF	Prepare the 'OVER-mask' in
+		RRA		the B register; i.e. OVER 0
+		JR	C,0BA4,PR-ALL-2	= +00 & OVER 1 - +FF.
+		lNC	B
+0BA4	PR-ALL-2	RRA		Read bit 2 of P-FLAG and
+		RRA		prepare the 'INVERSE-mask'
+		SBC	A,A	in the C register; i.e.
+		LD	C,A	INVERSE 0 = +00 & INVERSE
+				1 = +FF.
+		LD	A,+08	Set the A register to hold
+		AND	A	the 'pixel-line' counter and
+				clear the carry flag.
+		BIT	1,(FLAGS)	Jump forward if handling
+		JR	Z,0BB6,PR-ALL-3	the screen.
+		SET	1,(FLAGS2)	Signal 'printer buffer no longer
+				empty.
+		SCP		Set the carry flag to show that
+				the printer is being used.
+0BB6	PR-ALL-3	EX	DE,HL	Exchange the destination
+				address with the base address
+				before entering the loop.
+
+The character can now be printed. Eight passes of the loop are made - one for each 'pixel-line'.
+
+0BB7	PR-ALL-4	EX	AF,A'F'	The carry flag is set when using
+				the printer. Save this flag in F'.
+		LD	A,(DE)	Fetch the existing 'pixel-line'.
+		AND	B	Use the 'OVER-mask' and then
+		XOR	(HL)	XOR the result with the 'pixel-
+				line' of the character form.
+		XOR	C	Finally consider the 'INVERSE-
+				mask'.
+		LD	(DE),A	Enter the result.
+		EX	AF,A'F'	Fetch the printer flag and
+		JR	C,0BD3,PR-ALL-6	jump forward if required.
+		INC	D	Update the destination address
+0BC1	PR-ALL-S	INC	HL	Update the 'pixel-line' of
+				the character form.
+		DEC	A	Decrease the counter and loop
+		JR	NZ,0BB7,PR-ALL-4	back unless it is zero.
+
+Once the character has been printed the attribute byte is to set as required.
+
+		EX	DE,HL	Make the H register hold a
+		DEC	H	correct high-address for the
+				character area.
+		BIT	1,(FLAGS)	Set the attribute byte only if
+		CALL	Z,0BDB,PO-ATTR	handling the screen.
+		POP	HL	Restore the original
+		POP	BC	destination address and the
+				position values.
+		DEC	C	Decrease the column number
+		INC	HL	and increase the destination
+		RET		address before returning.
+
+When the printer is being used the destination address has to be updated in increments of +20.

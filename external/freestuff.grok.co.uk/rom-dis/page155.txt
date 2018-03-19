@@ -1,0 +1,63 @@
+		EX	DE,HL	'Start' of new string to HL.
+				'Pointer' to new arear to DE.
+		LD	A,B	Jump forward if the
+		OR	C	'new' string is a 'null'
+		JR	Z,2BA3,L-IN-W/S	string.
+		LDIR		Otherwise move the 'new'
+				string to the work space.
+
+The values that have been saved on the machine stack are restored.
+
+2BA3	L-IN-W/S	POP	BC	'Length' of new area.
+		POP	DE	'Pointer' to new area.
+		POP	HL	The start - the pointer
+				to the 'variable in assignment'
+				which was originally in DEST.
+				L-ENTER is now used to pass
+				the 'new' string to the variables
+				area.
+
+
+THE 'L-ENTER' SUBROUTINE
+This short subroutine is used to pass either a numeric value, from the calculator stack, or a string, from the work space, to its appropiate position in the variables area.
+The subroutine is therefore used for all except 'newly declared' simple strings and 'complete & existing' simple strings.
+
+2BA6	L-ENTER	EX	DE,HL	Change the pointers over.
+		LD	A,B	Check once again that the
+		OR	C	length is not zero.
+		RET	Z
+		PUSH	DE	Save the destination pointer.
+		LDIR		Move the numeric value or the
+				string
+		POP	HL	Return with the HL register
+		RET		pair pointing to the first byte
+				of the numeric value or the
+				string.
+
+
+THE LET SUBROUTINE CONTINUES HERE
+When handling a 'complete & existing' simple string the new string is entered as if it were a 'newly declared' simple string before the existing version is 'reclaimed'.
+
+2BAF	L-ADD$	DEC	HL	Make HL point to the letter
+		DEC	HL	of the variable's name.
+		DEC	HL	i.e. DEST - 3.
+		LD	A,(HL)	Pick up the letter.
+		PUSH	HL	Save the pointer to the 'existing
+				version'.
+		PUSH	BC	Save the 'length' of the
+				'existing string'.
+		CALL	2BC6,L-STRING	Use L-STRING to add the new
+				string to the variables area.
+		POP	BC	Restore the 'length'.
+		POP	HL	Restore the pointer.
+		INC	BC	Allow one byte for the letter
+		INC	BC	and two bytes for the length.
+		INC	BC
+		JP	19E8,RECLAIM-2	Exit by jumping to RECLAIM-2
+				which will reclaim the whole
+				of the existing version.
+
+'Newly declared' simple strings are handled as follows:
+
+2BC0	L-NEW$	LD	A,+DF	Prepare for the marking of
+				the variable's letter.

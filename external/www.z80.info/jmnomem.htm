@@ -1,0 +1,100 @@
+<HTML>
+<HEAD>
+<TITLE>No memory aviable</TITLE>
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<BODY>
+
+<H2>Systems Without Memory</H2>
+
+<H3>And how to make it more efficient than most Memory
+
+Systems</H3>
+
+Fourteen years ago, there was no need for memory at all. Small Z80
+
+systems used an EPROM to store data and the Z80 registers
+
+as memory. External SRAM was expensive, and there was no
+
+need for it at small computer systems. Instead was stack
+
+calculated by hand. It worked as a high-level code
+
+interpreted by a return.
+
+<PRE>
+
+        ORG     0h
+
+
+
+LOOP:   LD      SP,M1   ; Setup stack
+
+        RET             ; Run at the stack
+
+
+
+PROC1:  POP     HL      ; Get parameters
+
+        POP     BC      ; for procedure
+
+        ...
+
+        RET             ; Next procedure
+
+
+
+PROC5:  CP      A,20h   ; Check if a space
+
+        RET     Z       ; Continue on stack if space
+
+        LD      SP,M2   ; Else setup new stack
+
+        RET             ; And run at the new stack
+
+
+
+M1:     DW      proc1,v1,v2,proc1,v1,v3,proc5,...,loop
+
+M2:     DW      proc1,v1,v8,...
+
+</PRE>
+
+<P>
+
+A sort of high-level code was written in the stack. And the code only contained
+
+subroutines and pop's to get the parameters. Beginning was
+
+done by return.<P>
+
+The stack calculated by hand was
+
+an efficient way to make high-efficient programming and it
+
+was more effiecient than using call's, load and push, etc as
+
+in typical systems with memory.
+
+<P>
+
+<Center>
+
+<A HREF = "jmz80.htm">Later</A>
+
+</Center>
+
+<P>
+
+<HR>
+
+This page is made by:<br>E-Mail address: <A HREF="mailto:Jens.Madsen@post3.tele.dk">Jens.Madsen@post3.tele.dk</A>
+
+<br><a href="http://www.ebar.dtu.dk/~c888600/">Homepage of Jens Madsen</a>
+</BODY>
+
+</HTML>
+
+

@@ -1,0 +1,58 @@
+		CCF		Complement the carry flag.
+		RET	NC	Return if not a valid character
+				code.
+		CP	+7B	Test against 7B hex, 1 more
+				than the code for 'z'.
+		RET		Finished.
+
+THE 'DECIMAL TO FLOATING POINT' SUBROUTINE
+As part of syntax checking decimal numbers that occur in a BASIC line are converted to their floating-point forms. This subroutine reads the decimal number digit by digit and gives its result as a 'last value' on the calculator stack. But first it deals with the alternative notation BIN, which introduces a sequence of 0's and 1's giving the binary representation of the required number.
+
+2C9B	DEC-TO-FP	CP	+C4	Is the character a 'BIN'?
+		JR 	NZ,2CB8,NOT-BIN	Jump if it is not 'BIN'.
+		LD	DE,+0000	Initialise result to zero in DE.
+2CA2	BIN-DIGIT	RST	0020,NEXT-CHAR	Get the next character.
+		SUB	+31	Subtract the character code for
+				'1'.
+		ADC	A,+00	0 now gives 0 with carry set; 1
+				gives 0 with carry reset.
+		JR	NZ,2CB3,BIN-END	Any other character causes a
+				jump to BIN-END and will be
+				checked for syntax during or
+				after scanning.
+		EX	DE,HL	Result so far to HL now.
+		CCF		Complement the carry flag.
+		ADC	HL,HL	Shift the result left, with the
+				carry going to bit 0.
+		JP	C,31AD,REPORT-6	Report overflow if more than
+				65535.
+		EX	DE,HL	Return the result so far to DE.
+		JR	2CA2,BIN-DIGIT	Jump back for next 0 or 1.
+2CB3	BIN-END	LD	B,D	Copy result to BC for stacking.
+		LD	C,E	
+		JP	2D2B,STACK-BC	Jump forward to stack the
+				result.
+
+For other numbers, first any integer part is converted;	if the next character is a decimal, then the decimal fraction is considered.
+
+2CB8	NOT-BIN	CP	+2E	Is the first character a '.'?
+		JR	Z,2CCB,DECIMAL	If so, jump forward.
+		CALL	2D3B,INT-TO-FP	Otherwise, form a 'last value' of
+				the integer.
+		CP	+2E	Is the next character a '.'?
+		JR	NZ,2CEB,E-F0RMAT	Jump forward to see if it is an 'E'.
+		RST	0020,NEXT-CHAR	Get the next character.
+		CALL	2D1B,NUMERIC	Is it a digit?
+		JR	C,2CEB,E-FORMAT	Jump if not (e.g. 1.E4 is allowed).
+		JR	2CD5,DEC-STO-1	Jump forward to deal with the
+				digits after the decimal point.
+2CCB	DECIMAL	RST	0020,NEXT-CHAR	If the number started with a
+		CALL	2D1B,NUMERIC	decimal, see if the next
+				character is a digit.
+2CCF	DEC-RPT-C	JP	C,1C8A,REPORT-C	Report the error if it is not.
+		RST	0028,FP-CALC	Use the calculator to stack zero
+		DEFB	+AO,stk-zero	as the integer part of such
+		DEFB	+38,end-calc	numbers.
+2CD5	DEC-STO-1	RST	0028,FP-CALC	Use the calculator again.
+		DEFB	+A1,stk-one	Find the floating-point form of
+		DEFB	+C0,st-mem-0	the decimal number '1', and

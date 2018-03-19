@@ -1,0 +1,57 @@
+		RR	D	Rotate right with carry D', E',
+		RR	E	D & E.
+		EXX		Thereby shifting the whole five
+		RR	D	bytes of the number to the right
+		RR	E	as many times as B counts.
+		DJNZ	2FE5,ONE-SHIFT	Loop back until B reaches zero.
+		POP	BC	Restore the original BC.
+		RET	NC	Done if no carry to retrieve.
+		CALL	3004,ADD-BACK	Retrieve carry.
+		RET	NZ	Return unless the carry rippled
+				right back. (In this case there is
+				nothing to add).
+2FF9	ADDEND-0	EXX		Fetch L', D' & E'.
+		XOR	A	Clear the A register.
+2FFB	ZEROS-4/5	LD	L,+00	Set the addend to zero in D',E',
+		LD	D,A	D & E, together with its marker
+		LD	E,L	byte (sign indicator) L', which
+		EXX		was Hex.00 for a positive
+		LD	DE,+0000	number and Hex.FF for a
+				negative number. ZEROS-4/5
+				produces only 4 zero bytes
+				when called for near underflow
+				at 3160.
+		RET		Finished.
+
+THE 'ADD-BACK' SUBROUTINE
+This subroutine adds back into the number any carry which has overflowed to the right. In the extreme case, the carry ripples right back to the left of the number.
+When this subroutine is called during addition, this ripple means that a mantissa of 0.5 was shifted a full 32 places right, and the addend will now be set to zero; when called from MULTIPLICATION, it means that the exponent must be incremented, and this may result in overflow.
+
+3004	ADD-BACK	INC	E	Add carry to rightmost byte.
+		RET	NZ	Return if no overflow to left.
+		INC	D	Continue to the next byte.
+		RET	NZ	Return if no overflow to left.
+		EXX		Get the next byte.
+		INC	E	Increment it too.
+		JR	NZ,300D,ALL-ADDED	Jump if no overflow.
+		INC	D	Increment the last byte.
+300D	ALL-ADDED	EXX		Restore the original
+				registers.
+		RET		Finished.
+
+THE 'SUBTRACTION' OPERATION
+(Offset 03 - see CALCULATE below: 'subtract')
+
+This subroutine simply changes the sign of the subtrahend and carried on into ADDITION.
+Note that HL points to the minuend and DE points to the subtrahend. (See ADDITION for more details.)
+
+300F	SUBTRACT	EX	DE,HL	Exchange the pointers.
+		CALL	346E,NEGATE	Change the sign of the
+				subtrahend.
+		EX	DE,HL	Exchange the pointers back and
+				continue into ADDITION.
+
+THE 'ADDITION' OPERATION
+(Offset 0F - see CALCULATE below: 'addition')
+
+The first of three major arithmetical subroutines, this subroutine carries out the floating-point addition of two numbers, each with a 4-byte mantissa and a 1-byte exponent. In these three subroutines, the two numbers at the top of the calculator stack are added/multiplied/divided to give one number at the top of the calculator stack, a 'last value'.

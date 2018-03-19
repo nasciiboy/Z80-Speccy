@@ -1,0 +1,23 @@
+<HTML><Head>
+<TITLE>Z80 Known Bugs</TITLE>
+<META name="title" content="Thomas Scherrer Z80-Family HomePage">
+<META name="keywords" content="Z80,Z180,Z280,Z380,Programming,Hardware,Software,Utilities,FAQ,Support,CPU,assembler,emulators,simulators">
+<META name="description" content="Z80, Z180, Z280, Z380, Programming, Hardware, Software, Utilities, FAQ, Support, CPU, assembler">
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A><p>
+<h2>Z80 Known Bugs..</h2>
+
+By: <a href="mailto:n2wx@tapr.org">Howard Goldstein</a> - <a href="http://www.tapr.org/~n2wx/">HomePage</a><br><p>
+
+Hey another thing you may wish to consider mentioning are the bugs in the NMOS version of the CPU.<br>  One of them is with regard to the buggy
+
+IFF2->parity flag performance in the LD A,I and LD A,R instructions.  <br>
+An error can occur when an INTACK runs near these instructions: <br>
+the parity flag will be showing 0 when it should have been 1. <br>
+A Zilog app. note is around somewhere talking about this.<br> 
+It's a rather nasty bug for embeddedaapps...  There are I think a few others.<br>
+
+<hr>
+</body></html>
+

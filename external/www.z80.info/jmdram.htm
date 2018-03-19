@@ -1,0 +1,161 @@
+<HTML>
+<HEAD>
+<TITLE>Using Fast Page Mode Dynamic Memories for Sampling</TITLE>
+</Head><body background="gfx/zand.jpg">
+<A HREF="index.htm">
+<IMG SRC="gfx/zlogo1.gif" ALT="Z80 Home" HEIGHT=98 WIDTH=198 border=0></A>
+<BODY>
+
+<H2>Using Fast Page Mode Dynamic Memories for Sampling</H2>
+
+A speciel mode of the Fast Page Mode DRAM's was the CAS
+
+Before RAS Refresh Counter Test Cycle. It is a full-documented
+
+cycle, described in e.g. Siemens HYB 514256 (262144 x 4) datasheet.
+
+<P>
+
+The idea is to combine a CAS before RAS refresh cycle and a
+
+read / write cycle. The refresh counter is used as
+
+Row Address. When entering the CAS before RAS refresh cycle
+
+will the Row Address be loaded, and since the memory not
+
+remember if it begin on a standard R/W cycle, or a refresh
+
+cycle, will it be possible to continue by reading in page
+
+mode with default Row Address.
+
+<P>
+
+The HYB 514256 has 512 refresh cycles, and it is possible to
+
+use the refresh counter for loading the row address by using
+
+the CAS Before RAS Refresh Counter Test Cycle.
+
+<P>
+
+The mode was intended for testing the Refresh Counter, but
+
+it may be used for lots of other purposes too. The benefit
+
+is to not use external multiplexers, which may be timing
+
+critical too, and only use the Build In Refresh Counter. It
+
+is not possible to load the refresh counter with a value,
+
+and it is only possible to use for serial sampling.
+
+<P>
+
+The CAS before RAS Refresh Counter Test Cycle (from
+
+HYB514256 datasheet):<BR>
+
+Read:<BR>
+
+<IMG WIDTH=369 HEIGHT=288 SRC="gfx/jmdram1.gif" ALT="Read Cycle">
+
+<P>
+
+Write:<BR>
+
+<IMG WIDTH=369 HEIGHT=240 SRC="gfx/jmdram2.gif" ALT="Write Cycle"><BR>
+
+<P>
+
+It is possible to use R/W cycles too, or page mode.
+
+(Page mode in the Counter Refresh Test Cycle is not
+
+documented in HYB51426 datasheet).
+
+<P>
+
+Typical Application:<BR>
+
+<IMG WIDTH=360 HEIGHT=352 SRC="gfx/jmdram4.gif" ALT="DRAM Aplication">
+
+<P>
+
+The counter, bit Q2 to Q10 counts to 512-1 = 511. Then it
+
+interfere with the internal refresh counter, and every time
+
+the external counter resets, will internal counter be
+
+incremented with 1 compared to last cycle.
+
+<P>
+
+The total samples is 511 * 512 = 261632 samples.
+
+<P>
+
+Since the DRAM stores the CAS address will the
+
+counter not need to be synchronous, but a higher speed may
+
+be possible if using a synchronous counter (or an LFSR,
+
+Linear Feedback Shift Register).
+
+<P>
+
+The counter bit Q2 to Q10 counts to 511 and Q0 to Q10 counts
+
+to 511*4 = 2044.
+
+<P>
+
+It is possible to obtain up to 4.5 MHz. The timing depends
+
+on delay and the possible delay in the asynchronous counter.
+
+<P>
+
+Not all 256K modules has full refresh counter.
+
+Typical 262144 x 4 organized DRAM's has 512 refresh cycles,
+
+while 262144 x 1 organized DRAM's has 256 refreshes only.
+
+256K modules may contain 9x 262144 x 1 DRAM's with
+
+only 256 refresh cycles. Then only 511*256 = 130816 samples
+
+is stored. Also 256K x 1 and 256K x 4 mixed modules exist.
+
+<P><BR>
+
+<H3>High Speed Fast Page Mode Sampling.</H3>
+
+A significant higher speed is possible by using Fast Page
+
+Mode. Two memory modules is coupled parrallel, and when
+
+first module refresh is next module reading / writing in
+
+page mode. It is possible to get about 25 MHz with 70ns
+
+DRAM module, but a more sofisticated timing is required.
+
+An extra module allows 50MHz. (One inverted CAS).
+
+<P>
+
+<HR>
+This page is made by:<br>
+<I>&#169; 1997, and 1998, Jens Dyekj&aelig;r Madsen.</I><BR>
+
+E-Mail address: <A HREF="mailto:Jens.Madsen@post3.tele.dk">Jens.Madsen@post3.tele.dk</A><br>
+<br><a href="http://www.ebar.dtu.dk/~c888600/">Homepage of Jens Madsen</a>
+</BODY>
+</HTML>
+

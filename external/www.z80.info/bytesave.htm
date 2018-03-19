@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<TITLE>
+More bytesaving code
+</TITLE>
+</HEAD>
+
+<BODY>
+<PRE>
+                Suppose you have this kind of code
+
+Entry1            LD    C,#10
+            JR    MAIN
+Entry2            LD    C,#20
+Main        some code
+            RET
+
+You can save a byte by storing the the second entry in a not used register
+pair, like this
+Entry1            LD    C,#10
+            DEFB  #21
+Entry2            LD    C,#20
+Main        some code
+            RET
+
+The program from Entry1 would look like this
+Entry1            LD    C,#10
+            LD    HL,#200E
+Main        some code
+            RET
+
+You save a byte and it is faster
+If you need HL you can use another spare register or use a jump condition
+that is never true.
+
+Entry1            LD    C,#10
+            DEFB  #DA
+Entry2            LD    C,#20
+Main        some code
+            RET
+
+Entry1            LD    C,#10
+            JP    C,#200E     ; make sure C is always 0
+Main        some code
+            RET
+
+
+Greetings,
+Johan Koelman
+
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,63 @@
+	250 	GO SUB 510
+	260 	LET Arcs=Arcs-1: IF Arcs=0 THEN STOP
+	270 	LET MM1=M1
+	280 	LET M1=M1*M3-M2*M4
+	290 	LET M2=MM1*M4+M2*M3
+	300 	GO TO 210
+
+	500 	REM 'DRAW A LINE' from last position to X,Y
+	510 	LET PLOTx=PEEK 23677: LET PLOTy=PEEK 23678
+	520 	LET dx=SGN X: LET dy=SGN Y
+	530 	LET X=ABS X: LET Y=ABS Y
+	540 	IF X> =Y THEN GO TO 580
+	550 	LET L=X: LET B=Y
+	560 	LET ddx=0: LET ddy=dy
+	570 	GO TO 610
+	580 	IF X+Y=0 THEN STOP
+	590 	LET L=Y: LET B=X
+	600 	LET ddx=dx: LET ddy=0
+	610 	LET H=B
+	620 	LET i=INT (B/2)
+	630 	FOR N=B TO 1 STEP -1
+	640 	LET i=i+L
+	650 	IF i < H THEN GO TO 690
+	660 	LET i=i-H
+	670 	LET ix=dx: LET iy=dy
+	680 	GO TO 700
+	690 	LET ix=ddx: LET iy=ddy
+	700 	LET PLOTy=PLOTy+iy
+	710 	IF PLOTy <0 OR PLOTy > 175 THEN STOP
+	720 	LET PLOTx=PLOTx+ix
+	730 	IF PLOTx <0 OR PLOTx > 255 THEN STOP
+	740 	PLOT PLOTx,PLOTy
+	750 	NEXT N
+	760 	RETURN
+
+
+
+NOTE ON SMALL INTEGERS AND -65536.
+
+1. Small integers n are those for which -65535 is less than or equal to n which is less
+than or equal to 65535. The form in which they are held is described in 'STACK-BC'.
+Note that the manual is inaccurate when it says that the third and fourth bytes hold n
+plus 131072 if n is negative. Since the range of n is then -1 to -65535, the two bytes can
+only hold n plus 131072 if it is taken mod 65536; i.e. they hold n plus 65536. The
+manual is fudging the issue. The fact is that this is not a true twos complement form (as
+the form n plus 131072, in other circumstances, could be). Here the same number can
+stand for two different numbers according to the sign byte: e.g. 00 01 stands for 1 if
+the sign byte is 00 and for -65535 if the sign byte is FF; similarly FF FF stands for
+65535 if the sign byte is 00 and for -1 if the sign byte is FF.
+
+2. Accepting that negative numbers are given a special 'twos complement' form, the
+main feature about this method of holding numbers is that they are ready for 'short
+addition' without any further twos complementing. They are simply fetched and stored
+direct by the addition subroutine. But for multiplication they need to be fetched by
+INT-FETCH and stored afterwards by INT-STORE. These subroutines twos com-
+plement the number when fetching or storing it. The calls to INT-STORE are from
+'multiply' (after 'short multiplication'), from 'truncate' (after forming a 'small integer'
+between -65535 and 65535 inclusive), from 'negate'/'abs' for the 'integer case' and from
+'sgn' to store 1 or -1. The calls to INT-FETCH are from PRINT-FP to fetch the integer
+part of the number when it is 'small', from 'multiply' twice to fetch two 'small integers',
+from 'RE-STACK' to fetch a 'small integer' for re-stacking, from 'negate'/'abs' to fetch
+a 'small integer' for manipulation and from FP-TO-BC to fetch the integer for transfer
+to BC.

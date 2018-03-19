@@ -1,0 +1,63 @@
+		RST	0018,GET-CHAR	Before making an indirect
+		DEC	B	jump to the command class
+		RET		routine pass the command code
+				to the A register and set the B
+				register to +FF.
+
+THE 'SEPARATOR' SUBROUTINE
+The report - 'Nonsense in BASIC is given if the required separator is not present. But note that when syntax is being checked the actual report does not appear on the screen - only the 'error marker'.
+
+1B6F	SEPARATOR	RST	0018,GET-CHAR	The current character is
+		CP	C	fetched and compared to the
+				entry in the parameter table.
+		JP	NZ,1C8A,REPORT-C	Give the error report if there
+				is not a match.
+		RST	0020,NEXT-CHAR	Step past a correct character
+		RET		and return.
+
+THE 'STMT-RET' SUBROUTINE
+After the correct interpretation of a statement a return is made to this entry point.
+
+1B76	STMT-RET	CALL	1F54,BREAK-KEY	The BREAK key is tested after
+				every statement.
+		JR	C,1B7D,STMT-R-1	Jump forward unless it has
+				been pressed.
+
+Report L - 'BREAK into program'
+
+1B7B	REPORT-L	RST	0008,ERROR-1	Call the error handling
+		DEFB	+14	routine.
+
+Continue here as the BREAK key was not pressed.
+
+1B7D	STMT-R-1	BIT	7,(NSPPC)	Jump forward if there is not
+		JR	NZ,1 BF4,STMT-NEXT	a 'jump' to be made.
+		LD	HL,(NEWPPC)	Fetch the 'new line' number
+		BIT	7,H	and jump forward unless dealing
+		JR	Z,1B9E,LINE-NEW	with a further statement in the
+				editing area.
+
+THE 'LINE-RUN' ENTRY POINT
+This entry point is used wherever a line in the editing area is to be 'run'. In such a case the syntax/run flag (bit 7 of FLAGS) will be set.
+
+The entry point is also used in the syntax checking of a line in the editing area that has more than one statement (bit 7 of FLAGS will be reset).
+
+1B8A	LINE-RUN	LD	HL,+FFFE	A line in the editing area
+		LD	(PPC),HL	is considered as line '-2'.
+		LD	HL,(WORKSP)	Make HL point to the end
+		DEC	HL	marker of the editing area
+		LD	DE,(E-LINE)	and DE to the location before
+		DEC	DE	the start of that area.
+		LD	A,(NSPPC)	Fetch the number of the next
+				statement to be handled
+		JR	1BD1,NEXT-LINE	before jumping forward.
+
+
+THE 'LINE-NEW' SUBROUTINE
+There has been a jump in the program and the starting address of the new line has to be found.
+
+1B9E	LINE-NEW	CALL	196E,LINE-ADDR	The starting address of the line,
+				or the 'first line after' is found.
+		LD	A,(NSPPC)	Collect the statement number.
+		JR	Z,1BBF,LINE-USE	Jump forward if the required
+		AND	A	line was found; otherwise

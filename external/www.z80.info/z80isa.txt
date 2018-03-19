@@ -1,0 +1,47 @@
+This is an excerpt from Jim Delaney's e-mail, explaining what this card 
+is all about.
+
+-----------------
+
+So, I thought you might like to look at a Z80 PC ISA Card I constructed,
+designed, and programmed all myself between 1999-2001. I call it the
+DESCATOC Card - this stands for Delaney's Energy Saving Computer And
+Telecommunication Operations Card.
+
+[...] so that anyone with any skill and knowledge of Electronics can build it
+himself, I want to provide all DOC's and Software except ROM chip
+Software. For this, People can pay me a small fee, and I will program a
+chip for them. This also allows me to see how many are interested in
+building it. Their is a lot of DOS Software for it, indeed, it all runs
+under DOS or in a DOS box. it will though all fit into an 8Mb ZIP file.
+
+I designed it primarily so that people could leave their BBS and FAX
+Computer Hosts fully powered off until a call came in, the Card would
+then switch on the PC and tell the PC What Software to run in order to
+take the call. After the call, the PC tells the Card to initiate a
+software controlled power down sequence whereby the Card brings the PC
+out of its OS, and then disconnects the PC's mains power. the card then goes
+into waiting for another incoming call. Thus, the PC is only on when it it is
+needed. and off all other times. thieir is a new peice of software for
+the PC out called GotoMyPC and it is totally incredible! (see
+www.gotomypc.com) it would be an ideal companion for it.
+The Card uses parallel communication procedures using the ISA Bus, but
+it could easilly be converted to Printer Port Operation. The Card
+decodes PC I/O addresses between 200 - 400h in the PC's I/O map, and
+only occupies 2 of the PC's 65535 possible I/O ports their. the actual
+position it occupies can be selected by DIP Switches onboard the card.
+it also uses 3 x Z80 PIO IC's giving 6 x programmable 8 bit I/O Ports,
+which then drive the other IC's, which basically amount to on board
+peripherals. In the picture far right and to the bottom is the BIOS ROM,
+above this is the Z80, above that are 2 x 1k RAM's, the the TTL Clock
+runing at 4Mhz. An interesting feature of the Cards functions is that it
+can turn on or off at will its own NMI pulse !
+
+-----------------
+
+For the software and/or further information you can contact Jim at
+
+ jdys03763@blueyonder.co.uk   or
+
+ allelectrix2@hotmail.com
+

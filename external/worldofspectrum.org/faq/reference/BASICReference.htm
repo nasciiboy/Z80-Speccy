@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Sinclair BASIC Reference</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/cssFAQ.css" title="CSSFAQStyle" id="CSSFAQStyle" type="text/css" rel="stylesheet" media="screen" />
+<link href="../styles/cssFAQPrint.css" title="CSSFAQStylePrint" id="CSSFAQStylePrint" type="text/css" rel="stylesheet" media="print" />
+</head>
+<body>
+
+<div id="pageHeader" class="pageHeader"><h1>comp.sys.sinclair FAQ</h1></div>
+
+<br />
+
+<div class="siteNavigation">
+<a title="SinclairFAQ [on master site]" href="http://www.sinclairfaq.com/">SinclairFAQ</a> &raquo;
+<a title="comp.sys.sinclair FAQ" href="../index.html">c.s.s FAQ</a> |
+<a title="Documentation" href="../resources/documents.htm">Documents</a> |
+<a title="Essential Sites" href="../essential.htm">Essential Sites</a> |
+<a title="Emulators" href="../emulators/emulators.htm">Emulators</a> |
+<a title="Reference" href="reference.htm">Reference</a> |
+<a title="Links" href="../resources/links.htm">Links</a> |
+<a title="Resources" href="../resources/resources.htm">Resources</a> |
+<a title="Help" href="../help.htm">Help</a>
+</div>
+
+<br />
+<table id="Content" cellspacing="1" cellpadding="1" width="100%" border="0">
+<tr>
+<td width="75" colspan="1" rowspan="1" />
+<td>
+<table id="SectionTitle" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="sectionTitle">BASIC Reference</td></tr>
+</table>
+<table id="SectionContent" cellspacing="1" cellpadding="1" width="95%" align="center" border="0">
+<tr>
+<td class="bodyTable">
+
+<div class="pageNavigation">|
+<a href="BASICReference.htm#Sinclair">Sinclair BASIC</a> |
+<a href="BASICReference.htm#Timex">Timex BASIC</a> |
+<a href="BASICReference.htm#Codes">Error Codes</a> |</div>
+
+
+<p>There is an extensive discussion of Sinclair BASIC,
+including the history and development of the language, and various interpreters for different platforms at the
+<a href="http://www.worldofspectrum.org/sinclairbasic/">Sinclair BASIC</a> site.</p>
+
+<p><strong><a id="Sinclair">Sinclair BASIC:</a></strong><br />
+The Sinclair BASIC <a href="../resources/documents.htm#User">documentation</a>.</p>
+<p><strong>TS1000 / TS1500 / ZX81:</strong><br />
+The following commands are found exclusively on these models;</p>
+<ul>
+<li><strong>FAST:</strong> Instructs the computer to operate in FAST mode. In this mode, the machine will run up
+to four times faster than in SLOW mode. This is accomplished by not refreshing the screen display until
+the program has completed, or input from the user is required. The system will stay in the specified mode
+until it is changed, allowing certain sections of a program to be executed more quickly than others if
+desired. It is common to switch from SLOW mode (the default) to FAST mode when entering large programs,
+for example. Programs loaded from cassette that were SAVEd when the machine is in FAST mode
+will be automatically opened that way, and vice-versa.<br /><br />
+<u>Example</u>: [line #] FAST<br /><br /></li>
+<li><strong>SCROLL:</strong> The SCROLL command instructs the machine to automatically 'shift' the display up by
+the required number of lines when the screen becomes full. If SCROLL is not specified and a program
+'overflows' the 22 available display lines, the program with stop with an error. Pressing CONT will allow
+continuation with a 'new' screen. However, if a series of PRINT statements preceded by SCROLL is followed
+by a PRINT statement that is not followed by a SCROLL, the computer will stop with an error.<br /><br />
+<u>Example</u>: [line #] SCROLL<br /><br /></li>
+<li><strong>SLOW:</strong> The opposite of FAST. In SLOW mode, the screen is refreshed as required.<br /><br />
+<u>Example</u>: [line #] SLOW<br /><br /></li>
+<li><strong>UNPLOT:</strong> UNPLOT essentially reverses the effect of the PLOT statement, and accepts 2 integer
+values as screen co-ordinates (if a decimal value is passed, it is rounded to the nearest integer) for the
+pixel to 'paint' white.<br /><br />
+<u>Example</u>: UNPLOT [n,n]<br /><br /></li>
+</ul>
+
+
+<p><strong><a id="Timex">Timex BASIC:</a></strong><br />
+Timex BASIC is a superset of Sinclair BASIC, with additional commands allowing access to the hardware features found on
+the Timex systems. Generally speaking, BASIC programs written for the ZX Spectrum will run on Timex machines without
+modification. The additional commands found in Timex BASIC are listed below:</p>
+<ul>
+
+<li><strong>DELETE:</strong> The DELETE command is used to remove lines of a program between two supplied
+values, from the beginning of a program to the line specified, or from the line specified to the end of the
+program.<br /><br />
+<u>Example</u>: DELETE [n,n] (between values) or DELETE [ ,n] (to value) or DELETE [n, ] (from value)<br /><br /></li>
+
+
+<li><strong>FREE:</strong> FREE can be used at any time within a program, or from immediate mode, to return
+the amount of available internal memory.<br /><br />
+<u>Example</u>: PRINT FREE<br /><br /></li>
+
+
+<li><strong>ON ERR:</strong> ON ERR allows errors to be trapped and handled before the program automatically stops
+with an error. GOTO jumps to a specified line number, CONT continues operation from the point at which the error occurred and
+RESET disables ON ERR, raising the normal system error messages instead. After ON ERR GOTO, PEEK 23736 will give the error code, while PEEK 23739 and PEEK 23738 respectively give the line number and statement number within the line where the error occured.<br /><br />
+<u>Example</u>: ON ERR [GOTO, CONT, RESET]<br /><br /></li>
+
+
+<li><strong>RESET:</strong> RESET is typically used to return attached peripherals to their original state. In addition, it can be used to
+reset the entire system.<br /><br />
+<u>Example</u>: RESET 0 (resets machine)<br /><br /></li>
+
+
+<li><strong>SOUND:</strong> The SOUND command accepts pairs of numbers separated by semi-colons. Up to 15 pairs are permitted
+for each SOUND command. The first number in each pair designates the register, while the second number contains the value.
+The available registers are:<br /><br />
+<ul>
+<li>0 - Fine Tune, Channel A. Permitted values: 0-255</li>
+<li>1 - Coarse Tune, Channel A. Permitted values: 0-15</li>
+<li>2 - Fine Tune, Channel B. Permitted values: 0-255</li>
+<li>3 - Coarse Tune, Channel B. Permitted values: 0-15</li>
+<li>4 - Fine Tune, Channel C. Permitted values: 0-255</li>
+<li>5 - Coarse Tune, Channel C. Permitted values: 0-15</li>
+<li>6 - Noise. Permitted values: 0-31</li>
+<li>7 - Enable. Permitted values: 0-63</li>
+<li>8 - Amplitude, Channel A. Permitted values: 0-15</li>
+<li>9 - Amplitude, Channel B. Permitted values: 0-15</li>
+<li>10 - Amplitude, Channel C. Permitted values: 0-15 (16 enables envelope)</li>
+<li>11 - Fine Tune envelope period. Permitted values: 0-255</li>
+<li>12 - Coarse Tune envelope period. Permitted values: 0-255</li>
+<li>13 - Envelope shape. Permitted values: 0-15<br /><br /></li>
+</ul>
+<u>Example</u>: SOUND [n,n];[n,n] ..... [n,n];[n,n]<br /><br /></li>
+
+
+ <li><strong>STICK:</strong> The STICK command is used to read the signal generated by devices connected to one of the two
+Joystick ports available. The first number represents the device type being read - (1) is the Joystick and (2) is the
+button. The second number is the Joystick number - (1) is left and (2) is right. Valid return values are 1 (pressed) or
+0 (not pressed) if reading the button, and:<br /><br />
+<ul>
+<li>0 - Centred</li>
+<li>1 - Up</li>
+<li>2 - Down</li>
+<li>4 - Left</li>
+<li>5 - Up and Left</li>
+<li>6 - Down and Left</li>
+<li>8 - Right</li>
+<li>9 - Up and Right</li>
+<li>10 - Down and Right<br /><br /></li>
+</ul>
+<u>Example</u>: IF STICK([n,n]) THEN ...<br /><br /></li>
+
+</ul>
+
+
+<p><strong><a id="Codes">Error Codes:</a></strong><br />
+Both Sinclair and Timex BASICs have very effective error-trapping routines built-in, making it impossible to enter
+syntactically incorrect lines. Before the system will accept a program line, it must be well formed and formatted - it
+doesn't have to be logical, as long as it's structured correctly!<br /><br />
+The following codes, found in Appendix B of the ZX Spectrum user manual, are displayed when a program encounters an error and cannot
+continue uninterrupted:</p>
+<ul>
+<li><strong>0 - OK</strong>: Successful completion, or jump to a line number bigger than any existing. This report does not change the line and
+statement jumped to by CONTINUE.<br /><br /></li>
+<li><strong>1 - NEXT without FOR</strong>: The control variable does not exist (it has not been set up by a FOR statement), but there is an ordinary
+variable with the same name.<br /><br /></li>
+<li><strong>2 - Variable not found</strong>: For a simple variable this will happen if the variable is used before it has been assigned to in a LET, READ
+or INPUT statement or loaded
+from tape or set up in a FOR statement. For a subscripted variable it will happen if the variable is used before it has been dimensioned in a
+DIM statement or loaded from tape.<br /><br /></li>
+<li><strong>3 - Subscript wrong</strong>: A subscript is beyond the dimension of the array, or there are the wrong number of subscripts. If the
+subscript is negative or bigger than 65535, then error B will result.<br /><br /></li>
+<li><strong>4 - Out of Memory</strong>: Sometimes during expression evaluation. There is not enough room in the computer for what you are trying
+to do. If the computer really seems to be stuck in this state, you may have to clear out the command line using DELETE and then delete a
+program line or two (with the intention of putting them back afterwards) to give yourself room to manoeuvre with - say - CLEAR.<br /><br /></li>
+<li><strong>5 - Out of screen</strong>: An INPUT statement has tried to generate more than 23 lines in the lower half of the screen. Also occurs with
+PRINT AT 22, . . .<br /><br /></li>
+<li><strong>6 - Number too big</strong>: Calculations have led to a number greater than about 10^38.<br /><br /></li>
+<li><strong>7 - RETURN without GO SUB</strong>: There has been one more RETURN than there were GO SUBs.<br /><br /></li>
+<li><strong>8 - End of file</strong>: Undocumented.<br /><br /></li>
+<li><strong>9 - STOP statement</strong>: After this, CONTINUE will not repeat the STOP, but carries on with the statement after.<br /><br /></li>
+<li><strong>A - Invalid Argument</strong>: The argument for a function is no good for some reason.<br /><br /></li>
+<li><strong>B - Integer out of range</strong>: When an integer is required, the floating point argument is rounded to the nearest integer. If this is
+outside a suitable range then error B results. For array access, see also Error 3.<br /><br /></li>
+<li><strong>C - Nonsense in BASIC</strong>: The text of the (string) argument does not form a valid expression.<br /><br /></li>
+<li><strong>D - BREAK - CONT repeats</strong>: Also when the computer asks scroll? and you type N, SPACE or STOP. BREAK was pressed during
+some peripheral operation. The behaviour of CONTINUE after this report is normal in that it repeats the statement. Compare with report L.<br /><br /></li>
+<li><strong>E - Out of DATA</strong>: You have tried to READ past the end of the DATA list.<br /><br /></li>
+<li><strong>F - Invalid file name</strong>: SAVE with name empty or longer than 10 characters.<br /><br /></li>
+<li><strong>G - No room for line</strong>: There is not enough room left in memory to accommodate the new program line.<br /><br /></li>
+<li><strong>H - STOP in INPUT</strong>: Some INPUT data started with STOP, or cursor down (CAPS SHIFT + 6) was pressed during an INPUT LINE statement. Unlike the case with report 9, after
+report H CONTINUE will behave normally, by repeating the INPUT statement.<br /><br /></li>
+<li><strong>I - FOR without NEXT</strong>: There was a FOR loop to be executed no times (e.g. FOR n= 1 TO 0) and the corresponding NEXT statement
+could not be found.<br /><br /></li>
+<li><strong>J - Invalid I/O device</strong>: Undocumented.<br /><br /></li>
+<li><strong>K - Invalid colour</strong>: The number specified is not an appropriate value.<br /><br /></li>
+<li><strong>L - BREAK into program</strong>: BREAK pressed, this is detected between two statements. The line and statement number in the report
+refer to the statement before BREAK was pressed, but CONTINUE goes to the statement after (allowing for any jumps to be done), so it
+does not repeat any statements.<br /><br /></li>
+<li><strong>M - RAMTOP no good</strong>: The number specified for RAMTOP is either too big or too small.<br /><br /></li>
+<li><strong>N - Statement lost</strong>: Jump to a statement that no longer exists.<br /><br /></li>
+<li><strong>O - Invalid stream</strong>: Undocumented.<br /><br /></li>
+<li><strong>P - FN without DEF</strong>: A user-defined function was called but no corresponding definition could be found.<br /><br /></li>
+<li><strong>Q - Parameter error</strong>: A user-defined function was given the wrong number of arguments, or one of them is the wrong type (string instead of number or vice versa).<br /><br /></li>
+<li><strong>R - Tape loading error</strong>: A file on tape was found but for some reason could not be read in, or would not verify.</li>
+</ul>
+
+
+
+<div class="pageNavigation">|
+<a href="BASICReference.htm#Sinclair">Sinclair BASIC</a> |
+<a href="BASICReference.htm#Timex">Timex BASIC</a> |
+<a href="BASICReference.htm#Codes">Error Codes</a> |</div>
+
+</td>
+</tr>
+</table></td>
+<td width="75" /></tr>
+</table>
+
+
+<div class="pageFooter">$Id: BASICReference.htm,v 1.13 2004/07/05 08:20:12 pak21 Exp $<br />
+Please read the
+<a title="Copyright Notice and Distribution Policy" href="../distributions.htm">Copyright Notice</a> for distribution policies, and the
+<a title="Contributors" href="../credits.htm">Credits</a> page for a list of contributors.</div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+Most functions treat it as zero, and it is printed as -1E-38, obtained by treating is as 'minus zero' in an illegitimate format.
+One possible remedy would be to test for this number at about byte 3032 and, if it is present, to make the second byte 80 hex and the first byte 91 hex, so producing the full five byte floating-point form of the number, i.e. 91 80 00 00 00, which causes no problems. See also the remarks in 'truncate' below, before byte 3225, and the Appendix.
+
+303C	ADDN-OFLW	DEC	HL	Restore the pointer to the first
+				number.
+		POP	DE	Restore the pointer to the
+				second number.
+303E	FULL-ADDN	CALL	3293,RE-ST-TWO	Re-stack both numbers in full
+				five byte floating-point form.
+
+The full ADDITION subroutine first calls PREP-ADD for each number, then gets the two numbers from the calculator stack and puts the one with the smaller exponent into the addend position. It then calls SHIFT-FP to shift the addend up to 32 decimal places right to line it up for addition. The actual addition is done in a few bytes, a single shift is made for carry (overflow to the left) if needed, the result is twos complemented if negative, and any arithmetic overflow is reported; otherwise the subroutine jumps to TEST-NORM to normalise the result and return it to the stack with the correct sign bit inserted into the second byte.
+
+		EXX		Exchange the registers.
+		PUSH	HL	Sace the next literal address.
+		EXX		Exchange the registers.
+		PUSH	DE	Save pointer to the addend.
+		PUSH	HL	Save pointer to the augend.
+		CALL	2F9B,PREP-ADD	Prepare the augend.
+		LD	B,A	Save its exponent in B.
+		EX	DE,HL	Exchange its pointers.
+		CALL	2F9B,PREP-ADD	Prepare the addend.
+		LD	C,A	Save its exponent in C.
+		CP	B	If the first exponent is smaller,
+		JR	NC,3055,SHIFT-LEN	keep the first number in the
+		LD	A,B	addend position; otherwise
+		LD	B,C	change the exponents and the
+		EX	DE,HL	pointers back again.
+3055	SHIFT-LEN	PUSH	AF	Save the larger exponent in A.
+		SUB	B	The difference between the
+				exponents is the length of the
+				shift right.
+		CALL	2FBA,FETCH-TWO	Get the two numbers from the
+				stack.
+		CALL	2FDD,SHIFT-FP	Shift the addend right.
+		POP	AF	Restore the larger exponent.
+		POP	HL	HL is to point to the result.
+		LD	(HL),A	Store the exponent of the
+				result.
+		PUSH	HL	Save the pointer again.
+		LD	L,B	M4 to H & M5 to L,
+		LD	H,C	(see FETCH-TWO).
+		ADD	HL,DE	Add the two right bytes.
+		EXX		N2 to H' & N3 to L',
+		EX	DE,HL	(see FETCH-TWO).
+		ADC	HL,BC	Add left bytes with carry.
+		EX	DE,HL	Result back in D'E'.
+		LD	A,H	Add H', L' and the carry; the
+		ADC	A,L	resulting mechanisms will ensure
+		LD	L,A	that a single shift right is called
+		RRA		if the sum of 2 positive numbers
+		XOR	L	has overflowed left, or the sum
+		EXX		of 2 negative numbers has not
+				overflowed left.

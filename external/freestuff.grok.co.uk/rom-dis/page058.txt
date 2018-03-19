@@ -1,0 +1,25 @@
+		DEC	HL	of the editing area.
+		AND	A	Clear the carry flag.
+1195	SET-DE	LD	DE,(E-LINE)	Point to the start of the
+		BIT	5,(FLAGX)	editing area and return if
+		RET	Z	in 'editing mode'.
+		LD	DE,(WORKSP)	Otherwise change DE.
+		RET	C	Return if now intended.
+		LD	HL,(STKBOT)	Fetch STKBOT and then
+		RET		return.
+
+THE 'REMOVE-FP' SUBROUTINE
+This subroutine removes the hidden floating-point forms in a BASIC line.
+
+11A7	REMOVE-FP	LD	A,(HL)	Each character in turn is
+				examined.
+		CP	+0E	Is it a number marker?
+		LD	BC,+0006	It will occupy six locations.
+		CALL	Z,19E8,RECLAIM-2	Reclaim the F-P number.
+		LD	A,(HL)	Fetch the code again.
+		INC	HL	Update the pointer.
+		CP	+0D	'Carriage return'?
+		JR	NZ,11A7,REMOVE-FP	Back if not. But make a
+		RET		simple return if it is.
+
+

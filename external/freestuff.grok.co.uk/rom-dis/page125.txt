@@ -1,0 +1,58 @@
+		JR	NC,24C4,DL-X-GE-Y	smaller goes to L, and the
+		LD	L,C	larger (later) goes to H.
+		PUSH	DE	Save diag. step (±1,±1) in DE.
+		XOR	A	Insert a vertical step (±1, 0)
+		LD	E,A	into DE (D holds SGN Y).
+		JR	24CB,DL-LARGER	Now jump to set H.
+24C4	DL-X-GE-Y	OR	C	Return if ABS X and ABS Y
+		RET	Z	are both zero.
+		LD	L,B	The smaller (ABS Y here) goes
+				to L.
+		LD	B,C	ABS X to B here, for H.
+		PUSH	DE	Save the diagonal step here too.
+		LD	D,+00	Hor. step (0, ±1) to DE here.
+24CB	DL-LARGER	LD	H,B	Larger of ABS X, ABS Y to H
+				now.
+
+The algorithm starts here. The larger of ABS X and ABS Y, say H, is put into A and reduced to INT (H/2). The H - L horizontal or vertical steps and L diagonal steps are taken (where L is the smaller of ABS X and ABX Y) in this way: L is added to A; if A now equals or exceeds H, it is reduced by H and a diagonal step is taken; otherwise a horizontal or vertical step is taken. This is repeated H times (B also holds H). Note that meanwhile the exchange registers H' and L' are used to hold COORDS.
+
+		LD	A,B	B to A as well as to H.
+		RRA		A starts at INT (H/2).
+24CE	D-L-LOOP	ADD	A,L	L is added to A.
+		JR	C,24D4,D-L-DIAG	If 256 or more, jump - diag.
+				step.
+		CP	H	If A is less than H, jump for
+		JR	C,24DB,D-L-HR-VT	horizontal or vertical step.
+24D4	D-L-DIAG	SUB	H	Reduce A by H.
+		LD	C,A	Restore it to C.
+		EXX		Now use the exchange resisters.
+		POP	BC	Diag. step to B'C'.
+		PUSH	BC	Save it too.
+		JR	24DF,D-L-STEP	Jump to take the step.
+24CB	D-L-HR-VT	LD	C,A	Save A (unreduced) in C.
+		PUSH	DE	Step to stack briefly.
+		EXX		Get exchange registers.
+		POP	BC	Step to B'C' now.
+24DF	D-L-STEP	LD	HL,(COORDS)	Now take the step: first,
+				COORDS to H'L' as the start
+				point.
+		LD	A,B	Y-step from B' to A.
+		ADD	A,H	Add in H'.
+		LD	B,A	Result to B'    .
+		LD	A,C	Now the X-step; it will be tested
+		INC	A	for range (Y will be tested in
+				PLOT).
+		ADD	A,L	Add L' to C' in A, jump on
+		JR	C,24F7,D-L-RANGE	carry for further test.
+		JR	Z,24F9,REPORT-B	Zero after no carry denotes
+				X-position -1, out of range.
+24EC	D-L-PLOT	DEC	A	Restore true value to A.
+		LD	C,A	Value to C' for plotting.
+		CALL	22E5,PLOT-SUB	Plot the step.
+		EXX		Restore main registers.
+		LD	A,C	C back to A to continue
+				algorithm.
+		DJNZ	24CE,D-L-LOOP	Loop back for 8 steps (i.e. H
+				steps).
+		POP	DE	Clear machine stack.
+		RET		Finished.

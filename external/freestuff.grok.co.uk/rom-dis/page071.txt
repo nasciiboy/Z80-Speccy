@@ -1,0 +1,67 @@
+		LD	HL,(CHANS)	Fetch the base address of the
+		ADD	HL,BC	channel information area and
+				find the channel data for the
+				stream being CLOSEd.
+		INC	HL	Step past the subroutine
+		INC	HL	addresses and pick up
+		INC	HL	the code for that channel.
+		LD	C,(HL)
+		EX	DE,HL	Save the pointer.
+		LD	HL,+1716	The base address of the 'CLOSE
+				stream look-up' table.
+		CALL	16DC,INDEXER	Index into this table and locate
+				the required offset.
+		LD	C,(HL)	Pass the offset to the BC
+		LD	B,+00	register pair.
+		ADD	HL,BC	Jump forward to the
+		JP	(HL)	appropriate routine.
+
+THE 'CLOSE STREAM LOOK-UP' TABLE
+
+1716		DEFB	4B 05	- channel 'K', offset +05, address 171C
+1718		DEFB	53 03	- channel 'S', offset +03, address 171C
+171A		DEFB	50 01	- channel 'P', offset +01, address 171C
+
+Note: There is no end marker at the end of this table.
+
+THE 'CLOSE STREAM' SUBROUTINE.
+
+171C	CLOSE-STR	POP	HL	Fetch the channel information
+		RET		pointer and return.
+
+THE 'STREAM DATA' SUBROUTINE
+This subroutine returns in the BC register pair the stream data for a given stream.
+
+171E	STR-DATA	CALL	1E94,STK-TO-A	The given stream number is
+				taken off the calculator stack.
+		CP	+10	Give an error if the stream
+		JR	C,1727,STR-DATA1	number is greater than +0F.
+
+Report O - Invalid stream
+
+1725	REPORT-O	RST	0008,ERROR-1	Call the error handling
+		DEFB	+17	routine.
+
+Continue with valid stream numbers.
+
+1727	STR-DATA1	ADD	A,+03	Range now +03 to +12;
+		RLCA		and now +06 to +24.
+		LD	HL,+5C10	The base address of the
+				stream data area.
+		LD	C,A	Move the stream code to the
+		LD	B,+00	BC register pair.
+		ADD	HL,BC	Index into the data area
+		LD	C,(HL)	and fetch the the two data bytes
+		INC	HL	into the BC register pair.
+		LD	B,(HL)
+		DEC	HL	Make the pointer address the
+		RET		first of the data bytes before
+				returning.
+
+THE 'OPEN #' COMMAND ROUTINE
+This command allows the user to OPEN streams.  A channel code must be supplied and it must be 'K', 'k', 'S', 's', 'P', or 'p'.
+Note that no attempt is made to give streams +00 to +03 their initial data.
+
+1763	OPEN	RST	0028,FP-CALC	Use the CALCULATOR.
+		DEFB	+01,exchange	Exchange the stream number
+

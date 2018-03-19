@@ -1,0 +1,61 @@
+	For example, therefore, when awaiting the sync pulse (see LD-SYNC at 058F) allowance is made for ten additional passes through the sampling loop. The search is thereby for the next edge to be found within, roughly, 1,100 T states (465 + 10 * 58 + overhead). This will prove successful for the sync 'off' pulse that comes after the long 'leader pulses'.
+
+THE 'SAVE, LOAD, VERIFY & MERGE' COMMAND ROUTINES
+The entry point SAVE-ETC is used for all four commands. The value held in T-ADDR however distinguishes between the four commands. The first part of the following routine is concerned with the construction of the 'header information' in the work space.
+
+0605	SAVE-ETC	POP	AF	Drop the address - SCAN-LOOP.
+		LD	A,(T-ADDR-lo)	Reduce T-ADDR-lo by +E0;
+		SUB	+E0	giving +00 for SAVE, +01 for
+		LD	(T-ADDR-lo),A	LOAD, +02 for VERIFY and
+				+03 for MERGE.
+		CALL	1C8C,EXPT-EXP	Pass the parameters of the
+				'name' to the calculator stack.
+		CALL	2530,SYNTAX-Z	Jump forward if checking
+		JR	Z,0652,SA-DATA	syntax.
+		LD	BC,+0011	Allow seventeen locations
+		LD	A,(T-ADDR-lo)	for the header of a SAVE but
+		AND	A	thirty four for the other
+		JR	Z,0621,SA-SPACE	commands.
+		LD	C,+22
+0621	SA-SPACE	RST	0030,BC-SPACES	The required amount of space is
+				made in the work space.
+		PUSH	DE	Copy the start address to the
+		POP	IX	IX register pair.
+		LD	B,+0B	A program name can have
+		LD	A,+20	up to ten characters but
+0629	SA-BLANK	LD	(DE),A	first enter eleven space
+		INC	DE	characters into the prepared
+		DJNZ	0629,SA-BLANK	area.
+		LD	(IX+01),+FF	A null name is +FF only.
+		CALL	2BF1,STK-FETCH	The parameters of the name
+				are fetched and its length is
+				tested.
+		LD	HL,+FFF6	This is '-10'.
+		DEC	BC	In effect jump forward if the
+		ADD	HL,BC	length of the name is not
+		INC	BC	too long. (i.e. No more than
+		JR	NC,064B,SA-NAME	ten characters.)
+		LD	A,(T-ADDR-lo)	But allow for the LOADing,
+		AND	A	VERIFYing and MERGEing of
+		JR	NZ,0644,SA-NULL	programs with 'null' names or
+				extra long names.
+
+Report F - Invalid file name
+
+0642	REPORT-F	RST	0008,ERROR-1	Call the error handling
+		DEFB	+0E	routine.
+
+Continue to handle the name of the program.
+
+0644	SA-NULL	LD	A,B	Jump forward if the name
+		OR	C	has a 'null' length.
+		JR	Z,0652,SA-DATA
+		LD	BC,+000A	But truncate longer names.
+
+The name is now transferred to the work space (second location onwards).
+
+064B	SA-NAME	PUSH	IX	Copy the start address to the
+		POP	HL	HL register pair.
+		INC	HL	Step to the second location.
+		EX	DE,HL	Switch the pointers over and
+		LDIR		copy the name.

@@ -1,0 +1,60 @@
+EXP X
+
+	 10 	REM DEMONSTRATION FOR EXP X
+	 20 	REM USING THE 'SERIES GENERATOR'
+	 30 	LET T=0	(This makes T the first variable.)
+	 40 	DIM A(8)
+	 50 	LET A(1)=0.000000001
+	 60 	LET A(2)=0.000000053
+	 70 	LET A(3)=0.000001851
+	 80 	LET A(4)=0.000053453
+	 90 	LET A(5)=0.001235714
+	100 	LET A(6)=0.021446556
+	110 	LET A(7)=0.248762434
+	120 	LET A(8)=1.456999875
+	130 	PRINT
+	140 	PRINT "ENTER START VALUE"
+	150 	INPUT C
+	160 	CLS
+	170 	LET C=C-10
+	180 	PRINT "BASIC PROGRAM", "ROM PROGRAM"
+	190 	PRINT "-------------", "-----------"
+	200 	PRINT
+	210 	FOR J=1 TO 4
+	220 	LET C=C+10
+	230 	LET D=C*1.442695041 	(D=C*(1/LN 2);EXP C=2**D).
+	240 	LET N=INT D
+	250 	LET Z=D-N 	(2**(N+Z) is now required).
+	260 	LET Z=2*Z-1
+	270 	LET BREG=8
+	280 	REM USE "SERIES GENERATOR"
+	290 	GO SUB 550
+	300 	LET V=PEEK 23627+256*PEEK 23628+1 	(V=(VARS)+1)
+	310 	LET N=N+PEEK V
+	320 	IF N > 255 THEN STOP 	(STOP with arithmetic overflow).
+	330 	IF N < 0 THEN GO TO 360
+	340 	POKE V,N
+	350 	GO TO 370
+	360 	LET T=0
+	370 	PRINT TAB 11;"EXP ";C
+	380 	PRINT
+	390 	PRINT T,EXP C
+	400 	PRINT
+	410 	NEXT J
+	420 	GO TO 130
+
+NOTES:
+
+  i. When C is entered this program calculates and prints EXP C, EXP (C+10), EXP
+     (C+20) and EXP (C+30). It also prints the values obtained by using the ROM pro-
+     gram. For a specimen of results, try entering these values: 0; 15; 65 (with overflow
+     at the end); -100; -40.
+
+ ii. The exponent is tested for overflow and for a zero result in lines 320 and 330. These
+     tests are simpler in BASIC than in machine code, since the variable N, unlike the A
+     register, is not confined to one byte.
+
+iii. The constants A(1) to A(8) in lines 50 to 120 can be pbtained by integrating 2**X
+     over the unterval U=0 to PI, after first multiplying the COS (N*U) for each constant
+     (i.e. for N=1,2,...,8) and substituting COS U = 2*X-1. Each result should then be
+     divided by PI.

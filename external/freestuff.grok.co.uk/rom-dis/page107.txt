@@ -1,0 +1,55 @@
+THE 'PRINT A CARRIAGE RETURN' SUBROUTINE
+1FF5	PRINT-CR	CALL	1FC3,UNSTACK-Z	Return if changing syntax.
+		LD	A,+0D	Print a carriage return
+		RST	0010,PRINT-A-1	character and then return.
+		RET
+
+THE 'PRINT ITEMS' SUBROUTINE
+This subroutine is called from the PRINT, LPRINT and INPUT command routines.
+The various types of print item are identified and printed.
+1FFC	PR-ITEM-1	RST	0018,GET-CHAR	The first character is fetched.
+		CP	+AC	Jump forward unless it is
+		JR	NZ,200E,PR-ITEM-2	an 'AT'.
+Now deal with an 'AT'.
+		CALL	1C79,NEXT-2NUM	The two parameters are trans-
+				ferred to the calculator stack.
+		CALL	1FC3,UNSTACK-Z	Return now if checking syntax.
+		CALL	2307,STK-TO-BC	The parameters are compressed
+				into the BC register pair.
+		LD	A,+16	The A register is loaded with
+		JR	201E,PR-AT-TAB	the AT control character before
+				the jump is taken.
+Next look for a 'TAB'.
+200E	PR-ITEM-2	CP	+AD	Jump forward unless it is
+		JR	NZ,2024,PR-ITEM-3	a 'TAB'.
+Now deal with a 'TAB'.
+		RST	0020,NEXT-CHAR	Get the next character.
+		CALL	1C82,EXPT-1NUM	Transfer one parameter to the
+				calculator stack.
+		CALL	1FC3,UNSTACK-Z	Return now if checking syntax.
+		CALL	1E99,FIND-INT2	The value is compressed into the
+				BC register pair.
+		LD	A,+17	The A register is loaded with the
+				TAB control character.
+The 'AT' and the 'TAB' print items are printed by making three calls to PRINT-OUT.
+201E	PR-AT-TAB	RST	0010,PRINT-A-1	Print the control character.
+		LD	A,C	Follow it with the first
+		RST	0010,PRINT-A-1	value.
+		LD	A,B	Finally print the second
+		RST	0010,PRINT-A-1	value; then return.
+		RET
+Next consider embedded colour items.
+2024	PR-ITEM-3	CALL	21F2,CO-TEMP-3	Return with carry reset if a
+				coour items was found.
+		RET	NC	Continue if none were found.
+		CALL	2070,STR-ALTER	Next consider if the stream is
+				to be changed.
+		RET	NC	Continue unless it was altered.
+The print item must now be an expression, either numeric or string.
+		CALL	24FB,SCANNING	Evaluate the expression but
+		CALL	1FC3,UNSTACK-Z	return now if checking syntax.
+		BIT	6,(FLAGS)	Test for the nature of the
+				expression.
+		CALL	Z,2BF1,STK-FETCH	If it is string then fetch the nec-
+				essary parameters; but if it is
+		JP	NZ,2DE3,PRINT-FP	numeric then exit via PRINT-FP.

@@ -1,0 +1,59 @@
+		JR	NZ,1BEC,REPORT-N	check the validity of the state-
+				ment number - must be zero.
+		LD	B,A	Also check that the 'first
+		LD	A,(HL)	line after' is not after the
+		AND	+C0	actual 'end of program'.
+		LD	A,B
+		JR	Z,1BBF,LINE-USE	Jump forward with valid
+				addresses; otherwise signal the
+				error 'OK'.
+Report 0 - 'OK'
+
+1BB0	REPORT-0	RST	0008,ERROR-1	Use the error handling
+		DEFB	+FF	routine.
+
+Note: Obviously not an error in the normal sense — but rather a jump past the program.
+
+
+THE 'REM' COMMAND ROUTINE
+The return address to STMT-RET is dropped which has the effect of forcing the rest of the line to be ignored.
+
+1BB2	REM	POP	BC	Drop the address - STMT-RET.
+
+THE 'LINE-END' ROUTINE
+If checking syntax a simple return is made but when 'running' the address held by NXTLIN has to be checked before it can be used.
+
+1BB3	LINE-END	CALL	2530,SYNTAX-Z	Return if syntax is being
+		RET	Z	checked; otherwise fetch
+		LD	HL,(NXTLIN)	the address in NXTLIN.
+		LD	A,+C0	Return also if the address is
+		AND	(HL)	after the end of the program
+		RET	NZ	- the'run' is finished.
+		XOR	A	Signal 'statement zero' before
+				proceeding.
+
+THE 'LINE-USE' ROUTINE
+This short routine has three functions; i. Change statement zero to statement '1'; ii. Find the number of the new line and enter it into PPC; & iii. Form the address of the start of the line after.
+
+1BBF	LINE-USE	CP	+01	Statement zero becomes
+		ADC	A,+00	statement '1'
+		LD	D,(HL)	The line number of the line
+		INC	HL	to be used is collected and
+		LD	E,(HL)	passed to PPC.
+		LD	(PPC),DE
+		INC	HL	Now find the 'length'
+		LD	E,(HL)	of the line.
+		INC	HL
+		LD	D,(HL)
+		EX	DE,HL	Switch over the values.
+		ADD	HL,DE	Form the address of the start
+		INC	HL	of the line after in HL and the
+				location before the 'next' line's
+				first character in DE.
+
+THE 'NEXT-LINE' ROUTINE
+On entry the HL register pair points to the location after the end of the 'next' line to be handled and the DE register pair to the location before the first character of the line. This applies to lines in the program area and also to a line in the editing area - where the next line will be the same line again whilst there are still statements to be interpreted.
+
+1BD1	NEXT-LINE	LD	(NXTLIN),HL	Set NXTLIN for use once the
+				current line has been completed.
+		EX	DE,HL	As usual CH-ADD points to the

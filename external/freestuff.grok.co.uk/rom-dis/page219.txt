@@ -1,0 +1,64 @@
+	2.	DEFB	+13,exponent+63
+		DEFB	+0E,(+00,+00,+00)
+	3.	DEFB	+55,exponent+65
+		DEFB	+E4,+8D,(+00,+00)
+	4.	DEFB	+58,exponent+68
+		DEFB	+39,+BC,(+00,+00)
+	5.	DEFB	+5B,exponent+6B
+		DEFB	+98,+FD,(+00,+00)
+	6.	DEFB	+9E,exponent+6E
+		DEFB	+00,+36,+75,(+00)
+	7.	DEFB	+A0,exponent+70
+		DEFB	+DB,+E8,+B4,(+00)
+	8.	DEFB	+63,exponent+73
+		DEFB	+42,+C4,(+00,+00)
+	9.	DEFB	+E6,exponent+76
+		DEFB	+B5,+09,+36,+BE
+	10.	DEFB	+E9,exponent+79
+		DEFB	+36,+73,+1B,+5D
+	11.	DEFB	+EC,exponent+7C
+		DEFB	+D8,+DE,+63,+BE
+	12.	DEFB	+F0,exponent+80
+		DEFB	+61,+A1,+B3,+0C
+
+At the end of the last loop the 'last value' is:
+
+	ATN X/X	- case i.
+	ATN (-1/X)/(-1/X)	- case ii.
+	ATN (-1/X)/(-1/X)	- case iii.
+
+Perform step iv.
+
+		DEFB	+04,multiply	W, ATN X	- case i.
+				W, ATN (-1/X)	- case ii.
+				W, ATN (-1/X)	- case iii.
+		DEFB	+0F,addition	ATN X - all cases now.
+		DEFB	+38,end-calc	
+		RET		Finished: 'last value' = ATX X.
+
+
+THE 'ARCSIN' FUNCTION
+(Offset 22: 'asn')
+
+This subroutine handles the function ASN X and return a real real number from -PI/2 to PI/2 inclusive which is equal to the value in radians of the angle whose sine is X. Thereby if Y = ASN X then X = SIN Y.
+This subroutine uses the trigonometric identity:
+TAN (Y/2) = SIN Y/1(1+COS Y)
+to obtain TAN (Y/2) and hence (using ATN) Y/2 and finally Y.
+
+3833	asn	RST	0028,FP-CALC	X
+		DEFB	+31,duplicate	X, X
+		DEFB	+31,duplicate	X, X, X
+		DEFB	+04,multiply	X, X*X
+		DEFB	+A1,stk-one	X, X*X, 1
+		DEFB	+03,subtract	X, X*X-1
+		DEFB	+1B,negate	X,1-X*X
+		DEFB	+28,sqr	X,SQR (1-X*X)
+		DEFB	+A1,stk-one	X,SQR (1-X*X), 1
+		DEFB	+0F,addition	X, 1+SQR (1-X*X)
+		DEFB	+05,division	X/(1+SQR (1-X*X)) = TAN
+				(Y/2)
+		DEFB	+24,atn	Y/2
+		DEFB	+31,duplicate	Y/2, Y/2
+		DEFB	+0F,addition	Y = ASN X
+		DEFB	+38,end-calc	
+		RET		Finished: 'last value' = ASN X.

@@ -1,0 +1,74 @@
+<HTML>
+<HEAD>
+<TITLE>
+Short RST for Z80
+</TITLE>
+</HEAD>
+
+<BODY>
+<PRE>
+                Short RST for Z80
+
+
+                                Author OKUMURA N. Shin-ya
+
+
+                        Abstract
+ Z80 is a 8bit micro-processor  by  Zilog,  frequently  used
+several  years ago. However it seems old fashoned now, it is
+important one as education of MPU. I studied the  method  to
+do RST 38h with conditions.
+
+
+1.Introduction
+ Z80 was widely used MPU in '70-80 but now  it  is  commonly
+used  as  a  micro controler. It has 8 channels of interrupt
+vector in INT-0 mode, one channel in INT-1 and 256  channels
+in  INT-2.  In  case  of  INT-0 mode, the vectors are 0000h,
+0008h, 0010h, 0018h, 0020h, 0028h, 0030h and 0038h. In INT-1
+mode, 0038h only. In the other case, the vectors are decided
+with I-register and I/O.
+ Especially 0038h is important. 38h is the vector address in
+both  mode  0  and  1.  In addition, for instance, PC-8801's
+0038h is the gate to MON command of BASIC,  MSX's  0038h  is
+the unique vector because MSX use INT mode 1.
+ I studied about RST 38h due to the reason.
+
+
+2.Study
+ It is the ordinaly method for Z80 users to RST 38h  with  a
+condition;
+
+        JR      Ncondition, LABEL
+	RST     38h
+LABEL:  ...
+
+For example, to do RST if carryed, they will write
+
+        JR      NC, L01
+	RST     38h
+L01:    RET             ; No work...
+
+ But I can write it shorter, only two bytes. I will write as
+follow;
+
+        JR      condition, -1   ; -1 == FFh
+
+Because JR,  which  is  short(-128  to  +127)  jump  with  a
+condition,  is  two bytes instruction of Z80, and RST, which
+is software interruption, is  coded  as  'FFh'  for  RST  to
+0038h.
+ The short jump of JR mnemonic does jump after increments of
+program counter of Z80, such as;
+
+[JR     C, -1]
+	PC+=2;          /*  JR is 2 byte.  */
+        if(C) PC-=1;    /*  See below  */
+
+If carried, PC will let +1 (+2-1). In the address, the  next
+byte  of  the top of JR, 'FFh' exists! That is RST 38h. This
+is the conditioned short RST of Z80.
+
+</PRE>
+</BODY>
+</HTML>

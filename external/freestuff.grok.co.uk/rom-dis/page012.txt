@@ -1,0 +1,65 @@
+		OUT	(+FE),A	Perform the OUT operation;
+				leaving the border unchanged.
+		LD	B,H	Reset the B register.
+		LD	C,A	Save the A register.
+		BIT	4,A	Jump if at the half-cycle
+		JR	NZ,03F2,BE-AGAIN	point.
+
+After a full cycle the DE register pair is tested.
+
+		LD	A,D	Jump forward if the last
+		OR	E	complete pass has been
+		JR	Z,03D6,BE-END	made already.
+		LD	A,C	Fetch the saved value.
+		LD	C,L	Reset the C register.
+		DEC	DE	Decrease the pass counter.
+		JP	(IX)	Jump back to the required
+				starting location of the loop.
+
+The parameters for the second half-cycle are set up.
+
+03F2	BE-AGAIN	LD	C,L	Reset the C register.
+		INC	C	Add '16' T states as this path 
+				is shorter.
+		JP	(IX)	Jump back.
+
+Upon completion of the 'beep' the maskable interrupt has to be enabled. 
+
+03F6	BE-END	EI		Enable interrupt.
+		RET		Finally return.
+
+THE 'BEEP' COMMAND ROUTINE
+The subroutine is entered with two numbers on the calculator stack.  The topmost
+number represents the 'pitch' of the note and the number underneath it represents the 'duration'.
+
+03F8	BEEP	RST	0028,FP-CALC	The floating-point calculator is 
+				used to manipulate the two values - t & P.
+		DEFB	+31,duplicate	t,P,P
+		DEFB	+27,int	t,P,P
+		DEFB	+C0,st-mem-0	t,P,i (mem-0 holds i)
+		DEFB	+03,substract	t,P (where p is the fractional
+				part of P)
+		DEFB	+34,stk-data	Stack the decimal value 'K'.
+		DEFB	+EC,exponent+7C	0.0577622606 (which is a
+		DEFB	+6C,+98,+1F,+F5	little below 12*(2^0.5)-1)
+		DEFB	+04,multiply	t,pK
+		DEFB	+A1,stk-one	t,pK,1
+		DEFB	+0F,addition	t,pK+1
+		DEFB	+38,end-calc
+
+Now perform several tests on I, the integer part of the 'pitch'.
+
+		LD	HL,+5C92	This is 'mem-0-1st (MEMBOT).
+		LD	A,(HL)	Fetch the exponent of i.
+		AND	A	Give an error if i is not in the 
+		JR	NZ,046C,REPORT-B	integral (short) form.
+		INC	HL	Copy the sign byte to the
+		LD	C,(HL)	C register.
+		INC	HL	Copy the low-byte to the
+		LD	A,B	register.
+		RLA		Again give report B if i does not
+		SBC	A,A	satisfy the test:
+		CP	C	-128<=i<=+127
+		JR	NZ,046C,REPORT-B
+		INC	HL
+		CP	(HL)

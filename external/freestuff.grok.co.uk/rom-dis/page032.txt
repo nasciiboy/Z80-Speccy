@@ -1,0 +1,49 @@
+THE 'SAVE' CONTROL ROUTINE
+The operation of SAVing a program or a block of data is very straighforward.
+
+0970	SA-CONTRL	PUSH	HL	Save the 'pointer'.
+		LD  	A,+FD  	Ensure that channel 'K'
+		CALL	1601,CHAN-OPEN	is open.
+		XOR	A	Signal 'first message'.
+		LD	DE,+09A1	Print the message - Start tape,
+		CALL	0C0A,PO-MSG	then press any key.'.
+		SET	5,(TV-FLAG)	Signal 'screen will require to be
+				cleared'.
+		CALL	15D4,WAIT-KEY	Wait for a key to be pressed.
+
+Upon receipt of a keystroke the 'header' is saved.
+
+		PUSH	IX	Save the base address of the
+				'header' on the machine stack.
+		LD	DE,+0011	Seventeen bytes are to be
+				SAVEd.
+		XOR	A	Signal 'It is a header'.
+		CALL	04C2,SA-BYTES	Send the 'header'; with a leading
+				'type' byte and a trailing 'parity'
+				byte.
+
+There follows a short delay before the program/data block is SAVEd.
+
+		POP	IX	Retrieve the pointer to the
+				'header'.
+		LD	B,+32	The delay is for fifty
+0991	SA-1-SEC	HALT		interrupts, i.e. one second.
+		DJNZ	0991,SA-1-SEC
+		LD	E,(IX+0B)	Fetch the length of the
+		LD	D,(IX+0C)	data block that is to be SAVEd.
+		LD	A,+FF	Signal 'data block'.
+		POP	IX	Fetch the 'start of block
+		JP	04C2,SA-BYTES	pointer' and SAVE the block.
+
+THE CASSETTE MESSAGES
+Each message is given with the last character inverted (+80 hex.).
+
+09A1 DEFB +80   - Initial byte is stepped over.
+09A2 DEFM       - Start tape, then press any key.
+09C1 DEFM       - 'carriage return' - Program:
+09CB DEFM       - 'carriage return' - Number array:
+090A DEFM       - 'carriage return' - Character array:
+09EC DEFM       - 'carriage return' - Bytes:
+
+
+

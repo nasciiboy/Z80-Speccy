@@ -1,0 +1,58 @@
+		RET	C	Return if the BREAK key is
+				not being pressed.
+		LD	A,+FE	Form the port address
+		IN	A,(+FE)	+FEFE and read in a byte.
+		RRA		Again examine bit 0.
+		RET		Return with carry reset if
+				both keys are being pressed.
+
+THE 'DEF FN' COMMAND ROUTINE
+During syntax checking a DEF FN statement is checked to ensure that it has the correct form. Space is also made available for the result of evaluating the function.
+But in 'run-time' a DEF FN statement is passed-by.
+1F60	DEF-FN	CALL	2530,SYNTAX-Z	Jump forward if checking
+		JR	Z,1F6A,DEF-FN-1	syntax.
+		LD	A,+CE	Otherwise bass-by the
+		JP	1E39,PASS-BY	'DEF FN' statement.
+First consider the variable of the function.
+1F6A	DEF-FN-1	SET	6,(FLAGS)	Signal 'a numeric variable'.
+		CALL	2C8D,ALPHA	Check that the present
+				code is a letter.
+		JR	NC,1F89,DEF-FN-4	Jump forward if not.
+		RST	0020,NEXT-CHAR	Fetch the next character.
+		CP	+24	Jump forward unless it is
+		JR	NZ,1F7D,DEF-FN-2	a '$'.
+		RES	6,(FLAGS)	Change bit 6 as it is a
+				string variable.
+		RST	0020,NEXT-CHAR	Fetch the next character.
+1F7D	DEF-FN-2	CP	+28	A '(' must follow the
+		JR	NZ,1FBD,DEF-FN-7	variable's name.
+		RST	0020,NEXT-CHAR	Fetch the next character.
+		CP	+29	Jump forward if it is a
+		JR	Z,1FA6,DEF-FN-6	')' as there are no
+				parameters of the function.
+A loop is now entered to deal with each parameter in turn.
+1F86	DEF-FN-3	CALL	2C8D,ALPHA	The present code must be
+1F89	DEF-FN-4	JP	NC,1C8A,REPORT-C	a letter.
+		EX	DE,HL	Save the pointer in DE.
+		RST	0020,NEXT-CHAR	Fetch the next character.
+		CP	+24	Jump forward unless it is
+		JR	NZ,1F94,DEF-FN-5	a '$'.
+		EX	DE,HL	Otherwise save the new pointer
+				in DE instead.
+		RST	0020,NEXT-CHAR	Fetch the next character.
+1F94	DEF-FN-5	EX	DE,HL	Move the pointer to the last
+				character of the name to the HL
+				register pair.
+		LD	BC,+0006	Now make six locations after
+		CALL	1655,MAKE-ROOM	that last character and
+		INC	HL	enter a 'number marker' into
+		INC	HL	the first of the new
+		LD	(HL),+0E	locations.
+		CP	+2C	If the present character is
+		JR	NZ,1FA6,DEF-FN-6	a ',' then jump back as
+		RST	0020,NEXT-CHAR	there should be a further
+		JR	1F86,DEF-FN-3	parameter; otherwise jump
+				out of the loop.
+Next the definition of the function is considered.
+1FA6	DEF-FN-6	CP	+29	Check that the ')' does
+		JR	NZ,1FBD,DEF-FN-7	exist.

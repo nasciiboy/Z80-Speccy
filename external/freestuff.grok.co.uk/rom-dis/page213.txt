@@ -1,0 +1,66 @@
+Report 6 - Number too big
+
+3703	REPORT-6	RST	0008,ERROR-1	Call the error handling
+		DEFB	+05	routine.
+
+3705	N-NEGTV	JR	C,370E,RSLT-ZERO	The result is to be zero if N is
+				less than -255 decimal.
+		SUB	(HL)	Subtract ABS N from the
+				exponent as N was negative.
+		JR	NC,370E,RSLT-ZERO	Zero result if e less than zero.
+		NEG		Minus e is changed to e.
+370C	RESULT-OK	LD	(HL),A	The exponent, e, is entered.
+		RET		
+370E	RESULT-ZERO	RST	0028,FP-CALC	Use the calculator to make the
+		DEFB	+02,delete	'last value' zero.
+		DEFB	+A0,stk-zero	
+		DEFB	+38,end-calc	
+		RET		Finished, with EXP X = 0.
+
+THE 'NATURAL LOGARITHM' FUNCTION
+(Offset 25: 'ln')
+
+This subroutine handles the function LN X and is the second of the four routines that use SERIES GENERATOR to produce Chebyshev polynomials.
+The approximation to LN X is found as follows:
+
+i. X is tested and report A is given if X is not positive.
+
+ii. X is then split into its true exponent, e', and its mantissa X' = X/(2**e'), where X' is greater than, or equal to, 0.5 but still less than 1.
+
+iii. The required value Y1 or Y2 is formed. If X' is greater than 0.8 then Y1=e'*LN 2 and if otherwise Y2 = (e'-1)*LN 2.
+
+iv. If X' is greater than 0.8 then the quantity X'-1 is stacked; otherwise 2*X'-1 is stacked.
+
+v. Now the argument Z is formed, being if X' is greater than 0.8, Z = 2.5*X'-3; otherwise Z = 5*X'-3. In each case, -1 <=Z <=1, as required for the series to converge.
+
+vi. The SERIES GENERATOR is used to produce the required function.
+
+vii. Finally a simply multiplication and addition leads to LN X being returned as the 'last value'.
+
+3713	ln	RST	0028,FP-CALC	X
+
+Perform step i.
+
+		DEFB	+3D,re-stack	X (in full floating-point form)
+		DEFB	+31,duplicate	X, X
+		DEFB	+37,greater-0	X, (1/0)
+		DEFB	+00,jump-true	X
+		DEFB	+04,to 371C, VALID	X
+		DEFB	+38,end-calc	X
+
+Report A - Invalid argument
+
+371A	REPORT-A	RST	0008,ERROR-1	Call the error handling
+		DEFB	+09	routine.
+
+Perform step ii.
+
+371C	VALID	DEFB	+A0,stk-zero	X,0	The deleted 1 is
+		DEFB	+02,delete	X	overwritten with zero.
+		DEFB	+38,end-calc	X
+		LD	A,(HL)	The exponent, e, goes into A.
+		LD	(HL),+80	X is reduced to X'.
+		CALL	2D28,STACK-A	The stack holds: X', e.
+		RST	0028,FP-CALC	X', e
+		DEFB	+34,stk-data	X', e, 128 (decimal)
+		DEFB	+38,exponent+88

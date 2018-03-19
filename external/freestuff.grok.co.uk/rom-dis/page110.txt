@@ -1,0 +1,59 @@
+		JR	20FA,IN-PROMPT	Jump forward to issue the
+				prompt message.
+Proceed to handle simple INPUT variables.
+20ED	IN-ITEM-3	CALL	2C8D,ALPHA	Jump to consider going round
+		JP	NC,21AF-IN-NEXT-1	the loop again if the present
+				character is not a letter.
+		CALL	1C1F,CLASS-01	Determine the destination
+				address for the variable.
+		RES	7,(FLAGX)	Signal 'not INPUT LINE'.
+The prompt message is now built up in the work space.
+20FA	IN-PROMPT	CALL	230,SUNTAX-Z	Jump forward if only checking
+		JP	Z,21B2,IN-NEXT-2	syntax.
+		CALL	16BF,SET-WORK	The work space is set to null.
+		LD	HL,+5C71	This is FLAGX.
+		RES	6,(HL)	Signal 'string result'.
+		SET	5,(HL)	Signal 'INPUT mode'.
+		LD	BC,+0001	Allow the prompt message only
+				a single location.
+		BIT	7,(HL)	Jump forward if using 'LINE'.
+		JR	NZ,211C,IN-PR-2
+		LD	A,(FLAGS)	Jump forward if awaiting
+		AND	+40	a numeric entry.
+		JR	NZ,211A,IN-PR-1
+		LD	C,+03	A string entry will need three
+				locations.
+211A	IN-PR-1	OR	(HL)	Bit 6 of FLAGX will become
+		LD	(HL),A	set for a numeric entry.
+211C	IN-PR-2	RST	0030,BC-SPACES	The required number of
+				locations is made available.
+		LD	(HL),+0D	A 'carriage return' goes into
+				the last location.
+		LD	A,C	Test bit 6 of the C register
+		RRCA		and jump forward if only
+		RRCA		one location was required.
+		JR	NC,2129,IN-PR-3
+		LD	A,+22	A 'double quotes' character
+		LD	(DE),A	goes into the first and
+		DEC	HL	second locations.
+		LD	(HL),A
+2129	IN-PR-3	LD	(K-CUR),HL	The position of the cursor
+				can now be saved.
+In the case of INPUT LINE the EDITOR can be called without further preparation but for other types of INPUT the error stack has to be changed so as to trap errors.
+		BIT	7,(FLAGX)	Jump forward with INPUT
+		JR	NZ,215E,IN-VAR-3	LINE'
+		LD	HL,(CH-ADD)	Save the current values of
+		PUSH	HL	CH-ADD & ERR-SP on the
+		LD	HL,(ERR-SP)	machine stack.
+		PUSH	HL
+213A	IN-VAR-1	LD	HL,+213A	This will be the 'return
+		PUSH	HL	point' in case of errors.
+		BIT	4,(FLAGS2)	Only change the error
+		JR	Z,2148,IN-VAR-2	stack pointer if using channel
+		LD	(ERR-SP),SP	'K'.
+2148	IN-VAR-2	LD	HL,(WORKSP)	Set HL to the start of the
+		CALL	11A7,REMOVE-FP	INPUT line and remove any
+				floating-point forms. (There will
+				not be any except perhaps after
+				an error.)
+		LD	(ERR-NR),+FF	Signal 'no error yet'.
