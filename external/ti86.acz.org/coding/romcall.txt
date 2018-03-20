@@ -1,0 +1,528 @@
+$1AC1   "Willy DO BE DO BE DO"
+----------------------------------------------------------------------
+$28CB
+        Call ROM routine
+
+Desc:	Calls a ROM routine on a different page
+
+Use:	call $28cb
+	.dw offset	;$4000-$8000
+	.db page	;ROM page
+----------------------------------------------------------------------
+$4000   $000B   BIT 0,(IY+$07)
+$4004   $0013   BIT 1,(IY+$08)
+$4008   $0023	Tests if ($CE0F) is zero
+$400C   $002B	Sets ($CE0F) to 0
+$4010   $0033	LD_HL_MHL _ldhlind
+$4014   $0088
+$4018   $00C5   RES 2,(IY+$1B)
+$401C   $00CC
+$4020   $00D6
+$4024   $00E6
+$4028   $00EE   BIT 4,(IY+$09)
+$402C   $00F3   BIT 4,(IY+$02)
+$4030   $00F8   BIT 5,(IY+$02)
+$4034   $00FD   BIT 6,(IY+$02)
+$4038   $0102   BIT 7,(IY+$02)
+$403C   $0107   _cphlde  Compare HL,DE
+$4040   $010D   display ":"
+$4044   $0113   _HLdiv10
+$4048   $0115   _HLdivA
+$404C   $0125   _AHLdiv10
+$4050   $012A   Update busy indicator
+$4054   $0154
+$4058   $0170
+$405C   $0194
+$4060   $019B   _resetAPD       reset APD counter to $a1
+$4064   $01A1
+$4068   $0245
+$406C   $0252
+$4070   $0259
+$4074   $025D
+$4078   $026B
+$407C   $0271	set 6,(iy+$12),set 4,(iy+$12),res 5,(iy+$12)
+$4080   $0275
+$4084   $0285
+$4088   $02D8  kbd/menu??
+$408C   $03A1
+$4090   $04A6
+$4094   $04D0
+$4098   $051C   de=memsysstack
+$409C   $0563   _jforce  (exit program)
+$409F   $056C   print?,exit program?
+$40A2   $0580   exit program?
+$40A5   $0595
+$40A9   $05A9
+$40AD   $05B6
+$40B1   $05C4
+$40B5   $06B0	call 06bf,06cd
+$40B9   $06B6   res 7,(iy+$11),res 0,(iy+$1e)
+$40BD   $06BF
+$40C1   $06CD
+$40C5   $06E0
+$40C9   $06F1
+$40CD   $0703
+$40D1   $0712    = ret
+           $0713 = jp (hl)
+$40D5   $0724
+$40D9   $07A3
+$40DD   $07B1
+$40E1   $07C0
+$40E5   $07C6
+$40E9   $07CE
+$40ED   $07D1   initialize the State Monitor with a new set of context vectors
+        ld de,c1a7
+        ld bc,000c
+        ldir
+        ld a,(hl)
+        ld (c3f2),a
+        in a,(05)
+        ld (de),a
+        ret
+        .db 00ff00ff00ff00ff
+        .db 3affd6ffc00b00ff
+        .db 00ff00ffbc0b2bff
+        .db 2dff2aff2fff5eff "- * / ^ "
+        .db 28ff29ff5bff5dff "( ) [ ] "
+        .db 3dff1cff00ff2cff "=    , "
+        .db 13ff1aff2eff30ff " ~ . 0 "
+        .db 31ff32ff33ff34ff "1 2 3 4 "
+        .db 35ff36ff37ff38ff "5 6 7 8 "
+        .db 39ff1bff20ff41ff "9 E   A "
+        .db 42ff43ff44ff45ff "B C D E "
+       ...
+  $0861 .db 5aff61ff62ff63ff "Z a b c "
+       ...
+  $0891 .db 78ff79ff7aff3e09 "x y z >x"
+        .db f108c4ff11ff0409
+        .db 090917091c092209
+$40F1   $0B0E .db 41,00,53,c3,4b,3f,"INITC",0   why call here?????
+$40F5   $0B1A .db 41,00,53,c3,4b,3f,"EDIT",0
+$40F9   $0BCA .db 04,c3,63,05,"QUIT",0  (jforce)
+$40FD   $0BD3
+$4101   $0C29   _off  shut down
+$4105   $0C5C
+$4109   $0D23
+$410D   $0D40
+$4111   $0D52
+$4115   $0D8E
+$4119   $0DE4   _removTok
+$411D   $2DB1
+$4121   $3DF5
+$4125   $2A93
+$4129   $0E2E
+$412D   $0E6A   error 35
+$4130   $0E6E   error 36 *
+$4133   $0E72   error 34
+$4136   $0E76   error 1  *
+$4139   $0E7A   error 2  *
+$413C   $0E7E   error 3  *
+$413F   $0E82   error 4  *
+$4142   $0E86   error 5  *
+$4145   $0E8A   error 7  *
+$4148   $0E8E   error 8  *
+$414B   $0E92   error 9  *
+$414E   $0E96   error 10 *
+$4151   $0E9A   error 11 *
+$4154   $0E9E   error 12 *
+$4157   $0EA2   error 13 *
+$415A   $0EA6   error 14 *
+$415D   $0EAA   error 15 *
+$4160   $0EAA   Error 15 *
+$4163   $0EAE	error 15 if bit 2,(iy+$13) nz
+$4166   $0EB3   Error 15, no goto
+$4169   $0EB7   error 16 *
+$416C   $0EBB   error 17 *
+$416F   $0EBF   error 18 *
+$4172   $0EC3   error 19 *
+$4175   $0EC7   error 20
+$4178   $0ECB   error 21
+$417B   $0ECF   error 6  *
+$417E   $0ED3   error 23 *
+$4181   $0ED7   error 24 *
+$4184   $0EDB   error 25 *
+$4187   $0EE3   error 28 *
+$418A   $0EE7   error 29 *
+$418D   $0EEB   error 30 *
+$4190   $0EEF   error 32 *
+$4193   $0EF3   error 33 *
+$4196   $0EF7   error 37
+$4199   $0EF9   error A
+$419C   $0EFC   _error
+$419F   ld h,$0f
+$41A1   $0F27   _instError  error exceptions handling
+$41A4   $0F4D   _removError
+$41A7	$0F65	.db 0100FC10000000000000
+$41AB	$0F66   .db 00FC10000000000000
+$41AF	$0F6F	.db 0100FC00000000000000
+$41B3	$0F83	.db 0000FC00000000000000
+$41B7	$0F97	fp 0 to de
+$41BB	$0F9D	fp 1 to de
+$41BF	$0FA3	hl=hl*10 return if carry anywhere
+$41C3	$0FAF	check if op1 is cmplx
+$41C7	$0FB2	check if A&$1f==$01
+$41CB	$0FB7	get type of op1
+$41CF	$0FBD	142f,d=0,3d53
+$41D3	$0FC6	op2toop1,set type 0
+$41D7	$0FC9	set op1 type 0
+$41DB	$0FC9	
+$41DF	$0FCC	set hl type 0
+$41E3	$0FD1	load op1,op2 with cmplx 0
+$41E7	$0FD4	real op1 to complex op1,op2
+$41EB	$0ED7	set op1,op2 cmplx
+$41EF	$0FEC	op4toop1 op3toop2 cpop1op2
+$41F3   $0FF4   load op2 and compare to op1
+$41F7   $0FF9   abs(op1,op2) and compare
+$41FB   $0FFF   _CPOP1OP2 _cpOP1OP2
+$41FF   $1046   set op1,2 to 0 if equiv of 0
+$4203   $105B   _OP3TOOP4
+$4207   $1064   _OP1TOOP4
+$420B   $106D   _OP2TOOP4
+$420F   $1070   move 11b to op4
+$4213   $1076   _OP4TOOP2
+$4217   $107F   _OP4TOOP3
+$421B   $1088   _OP3TOOP2
+$421F   $1090   _OP1TOOP3
+$4223   $1093   move 11b to op1
+$4227   $1098   _OP5TOOP2
+$422B   $10A0   _OP5TOOP6
+$422F   $10A8   _OP5TOOP4
+$4233   $10B0   _OP1TOOP2
+$4237   $10B3   move 11b to op2
+$423B   $10B8   _OP6TOOP2
+$423F   $10C0   _OP6TOOP1
+$4243   $10C5   _OP4TOOP1
+$4247   $10CA   _OP5TOOP1
+$424B   $10CF   _OP3TOOP1
+$424F   $10D4   _OP4TOOP5
+$4253   $10DC   _OP3TOOP5
+$4257   $10E4   _OP2TOOP5
+$425B   $10E7   move 11b to op5
+$425F   $10EC   _OP2TOOP6
+$4263   $10F4   _OP1TOOP6
+$4267   $10F7   move 11b to op6
+$426B   $10FC   _OP1TOOP5
+$426F   $1104   _OP2TOOP1
+$4273   $1107   move 11b to op1
+$4277   $110A   move 11 bytes
+$427B   $110C   _MOV10B
+$427F   $110E   _MOV18
+$4283   $110E   _mov9b
+$4287   $1110   _MOV8B
+$428B   $1112   _MOV7B
+$428F   $1112   move 7b
+$4293   $1114   _MOV6B
+$4297   $1116   _MOV5B
+$429B   $1118   _MOV4B
+$429F   $111A   _MOV3B
+$42A3   $111C   _MOV2B
+$42A7   $1121   move mantissa op4 to op2
+
+$42CB   $1163   _OP2TOOP3
+$42CF   $1166   move 11b to op3
+$42D3   $116B   _OP4TOOP6
+$42D7   $1173   _MOV10TOOP1
+$42DB   $1179   move 10 to op1, 10 to op2
+$42DF   $117A   _MOV10TOOP2
+$42E3   $1180   _FROP1
+$42E7   $1186   _OP4SET1
+$42EB   $118B   _OP3SET1
+$42EF   $1190   _OP2SET8
+$42F3   $1193   hl set 8
+$42F7   $1197   _OP2SET5
+$42FB   $119E   _OP2SET4
+$4303   $11A5   _OP2SET3
+$4307   $11A8   hl set 3
+$430B   $11AC   pop, op1set1  return with op1=1
+$430F   $11AD   _op1set1
+$4313   $11B2   _OP1SET4
+$4317   $11B9   _OP1SET3
+$431B   $11C0   _OP3SET2
+$431F   $11C5   _OP1SET2
+$4323   $11CA   _OP2SET2
+$4327   $11CD   hl set 2
+$432B   $11D1   hl set 1 (mantissa)
+$432F   $11D5   _OP2SET1
+$4333   $11D8   hl set 1
+$4337   $11DA   hl set a (high.low)
+$433B   $11E2   inc,hl set a (mantissa)
+$433F   $11E3   hl set a (mantissa)
+$4343   $11E7   8 zeros to hl
+$4347   $11E8   A to (HL...HL+7)
+$434B   $11E9   inc,7xA to hl
+$434F   $11EA   7xA to hl
+$4353   $11F8   _OP4SET0
+$4357   $11FD   _OP3SET0
+$435B   $1202   _OP2SET0
+$435F   $1207   _OP1SET0
+$4363   $120A   floating point 0 to (hl)
+$4367   $120D   _ZEROOP1M
+$436B   $1212   _ZEROOP1
+$436F   $1217   _ZEROOP2
+$4373   $121C   _ZEROOP3
+$4377   $121F   11 zeros to (hl)
+$437B   $1227   B zeros to (hl)
+$437F   $122D   high C to low A
+$4383   $122E   _shracc    high A to low A (A>>4)
+$4387   $1235   low C to high A
+$438B   $1236   low A to high A (A<<4)
+
+$448F	$142F
+$449B   $1446   _ckop1fp0     Compare op1 to 0
+$44A3   $144B   Compare op2 to 0
+$44B3	$1462
+$450B   $15BF   test if op2<0
+$450F   $15C5   _ckop1pos    test if op1<0
+$4517   $15D0   load sign of op1 to a, set op1 +
+$451B	$15D7	op1=op1/100
+$451F	op1=op1/10
+$4523	op1=op1/10
+$4527   op1=op1*10
+$452B   op1=op1*10
+$452F   ?
+$45C7   $1718   Error 4 if op1<0
+$45CB   $171F   Error 4 if op1 is not real
+$45D3   $1729   Error 4 if op1<=0
+$45E3
+$45E7   $1747   op2=op1; op1=op1*2
+$45EB   _PLUS1
+$4613   $1779   _SetXXOP1 _setxxOP1
+$4617   $179E   _SetXXOP2 _setxxOP2
+$461B   _SetXXXXOP2  _setxxxxOP2
+$461F   $181D   A hex to BCD
+$462F   _load_ram_ahl
+$4633   _conv_ahl       abs addr to asic
+$4637   $18B4   _inc_ptr_ahl  _inc_ahl
+$463B   $18BD   _dec_ptr_ahl
+$463F   _inc_ptr_bde
+$4643   _dec_ptr_dbe
+$4647   $18E7   _SET_ABS_SRC_ADDR
+$464B   $18EE   
+$464F   $18F5   _SET_MM_NUM_BYTES
+$46AF   _checkasm  ;check prog at bde if asm
+$46BF   $1C01   _dec_ptr_ade
+$46C3   _GETB_AHL    CONV_ADDR
+$46CB   $1C21   _FINDSYM
+$46D3   $1D3C   
+$46EB   $1E9D   _CREATEREAL
+$46EF   $1EA3   _CREATERCONST
+$46F3   $1EA7   _CREATECCONST
+$46F7   $1EAB   _CREATECPLX
+$46FB   $1EB2   make new sym table entry?
+$46FF   $1EBB   _CREATERVECT
+$4703   $1EDF
+$4707   $1EE8   _CREATECVECT
+$470B   $1EF0
+$470F   $1EF5   _CREATERLIST
+$4713   $1F17
+$4717   $1F1C   _CREATECLIST
+$471B   $1F22
+$471F   $1F27   _CREATERMAT
+$4723   $1F2F
+$4727   $1F34   _CREATECMAT
+$472B   $1F3D
+$472F   $1F42   _CREATESTRNG
+$4737   _CREATEEQU
+$473B   _CREATEPICT
+$474F   _CREATEPROG
+$475F   _delvar
+$4777   $20CB
+$47A3	_pop_OP6
+$47A7	_pop_OP5
+$47AB	_pop_OP4
+$47AF	_pop_OP3
+$47B3	_pop_OP2
+$47B7	$21B8	_pop_OP1   poprealo1  fps->op1 10b
+$47BB	_pop_real_de
+$47BF	_pop_CPLX
+$47C3	_pop_CPLX_de
+$47C7	_ld_CPLX
+$47CB	_sub_FPS_20
+$47CF	_sub_FPS_10
+$47D3	_sub_FPS_bc
+$47D7	_sub_FPS_10hl
+$47DC	_sub_FPS_de
+$47DF	_load_ram_stack
+$47E3   $21EC   _RAM_PAGE_1 =Load RAM page 1 (FPS)
+$47E7	_load_ram_OPS
+$47EF	_load_ram_FPS
+$47F3   _RAM_PAGE_7
+$47F7	_add_FPS_10hl
+$47FB	_add_FPS_hl
+$47FF	_push_OP6
+$4803	_push_OP5
+$4807	_push_OP4
+$480B	_push_OP3
+$480F	_push_OP2
+$4813   _push_OP1   _PUSHREAL01  op1->fps
+$4817	_push_REAL_hl
+$4827	_push_FP
+$482B	$2279
+$486F	$2302
+$4893	$232C
+$4897	$2331
+$48AF	$234D
+$48B7	$2355
+$48C3	$235F
+$48C7	$2364
+$4957   $2482   string length
+$495B   $2495   string copy
+$4963   $24A4   string compare hl,de (lstring)
+$4994   _cursOn
+$49C8   start menu, create_menu   hl->menu
+$49DC	_flushallmenus
+$49E8   finish menu, create_menu
+$4A27   _putmap
+$4A2B   $3F93   _putc
+$4A33   _dispahl
+$4A37   $3DAD   _puts
+$4A3B   $3A71   _putps
+$4A33   $3CE7   Display AHL
+$4A5F   _newline
+$4A7E   _clrLCD
+$4A82   _clrScrn
+$4A86   _clrWindow
+$4A95   _homeUp
+$4AA1   _vputmap
+$4AA5   $3AC5   _vputs
+$4AA9   _vputsn
+$4AAD   _runindicon
+$4AB1   _runindicoff
+$4AB5   _clrText
+$4b93	>frac
+$4C2F   _INTOP1
+$4C3F	$34D1	_inc_ptr_ahl twice
+$4C47   _exec_basic     run BASIC prog in op1
+$4CDF   _RCLY
+$4CE3   _RCLX
+$4D27   parse routine: test if oend of line in prog.
+$4DAF   $2F9D   a(hex)->bc(dec) a=c   b=1s c=10s
+$4E39   _GRBUFCPY
+$4E51   $2F25   _ILine
+$4E55   $2E3B   $046F15
+$4E59   $2FF1   _IPoint
+$515B   _dispOP1     display op1 as a result
+$5191   $2B95   _formReal  _formreal
+$51E9   $2FDF   _CLine
+$51F9   $3D05
+$51FD   $3D11   
+$5221   _setTok
+$522D   $3D0B   
+$5235   _ABS_MOV10TOOP1
+$5239   _ABS_MOV10TOOP1_noset
+$523D   _ABS_MOV10B_SET_D
+$5241   _ABS_MOVFROP1_SET_D
+$5245   _ABS_MOVFROP1
+$5249   _ABS_MOV10B
+$5285   $3D17   _SET_ABS_DEST_ADDR
+$52ED   $3D41   _mm_ldir
+$52F1   $3D1D   _mm_lddr
+$5372   _getky
+$5464   _mov10op2add
+$5468   _INTGR
+$5470   _MINUS1
+$5474   _FPSUB
+$5478   _FPADD
+$5484   _TIMESPT5
+$5488   _FPSQUARE
+$548C   $3f99   _FPMULT
+$5490   $3963   _NEGOP1OP2        
+$5494   $3D6B   _NEGOP1  _negOP1
+$5498   $39B1   _NEGOP2
+$549C   _FRAC
+$54A4   _FPRECIP
+$54A8   _FPDIV
+$54AC   _SQROOT
+$54B0   _SQROOTP
+$54BC   _RNDGUARD
+$54C0   _ROUND
+$54C4   _LNX
+$54C8   _LNXP
+$54CC   _LOGXP
+$54D0   _LOGX
+$54D4   _ETOX
+$54D8   _TENX
+$54E0   _SIN
+$54E4   _COS
+$54E8   _TAN
+$54EC   $398D   $0A4C26  -what function is this????
+        ld c,$81
+        jr $4C34
+ -1 - op1=-1.17520119364
+      op2= 1.54308063482
+      op4= 1.17520119364
+      op5= 2.71828182846
+  0 - op2=1.0
+      op3=00000010...
+      op5=1.0
+  1 - op1=1.175201193643800
+      op2=1.543080634815300
+      op3=0000001543080634815250
+      op4=op1
+      op5=2.718281828459000 = e
+  2 - op1=3.626860407847100
+      op2=3.762195691083700
+      op3=0000003762195691083650
+      op4=op1
+      op5=7.389056098930700 = e^2
+  3 - op1=10.01787492741000
+      op2=10.06766199577800
+      op3=...
+      op4=op1
+      op5=20.08553692318800 = e^3
+      op6=-1.316957896a0c000
+  4 - op1=27.28991719712800
+      op2=27.30823283601700
+      op3=...
+      op4=op1
+      op5=54.59815003314400
+  5 - op1=74.20321057779000
+      op2=74.20994852479000
+      op5=148.4131591025800
+$54F0   _TANH
+$54F4   _COSH
+$54F8   _SINH
+$5508   _ACOS
+$550C   _ACOSP
+$5510   _ATAN
+$5514   _ASIN
+$5518	$3D53
+$551C   _ATANH
+$5524   _ASINH
+$5528   _ACOSH
+$5538   _YTOX
+$5544   _randint   ;rand int between _OP1 and _FPS
+$5567   _writeb_inc_ahl
+$5577   _CONVOP1
+$55AA   $3E2B   _getkey
+$55DA   _RANDOM
+$5714   $3297   _exec_pg3
+	   $d623   function
+	    $0d    input value
+$5718   $2F79   _exec_pg4
+           $d623   function
+            $11    clear graph buffer?
+$571C   $29DF
+$5720   $38C1
+$5724   $3B31
+$5728   $590A
+$572C   $591D   -get ?addr? for asap in op1
+$5730   $5764   _exec_assembly
+$5732	$0EDF	error 27 *
+$575C   _instTok  ;OP1=funcname  bc=endofprog de=symtab  hl=menutab
+$57F9   
+$5928   _ldhlhl
+$5970   load ûEXPR to?
+$5988   sqrtEXPR  ->"ûEXPR"
+$598F   load ûPARSE ?
+$59b3   sqrtPARSE
+$59f4   sqrtEXEC
+$5a13   sqrtFORM
+$5a37   sqrtCMDTOK
+$5a69   sqrtHOME
+$5a92   sqrtKEY
+$5ab6   sqrtGRF
+$5B2D   "Already Installed"
+$5B3F   "No room to install"
+
+

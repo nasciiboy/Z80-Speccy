@@ -1,0 +1,191 @@
+Here is a chart that shows which PC ascii characters
+correspond to which 86 ascii characters. to get the
+characters you want just highlight the character on the
+left side of the =s sign that you want to show on the 86
+and press <CTRL+C>(like i needed to tell you that). Then
+use them in your asm programs:
+NOTE:for the newbies
+ ld hl,string
+ call _puts ;this would put 3 solid cursors at currow,colrow
+ .
+ .
+ .
+string:
+ .db "ßßß",0
+END:newbies
+                            zebeedoot(joemama@minot.com)
+
+
+ (space)= (space)
+!=!
+"=can't use
+#=#
+$=$
+%=%
+&=&
+'=a weird bunch of characters show up after the ' (WEIRD GLITCH:they are taken from other programs on the TI86, etc.)
+(=(
+)=)
+*=*
++=+
+,=,
+-=-
+.=.
+/=/
+0=0
+1=1
+2=2
+3=3
+4=4
+5=5
+6=6
+7=7
+8=8
+9=9
+:=:
+;=;
+<=<
+===
+>=>
+?=?
+@=@
+A-Z=A-Z
+[=[
+\=can't use
+]=]
+^=^
+_=_
+`=`
+a-z=a-z
+~=~
+=equals sign in reverse print
+€=little zero
+=little one
+‚=little two
+ƒ=little three
+„=little four
+…=little five
+†=little six
+‡=little seven
+ˆ=little eight
+‰=little nine
+Š=Á
+‹=À
+Œ=Â
+=Ä
+=á
+=à
+=â
+‘=ä
+’=É
+“=È
+”=Ê
+•=Ë
+–=é
+—=è
+˜=ê
+™=ë
+š=Í
+›=Ì
+œ=Î
+=Ï
+=í
+Ÿ=ì
+ (invisible, not a space)=î
+¡=ï
+¢=Ó
+£=Ò
+¤=Ô
+¥=Ö
+¦=ó
+§=ò
+¨=ô
+©=ö
+ª=Ú
+«=Ù
+¬=Û
+­=Ü
+®=ú
+¯=ù
+°=û
+±=ü
+²=Ç
+³=ç
+´=Ñ
+µ=ñ
+¶=¡
+·=alpha
+¸=beta
+¹=greek symbol(?)
+º=delta
+»=greek symbol(?)
+¼=´
+½=`
+¾=¨
+¿=¿
+À=greek E
+Á=theta
+Â=greek symbol(?)-looks like an upside down y
+Ã=µ
+Ä=pi
+Å=ş
+Æ=exponent symbol
+Ç=greek symbol(?)-looks like a little o
+È=greek symbol(?)-looks like a little t
+É=greek symbol(?)-looks like a circle with a line through it
+Ê=greek symbol(?)-looks like a horseshoe
+Ë=x with a line over it
+Ì=y with a line over it
+Í=small raised x
+Î=...
+Ï=triangle pointing left
+Ğ=little square(bell)
+Ñ=messed up / symbol(dunno what its called)
+Ò=negative sign
+Ó=little 2(square sign)
+Ô=little empty square
+Õ=little 3(cube sign)
+Ö=return(leaves an open line and a :)
+×=fat right arrow
+Ø=thin line(the one used on the graph screen)
+Ù=thick line(same as above)
+Ú=fill above and to the right(same as above)
+Û=fill below and to the left(same as above)
+Ü=little -0 sign
+İ=little 0 sign
+Ş=dots(from graph screen)
+ß=solid cursor
+à=2nd cursor
+á=ALPHA cursor
+â=alpha cursor
+ã=insert cursor
+ä=2nd insert cursor
+å=ALPHA insert cursor
+æ=alpha insert cursor
+ç=checkered cursor
+è=little low empty square
+é=little plus sign
+ê=little multiplication sign
+ë=4th power symbol
+ì==
+(same thing over and over to fill up the 256 chars on the 86)
+í=filled square
+î=filled square
+ï=filled square
+ğ=filled square
+ñ=filled square
+ò=filled square
+ó=filled square
+ô=filled square
+õ=filled square
+ö=filled square
+÷=filled square
+ø=filled square
+ù=filled square
+ú=filled square
+û=filled square
+ü=filled square
+ı=filled square
+ş=filled square
+ÿ=filled square
+

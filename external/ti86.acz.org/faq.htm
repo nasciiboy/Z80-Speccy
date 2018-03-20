@@ -1,0 +1,328 @@
+<HTML>
+<HEAD>
+   <TITLE>86 Central - FAQ</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" WIDTH=301 HEIGHT=76 BORDER=0 ALT="86 Central"></CENTER>
+<CENTER><H5>Best viewed in 1024x768</H5></CENTER>
+
+<CENTER><H2>Frequently Asked Questions (FAQ)</H2></CENTER>
+
+<p>
+<form action="faq.asp" method="POST">
+<table border=0 cellpadding=1 cellspacing=0 width="100%">
+<tr><td valign=top>Do you have a question about TI-86 assembly programming?
+</td></tr>
+<tr><td valign=top colspan=2>
+<textarea name="question" wrap="virtual" cols=80 rows=2></textarea></td></tr>
+<tr><td colspan=2>&nbsp;&nbsp;<input type="submit" value="Submit">&nbsp;
+&nbsp;&nbsp;<input type="reset" value="Clear"></td></tr>
+</table></form>
+<p>
+
+<hr>
+
+<p> This FAQ is an attempt to answer all of the questions that people ask when learning asm. &nbsp;The Assembly Studio 86 answered many of my questions when I was starting, and still remains a very useful reference. &nbsp;Many of these questions are answered in the help file, so instead of re-inventing the wheel, it is copied directly.
+
+<p><table width=700 border=0 cellspacing=0 cellpadding=2>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do I turn on all the pixels on the screen?</td></tr>
+<tr><td><tt><b>A: </b>To turn on all the pixels, you need to set all the bits to 1. &nbsp;That would mean setting each byte of video memory to $ff. &nbsp;The fastest way to do this is with the LDIR instruction:
+<pre>
+ ld hl,$fc00     ; point to first byte of video memory
+ ld de,$fc01     ; point to second byte
+ ld bc,$3ff      ; we need to fill 1023 bytes (first one is done)
+ ld (hl),c       ; fill the first byte
+ ldir            ; fill all the rest</pre>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do you use masked sprites versus regular sprites?
+</td></tr>
+<tr><td><tt><b>A: </b>Masked sprites means that sprites have a "mask" that tells which pixels should be drawn and which pixel's shouldn't. &nbsp;Why wouldn't you want all pixels to be drawn? Transparency. &nbsp;If you are drawing a sprite on top of another image, you will probably want some of the pixels to be drawn white (off), and some to be drawn clear (they stay the same as what was behind them). &nbsp;How the mask works depends upon the sprite drawing routine. &nbsp;For the most common type of mask, if the bit is set in the mask then the pixel will be draw. &nbsp;If it is not set, then the pixel will be clear (even if it is black). &nbsp;A good way to draw the sprite is to AND the byte from the sprite with the byte from video memory, then OR the result with the inverted mask. &nbsp;If the byte is being shifted, as in most non-aligned sprite routines, then the bits that are shifted out must also be inverted (the bits outside the sprite are set). &nbsp;If you want to play around with masked sprites, <a href="mailto:yarin@acc.umu.se">Jimmy Mardell's</a> PutSprite_MSB routine works well. &nbsp;See the <a href="clippedspr.htm">clipped sprite</a> section for more details on that routine. &nbsp;However, if background saving is not required, then the sprite routine could be sped up significantly by shifting the mask and sprite in a single loop and writing the bytes instead of the individual pixels.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do I use the condition flags to decide whether or not to do a jump?</td></tr>
+<tr><td><tt><b>A: </b>You can think of a compare as a subtraction, because that is exactly what the instruction does. &nbsp;CP subtracts the operand it is comparing from the accumulator (A register), but does not store the result anywhere. &nbsp;It just sets the flags accordingly. &nbsp;If a result of a subtraction is zero, then the two are equal. &nbsp;If the operand was greater than the accumulator, then the result would be negative. &nbsp;A negative result would set the carry flag. &nbsp;The carry flag is set whenever the accumulator (and other registers) overflows or underflows (whenever the result cannot be represented in 8 bits). &nbsp;Perhaps an example would best clear this up:
+<pre>
+ cp 5                    ; compare A with 5
+ jr z,a_is_equal_to_5    ; if A - 5 = 0, then A is 5
+ jr c,a_is_less_than_5   ; if A - 5 < 0, then A was 4 or less (4 - 5 = -1)
+a_is_greater_than_5:
+                         ; if it wasn't equal and wasn't less than,
+                         ; then it must be greater than</pre> 
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>I don't get this deal with the RAM pages... can you please explain them to me, and what happens when I swap one of them to somewhere?
+</td></tr>
+<tr><td><tt><b>A: </b><a href="mailto:dux@acz.org">Dux Gregis</a> wrote an excellent <a href="http://www.eden.rutgers.edu/~assets/t9.html">tutorial</a> on the specifics of using Absolute Addressing and the VAT. &nbsp;For a detailed explanation, read that tutorial.
+<p>For a simple understanding of RAM pages, you must understand that the Z80 can only access 64k of memory. &nbsp;This may come as a shock to you, but it's true. &nbsp;To overcome this, the 86's memory is divided into for sections, or pages, each consisting of 16k. &nbsp;The first page ($0000-$3fff) is ROM page 0 and cannot be moved. &nbsp;The last page ($c000-$ffff) is always RAM page 0. &nbsp;This is where all the system settings are stored, where video memory, the stack and where assembly programs are executed (among other things).  &nbsp;The middle two pages, however, is where the fun is at. &nbsp;The first area ($4000-$7fff) is usually used for ROM pages, and the second ($8000-$bfff) is usually used for RAM pages, but either area can be used for either page. &nbsp;When your asm program starts, the first area will be ROM page D (the ROM call table) and the second area will be RAM page 1 (the FPS stack, almost 16k of free ram!).
+<p>If you need to change pagees, port 5 controls the first area and port 6 controls the second. &nbsp;You can write a value to the ports to set the active page, or read a value to get the current page. &nbsp;If bit 6 is set then it means it is a RAM page, if it is clear then it is a ROM page. &nbsp;The lower 4 bits are the value of the page (0-7 for RAM and 0-F for ROM). &nbsp;Here's an example:
+<pre>
+                  ; let's load RAM page 0 into both area's
+ ld a,%010000000  ; bit 6 is SET for RAM, lower four set to a value of 0
+ out (5),a        ; load RAM page 0 into $4000-$7fff area
+ out (6),a        ; load RAM page 0 into $8000-$cfff area
+ ld a,$ff         ; load $ff (all bits set)--this will turn on 8 pixels
+ ld ($7c00),a     ; turn on the first 8 pixels of video ram ($7c00 = $fc00)
+ ld ($cc01),a     ; turn on the next 8 pixels of video ram  ($cc01 = $fc01)
+ ld ($ffff),a     ; turn on the last 8 pixels ($ffff = end of video ram)</pre>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>I'm having trouble figuring out this call table thing on page $0d, how exactly is this used?
+</td></tr>
+<tr><td><tt><b>A: </b>ROM page D, which will be located at $4000-$7fff when your asm program starts, is used to call rom routines. &nbsp;It is known as the rom call table. &nbsp;From time to time, TI releases newer ROM versions. &nbsp;These newer versions fix bugs and sometimes even add features. &nbsp;With each new release, routines in the ROM may (will) move around. &nbsp;This would make for a nightmare when programming. &nbsp;It would require figuring out where the calls are for each ROM version, much like on the 85 and 82. &nbsp;However, TI has made our lives easy by creating the rom call table. &nbsp;To call a certain rom routine, you just call it's address on the call table (rom page D) and ROM will take care of the rest for you (finding the correct address, swap rom pages back and forth, etc.). &nbsp;The addresses to call are in the include files. &nbsp;For example, when you call _clrLCD ($4a7e), the routine is not actually on rom page D at $4a7e. &nbsp;It is on some other page, but we just call the routine and don't worry about it.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How would I check for greater than or less than with the result of a cp?
+</td></tr>
+<tr><td><tt><b>A: </b>See two questions up. &nbsp;;-)<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How can I find the value of a number in hex or binary?
+</td></tr>
+<tr><td><tt><b>A: </b>I will resist the urge to answer it here and instead point you to a couple of excellent tutorials:
+<p><a href="http://www.eden.rutgers.edu/~assets/t1.html">Representing a Byte</a> by <a href="mailto:dux@acz.org">Dux Gregis</a>
+<br><a href="http://www.acz.org/ti86/coding/z80ti862.htm">Binary and Hexadecimal</a> by <a href="mailto:matt@acz.org">Matt Johnson</a><p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do I use the system flags?  The things after the iy register...
+</td></tr>
+<tr><td><tt><b>A: </b>Check out the <a href="http://ti86.acz.org/sysflags.htm">system flags</a> section of 86 Central. &nbsp;A more complete source of info (but not as self-explanatory) is <a href="mailto:rabidcow@xoommail.com">Joshua Seagoe's</a> <a href="http://members.xoom.com/rabidcow/ti86/flags.txt">flag list</a>.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>I am a relative newbie to ti-86 asm (i understand the registers and such) and I'm learning about tilemaps right now. &nbsp;What I want to know is for moving a character around in the tilemap, how do you do it smoothly (i.e. one pixel at a time) instead of just "jumping" to each tile?
+</td></tr>
+<tr><td><tt><b>A: </b>Glad you asked :) Read my tutorial on <a href="tilemaps.htm">tilemaps</a>.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do i scroll the screen to the right or left by hitting they right and left keys?
+</td></tr>
+<tr><td><tt><b>A: </b>I assume that you are talking about smooth-scrolling or side-scrolling, like in Sqrxz or Super Mario 86.  &nbsp;<a href="mailto:james@acz.org">James Rubingh</a> wrote a good tutorial on <a href="http://members.tripod.com/~jaymzroo/lessons/less6.txt">scrolling</a>. &nbsp;But be warned, there is a lot more to a side scroller than the actual scrolling. &nbsp;Scrolling the screen is the easy part!<p></b>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do you normally develop a program?
+</td></tr>
+<tr><td><tt><b>A: </b>Hmm, this is a rather vague question. &nbsp;If you are asking how do you write a program, then the answer would be that I just jump in and code :) When I get an idea for a game or other program, I want to spend all my time on it to get it done as fast as I can. Once that initial kick goes away, I spend less time on stuff and it never gets done. The key to developing a program is to concentrate on the base engine, instead of all the little extras. &nbsp;It's sort of like taking an exam. &nbsp;It's better to skip hard problems and finish the test, rather than spending all your time on the hard ones.
+<p>I personally use <a href="http://www.stupidzone.com/asmstudio/">Assembly Studio 86</a> to edit, assemble and send all of my code to my calculator. &nbsp;When I started out progrmming, I made many mistakes and used <a href="http://86emu.acz.org/">TI86EMU</a> to test my programs, but now I test everything on the calc.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>What is a sprite?</td></tr>
+<tr><td><tt><b>A: </b>Find out by reading the <a href="sprites.htm">sprites</a> section!<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>If your assembly program was 2500 bytes, would the memory between $D748+2500 and $D748+11999 be a safe place (as safe as _textShadow) for TEMPORARY variables so they won't be overwritten while the program is running?
+</td></tr>
+<tr><td><tt><b>A: </b>No! &nbsp;_asm_exec_ram (the memory where assembly programs are executed) is only 8k, so you would have from the end of your program ($d748+2500) to the end of _asm_exec_ram. If you need more memory for temporary storage (more than _textShadow), then use RAM page 1. &nbsp;You have almost 16k starting from $800b to store data and it is completely safe to use as long as you don't use the FPS/OP stack during your program (if you do, then put your variables at $9000 or so).<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>What exactly is a checksum (i.e., the one is used during the interrupt process) and how does it work?
+</td></tr>
+<tr><td><tt><b>A: </b>A checksum is simply a number that "checks" or verifies that data (such as a file) is correct. &nbsp;Checksums are used all the time with computers. &nbsp;When you are downloading a file, the file transfer software uses a checksum to verify that the file is being transferred correctly. &nbsp;Programs, strings and other calculator files have checksums at the end to make sure they are correct and to keep people from tampering with them (like changing the highscores with a hex editor). &nbsp;ZShell strings have a 1 byte checksum at the end of them as well.
+<p>All of the user routines require that the proper checksum (along with the right flag) be set before they will be run. &nbsp;For an example of setting the checksum for the user interrupt, see the <a href="interrupts.htm">interrupts</a> section.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>What's the difference between t-states and clock cycles?
+</td></tr>
+<tr><td><tt><b>A: </b><a href="mailto:yarin@acc.umu.se">Jimmy Mardell</a> posted this message on the A86 list in response to a very similiar question:
+<p>It's T-states you should count, not clock cycles I believe...it's a bit more accurate.
+<p>Instruction duration = 1/MHz*T-states.
+<p>Example:
+<pre>  ADD HL,DE = 11 T states (3 cycles)</pre>
+<p>Duration = 1/6000000*11 = 1.8333us (microseconds)
+<p>But I doubt the TI-86 running at _EXACTLY_ 6.00 MHz. It would
+be interesting to calculate the exact MHz...<p>
+</tt></td></tr>
+
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>OK, I don't really fully understand when to use a register or variable in parentheses (to point to a memory location) or not to use the parentheses and be loading (or whatever I'm doing) straight from the register or variable.  for example, ld (hl),de  or ld hl,de  could you straighten me out?</td></tr>
+<tr><td><tt><b>A: </b>Parenthesis stand for indirection. &nbsp;Indirection simply means using the register or value as a pointer and reading the <i>value pointed to</i> by the register or value. If you want to load an immediate value (a number) or a register, then don't use parenthesis. &nbsp;If you want to load the memory at a certain address (again a number) or pointed to by a register, then use parenthesis. &nbsp;Example:
+<pre>
+                 ; immediate values
+                 ; load the...
+ ld a,($c008)    ;   value at address $c008 into A
+ ld a,(_curRow)  ;   cursor row location into A
+ ld hl,$b2d4     ;   load the number $b2d4 into HL
+ ld hl,($fc00)   ;   value at $fc00 into HL
+
+                 ; registers
+ ld hl,$fc45     ; point to (or set HL equal to) $fc45
+ ld (hl),$ff     ; load $ff into the memory pointed to by HL,
+                 ; which loads $ff into the memory location $fc45</pre>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do you make TI programs? I know how to program in C++, Java, and BASIC. Can you make programs from that?
+</td></tr>
+<tr><td><tt><b>A: </b>No. &nbsp;To write Z80 machine language programs for the TI-86, you have to use Z80 Assembly Language. &nbsp;Check out the tutorials at <a href="http://ti86.acz.org/">86 Central</a> for info on starting to program in assembly. &nbsp;My advice is to download <a href="http://www.stupidzone.com/asmstudio/">Assembly Studio 86</a> and the <a href="http://86emu.acz.org/">TI86EMU</a> and code, code, code!<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>What are the OP's?  How big are they?  How are they different from registers?
+</td></tr>
+<tr><td><tt><b>A: </b>The OP registers are not really registers, but are a block of memory that is used to store data, such as floating point values, to pass as arguments to system routines that operate on such values, and to retrieve the value returned by them. &nbsp;They are most often used with the math routines, but are also used to store variable names for user variable manipulation routines. &nbsp;There are six OP registers, named OP1 through OP6, and each is 11 bytes long.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>What exactly is floating point?  Also, how is it stored in the OP's?</td></tr>
+<tr><td><tt><b>A: </b>The Z80, as with most processors, works only with integers. &nbsp;It is very limited in the range of numbers it can handle and the types of operations that can be performed. The largest number size it can work with is 16-bits. &nbsp;In fact, it doesn't even have multiplication or division instructions! &nbsp;This would make for a very limited calculator. &nbsp;Becuase of this, floating point numbers, or numbers where the decimal place "floats" and isn't fixed, are emulated in software. &nbsp;Because the decimal point isn't fixed in a floating point number, they can have very large or very small values while taking up little space. &nbsp;The drawback to this is that they aren't as accurate at the extreme ranges and are slow to manipulate. &nbsp;The ROM has many built-in routines to work with floating point numbers.
+<p>The first byte (_OP1) is the sign byte, which is either $00, $01, $80, or $81. &nbsp;The bits are composed as follows:
+
+<p>Bit 0 = 0 if real, 1 if complex
+<br>Bits 1-6 = 0
+<br>Bit 7 = 0 if positive, 1 if negative
+
+<p>Complex numbers are stored in two OP registers, with the real portion in one register and the imaginary portion in the following register.  &nbsp;The next two bytes are the exponent bytes (_OP1EXPM and _OP1EXPL). &nbsp;The exponent is calculated by subtracting $FC00 from this word (don't forget to store the least significant byte first). &nbsp;This indicates how many places to move the decimal point. &nbsp;The next 7 bytes are the mantissa (starting at _OP1M) in BCD format, a sequence of 14 digits. &nbsp;The last byte (_OP1EXT) is an extra byte that is not used. &nbsp;Example:
+<pre>
+ ld hl,FPNum1
+ call _MOV10TOOP1
+ ret
+
+FPNum1: ; 3.1415926535900e+00 = pi
+	.db $00, $00, $FC, $31, $41, $59, $26, $53, $59, $00
+FPNum2: ; 1.2000000000000e+02 = 120
+	.db $00, $02, $FC, $12, $00, $00, $00, $00, $00, $00
+FPNum3: ;-3.6512000000000e-04 = -.00036512
+	.db $80, $FC, $FB, $36, $51, $20, $00, $00, $00, $00</pre>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>I ran a ROM dumper from my calc, but didn't find a file on my computer. Where is it usually put?
+</td></tr>
+<tr><td><tt><b>A: </b>This question gets asked a lot. &nbsp;In order to receive a ROM dump, you have to run a program on the computer as well as on the calculator. &nbsp;Randy Gluvna's <a href="ftp://ftp.ticalc.org/pub/86/dos/link/romdump2.zip">ROM Dump</a> has the programs for the 82, 83, 85 and 86, along with the program for the computer. &nbsp;<b>Read the readme file included with the program!</b> &nbsp;It has detailed instructions for running the program and for receiving the ROM dump.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>Although it sounds stupid, is there any way to slow down an assembler program without using a ton of djnz loops?  I've played shooting games that moved so fast you could only tell where the enemies were by watching the motion blur.  Mario, as well, sometimes seemed too hyper for my tastes.  Is there a way to slow it down and make the game play more smoothly?
+</td></tr>
+<tr><td><tt><b>A: </b>Yes. &nbsp;By "a ton of DJNZ loops", I assume you mean a bunch of empty loops that just waste clock cycles. &nbsp;This is a bad idea, because although the loops will provide very accurate delays, you really drain the batteries. &nbsp;The best way to slow down a game is to use the HALT instruction. &nbsp;Remember that the interrupt is called ~200 times a second. &nbsp;The HALT instruction shuts down the processor until an interrupt occurs, then continues execution with the next instruction. &nbsp;So if you execute a HALT, then your program will wait until the next interrupt is called, which will be up to 1/200 of a second later. &nbsp;Now, to use them for delays, you can put them into a loop. &nbsp;If you have a HALT loop that runs 10 times, then your program will wait 10/200 of a second. &nbsp;Of course, the interrupt speed varies with battery power. &nbsp;In my tests, the interrupt occurs closer to 175 times a second than 200 times, but that's all relative. &nbsp;Example:
+<pre>
+ ld b,20     ; delay 1/10 of a second
+loop:
+ halt        ; wait for the next interrupt to occur (1/200 second)
+ djnz loop   ; loop 20 times</pre>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>Where can I find out what the code means that you use when writing a program on the calc, like (CD824A)?
+</td></tr>
+<tr><td><tt><b>A: </b>When typing programs into your calculator in hex, you are typing in the actual assembled machine code, or opcodes. &nbsp;An overall great reference for Z80 instructions is the file <a href="z80/z80time.txt">z80time.txt</a>. &nbsp;It lists all of the instructions, along with their times and opcodes. &nbsp;If you are programming hex or wanting to know t-states for all the instructions, then this file is a must have. &nbsp;I formatted a version with Microsoft Word to fit on 3 pages, for easy printing. &nbsp;Download <a href="z80/z80time.doc">this</a> one if you are going to print it out (which you really should!).<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>Newbie question: I am trying to make a getkey routine which involves pressing 1,2,3 or EXIT (3 and exit will do the same thing) but I cant get it to run correct.  I looked at a tutorial for this thing and copied it almost exactly (keypress changes) and it would just enter a endless loop. Any suggestions?
+</td></tr>
+<tr><td><tt><b>A: </b>Example:
+<pre>
+KeyLoop:
+ call _getkey         ; go into low power mode and wait for a keypress
+ cp k1                ; was 1 pressed?
+ jr z,OnePressed      ;  then handle it
+ cp k2                ; or was 2 pressed?
+ jr z,TwoPressed      ;  go to stuff for it
+ cp k3                ; was 3 pressed?
+ jr z,Exit            ;  then exit
+ cp kExit             ; or was it exit?
+ jr z,Exit            ;  then we'd better exit!
+ jr KeyLoop           ; they didn't press the right one, so try again
+
+Exit:
+ ret                  ; return to TI-OS</pre>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do I display variable values in the pen text? I know it inolves using
+the command UNPACK_HL but I can't figure out what this command does.
+
+</td></tr>
+<tr><td><tt><b>A: </b>The ROM call _divHLby10 (UNPACK_HL is the ZShell name...a carry over from 85 programming) divides HL by 10 and returns the remainder in A. &nbsp;If you divide a number in base n, then the number modulus (remainder) n will be the last digit of the number. In other words, when dividing a decimal number (base 10) by 10, the remainder of the division will be the last digit (one's position) of the number. &nbsp;So when you call _divHLby10 on a number, A will contain the last digit. &nbsp;You can find a routine I wrote to display HL in the pen text <a href="routines/displayhl.asm">here</a>.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How Can I recall a picture that already exits in asm? Or is it easier just to make the picture with a lot of different sprites?
+</td></tr>
+<tr><td><tt><b>A: </b>The method that most people use for title screens and other large pictures is to draw it first with a paint program on the PC and then convert it into asm format. &nbsp;My program, <a href="programs/pic2rle.zip">PIC2RLE</a>, converts .bmp files into asm files and compresses them as well. &nbsp;This will (usually) make your pictures much smaller than they would be without compression. For help on using it, read the readme file and the example source code included in the zip file.<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>If I read in a string into _OP1, how can I convert that into an integer? (assume all input is numerical) - I've tried _CONVOP1 & _INTGR, and they don't seem to work.
+</td></tr>
+<tr><td><tt><b>A: </b>The call _CONVOP1 will return the numerical value of OP1 in A and in DE. The call _INTGR is the same as the "int" command in the Math->Num menu. It will turn the value in OP1 into an integer, and store it in OP1.
+<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How do I execute another assembly program from an assembly program?
+</td></tr>
+<tr><td><tt>
+<pre>
+<b>A: </b>Use the call _exec_assembly.  Load the variable name of the program into OP1
+and call it.
+
+Progname:
+.db 5,"bloat"
+
+ld hl,Progname-1     ; point to the name of the program
+rst 20h              ; copy name to OP1
+call _exec_assembly  ; execute the program
+
+When in the program that was just called, or back in the old program when
+the new one returns, you can access the registers that were set by the other
+program.  For example, to get what HL was in the old program:
+
+ld hl,(_asm_reg_hl)
+
+For more information, see TI's page on Asm Module Execution.
+</pre>
+<p>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>What is ASM?
+</td></tr>
+<tr><td><tt>
+<b>A: </b>Assembly Language is a low-level programming language. When we speak of low-level, we mean that we are dealing with all aspects of the hardware directly. Zilog Z80 Assembly Language gives us the power to control all aspects of the Z80 CPU. The gateway between the Z80 and other peripherals (i.e., LCD, Keypad, etc) are through the ports. All assembly instructions directly convert to a binary instruction that the CPU (Central Processing Unit) can understand and execute. The Z80 has hundreds of instructions. Most of these instructions are just methods of adding, subtracting, and manipulating numbers. Other instructions deal with moving and loading and manipulation of memory, and also with interrupts (control timing and allow for TSR's) The other instructions deal with the ports, which is simply the gateway between hardware and the CPU.<Br><br>
+</tt></td></tr>
+
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>How can you use CA00 through CD00 to use for graysale or any other options than the grayscale interrupter?
+</td></tr>
+<tr><td><tt>
+<b>A: </b>For information on grayscale, see the Grayscale Tutorial.  The graph memory (_plotSScreen) starts at $C9FA and ends at $CDF9.  For grayscale (or other page flipping), the memory must start at a 256 byte boundary, meaning the last two digits in hex must be $00.  So $CA00 to $CDFF can be used for a grayscale buffer, if the six bytes from $CDF9 to $CDFF are saved.  It is usually more convient to use $F600 (or $F700 if you can get along with a 256 byte stack) for a grayscale buffer. 
+</tt></td></tr>
+
+
+
+</table>
+
+<!--
+<tr><td bgcolor="#C0C0C0"><b>Q: </b>*</td></tr>
+<tr><td><tt><b>A: </b>*
+</tt></td></tr>
+-->
+
+
+<P>
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+</BODY>
+</HTML>

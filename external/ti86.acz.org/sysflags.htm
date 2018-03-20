@@ -1,0 +1,499 @@
+<HTML>
+<HEAD>
+	<META NAME="keywords" CONTENT="system, system flags, flag, IY, IY flags, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+	<META NAME="description" CONTENT="86 Central - Using System Flags, i.e. set x, (IY+xx).">
+   <TITLE>86 Central - System Flags</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" ALT="86 Central Logo" BORDER=0 HEIGHT=76 WIDTH=301></CENTER>
+
+<CENTER>
+<H5>
+Best viewed in 1024x768</H5></CENTER>
+
+<CENTER>
+<H2>
+TI-86 System Flags</H2></CENTER>
+The system flags are a section of ram used for bit flags and are accessed
+off of the IY register. The IY register is set to the start of the flag
+area ($C3EF) and does not change. When you change certain bits of certain
+bytes, part of the calculators system functionality changes.
+
+<P><B>Example 1:</B><TT> set trigdeg,(iy+trigflags)</TT>
+<BR>"trigflags" is the byte offset from the start of the flag area (0 in
+this case), and "trigdeg" is the Bit # (2 in this case).
+<BR>In this case is causes the TI-86 to use degrees instead of radians.
+
+<P><B>Example 2:</B><TT> set textInverse, (iy+textflags)</TT>
+<BR>"textflags" is the byte offset (5 in this case) and "textInverse" is
+the bit # (3 in this case)
+<BR>This causes the system to display white on black instead of the normal
+black on white.
+
+<P><B>Example 3:</B><TT> res textInverse, (iy+textflags)</TT>
+<BR>"textflags" is the byte offset (5 in this case) and "textInverse" is
+the bit # (3 in this case)
+<BR>This causes the system to display the normal black on white again.
+<CENTER>The values for most of these symbols are included in the include
+file "TI86ASM.INC"</CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=4 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" BGCOLOR="#F0F0F0" >
+<TR>
+<TH>Documented IY offset value</TH>
+
+<TH>Bit #</TH>
+
+<TH>Description</TH>
+</TR>
+
+<TR>
+<TD>0 (trigflags)</TD>
+
+<TD>2 (trigdeg)</TD>
+
+<TD><FONT SIZE=-1>0 = radians; 1 = degrees</FONT></TD>
+</TR>
+
+<TR>
+<TD>2 (plotflags) &amp; (grfmodeflags)</TD>
+
+<TD>1 (plotloc)</TD>
+
+<TD><FONT SIZE=-1>0 = graph writes to display and backup buffer</FONT>
+<BR><FONT SIZE=-1>1 = write to display only</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (plotdisp)</TD>
+
+<TD><FONT SIZE=-1>0 = graph screen not in display</FONT>
+<BR><FONT SIZE=-1>1 = graph in display</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>4 (grffuncm)</TD>
+
+<TD><FONT SIZE=-1>1 = function graph mode</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>5 (grfpolarm)</TD>
+
+<TD><FONT SIZE=-1>1 = polar graph mode</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>6 (grfparamm)</TD>
+
+<TD><FONT SIZE=-1>1 = parametric graph mode</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>7 (grfrecurm)</TD>
+
+<TD><FONT SIZE=-1>1 = differential equation graph mode</FONT></TD>
+</TR>
+
+<TR>
+<TD>3 (graphflags)</TD>
+
+<TD>0 (graphdraw)</TD>
+
+<TD><FONT SIZE=-1>0 = graph is "clean"; 1 = graph is "dirty"</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (graphcursor)</TD>
+
+<TD><FONT SIZE=-1>0 = graph cursor is off; 1 = graph cursor on on</FONT></TD>
+</TR>
+
+<TR>
+<TD>4 (grfdbflags)&nbsp;</TD>
+
+<TD>0 (grfdot)</TD>
+
+<TD><FONT SIZE=-1>0 = line mode; 1 = dot mod</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>1 (grfsimul)</TD>
+
+<TD><FONT SIZE=-1>0 = sequential graph draw; 1 = simultaneous graph draw</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (grfgrid)</TD>
+
+<TD><FONT SIZE=-1>0 = no graph grid; 1 = draw grid</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>3 (grfpolar)</TD>
+
+<TD><FONT SIZE=-1>0 = show rectangular coordinates</FONT>
+<BR><FONT SIZE=-1>1 = show polar coordinates</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>4 (grfnocoord)</TD>
+
+<TD><FONT SIZE=-1>0 = show graph coordinates</FONT>
+<BR><FONT SIZE=-1>1 = no graph coordinates</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>5 (grfnoaxis)</TD>
+
+<TD><FONT SIZE=-1>0 = draw axis; 1 = no axis</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>6 (grflabel)</TD>
+
+<TD><FONT SIZE=-1>0 = no graph labels; 0 = show graph labels</FONT></TD>
+</TR>
+
+<TR>
+<TD>5 (textflags)</TD>
+
+<TD>1 (textEraseBelow)</TD>
+
+<TD><FONT SIZE=-1>1 = erase line below small font write</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (textScrolled)</TD>
+
+<TD><FONT SIZE=-1>1 = screen scrolled after writing to it</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>3 (textInverse)</TD>
+
+<TD><FONT SIZE=-1>1 = write in reverse video</FONT></TD>
+</TR>
+
+<TR>
+<TD>9 (onflags)</TD>
+
+<TD>3 (onRunning)</TD>
+
+<TD><FONT SIZE=-1>1 = calculator is running</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>4 (onInterrupt)</TD>
+
+<TD><FONT SIZE=-1>1 = [on] key interrupt occurred</FONT></TD>
+</TR>
+
+<TR>
+<TD>10 (fmtflags)</TD>
+
+<TD>0 (fmtExponent)</TD>
+
+<TD><FONT SIZE=-1>1 = exponential display mode</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>1 (fmtEng)</TD>
+
+<TD><FONT SIZE=-1>1 = engineering display mode</FONT></TD>
+</TR>
+
+<TR>
+<TD>12 (curflags)</TD>
+
+<TD>2 (curAble)</TD>
+
+<TD><FONT SIZE=-1>1 = cursor flash enabled</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>3 (curOn)</TD>
+
+<TD><FONT SIZE=-1>1 = cursor is showing</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>4 (curLock)</TD>
+
+<TD><FONT SIZE=-1>1 = cursor is locked off</FONT></TD>
+</TR>
+
+<TR>
+<TD>13 (appflags)</TD>
+
+<TD>1 (appTextSave)</TD>
+
+<TD><FONT SIZE=-1>1 = save chars written in textshadow</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (appAutoScroll)</TD>
+
+<TD><FONT SIZE=-1>1 = auto-scroll text on last line</FONT></TD>
+</TR>
+
+<TR>
+<TD>18 (indicflags)</TD>
+
+<TD>0 (indicRun)</TD>
+
+<TD><FONT SIZE=-1>1 = run indicator ON</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (indicOnly)</TD>
+
+<TD><FONT SIZE=-1>1 = interrupts will only update runindicator tor and
+not flash the cursor or APD</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>3 (shift2nd)</TD>
+
+<TD><FONT SIZE=-1>1=[2nd] has been pressed</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>4 (shiftAlpha)</TD>
+
+<TD><FONT SIZE=-1>1=[ALPHA] has been pressed</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>5 (shiftLwrAlph)</TD>
+
+<TD><FONT SIZE=-1>1=lower case, 0=upper case</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>6 (shiftALock)</TD>
+
+<TD><FONT SIZE=-1>1=alpha lock has been pressed</FONT></TD>
+</TR>
+
+<TR>
+<TD>24 (newgrfflags)</TD>
+
+<TD>6 (textwrite)</TD>
+
+<TD><FONT SIZE=-1>1 = small font writes to graph backup buffer</FONT></TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=4 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" BGCOLOR="#F0F0F0" >
+<TR>
+<TH>Undocumented IY offset value</TH>
+
+<TH>Bit #</TH>
+
+<TH>Description</TH>
+</TR>
+
+<TR>
+<TD>35 (userflags)</TD>
+
+<TD>0 (userFont)</TD>
+
+<TD><FONT SIZE=-1>;if set, calc checks for user home screen font</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>1 (userVfont)</TD>
+
+<TD><FONT SIZE=-1>;if set, calc checks for user variable-width font</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (userInt)</TD>
+
+<TD><FONT SIZE=-1>;if set, calc checks for user interrupt routine</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>3 (userOn)</TD>
+
+<TD><FONT SIZE=-1>;if set, calc checks for user routine when it turns on</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>4 (userLink)</TD>
+
+<TD><FONT SIZE=-1>;if set, calc calls routine when link port triggered?</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>7 (userOff)</TD>
+
+<TD><FONT SIZE=-1>;if set, calc calls user routine when it turns off.</FONT></TD>
+</TR>
+
+<TR>
+<TD>36 (sqrtFlags)</TD>
+
+<TD>0 (sqrtPARSEinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>1 (sqrtFORMinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>2 (sqrtEXECinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>3 (sqrtEXPRinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>4 (sqrtHOMEinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>5 (sqrtCMDTOKinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>6 (sqrtKEYinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+
+<TR>
+<TD></TD>
+
+<TD>7 (sqrtGRFinstalled)</TD>
+
+<TD><FONT SIZE=-1>1 = run this program when specified action occurs</FONT></TD>
+</TR>
+</TABLE></CENTER>
+
+
+<P>More information will be available on the undocumented flags when I
+learn more about it.
+
+<P>
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+</BODY>
+</HTML>

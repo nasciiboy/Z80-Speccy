@@ -1,0 +1,736 @@
+<HTML>
+<HEAD>
+   <META NAME="keywords" CONTENT="Interrupt, Interrupts, IM, IM 1, IM 2, IM 3, User interrupt, ON interrupt, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+   <META NAME="description" CONTENT="86 Central: Interrupt tutorial, Part 1 of 2: Covers basic interrupts and code for interrupt service routines">
+   <TITLE>86 Central - Interrupts</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" ALT="86 Central Logo" BORDER=0 HEIGHT=76 WIDTH=301></CENTER>
+
+<CENTER>
+<H5>
+Best viewed in 1024x768</H5></CENTER>
+
+<CENTER>
+<H2>
+Interrupts</H2></CENTER>
+Welcome to the interrupt section! This section is very comprehensive, and
+I am proud of its unique and detailed information. This covers some of
+the ROM interrupt code and explains Interrupt Mode 1 and Interrupt Mode
+2 programming applications and theory. For even more <A HREF="interrupts2.htm">advanced
+interrupt information</A>, including "The reset, Calc-On, Calc-Off operations",
+Fixing the Down-Left Bug", "Speedy IM 1", "Speedy IM 2", "TSR techniques",
+please <A HREF="interrupts2.htm">proceed here</A>. Enjoy!
+
+<P>On the Z80 processor, an interrupt is an action (<I>triggered by hardware</I>)
+that will suspend CPU operation and force the CPU to perform another function,
+or execute another routine. <U>Right before the Interrupt Routine is called,
+it will push the PC (Program or Instruction Counter) on to the stack so
+it can return to its point of origin when the interrupt returns</U>. It
+then will disable the interrupts before the interrupt routine is called.
+Once the interrupt cycle is completed, the CPU returns to the operation
+from which it was interrupted. There are three modes of interrupt response,
+Mode 0, Mode 1, and Mode 2. Which response mode is set is chosen with the
+asm instructions IM 0, IM 1, and IM 2, respectively.
+
+<P><B>What actions take place during Interrupt Response Mode 0? Mode 1?
+Mode 2?</B>
+<UL>
+<LI>
+Mode 0 - Mode 0 is not and cannot be used with TI - Calcs. During mode
+0, the CPU will read any instruction placed on the data bus and execute
+that instruction immediately. This has no use, since we cannot determine
+what instruction will be placed on the data bus nor can we provide an instruction.</LI>
+
+<LI>
+Mode 1 - Mode 1 is the default interrupt mode used by the TI-0S. An interrupt
+is triggered by the TI-86 hardware 200 times per second. During the interrupt,
+a restart (1 byte jump) is performed at memory location $0038. $0038 is
+located on Rom Page 0. Thus $0038 is called 200 times per second.</LI>
+
+<LI>
+Mode 2 - When a Mode 2 interrupt occurs, the CPU jumps to an address where
+the I reg is the MSB (Most Significant Byte) and the data bus is the LSB
+(Least Significant Byte). The LSB is a random number that you don't know
+(who knows what would be on the data bus?). That means that you must make
+a table of 256 bytes beginning at $xx00 to $xxFF. In the table you store
+a lot of $8F for example, and then a 16-bit address will be retrieved at
+an even location at this vector table which results in a jump to $8F8F.
+This is where you store the interrupt handler which should end with a jp
+$38. (You only need this if you need the TI-OS to continue it's normal
+interrupt cycle - thus it is not usually needed in assembly programs but
+a must for TSR's)</LI>
+</UL>
+
+<HR>
+<CENTER>
+<H1>
+Interrupt Mode 1</H1></CENTER>
+
+<HR>
+<CENTER><IMG SRC="images/im1.gif" ></CENTER>
+
+
+<P><B>What role does an interrupt mode 1 play in the TI-OS?</B>
+<BR>During Mode 1, an interrupt is executed 200 times per second, and a
+jump to $0038 is accomplished. So what does the calculator do 200 times
+per second after it jumps to $0038? A whole bunch of stuff. I was looking
+through the rom today for some 2-3 hours, and I must admit there is a lot
+of crap that goes on!
+
+<P>Once $38 is called, it first checks the user interrupt flag to see if
+the user routine is installed (more on this later). It then checks the
+checksum to see if the memory area is valid. Here is the code:
+<PRE>;RST 38 - interrupt (called ~200 times/sec.)
+0038&nbsp; 08&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; af,af'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;save registers
+0039&nbsp; d9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exx
+003a&nbsp; fdcb2356&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; 2,(iy+$23)&nbsp;&nbsp; ;call user int routine, if installed.
+003e&nbsp; 2826&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z,$0066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;User interrupt installed flag set? If not, skip to $66
+0040&nbsp; 3afdd2&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,($d2fd)&nbsp;&nbsp;&nbsp; ;Load checksum byte
+
+;Checks to see if the checksum on the user routine
+0043&nbsp; 21fed2&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hl,$d2fe
+0046&nbsp; 96&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sub&nbsp;&nbsp;&nbsp;&nbsp; (hl)
+0047&nbsp; 2125d3&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hl,$d325
+004a&nbsp; 96&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sub&nbsp;&nbsp;&nbsp;&nbsp; (hl)
+004b&nbsp; 214dd3&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hl,$d34d
+004e&nbsp; 96&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sub&nbsp;&nbsp;&nbsp;&nbsp; (hl)
+004f&nbsp; 2175d3&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hl,$d375
+0052&nbsp; 96&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sub&nbsp;&nbsp;&nbsp;&nbsp; (hl)
+0053&nbsp; 219dd3&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hl,$d39d
+0056&nbsp; 96&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sub&nbsp;&nbsp;&nbsp;&nbsp; (hl)
+0057&nbsp; 21c5d3&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hl,$d3c5
+005a&nbsp; 96&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sub&nbsp;&nbsp;&nbsp;&nbsp; (hl)
+005b&nbsp; 2005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nz,$0062
+005d&nbsp; cdfed2&nbsp;&nbsp;&nbsp; call&nbsp;&nbsp;&nbsp; $d2fe&nbsp;&nbsp;&nbsp;&nbsp; ; Checksum is OK, call user routine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0060&nbsp; 1804&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $0066&nbsp;&nbsp;&nbsp;&nbsp; ; Go to next part of interrupt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0062&nbsp; fdcb2396&nbsp; res&nbsp;&nbsp;&nbsp;&nbsp; 2,(iy+$23); Checksum doesn't add up, so it disables usr routine</PRE>
+The next part appears to branch off into three choices. If bit 0 is set
+on Port 3, it appears some sort of "ON" action has occurred, such as the
+on key has been pressed. It will then branch off to another routine that
+may turn the calc on. If bit 1 is set and bit 0 is clear, it appears that
+the LCD is on and the on interrupt hasn't occurred. This is what happens
+when the calculator is up and running. Next, if neither is set, it appears
+that the LCD is off and the on key is not pressed. Thus the interrupt simply
+finishes up at $0086. Here is the code:
+<PRE>0066&nbsp; db03&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,($03)
+0068&nbsp; 1f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rra&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;On interrupt has happened - goto 008f(calc on,reset?)
+0069&nbsp; 3824&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c,$008f
+006b&nbsp; 1f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rra
+006c&nbsp; 3828&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c,$0096&nbsp;&nbsp; ;if LCD is on and On interrupt hasn't occurred,goto 0096
+006e&nbsp; 1816&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $0086&nbsp;&nbsp;&nbsp;&nbsp; ;if neither set, end interrupt</PRE>
+$96 is of particular interest. This is what usually is going on normally
+200hz.. take a look:
+<PRE>0096&nbsp; fdcb1e76&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; 6,(iy+$1e)
+009a&nbsp; 2800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z,$009c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Looks redundant to me
+009c&nbsp; fdcb1246&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; indicRun,(iy+indicflags)
+00a0&nbsp; c42a01&nbsp;&nbsp;&nbsp; call&nbsp;&nbsp;&nbsp; nz,anim_runindic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Animates run indicator if flag set
+00a3&nbsp; fdcb1256&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; indicOnly,(iy+indicflags)
+00a7&nbsp; 2017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nz,$00c0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;If indicOnly flag set, then interrupt skips: reading
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;keyboard, updating APD, and animating cursor.
+
+00a9&nbsp; cda101&nbsp;&nbsp;&nbsp; call&nbsp;&nbsp;&nbsp; $01a1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;read keyboard (returns keyb mask=$ff)
+00ac&nbsp; fdcb1e76&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; 6,(iy+$1e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;if flag set, set keyb port to $7f
+00b0&nbsp; 2804&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z,$00b6
+00b2&nbsp; 3e7f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,$7f
+00b4&nbsp; d301&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out&nbsp;&nbsp;&nbsp;&nbsp; (keyboard),a
+00b6&nbsp; fdcb0c56&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; curAble,(iy+curflags)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;if cursor enabled, animate it
+00ba&nbsp; c48d3f&nbsp;&nbsp;&nbsp; call&nbsp;&nbsp;&nbsp; nz,_anim_cursor
+00bd&nbsp; cd7001&nbsp;&nbsp;&nbsp; call&nbsp;&nbsp;&nbsp; timeout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Update APD - Auto Power Down routines
+00c0&nbsp; 3e09&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,$09&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; $09 $0B signals on not pressed, $0A $0B signals on is pressed
+00c2&nbsp; c37000&nbsp;&nbsp;&nbsp; jp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $0070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Finish routine</PRE>
+As you can see, this code explains a lot. You can disable much of the ability
+of the interrupts with flags. You can disable the run indicator with the
+indicRun flag and can disable the built-in keyboard handler with indicOnlyflag.
+Note this disables get_key style method for getting keys, you must program
+the ports instead. However this is one method for fixing the famous "down-left"
+bug. More on this later. Explanations:
+<UL>
+<LI>
+The interrupt animates the indicator. The indicator is that little graphic
+on the top right corner of the calculator that animates when the calculator
+is "busy", such as graphing a function. This is activated by setting a
+flag.</LI>
+
+<LI>
+The interrupt also checks for keypresses. More details on this later when
+I learn more.</LI>
+
+<LI>
+The interrupt animates the cursor (flashing box where next character is
+at)</LI>
+
+<LI>
+The interrupt handles he APD, or Auto Power Down, which is basically a
+timer that counts down per interrupt cycle. After about 5 minutes, the
+calculator shuts off (sleeps). Every time you press a key, it appears to
+reset the counter back to 5 minutes. Since the interrupts are activated
+200 times per second, it would take a countdown value of 200 to wait one
+second. 200 hz * 30 seconds = 6000 (count down value). This is what I assume
+happens, I may check later to see if I am 100% accurate.</LI>
+</UL>
+Now the interrupt "wraps up" at $0070, where the earlier code jumps here
+at $C2. Here is the code:
+<PRE>0070&nbsp; fdcb1e76&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; 6,(iy+$1e)
+0074&nbsp; 280e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z,$0084
+0076&nbsp; 47&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; First byte received from another routine
+0077&nbsp; db01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,(keyboard)
+0079&nbsp; 4f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c,a
+007a&nbsp; 3eff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,$ff
+007c&nbsp; d301&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out&nbsp;&nbsp;&nbsp;&nbsp; (keyboard),a
+007e&nbsp; cb41&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bit&nbsp;&nbsp;&nbsp;&nbsp; 0,c
+0080&nbsp; ca5c0c&nbsp;&nbsp;&nbsp; jp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; z,$0c5c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;sets RAMport to 0, shuts calc off (no ret)
+0083&nbsp; 78&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,b
+0084&nbsp; d303&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out&nbsp;&nbsp;&nbsp;&nbsp; ($03),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; First byte received from another routine
+
+; Ends routine
+0086&nbsp; 3e0b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a,$0b
+0088&nbsp; d303&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out&nbsp;&nbsp;&nbsp;&nbsp; ($03),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; $09 $0B signals on not pressed, $0A $0B signals on is pressed
+008a&nbsp; 08&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; af,af'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore lost registers with shadow registers
+008b&nbsp; d9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exx
+008c&nbsp; fb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ei&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Enable interrupts
+008d&nbsp; ed4d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reti&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Return from interrupts</PRE>
+At $70 it appears to read the keyboard for some reason, I am not certain
+what the ROM is trying to do here, if anyone can clarify this for me please
+e-mail me at <A HREF="mailto:matt@acz.org">matt@acz.org</A>
+and explain this mystery code. But anyway at $86 it finishes up. This should
+help clarify some of the things that go on during the TI-0S is IM 1.
+
+<P>There is much more to disassemble in the ROM and a lot to learn if you
+are interested. Note this is Rom Version 1.2, and you can get this particular
+commented Rom Version (thanks to Joshua Grams) from Rom Central. You must
+go through my "security check" to download the rom listing, and you must
+have a 1.2 ROM on your calculator (check your rom version).
+
+<P>Most of us may think this was a little more detail then they wanted
+to know, but it is my web page, and I think that the theory behind things
+is very important. If you want to learn things on the surface, go to another
+web page. If you are not satisfied with two word answers and cryptic responses,
+you came to the right place. The next subject will explain more practical
+interrupt programming. This involves the user interrupt routine.
+
+<P>
+<HR>
+<CENTER>
+<H1>
+Practical Applications of Interrupt Mode 1</H1></CENTER>
+
+<HR>
+<BR><FONT SIZE=-2>Thanks goes to Jim Alverson, Dux Gregis, and Joshua Grams
+for their source code and explanations that help me piece together the
+concepts of interrupts and user routines.</FONT>
+
+<P>"So big deal", you think, "The interrupt calls memory location $38 two
+hundred times per second. How does that help me?". Well, other then the
+fact that you now have a better understanding of what is going on behind
+the scenes, the topic of user interrupt routines come up.
+
+<P><B>The user interrupt routine</B> is a 200 byte location in memory that,
+if a certain flag is set, will be called 200 times per second. In other
+words, you can have an asm program be called every interrupt! Since an
+interrupt runs in the background and affects nothing else, what we have
+here is TSR (Terminate &amp; Stay Resident) program. If the user interrupt
+flag is set, the interrupt will jump to the 200 byte memory location and
+start executing asm code. Once it is finished, it will return to the interrupt
+and execute the rest of the interrupt. The program can do anything it wants,
+monitor keypresses, make your own custom screen saver, whatever!
+
+<P><B>What the Rom Does</B>
+<UL>
+<LI>
+If you look at address $003A, a few instructions after $38, you see the
+first thing it does is check the flag with the instruction - Bit 2,(iy+$23).
+If this flag is clear, it will skip the user interrupt code. If the flag
+is set, however, the code continues...</LI>
+
+<LI>
+It will then save the memory address $D2FD, which is a 1-byte checksum
+byte. Then it takes the checksum byte and subtracts the 1st, 40th, 80th,
+120th, 160th, and 200th bytes of the routine. If, while in the process
+of subtracting 8-bit values from the 8-bit checksum, the subtraction causes
+the number to go below 0 it just wraps back to 255 (Example: 128 - 129
+= 255) If the checksum is not equal to 0, then it is a bad checksum and
+the user interrupt will be disabled (it changes the flag)</LI>
+
+<LI>
+If the checksum is OK, it performs a jump to $D2FE, which is one byte after
+the checksum. It will now execute asm code until a 'ret' statement is found,
+from which it will then return to the interrupt.</LI>
+</UL>
+&nbsp;
+
+<P><B>How to install the user routine</B>
+<BR>Part of the source code will be used to install the code. Another part
+will be the code itself that will go in the user routine. This is clearer
+when you see the template and sample program (later on). Here are the steps
+needed to install your own user routine.
+<UL>
+<LI>
+First you want to disable the user routine flag so the user routine doesn't
+accidentally get called before it is completely installed</LI>
+
+<LI>
+Then we copy the user routine asm data from our program to the 200 byte
+area ($D2FE). This is accomplished with the LDIR instruction.</LI>
+
+<LI>
+Next we want to calculate the checksum. This 1-byte value will be the sum
+of the 1st, 40th, 80th, 120th, 160th, and 200th bytes of the routine. Since
+we added all these bytes together and the ROM will subtract all these bytes
+together, then it cancels out to zero, which is the exact value the ROM
+is looking for.</LI>
+
+<LI>
+At last we save the checksum to memory ($D2FD), and activate the user interrupt
+routine by setting the user interrupt flag. The interrupt routine is now
+installed, and as long as that is flag is set, it is there for good. It
+will run in the background along with the rest of the interrupt and know
+one will know (unless some visual clue is given).</LI>
+</UL>
+Any program that runs in the background is basically a TSR. Now if you
+have a disgruntle TSR, it can be considered a virus. So it is possible
+to make a virus on a calculator, although it is highly unlikely it will
+spread for many reasons but I won't discuss them here.
+
+<P><FONT SIZE=+1>User routine template</FONT>
+<BR>This template is the basic setup needed for installing a user routine.
+It is commented below.
+<PRE>#include "asm86.h"
+#include "ram86.inc"
+#include "ti86asm.inc"
+
+_user_int_ram EQU $d2fd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Area where interrupt handler goes
+
+.org _asm_exec_ram&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Instruction Counter starts at $D748
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; res 2,(iy+$23)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;turn user int off so it won't get called by
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;accident before we're ready
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,int_copy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;copy prog to user int buffer
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld de,_user_int_ram+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;1 byte ahead of checksum
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld bc,int_end-int_start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;length of interrupt handler
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;hl is the source, de is the destination,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;and bc is the length
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld a,(_user_int_ram+1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;set up checksum byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*3)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*4)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*5)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld (_user_int_ram),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load checksum in its location
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set 2,(iy+$23)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;turn it on
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret
+
+
+int_copy:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .org $D2FE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Intruction Counter starts at $D2FE
+int_start:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; ----------------------------------
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Code goes here, follwed by a 'ret'
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; ----------------------------------
+
+int_end:
+
+.end</PRE>
+<FONT SIZE=+1>Notes</FONT>
+
+<P>As you can see, this template follows the steps I described above this
+routine. It defines the start of the user interrupt, disables the flag,
+copies the asm code starting at the int: label, calculates the checksum,
+and sets the flag.
+
+<P>There are two .ORG addresses in the program. The first .ORG sets the
+instruction counter to _asm_exec_ram, which is $D748 (the start of all
+asm programs). The second .ORG instruction sets the instruction counter
+for the start of the interrupt code ($D2FD). Notice that the .ORG is needed
+by the assembler for calculating fixed 16-bit addresses such as labels,
+variables, and JP instructions.
+
+<P>Notice that all the bytes you add up result in the checksum. The ROM
+subracts all these bytes that your previously added up from the checksum.
+If the data is valid then the result is 0 and the user routine is called.
+Any overflow when adding the bytes just "wraps around" For example, 255
++ 1 wraps back to 0.
+
+<P><FONT SIZE=+1>Example</FONT>
+
+<P>This program constantly draws a small sprite that displays TI86 on the
+upper left corner of the screen. This is a 8 x 9 character sprite. Here
+is the code:
+<PRE>; Matthew Johnson
+;&nbsp; matt@acz.org
+; http://www.dogtech.com/cybop/ti86/
+
+; Interrupt Sprite Example
+#include "ram86.inc"
+#include "ti86asm.inc"
+
+_user_int_ram EQU $d2fd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Area where interrupt handler goes
+
+.org _asm_exec_ram&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Instruction Counter starts at $D748
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; res 2,(iy+$23)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;turn user int off so it won't get called by
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;accident before we're ready
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,int_copy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;copy prog to user int buffer
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld de,_user_int_ram+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;1 byte ahead of checksum
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld bc,int_end-int_start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;length of interrupt handler
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;hl is the source, de is the destination,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;and bc is the length
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld a,(_user_int_ram+1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;set up checksum byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*3)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*4)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl,_user_int_ram+($28*5)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load byte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;add to total
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld (_user_int_ram),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;load checksum in its location
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set 2,(iy+$23)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;turn it on
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret
+
+
+int_copy:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .org $D2FE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Intruction Counter starts at $D2FE
+int_start:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl, $FC00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; HL points to display
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld de, CalcPIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DE points to start of sprite
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld b, 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Nine rows
+
+Loop:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld a, (de)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Get byte from sprite
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld (hl), a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Display byte on screen
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inc de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Next byte of sprite
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld a, l
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add a, 16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Add 16 to L (goes to next row)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld l, a
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; djnz Loop
+
+
+Finished:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; returns
+
+CalcPIC:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %11101110
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %01000100
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %01001110
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %00000000
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %11100100
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %10101000
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %01001100
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %10101010
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %11100100
+
+int_end:
+
+.end</PRE>
+CalcPIC is the Label assigned to the start of the sprite, which will be
+stored in the user routine along with the rest of the code.
+
+<P>Notice that this sprite is fixed in memory. The first byte is drawn
+at $FC00, the next byte is drawn at $FC10, the next byte at $FC20, etc
+etc. Once the first byte is drawn, we simply inc DE and DE points to the
+next byte of the sprite. We then add 16 (16 bytes * 8 pixels/byte = 128
+width of screen) to HL to go to the next row in the display. Since HL starts
+at $FC00 and we add 16 to L nine times for each new row, HL will only equal
+$FC90 at the end of the djnz routine. This will never effect the H register
+and no carry will produce so we don't have to worry about it.
+
+<P>Once the program is run, it is there for good until you reset your calculator's
+memory. Enjoy!
+
+<P>
+<HR>
+<CENTER>
+<H1>
+Interrupt Mode 2</H1></CENTER>
+
+<HR>
+<CENTER><IMG SRC="images/im2.gif" ></CENTER>
+&nbsp;
+
+<P>Ahh! My fingers are tiring. All this work... Now would be a great time
+to e-mail me at <A HREF="mailto:matt@acz.org">matt@acz.org</A>
+and thanks me for all my hard work. Include words such as 'master', 'cool',
+'awesome'.. it adds to the effect ;-). All righty then, on with Interrupts.
+
+<P>A brief introduction to Interrupt Mode 2 was given on the top. Once
+you set up IM 2, IM 1 no longer applies. It does not jump to $38 every
+interrupt. This is what happens when an interrupt occurs and we are in
+Interrupt Mode 2:
+<UL>
+<LI>
+An interrupt occurs</LI>
+
+<LI>
+The CPU will then form a 16-bit address where the I register is the Most
+Significant byte and the Least Significant Byte is a number received from
+the data bus.</LI>
+
+<LI>
+A 256 byte vector table must be created in the range of $xx00 to $xxFF,
+where xx is the I register. The 256 bytes cover all possible combinations
+that can occur by the random value received from the data bus.</LI>
+
+<LI>
+Once the 16-bit address is formed, a jump will occur to this vector table.
+It jumps to an <I>even</I> address and uses two bytes to form another 16-bit
+address.</LI>
+
+<LI>
+Then it performs a jump to this newly created 16-bit address.</LI>
+
+<LI>
+Since the jump is basically random in this 256 byte region, all the bytes
+in the table values will be filled with the same value, for example, $8F.
+That way a when it jumps to the table it will form a 16-bit address of
+$8F8F, no matter where it jumps to in this table (which is always an even
+address), a jump to $8F8F</LI>
+</UL>
+
+<CENTER><IMG SRC="images/im2_2.gif" ></CENTER>
+
+
+<P><B>Notes:</B>
+
+<P>Jimmy Mardell claims you need a 257 byte table, but I believe he is
+wrong. Let me elaborate - According to the IM 2 documentation by Zilog
+as I quote - "The lower 8-bits of the pointer must be supplied by the interupting
+device. Actually, only seven bits are required from the interrupting device
+as the least significant bit must be zero. This us required since the pointer
+is used to get two adjacent bytes to form a complete 16-bit service routine
+starting address and the addresses <I>must always start in even locations</I>".
+OK, so it will retrieve an even address. Suppose the vector table starts
+at $8E00 and is filled with all $8F. The vector table starts at $8E00,
+and ends at $8EFF. This is a total of 256 locations. But since it starts
+at an even location, the 16-bit number retrieved from the vector table
+can only be (<I>at the most</I>) $8EFE (which is even). Then a 16-bit address
+is formed where the first byte would be $8EFE and the second at $8EFF.
+Notice this is only 256 bytes. What I believe Jimmy Mardell thought is
+that it could jump anywhere in the table up to $8EFF, get the first byte
+from here, and get the next byte at $8F00. This would be incorrect since
+the address must be even and $8EFF is not an even number.
+
+<P><I>[Reply from Jimmy Mardell:]</I>
+<BR><I>I've read that, but he's wrong.&nbsp; I've tried with a 256 table,
+and it crashed immediately :) I don't know where he read that it must be
+an even number - that's absolutely wrong.&nbsp; I mean, _ANY_ number can
+be on the databus since the interrupt isn't supported.&nbsp; On CPU's that
+supports IM 2, the peripherals which are connected to it mosy likely only
+"sends" (or whatever) even bytes, but that's beside the point.</I><I></I>
+
+<P>[David's Note:&nbsp; Thanks for clearing this up, Jimmy!&nbsp; I fixed
+the code below to use a 257 byte vector table instead of 256 bytes.]
+
+<P>IM 2 is a fast interrupt mode, but the handler can be optimized even
+more if you do not wish to use it with TSR's. This is explained in the
+Advanced Interrupt section. It also gives you more available ram for the
+interrupt handler when compared to the 200 byte limit of the IM 1 user
+routine ($D2FE, rememember?)
+
+<P>By now you probably wish to see an interrupt mode 2 template. Here it
+comes. In this template, it will set up the basic interrupt handler. When
+the interrupt code is complete, it will then jump to $66 to finish the
+normal TI-OS interrupt. This allows IM 2 to be used in the TI-OS (as a
+TSR), or in an asm program. In my Advanced Interrupts section, I will show
+you a lightning fast IM 2 interrupt handler that needs not jump $66. This
+will only work in asm programs (it would crash TI-OS obviously), but allows
+for lightning fast interrupt handlers (i.e. flickerless grayscale!).
+
+<P><FONT SIZE=+1>Basic Interrupt Mode 2 Template</FONT>
+<PRE>#include "ti86asm.inc"
+
+int_addr equ $F8F8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Start of interrupt code
+
+.org _asm_exec_ram&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set instruction counter to $D748 (start of all asm programs)
+
+&nbsp;ld hl,$FA00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Source = $FA00 (Start of vector table)
+&nbsp;ld de,$FA01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Destination = $FA01
+&nbsp;ld (hl),$F8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set first byte so it is copied to all of them ($F8F8)
+&nbsp;ld bc,257&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;257 bytes (size of vector table)
+&nbsp;ldir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;(DE) &lt;- (HL), BC=BC-1, Loop till B=0
+&nbsp;
+&nbsp;ld hl,int_copy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Source = interrupt routine
+&nbsp;ld de,int_addr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Destination = $F8F8 (as specified in vector table)
+&nbsp;ld bc,int_end-int_start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Length of custom interrupt routine
+&nbsp;ldir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;(DE) &lt;- (HL), BC=BC-1, Loop till B=0
+
+&nbsp;ld a,$FA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set up address of vector table
+&nbsp;ld i,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; MSB = $FA
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; LSB = (byte supplied by data bus - random)
+&nbsp;im 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set interrupt mode 2
+
+&nbsp;ret&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Return
+
+int_copy:
+&nbsp;.org int_addr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set instruction counter to $F8F8 (start of int handler)
+
+int_start:
+&nbsp;ex af,af'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Exchange af with alternate register af'
+&nbsp;exx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Exchange all other reg's with alternate reg's
+
+; ---------------------------------------------------------
+; CODE GOES HERE
+; ----------------------------------------------------------
+
+&nbsp;jp $66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;jump to normal handler so it can do its things
+
+int_end:
+
+.end</PRE>
+<B>Notes:</B>
+
+<P>The jp to $66 at the end of IM 2 routine allows you to hand over control
+to the default interrupt handler normally at $38. All the interrupt handler
+does at $38, though, is exchange (EX AF, AF' / EXX) and check to see if
+the user routine is installed (which we don't need cause we are using IM
+2 for our interrupt code). Since an exchange is performed at the end of
+the IM 1 interrupt handler ($008A and $008b), and we skip over the initial
+exchange at $38, we only need to exchange the registers once in our interrupt
+handler code (right after int_start).
+
+<P>When working with Interrupt Mode 2 as a TSR, we have no way of knowing
+what RAM page we are at. That means that we need all the ram for the vector
+table and the interrupt handler routine in RAM PAGE 0. As you see, this
+vector table starts at $FA00 and the interrupt handler starts at $F8F8.
+This could cause the system to become unstable or crash if an asm program
+is over 8,624 bytes (it would overwrite the vector table), or if the hardware
+stack was over 257 bytes (it would overwrite the interrupt handler code).
+This is extrememly unlikely, I haven't had it crash once (well, once I
+got everything working OK, ;) )
+
+<P>Remember, this code right here works perfectly for TSR's. In other words,
+our IM 2 custom interrupt handler can easily run in the background along
+with the TI-OS, since it performs a jump that finishes the rest of the
+standard interrupt handler code ($38 normally - we skip to $66 however,
+see above). However, for ultimate speed, the fastest interrupt handler
+ever shall be in my Advanced Interrupt section. This ULTRA fast IM 2 code
+will only work in asm programs, it cannot be used in TSR's. However, it
+is fast and handles grayscale with virtually no flicker. I am talking about
+the potential of flickerless 8-level grayscale!! See the advanced section
+for more details.
+
+<P>The IM 2 TSR example that follows will be just like the IM 1 user routine
+TSR in the earlier example.
+
+<P><FONT SIZE=+1>Example</FONT>
+<PRE>#include "ti86asm.inc"
+
+int_addr equ $F8F8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Start of interrupt code
+
+.org _asm_exec_ram&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set instruction counter to $D748 (start of all asm programs)
+
+&nbsp;ld hl,$FA00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Source = $FA00 (Start of vector table)
+&nbsp;ld de,$FA01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Destination = $FA01
+&nbsp;ld (hl),$F8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set first byte so it is copied to all of them ($F8F8)
+&nbsp;ld bc,257&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;257 bytes (size of vector table)
+&nbsp;ldir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;(DE) &lt;- (HL), BC=BC-1, Loop till B=0
+&nbsp;
+&nbsp;ld hl,int_copy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Source = interrupt routine
+&nbsp;ld de,int_addr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Destination = $F8F8 (as specified in vector table)
+&nbsp;ld bc,int_end-int_start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Length of custom interrupt routine
+&nbsp;ldir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;(DE) &lt;- (HL), BC=BC-1, Loop till B=0
+
+&nbsp;ld a,$FA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set up address of vector table
+&nbsp;ld i,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; MSB = $FA
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; LSB = (byte supplied by data bus - random)
+&nbsp;im 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set interrupt mode 2
+
+&nbsp;ret&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Return
+
+int_copy:
+&nbsp;.org int_addr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Set instruction counter to $F8F8 (start of int handler)
+
+int_start:
+&nbsp;ex af,af'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Exchange af with alternate register af'
+&nbsp;exx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;Exchange all other reg's with alternate reg's
+
+; ---------------------------------------------------------
+&nbsp;ld hl, $FC00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; HL points to display
+&nbsp;ld de, CalcPIC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DE points to start of sprite
+&nbsp;ld b, 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Nine rows
+
+Loop:
+&nbsp;ld a, (de)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Get byte from sprite
+&nbsp;ld (hl), a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Display byte on screen
+
+&nbsp;inc de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Next byte of sprite
+
+&nbsp;ld a, l
+&nbsp;add a, 16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Add 16 to L (goes to next row)
+&nbsp;ld l, a
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;djnz Loop
+; ----------------------------------------------------------
+
+&nbsp;jp $66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;jump to normal handler so it can do its things
+
+CalcPIC:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %11101110
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %01000100
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %01001110
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %00000000
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %11100100
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %10101000
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %01001100
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %10101010
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .db %11100100
+
+int_end:
+
+.end</PRE>
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+</BODY>
+</HTML>

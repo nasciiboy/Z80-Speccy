@@ -1,0 +1,92 @@
+<HTML>
+<HEAD><TITLE>86 Central - General Z80 Information</TITLE>
+<META NAME="keywords" CONTENT="Zilog, z80, Zilog Z80, Z80, z80, Z80, Z80, z80, Z80, Zilog, Zilog, Zilog, Zilog, General, overview, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+<META NAME="description" CONTENT="86 Central - General Z80 information, an overview of the asm concepts and an introduction to z80 terms.">
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" WIDTH=301 HEIGHT=76 BORDER=0 ALT="86 Central"></CENTER>
+<CENTER><H5>Best viewed in 1024x768</H5></CENTER>
+<CENTER><H2>General Z80 Information</H2></CENTER>
+
+	<CENTER><IMG SRC="images/z80_s.jpg" WIDTH=259 HEIGHT=97 BORDER=1 ALT="[Z80 Chip Photo]"></CENTER><BR>
+	
+	<CENTER><A HREF="images/z80spc.gif" onMouseOver="status='Z80 Specs - Click for Full Screen'"><IMG SRC="images/z80smspc.gif" WIDTH=320 HEIGHT=238 BORDER=1 ALT="[Z80 Spec Diagram]"></A></CENTER>
+	<CENTER><A HREF="images/z80spc.gif">View in <B><U>Full Screen</U></B></A></CENTER>
+	
+	<P>The Zilog Z80 happens to be a fairly popular processor. It has been used in the <A HREF="http://www.nintendo.com/gb/hardware.html">Game Boy</A>, the TRS-80, and all TI-8x graphic calculators.
+	
+	<P>The Zilog Z80 is a CPU created by <A HREF="http://www.zilog.com">Zilog, Inc</A>. This 8-bit CPU is based on and fully compatible with the 8080A CPU. The Z80 CPU contains an address bus of 16-bit, which means it can access 2^16 or 65,535 bytes of memory at one time. The speed ranges from 6 MHZ - 20 MHZ. The TI-86 (and all other TI-8x calcs) uses a 6 MHZ CPU. The Z80 includes 208 bits of read/write memory for register use.
+	
+	<P>Z80 General Assembly Terms and Concepts:
+		<UL>
+			<LI>Z80 Status Indicators: These are flags that indicate certain information regarding the status of a certain operation.
+			<LI>Z80 Instructions:
+				<UL>
+					<LI>Load and Exchange: These instructions let you move data between CPU registers and other registers, or between CPU registers and external memory.
+					<LI>Block Transfer and Search: Allows you to move blocks of memory from one location to another.
+					<LI>Arithmetic and Logical: Allows Arithmetic (adding) and Logical (and, or, etc) operations.
+					<LI>Rotate and Shift: Allows the bit level rotation of registers or memory locations.
+					<LI>Bit Manipulation: Used to test, set, or reset bits in memory, registers, etc
+					<LI>Jump, Call, and Return: Modifies the PC (Program Counter) Instruction to jump to a location in memory and continue executing instructions from there.
+					<LI>Basic CPU Control: Controls inner CPU functions, allowing for interrupts, etc.
+				</UL>
+			<LI> Interrupts: Interrupts the Z80 CPU to execute a routine.
+				<UL>
+					<LI>Non-maskable Interrupt: Interrupts that are accepted by the CPU at all times.
+					<LI>Maskable: Interrupts that can be disabled via assembly language.
+				</UL>
+			<BR><BR>
+			
+		<P>More Information:<BR>
+		
+		&nbsp;&nbsp;<A HREF="http://www.zilog.com/frames/fz80_180micro.html">Offical Zilog Z80 Product information</A><BR>
+		&nbsp;&nbsp;<A HREF="http://www.ee.washington.edu/eeca/micro/z80.html">Zilog Z80 8-bit Microprocessor overview</A><BR>
+		&nbsp;&nbsp;<A HREF="http://www.softaid.net/emulate/articles/az180.shtml">Article Entitled, "The Z80 Lives!"</A><BR>
+		&nbsp;&nbsp;<A HREF="http://www.geocities.com/SiliconValley/Peaks/3938/Z80_Home.htm">Unofficial Zilog Z8-Z80 Support Page</A><BR>
+
+
+
+<BR>
+
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+
+</BODY>
+
+</HTML>

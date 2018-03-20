@@ -1,0 +1,607 @@
+<HTML>
+<HEAD>
+<TITLE>Matt Johnson's Z80 Programming Tutorial</TITLE>
+<META NAME="keywords" CONTENT="tutor, tutorials, Z80, zilog, memory, tasm, registers, flags, basics, calls, rom calls, ram, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+<META NAME="description" CONTENT="86 Central - 86 asm tutorial - The third TI-86 tutorial, covers basic asm instructions, information about the Z80, registers, the flags, and some rom calls.">
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000ff">
+
+<FONT FACE="Comic Sans MS" SIZE=5><P ALIGN="CENTER">Matt Johnson's Z80 Programming Tutorial</P>
+</FONT><FONT FACE="Comic Sans MS" SIZE=4><P ALIGN="CENTER">Programming the TI-86 [PART 03]</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+</FONT><FONT SIZE=2><P ALIGN="CENTER">[The Z80 / Memory / Tasm / Registers / Flags / Z80 basics / Rom Calls]</P>
+</FONT><FONT FACE="Courier New" SIZE=2><P> </P>
+
+<P>Welcome! If you catch any mistakes or have any additions, comments, anything, e mail me immediately!</P>
+
+</FONT><PRE>Matthew Johnson
+
+  Nick: Optic2000
+ <A HREF="http://www.mirabilis.com/">ICQ</A> #: 8342478
+E-mail: <A HREF="mailto:matt2000@dogtech.com">matt2000@gte.net</A>
+
+TI-86 Page: <A HREF="http://www.dogtech.com/cybop/ti86">http://www.dogtech.com/cybop/ti86</A>
+ Home Page: <A HREF="http://www.dogtech.com/cybop/">http://www.dogtech.com/cybop/</A></PRE>
+<FONT FACE="Courier New" SIZE=2>
+<P>&nbsp;</P>
+</FONT><FONT FACE="Comic Sans MS" SIZE=4><P ALIGN="CENTER">Introduction</P>
+<P ALIGN="CENTER"></P>
+</FONT><FONT FACE="Courier New" SIZE=2><P> This tutorial is going to be long. It allso it going to cover a lot of material, so be prepared! Some of the things covered in this tutorial will be the general makeup of the Z80, how programs are assembled, how programs are run, the table assembler, Tasm directives, registers, z80 information, simple z80 instructions, how rom calls work, and how memory works, and whatever else I think is important to know. Oh, and, not necessarily in that order, either.</P>
+
+<P>&nbsp;</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Mr. Z80</P>
+<P ALIGN="CENTER"></P>
+</FONT><FONT FACE="Courier New" SIZE=2><P> The processor used in the TI-86 is a Z80. This CPU is made by Zilog.</P>
+<P>The TI-86 uses a 6 MHZ CPU, meaning that the CPU "cycles" six million times a second. The "clock" that controls the speed is determined by a crystal. The CPU can only "do something" during this clock cycle. If you are serious about learning everything about the Z80, visit their site at www.zilog.com and order free Z80 books. The full link is at my web page.</P>
+
+<P>&nbsp;</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Table Assembler</P>
+<P ALIGN="CENTER"></P>
+</FONT><FONT FACE="Courier New" SIZE=2><P>I think it may be best to explain some of the directives and macros used in TASM, the Table Assembler.</P>
+
+<P>&nbsp;</P>
+</FONT><U><FONT FACE="Comic Sans MS" SIZE=2><P>Comments</P>
+</U></FONT><FONT FACE="Courier New" SIZE=2>
+<P>Comments in source code start with a semicolon ;</P>
+
+<P>&nbsp;</P>
+</FONT><U><FONT FACE="Comic Sans MS" SIZE=2><P>Alias</P>
+</U></FONT><FONT FACE="Courier New" SIZE=2>
+<P>TASM allows you to have words represent numbers. This is called aliases. For example, the alias _asm_exec_ram is $D748. This alias and hundreds more are stored in the file ti86asm.inc . To define an Alias, have the alias on the left, EQU or = in the middle, and the number on the right. Example:</P>
+
+<P>Optic EQU $1234</P>
+
+<P>Whenever you use Optic, the TASM compiler replaces it with $1234</P>
+
+</FONT><U><FONT FACE="Comic Sans MS" SIZE=2><P>Include</P>
+</U></FONT><FONT FACE="Courier New" SIZE=2>
+<P>#include "ti86asm.inc"</P>
+
+<P>The INCLUDE directive reads in and assembles the indicated source file. In this case the include file is just a list of aliases that save programmers time and headaches, and, most of all: suicidal tendencies!</P>
+
+<P>&nbsp;</P>
+</FONT><U><FONT FACE="Comic Sans MS" SIZE=2><P>Labels</P>
+</U></FONT><FONT FACE="Courier New" SIZE=2>
+<P>Labels are basically words that represent an address in an assembly language program. Labels can be used to mark places in a program like line numbers did in BASIC. It can also be used to signify the start of something, like the start of a string. A label starts with either a letter or an _ (underscore). A label ends when a space or colon is encountered.</P>
+
+<P>Simply add a colon or space after a word and it is a label.</P>
+
+<U><P>Example</P>
+</U>
+<P>Hello:</P>
+
+<P>Hello is now a label. Wherever hello is seen it is replaced by the 16-bit address where hello is.</P>
+
+<P>If the hello label was the start of an assembly program, then when LD HL, Hello was executed, then HL now contains the address of Hello, which is $D748 (I believe this is correct). Note: $D748 is the start of all assembly language programs on the TI-86. More on this later.</P>
+
+<P>The directive .db defines a byte:</P>
+
+<U><P>Example</P>
+</U>
+<P>.db $40</P>
+
+<P>The number $40 has been produced on the spot.</P>
+
+<P>.db "Hello World"</P>
+
+<P>An 11 byte string has been created.</P>
+
+<P>.db "Holy Cow", 0</P>
+
+<P>an 8 byte string has been created and ended with byte 0 (NULL)</P>
+
+<P>Add a label and you know where the number 40 is:</P>
+
+<P>My_number:</P>
+<P>.db $40</P>
+
+<P>The byte at address My_number is $40.</P>
+<P>Then you can change the byte if you would like</P>
+
+<P>LD HL, My_number</P>
+<P>LD (HL), $60</P>
+
+<P>The byte has been changed from $40 to $60.</P>
+
+<P>The directive .db defines a byte (8-bit):</P>
+<P>The directive .dw defines a word (16-bit):</P>
+
+<P>The .ORG directive tells the compiler where to start compiling the programs at. For example, .ORG $D748 tells the compiler to start the source code to be compiled at $D748 (the start of all ti-86 asm programs, alias _asm_exec_ram).</P>
+
+<P>The .END directive tells the compiler the assembly program is finished.</P>
+
+<P>&nbsp;</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">-[ Memory ]-</P>
+</FONT>
+
+<CENTER>The Memory section is pretty long, and since I updated it, I decided to put it in its own seperate tutorial</CENTER><BR>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Registers</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>The Z80 central processing unit contains extremely fast static memory called registers. Registers are used to store numbers. </P>
+
+
+<UL>
+<LI>The Z80 contains 7 general purpose 8-bit registers:  A, B, C, D, E, H, L</LI></UL>
+
+
+
+<UL>
+<LI>These are shadowed as A', B', C', D', E', H', L'</LI></UL>
+
+
+
+<UL>
+<LI>You can combine two 8-bit registers to form a 16-bit register.</LI></UL>
+
+
+
+<UL>
+<LI>The Z80 contains 3 general purpose 16-bit registers: BC, DE, HL</LI></UL>
+
+
+
+<UL>
+<LI>AF is also a 16-bit register, used for pushing or popping.</LI></UL>
+
+
+
+<UL>
+<LI>PC (16-bit) points at the currently executing assembly instruction.</LI></UL>
+
+
+
+<UL>
+<LI>SP (16-bit) points at the location of the stack memory.</LI></UL>
+
+
+
+<UL>
+<LI>IX and IY are indexed registers. IY holds the start of the bit table.</LI></UL>
+
+
+
+<UL>
+<LI>I and R are the Interrupt Page Address Register and the Memory Refresh Register, respectfully. These are rarely used.</LI></UL>
+
+
+
+<UL>
+<LI>F is an 8-bit flag register, shadowed as F'</LI></UL>
+
+
+<P>&nbsp;</P>
+<U><P>The registers in detail:</P>
+</U>
+</FONT><PRE>A - Register A (the accumalator), is often used as a "default"
+    register in many instructions, such as logical instructions.
+
+B, C, D, E can all hold general 8-bit values.
+
+HL - HL can hold a 16-bit value. It also can be used as a pointer to
+     a 16-bit address.
+
+H, L can hold general 8-bit values.
+
+AF is a 16-bit register that holds the accumulator and the Flag
+   register. It can be pushed or popped.
+
+PC - The program counter points to the current instruction being
+     fetched from memory. This register gets changed when you 
+     use the call or rst instruction.
+
+SP - Stack Pointer - The stack pointer holds the 16-bit address
+     of the current top of a stack located in the RAM. The
+     external stack has a LIFO (Last In First Out) structure.
+     You can PUSH data onto the stack or POP data off the
+     stack.
+
+IX and IY - These two index registers hold a 16-bit base address
+            that is used in what is called "indexed addressing mode".
+            The register is used to point to a place in memory and
+            an additional byte is used as a displacement. Using IX
+            or IY adds one byte to the instruction.
+
+            IY starts out at what is the location of the "bit table"
+            This is where you can access properties of the calculator
+            by changing bits of bytes relative to IY. This will be
+            explained in more detail in later tutorials.
+
+F is the Flag register. The flag register supplies information
+  regarding the status of the Z80 and/or the instruction that
+  has just been executed. The bit positions for each flag is
+  shown below:
+
+  7   6   5   4   3    2    1   0
+-----------------------------------
+| S | Z | X | N | X | P/V | N | C |
+-----------------------------------
+
+Bits 3 and 5 are not used.
+
+Four of the bits (C, P/V, Z, S) are use for conditional jump,
+ call, and return statements.
+
+H and Z are used for BCD math and are not testable.</PRE>
+<FONT FACE="Courier New" SIZE=2>
+<P>The most important flags are the Carry Flag (C) and the Zero Flag (Z)</P>
+<U>
+<P>Carry Flag:</P>
+
+</U><P>&nbsp;</P>
+<P>The carry bit is set or reset depending on the operation being performed.</P>
+
+<P>For ADD instructions that generate a carry (overflow), and subtract     instruction that generate a borrow, the Carry Flag is set to 1.</P>
+
+<P>For ADD instructions that do not generate a carry, and subtract instructions that don't generate a borrow, the Carry flag is reset to 0.</P>
+
+<P>For logical instructions AND s, OR s, and XOR s, the Carry flag gets reset. OR A is commonly used to reset the Carry without affecting anything.</P>
+
+<P>The instruction SCF sets the carry flag, and CCF changes to carry flag (if C=0 then C=1, if C=1 then C=0)</P>
+
+<U><P>Zero Flag:</P>
+</U>
+<P>The Zero Flag (Z) is set or reset if the result generated by the execution of an instruction is, well... 0.</P>
+
+<P>For 8-bit math and logical operations, the Z flag will be set to 1 if the accumulator (a) register becomes 0. If the A register is not 0, then the Z flag becomes 0.</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Basic Z80 instructions</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<U><P>LD</P>
+</U>
+<P>LD is the most important and most frequently used instruction in Z80 programming. LD means "Load". For example, ld a, 23 stores 23 into the A register. The syntax is:</P>
+
+<U><P>Syntax:</P>
+</U>
+<P>LD destination, source</P>
+<P> </P>
+<B><P>Examples</B>:</P>
+</FONT><PRE>
+ ld a, 15                       ; stores 15 into a
+ ld bc, $1234                   ;     stores $12 into C
+                                ; and stores $34 into B
+ ld ($C00F), $0513              ;     Stores $13 into $C00F
+                                ; and Stores $05 into $C010
+ ld a, (BC)                     ; stores byte at address BC into a
+ ld (HL), e                     ; stores reg. e in byte at address HL</PRE>
+<FONT FACE="Courier New" SIZE=2><P> </P>
+
+<P>One way to use LD is to load an immediate (specific) value into a register. Example: LD B, 15</P>
+
+<P>We can also load a hex number or binary number into a register, same deal. Example: LD C, $20 or LD D, %10110110</P>
+
+<P>We can load register to register: LD a, b .... LD c,d ... LD e, a</P>
+
+<P>LD can also be used to load a byte from a memory address to a register. This is done by preceding the value with (). For example,</P>
+
+</FONT><PRE>LD a, ($C37D) will load the byte at address $C37D into register A.
+
+LD a, (BE) loads register A with the byte at address BE. If BE contained
+           $C37D, then it would be the same as LD a, ($CD7D)
+
+LD (HL), c stores register C at address HL. If HL was $CD7D, and C
+           was 10, then it would be the same as LD ($CD7D), 10
+           and the byte at $C37D would then become 10.</PRE>
+<FONT FACE="Courier New" SIZE=2>
+<P>LD HL, 150 stores the value 150 into the 16-bit register HL</P>
+
+</FONT><FONT FACE="Courier New" SIZE=1><P>The next section explains the limitations of this newly found power!</P>
+</FONT><FONT FACE="Courier New" SIZE=2><P>  </P>
+</FONT><FONT FACE="Comic Sans MS" SIZE=3><P ALIGN="CENTER">Restrictions and Notes on LD &amp; Addressing (hex, LSB, MSB, etc)</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>When storing 16-bit values (words), the Least Significant Byte (LSB) is stored first and the Most Significant Byte (MSB) is stored last. This appears to make 16-bit LD's look backwards. For example,</P>
+
+<P>LD BC, $569A ; puts $56 into C and $9A into B.</P>
+
+<P>When using 16-bit values in addressing, the LSB is stored first, and the MSB is stored in the next byte. For example,</P>
+
+<P>LD ($C00F), $1510 ; stores $10 at address $C00F and $15 at address $C010</P>
+
+<U><P>LD restrictions</P>
+</U>
+
+<UL>
+<LI>You are not allowed to store 16-bit registers into 8-bit registers, and vise-versa.</LI></UL>
+
+
+
+<UL>
+<LI>You can not load a 16-bit register into another 16-bit register. You must instead use two 8-bit lds. For example, you cannot LD BC, DE you must instead do: ld b,d and ld c, e.</LI></UL>
+
+
+
+<UL>
+<LI>When you are using (BC) or (DE) as pointers to a byte at a 16-bit address, the other operator must be register A.</LI></UL>
+
+
+
+<UL>
+<LI>When you are using a direct memory allocation such as ($C010), the other operator must be A or a 16-bit register.</LI></UL>
+
+
+
+<UL>
+<LI>When using (HL), the other operator may not be a 16-bit register.</LI></UL>
+
+
+<P>&nbsp;</P>
+<P>Check out Z80TIME.TXT for a list of all opcodes, the clock cycles, and the bytes they take up. Great reference.</P>
+
+<P>&nbsp;</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Other important Z80 instructions</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>These instructions are also important, you should know them.</P>
+
+<U><P>INC &amp; DEC</P>
+</U>
+<P>INC adds 1 to a number.</P>
+
+<P>Example:  INC a  ; a = a + 1</P>
+
+<P>DEC subtacts 1 from a number</P>
+
+<P>Example: DEC a   ; a = a - 1</P>
+
+<P>&nbsp;</P>
+<U><P>ADD</P>
+</U>
+<P>&nbsp;</P>
+
+<UL>
+<U><LI>8-bit</LI></UL>
+
+</U>
+<P>For 8-bit addition, the first argument (parameter, operator, whatever!) must be the 8-bit register A. The result is stored in 8-bit register A.</P>
+
+</FONT><PRE>Example:  add a, 7  ; a = a + 7
+          add a, 69 ; a = a + 69 .. uhh..
+          add a, (hl) ; adds a to the byte value at address HL.</PRE>
+<FONT FACE="Courier New" SIZE=2>
+
+<UL>
+<U><LI>16-bit</LI></UL>
+
+</U>
+<P>For 16-bit addition, the first argument must be 16-bit register HL. The result is stored in 16-bit register HL.</P>
+
+</FONT><PRE>  add hl, hl  ; hl = hl + hl (hl=hl*2)
+  add hl, bc  ; hl = hl + bc
+  add hl, 911 ; hmm</PRE>
+<FONT FACE="Courier New" SIZE=2>
+<P>&nbsp;</P>
+<U><P>SUB</P>
+</U>
+
+<UL>
+<U><LI>8-bit</LI></UL>
+
+</U>
+<P>The SUB opcode subracts an 8-bit register or a byte from the register A. You only have one argument.</P>
+
+<P>sub c ; a = a - c</P>
+
+<U><P>ADC</P>
+</U>
+
+<UL>
+<U><LI>8-bit</LI></UL>
+
+</U>
+<P>Adds a number, register, (HL), (IX+d), or (IY+d) and the Carry Flag and stores the result to the A register.</P>
+
+<P>Example:  ADC A, (HL)  </P>
+
+
+<UL>
+<U><LI>16-bit</LI></UL>
+
+</U>
+<P>Adds a 16-bit register (BC, DE, HL, SP) with HL and adds the carry flag and stores it into HL.</P>
+
+<P>Example: ADC HL, BC</P>
+
+<P>We can use ADC to add numbers of any size, 16-bits, 32-bits, does not matter. 16-bit ADC adds two numbers together and leaves the result into HL. If there was an overflow, a carry results and can be added to the next part of the number.</P>
+
+<P>&nbsp;</P>
+<U><P>SBC</P>
+</U>
+
+<UL>
+<U><LI>8-bit</LI></UL>
+
+</U>
+<P>Subtracts a register, number, (HL), (IX+d), or (IY+d) and subtracts the carry flag. This is all subtracted FROM A and stores the answer into register A.</P>
+
+<P> Example: SBC A, (HL)</P>
+<P> </P>
+
+<UL>
+<U><LI>16-bit</LI></UL>
+
+</U>
+<P>Subtracts a 16-bit register (BC, DE, HL, or SP) and subtracts the carry flag. This is all subtracted from HL and the answer is stored into HL.</P>
+
+<P>Example: SBC HL, DE</P>
+
+<P>This is useful for subtracting 16-bit numbers. Simply make sure the carry flag is clear (C=0), or else the Carry flag will also be subtracted. You can clear the carry flag by OR A. Remember, logical operators RESET the carry flag and OR a does not affect the A register. So to subtract DE from HL, do:</P>
+
+</FONT><PRE>OR A           ; Clear Carry Flag
+SBC HL, DE     ; Successful 16-bit subtraction</PRE>
+<FONT FACE="Courier New" SIZE=2>
+<P>&nbsp;</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Jumps and Calls</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>The Z80 lets you "jump" to any address you wish. Normally when an assembly program is executing once one instruction has been completely executing, the PC counter is incremented and the next instruction is executed. However jump instructions lets you go to any memory address you like and starts executing code again.</P>
+
+<P>There are two jump instructions: jr and jp.</P>
+
+<P>Jr means jump relative. It is shorter and faster but only allows you to jump 129 bytes forward or 126 bytes backward. In most cases that is all you need. It is best to use jr when all possible..</P>
+
+<P>Jp means jump absolute. It will jump anywhere, no limitation. This is not as efficient as jr.</P>
+
+<P>You can also jump on conditions. The most common conditions that you will need are these four: nz (not zero), z (zero), nc (not carry), and c (carry). Here is an example:</P>
+
+<P>&nbsp;</P>
+</FONT><PRE>Start:
+
+ ld a, 100
+ dec a
+ jr nz, Start:
+
+Finished:
+ .
+ .</PRE>
+<FONT FACE="Courier New" SIZE=2>
+<P>This will loop 100 times until A=0. Once A=0, the zero flag will be set and it will jump to the label Finished:</P>
+
+<P>&nbsp;</P>
+<U><P>CALL</P>
+</U>
+<P>Call lets you call subroutines. You can call any destination address, and the PC register is pushed on to the stack. Then once the "ret" function is executed, it returns to the original calling location.</P>
+
+</FONT><PRE>Example..
+
+ Start:
+
+ call My_routine:
+
+ Hello:
+ .
+ .
+ ret ; Ends the whole program
+ 
+
+ My_routine:
+ .
+ .
+ ret ; Returns to calling program which goes to Hello:</PRE>
+<FONT FACE="Courier New" SIZE=2>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">The Stack</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>The Stack is a special memory location that acts like a stack of cards. When you PUSH a value on the stack, it is like putting a card (register, number) on the deck. When you POP a value of the stack of cards, it is like POPPING a card (register, value) off the top of the deck. This is called LIFO (Last In First Out).</P>
+
+<P>The 16-bit register SP has the location of current "top" of the stack.</P>
+
+<U><P>PUSH &amp; POP 16-bit</P>
+</U>
+
+<UL>
+<LI>PUSH and POP require the one operand to be 16-bit</LI></UL>
+
+
+
+<UL>
+<LI>PUSH (BC or DE or HL or AF or IX or IY)</LI></UL>
+
+
+
+<UL>
+<LI>POP (BC or DE or HL or AF or IX or IY)</LI></UL>
+
+
+
+<UL>
+<LI>PUSHING a value decrements the SP, loads the high order byte of the 16-bit register into SP, then decrements SP again, loading the low order byte into into SP.</LI></UL>
+
+
+
+<UL>
+<LI>POPPING a value stores the byte value in SP into the low order of the 16-bit register. Then SP is incremented, and the byte value in SP is stored in the high order of the 16-bit register.</LI></UL>
+
+
+<P>The stack gets updated every time you use call. Call pushes PC on to the stack, and Pops it back off at the end of the subroutine.</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Rom calls</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>Calls to Rom are simple. You use the instruction Call to call a subroutine in Rom to do all the work for you. Usually the call is done to rom page 1 where the "call table" is located. That way you do not have to worry about switching rom pages.</P>
+
+<P>My sample program uses _puts. _puts is an alias for location $4A37, which is in the call table. The alias is declared in the ti86asm.inc file.</P>
+
+<P>For example, _puts require that you have HL the location of a string of bytes which is terminated with null. Then you call _puts, and it displays the string at address HL and ends when it sees NULL (0).</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Remember This?</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>Take a look at this sample program. Now you should understand every line, every comment.</P>
+
+</FONT><PRE>;------------ BEGIN HERE --------------
+#include "asm86.h"       ;Includes procedures that came with asm86.
+#include "ti86asm.inc"   ;Includes common procedures that TI provides.
+
+.org _asm_exec_ram       ;All TI-86 asm programs start at this address 
+                         
+        call _clrLCD     ;Calls a ROM routine to clear the screen
+        ld hl,$0000      ;Stores $00 in h, $00 in l
+        ld (_curRow),hl  ;Stores 00 in _curRow, 00 in _curCol
+        ld hl,hello      ;Stores the address of hello into hl
+        call _puts       ;Calls a ROM routine to display a string
+                         ;at address hl until it reaches NULL (binary 0)
+
+        ret              ;Returns to the calling program
+                         ;Calculator will crash without it
+
+
+hello:
+; Defines a string. This is stored in address hello
+;    where hello is a label and represents the address
+;    of the start of the string. It ends with a
+;    binary 0, also called NULL
+
+        .db "TI-86 Z80 Asm is Easy",0
+           
+
+.end ; The end of the source code
+;------------- END HERE ---------------------</PRE>
+<FONT FACE="Courier New" SIZE=2>
+</FONT><I><FONT FACE="Arial Black" SIZE=4><P ALIGN="CENTER">&nbsp;</P>
+<P ALIGN="CENTER">Conclusion</P>
+</I></FONT><FONT FACE="Fixedsys" SIZE=2>
+</FONT><FONT FACE="Courier New" SIZE=2><P>That was long! I think this is enough for one lesson. My next lesson will include more instructions, i.e. bit manipulating, and common routines such as _vputs and _Ipoint. I will also show you how to use the bit table accessed off of IY. A different sample source code will be used, I just got tired (I already spent 5 hours on this tutorial!!)</P>
+
+<P>If you catch any mistakes, E-mail me.. It's been a long day!</P>
+
+</FONT><BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript">
+<!--
+function go(){
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none") {
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value
+	}
+}
+//-->
+</script>
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('<form name="selecter"><select name="select1" size=1>');
+document.write('<option value=none>3rd Level Domains');
+document.write('<option value=none>---------------------------------');
+document.write('<option value="http://www.acz.org">ACZ Frontpage');
+document.write('<option value="http://ti86.acz.org">86 Asm Central');
+document.write('<option value="http://ti89.acz.org">89 Asm Central');
+document.write('<option value="http://asmstudio.acz.org">Assembly Studio Site');
+document.write('<option value="http://vti.acz.org">Virtual TI Emulator Site');
+document.write('<option value=none>----------------------------------');
+document.write('<option value="http://brett.acz.org">Brett\'s Homepage');
+document.write('<option value="http://clem.acz.org">Clem\'s Homepage');
+document.write('<option value="http://dave.acz.org">Dave\'s Homepage');
+document.write('<option value="http://david.acz.org">David\'s Homepage');
+document.write('<option value="http://dux.acz.org">Dux\'s Homepage');
+document.write('<option value="http://james.acz.org">Jame\'s Homepage');
+document.write('<option value="http://jeremy.acz.org">Jeremy\'s Homepage'  );
+document.write('<option value="http://matt.acz.org">Matt\'s Homepage');
+document.write('<option value="http://rusty.acz.org">Rusty\'s Homepage');
+document.write('<option value="http://stephen.acz.org">Stephen\'s Homepage');
+document.write('<option value=none>----------------------------------');
+document.write('</select>');
+document.write('<input type="button" value="Go" onclick="go()">');
+document.write('</form>');
+// end hiding contents -->
+</script>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+</BODY>
+</HTML>

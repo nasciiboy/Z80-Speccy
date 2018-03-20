@@ -1,0 +1,428 @@
+<HTML>
+<HEAD>
+   <META NAME="keywords" CONTENT="Clipped, Clipping, Sprites, Sprite, Clipped Sprites, Clipped Bitmaps, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+   <META NAME="description" CONTENT="86 Central - A tutorial on clipping sprites, drawing them, etc.">
+   <TITLE>86 Central - Clipped Sprites</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" WIDTH=301 HEIGHT=76 BORDER=0 ALT="86 Central"></CENTER>
+
+<CENTER>
+<H5>
+Best viewed in 1024x768</H5></CENTER>
+
+<CENTER>
+<H2>
+Clipped Sprites</H2></CENTER>
+Clipped sprites are an advanced way of drawing non aligned sprites.&nbsp;
+The drawing is essentially the same, but they can be partially on/off the
+clipping boundary.&nbsp; The clipping boundary is usually the edges of
+the screen, though it can be made smaller if there is something that shouldn't
+be drawn over, like a score display at the top or side of the screen.&nbsp;
+Clipping means that the part of the sprite that shouldn't be displayed
+(because it would be off the screen) is "clipped" or cut off and the rest
+of it is drawn like normal.&nbsp; These sprites are useful in side scroller
+games like Sqrxz, because the enemies will walk on and off the screen alot.
+
+<P>Speaking of Sqrxz, the most commonly known clipped sprite routines are
+<A HREF="mailto:yarin@acc.umu.se">Jimmy Mardell's</A> Advanced Sprite Clipping
+Routines, or ASCR for short.&nbsp; These are exactly the same routines
+that he used in Sqrxz (which is most likely why he wrote them). We will
+examine the ASCR because Jimmy Mardell released them to be used by others
+and other authors have not.
+<BR>&nbsp;
+<BR>You can download the ASCR routines <A HREF="ascr.h">here</A>.&nbsp;
+Just <I>#include ascr.h</I> in your program, or copy the routines you need.&nbsp;
+If you only use PutSprite, just copy PutSprite and FindPixel.&nbsp; You
+will also need to define the three temporary bytes as shown in the header.&nbsp;
+The best way to do this is to use some space in _textShadow:
+<PRE>clipmask&nbsp; = _textShadow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; [1]&nbsp;&nbsp; temporary byte used by the ASCR
+rows2put&nbsp; = _textShadow + 1&nbsp;&nbsp;&nbsp;&nbsp; ; [1]&nbsp;&nbsp; temporary byte used by the ASCR
+bitmask&nbsp;&nbsp; = _textShadow + 2&nbsp;&nbsp;&nbsp;&nbsp; ; [1]&nbsp;&nbsp; temporary byte used by the ASCR</PRE>
+Whenever I define "variables" like that, I note to the size of them to
+the right.&nbsp; This makes it easy later to go back through and figure
+out how much to add to each one so they don't overwrite each other.&nbsp;
+Noting what they are is also helpful, because you will forget what they
+do later.&nbsp; Yes, you will forget.&nbsp; No, I don't care how obvious
+you think they are, you will forget, especially when the next time you
+look at the code is 6 months later.&nbsp; Trust me, I've learned the hard
+way.
+<H3>
+The Advanced Sprite Clipping Routines (ASCR)</H3>
+There are two ASCR routines that can be used:
+<UL>
+<LI>
+PutSprite - Draws an 8x8 sprite to the screen with clipping.&nbsp; This
+routine is useful for many applications.</LI>
+
+<LI>
+PutSprite_MSB - Draws an 8x8 masked sprite to the screen with clipping
+and saves the background behind the sprite.&nbsp; This routine is useful
+for drawing sprites onto a background that needs to be saved, such as drawing
+creatures in a side scroller.</LI>
+</UL>
+
+<H3>
+PutSprite</H3>
+Using PutSprite is just like the other, non-clipped sprite routines.&nbsp;
+You load the address of the sprite into HL and the (X, Y) coordinates of
+the sprite into BC:
+<PRE><TT>&nbsp;ld hl,MySprite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; point to the sprite to be drawn
+&nbsp;ld bc,(32&lt;&lt;8)+45&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; draw the sprite at (32, 45)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; notice how the 32 is shifted (using the &lt;&lt; operator) 8 bits to the left,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; because it is the high byte of BC, a 16-bit register
+&nbsp;call PutSprite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; clip and draw the sprite
+
+&nbsp;...
+
+MySprite:
+&nbsp;.db %11111111
+&nbsp;.db %11000011
+&nbsp;.db %10100101
+&nbsp;.db %10011001
+&nbsp;.db %10011001
+&nbsp;.db %10100101
+&nbsp;.db %11000011
+&nbsp;.db %11111111</TT></PRE>
+That is all there is to using PutSprite.&nbsp; Just load the values and
+call it.&nbsp; If the sprite is partially or even completely off of the
+screen, the routine will take care of it for you.&nbsp; Be sure to email
+<A HREF="mailto:yarin@acc.umu.se">Jimmy</A> and thank him for his wonderful
+routine.
+<H3>
+PutSprite_MSB</H3>
+There are times that you will want to draw a sprite on top of a background.&nbsp;
+An example of this would be the player or enemies in Sqrxz.&nbsp; They
+are drawn in front of backgrounds such as trees, water, tomb stones, etc.&nbsp;
+You might also want some of the pixels to always be drawn off, and sometimes
+you will want them to be "clear", meaning they will stay whatever they
+were before the sprite is drawn.&nbsp; For this you will to use a "mask".&nbsp;
+A transparency mask indicates whether the specified bit is "off" or "clear".&nbsp;
+Since you are drawing them on top of a background, you will also want to
+save the background behind it so it can be restored later, after the sprite
+moves.&nbsp; Luckily for us, PutSprite_MSB does all of that.
+
+<P>The background is saved as a normal 8x8 sprite, ready to be drawn with
+PutSprite when the background needs to be restored.&nbsp; To use it, load
+the address of the 8x8 masked sprite into HL, the memory area to save the
+to into DE (either in the program or in some free ram like _textShadow)
+and the (X, Y) coordinates in BC, just like PutSprite:
+
+<P><TT>&nbsp;ld hl,MySprite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+; point to the sprite to be drawn</TT>
+<BR><TT>&nbsp;ld de,BackgroundSpr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+; point to sprite memory to save the background to</TT>
+<BR><TT>&nbsp;ld bc,(32&lt;&lt;8)+45&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+; draw the sprite at (32, 45)</TT>
+<BR><TT>&nbsp;call PutSprite_MSB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+; clip and draw the sprite, and save the background</TT>
+
+<P><TT>&nbsp;...</TT>
+
+<P><TT>MySprite:</TT>
+<BR><TT>&nbsp;.db %11111111</TT>
+<BR><TT>&nbsp;.db %11000011</TT>
+<BR><TT>&nbsp;.db %10100101</TT>
+<BR><TT>&nbsp;.db %10011001</TT>
+<BR><TT>&nbsp;.db %10011001</TT>
+<BR><TT>&nbsp;.db %10100101</TT>
+<BR><TT>&nbsp;.db %11000011</TT>
+<BR><TT>&nbsp;.db %11111111</TT>
+
+<P><TT>BackgroundSpr:</TT>
+<BR><TT>&nbsp;.db 0,0,0,0,0,0,0,0&nbsp;&nbsp; ; 8 bytes to hold the 8x8
+sprite that the background is saved as</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+; it is better to use tempory memory such as _textShadow or ram page 1,</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+; but for example sake we will use space inside the program</TT>
+
+<P>Notice that PutSprite_MSB is almost like PutSprite.&nbsp; To restore
+the background, just redraw it with PutSprite:
+<PRE><TT>&nbsp;ld hl,BackgroundSpr&nbsp;&nbsp; ; point to the saved background
+&nbsp;ld bc,(32&lt;&lt;8)+45&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; redraw at the old location
+&nbsp;call PutSprite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; restore the background by redrawing it</TT></PRE>
+
+<H3>
+A more detailed look at PutSprite and FindPixel</H3>
+Matt had intended to add this section, but never did.&nbsp; This is his
+commented version of PutSprite and FindPixel.&nbsp; I might update this
+in the future and/or comment PutSprite_MSB, but for now, this is pretty
+good.
+<PRE><TT>;=============================================================================================&nbsp;
+; PutSprite:&nbsp;
+;&nbsp; Puts an 8x8 sprite at B,C. HL = pointer to sprite. No mask and no&nbsp;
+;&nbsp; background storage, just clipping.&nbsp;
+;&nbsp;
+; Clipping: Left/Right 0 pixels and 120 pixels&nbsp;
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Up/Down 0 pixels and 127 pixels&nbsp;
+;&nbsp;
+; Column 0 means first 8 bits of X, Column 15 means last 8-bits of X&nbsp;
+;=============================================================================================&nbsp;
+
+PutSprite:&nbsp;&nbsp; ; BC = x,y&nbsp; HL = sprite&nbsp;
+
+&nbsp;push bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save BC&nbsp;
+&nbsp;push de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save DE&nbsp;
+&nbsp;push hl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save HL&nbsp;
+&nbsp;push ix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save IX&nbsp;
+
+&nbsp;ld a,$FF&nbsp;
+&nbsp;ld (clipmask),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Set all bits in clipmask&nbsp;
+
+&nbsp;bit 7,b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check sign bit of X&nbsp;
+&nbsp;jr z,PSC_CheckRightClip&nbsp;&nbsp;&nbsp; ; If X is positive (no sign bit), then goto PSC_CheckRightClip&nbsp;
+
+&nbsp;; X is negative&nbsp;
+&nbsp;ld a,b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Load X into A&nbsp;
+&nbsp;cp 249&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check X to see if visible clipping in Column 0 will occur&nbsp;
+&nbsp;jr c,EndPPS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; If X is -8 or less no visible clipping will occur so it leaves&nbsp;
+
+&nbsp;; Clipping will occur -&nbsp; X is somewhere between -7 (249) and -1 (255)&nbsp;
+&nbsp;neg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Force A to be positive, range 1 to 7&nbsp;
+
+&nbsp;push bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save old X value&nbsp;
+&nbsp;ld b,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; B = A, range of 1 to 7&nbsp;
+&nbsp;ld a,$FF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = %11111111 = 255 - Default all bits set&nbsp;
+
+PSC_LeftClip:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Clip Left (Column 0)&nbsp;
+&nbsp;srl a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Bitmask chooser, each bit that is set represents a pixel that is drawn&nbsp;
+&nbsp;djnz PSC_LeftClip&nbsp; ; Select B&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 1: A = %01111111&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 2: A = %00111111&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 3: A = %00011111&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 4: A = %00001111&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 5: A = %00000111&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 6: A = %00000011&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 7: A = %00000001&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 8: A = %00000000 ; Sprite completely off screen&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 9: A = %00000000 ; etc etc etc&nbsp;&nbsp;
+
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore X value&nbsp;
+&nbsp;res 7,b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Subtract 128, if X was -1 (255) it is now 127.&nbsp;
+&nbsp;dec c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Y = Y - 1&nbsp;
+
+&nbsp;ld (clipmask),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Store Bitmask (see above Select/Case diagram) into variable&nbsp;
+&nbsp;jr PSC_CheckBotClip&nbsp; ; Check to see if the sprite needs to be clipped on the bottom&nbsp;
+
+PSC_CheckRightClip:&nbsp;
+&nbsp;ld a,b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Load X into A&nbsp;
+&nbsp;sub 113&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; X = X - 113&nbsp;
+&nbsp;jr c,PSC_CheckBotClip&nbsp; ; Jump CheckBotClip if X is 112 or less (no clipping has occured to the right)&nbsp;
+
+; Clipping to the Right will occur, If A is 0 - 7 then some sprite will be on the screen.
+; If greater no sprite will show&nbsp;
+&nbsp;&nbsp;
+&nbsp;push bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save X and Y&nbsp;
+&nbsp;ld b,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; B = A&nbsp;
+&nbsp;inc b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; B range of 1 to 8&nbsp;
+&nbsp;ld a,$FF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = %11111111&nbsp;
+
+PSC_RightClip:&nbsp;
+&nbsp;add a,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Same as shift left&nbsp;
+&nbsp;djnz PSC_RightClip&nbsp;&nbsp; ; Does this B times&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Select B&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 1: A = %11111110 ; Each bit set (1) indicates which pixels will be drawn&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 2: A = %11111100&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 3: A = %11111000&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 4: A = %11110000&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 5: A = %11100000&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 6: A = %11000000&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 7: A = %10000000&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 8: A = %00000000 ; Sprite completely off screen&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; Case 9: A = %00000000 ; Sprite completely off screen&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; etc etc&nbsp;&nbsp;&nbsp;
+
+&nbsp;ld (clipmask),a&nbsp;&nbsp;&nbsp; ; And of course, save the above calculated bitmask into 'clipmask'&nbsp;
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore X and Y&nbsp;
+
+PSC_CheckBotClip:&nbsp;
+&nbsp;ld a,8&nbsp;
+&nbsp;ld (rows2put),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Default: 8 rows of sprite to plot&nbsp;
+&nbsp;bit 7,c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check sign bit. Is Y > 128 (is sign bit set)? If so, Y is negative&nbsp;
+&nbsp;jr nz,PSC_CheckTopClip ; If the sign bit is set then Y is negative, thus jump to PSC_CheckTopClip&nbsp;
+
+&nbsp;; Y is positive&nbsp;
+&nbsp;bit 6,c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Is Y > 64?&nbsp;
+&nbsp;jr nz,EndPS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; If so, then no visible clipping will occur so exit the PutSprite.&nbsp;
+
+&nbsp;ld a,64&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = 64 - C&nbsp;
+&nbsp;sub c&nbsp;
+&nbsp;cp 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Is the distance between Y and the bottom boundary (63) >= 8?&nbsp;
+&nbsp;jr nc,PSC_ClippingDone ; If so the number of rows to display (rows2put) will stay at 8.&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Plot the Sprite&nbsp;
+
+; Clipping will occur&nbsp;
+&nbsp;ld (rows2put),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Change the number of *rows* to display. A is 64 - C&nbsp;
+
+&nbsp;jr PSC_ClippingDone&nbsp;&nbsp;&nbsp; ; Clipping is finished. Plot the sprite.&nbsp;
+&nbsp;&nbsp;
+
+; Y is negative&nbsp;
+PSC_CheckTopClip:&nbsp;
+&nbsp;ld a,c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Load C into A&nbsp;
+&nbsp;cp 249&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Is Y 248 or less? In other words, is Y less than or equal to -8?&nbsp;
+EndPPS:&nbsp;
+&nbsp;jr c,EndPS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; If so, no visible clipping will produce. Thus end PutSprite&nbsp;
+
+; Sprite is clipped at the top, Y is in the range of -7 to -1&nbsp;
+&nbsp;push bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save X and Y&nbsp;
+&nbsp;neg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Y is now positive, thus Y is in the range of 1 to 7&nbsp;
+&nbsp;ld b,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save this value (the number of rows that dont need to be plotted)&nbsp;
+&nbsp;sub 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = | A - 8 |. This basically finds it's inverse.&nbsp;
+&nbsp;neg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Negate makes it positive&nbsp;
+&nbsp;ld (rows2put),a&nbsp;&nbsp;&nbsp; ; And this is how many rows that need to be plotted
+&nbsp;
+PSC_TopClip:&nbsp;
+&nbsp; inc hl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Skip # rows that need not be displayed, in other words, HL points&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; to the start of the row of the sprite that needs to be displayed&nbsp;
+
+;inc de - Not needed for any reason, bug in ASCR (fixed now ;-))&nbsp;
+&nbsp;djnz PSC_TopClip&nbsp;
+
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Recover X and Y&nbsp;
+&nbsp;ld c,0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Y = 0. Height of Sprite provided by row2put so we only have to&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; find X and we know enough to draw the sprite. Hehe&nbsp;
+
+PSC_ClippingDone:&nbsp;
+&nbsp;push hl&nbsp;
+&nbsp;pop ix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; IX = HL&nbsp;
+
+&nbsp;ld a,(rows2put)&nbsp;
+&nbsp;push af&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Push A (rows2put - # of rows in sprite that will be displayed)&nbsp;
+
+; Find Pixel at B, C (HL -> Correct Byte Offset (range 0 - 1023), A = bitmask)&nbsp;
+&nbsp;call FIND_PIXEL&nbsp;
+
+Modify_6:&nbsp;
+&nbsp;ld de,$FC00&nbsp;
+&nbsp;add hl,de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; HL -> byte where the display starts at and where the sprite will be drawn&nbsp;
+&nbsp;ld d,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; D = Bitmask&nbsp;
+
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; B = rows2put and C = the flags (not used). See push af above.&nbsp;
+PSC_PutRow:&nbsp;
+&nbsp;push bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save # of rows&nbsp;
+&nbsp;push hl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save the byte that points to the start of the display&nbsp;
+&nbsp;ld a,(clipmask)&nbsp;
+&nbsp;ld e,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; E = clipmask&nbsp;
+&nbsp;ld b,8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; B = 8 (width of sprite in pixels)&nbsp;
+&nbsp;ld c,(ix)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Grab a byte from the sprite and store it in C&nbsp;
+&nbsp;inc ix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; IX points to the next byte of the sprite&nbsp;
+PSC_PutCol:&nbsp;
+&nbsp;push bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save width of sprite in pixels (B) and the byte gotten from the sprite&nbsp;
+&nbsp;rlc e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check leftmost bit of clipmask by rotating whole clipmask to the right&nbsp;
+&nbsp;jr nc,PSC_NextBit&nbsp; ; If there is no bit set then we dont draw a pixel&nbsp;
+
+&nbsp;ld a,d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = bitmask&nbsp;
+&nbsp;rlc c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check leftmost bit of the sprite&nbsp;
+&nbsp;jr c,PSC_BitOn&nbsp;&nbsp;&nbsp;&nbsp; ; Is the leftmost bit set? If so set the bit in the display&nbsp;
+
+; It falls through, so we clear bit of display&nbsp;
+&nbsp;cpl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Invert bitmask, all 1's become 0's and vise versa&nbsp;
+&nbsp;and (hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Preserve all bits but clear that one bit&nbsp;
+&nbsp;ld (hl),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save changes to display&nbsp;
+&nbsp;jr PSC_NextBit&nbsp;&nbsp;&nbsp;&nbsp; ; Go to the next bit in the sprite to draw&nbsp;
+PSC_BitOn:&nbsp;
+&nbsp;or (hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Set the bit on the display where the bit is on the bitmask ("bit counter")&nbsp;
+&nbsp;ld (hl),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save changes to display&nbsp;
+PSC_NextBit:&nbsp;
+&nbsp;rrc d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Rotate bitmask (the "bit counter") to the right&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notice how bitmask is "aligned" with the start of the the bit received from the&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Findpixel, and it rotates to the left. When IX reaches a new sprite to the screen,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The bitmask (bit counter) wraps back to bit 0 and does the same thing again for&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; that byte! Clever, ehhh???&nbsp;
+&nbsp;jr nc,PSC_SSB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; If no carry then continue the PutSprite routine&nbsp;
+&nbsp;inc hl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; If the carry flag is set that means the new byte is reached so now have HL point&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; to the next byte in the display&nbsp;
+PSC_SSB:&nbsp;
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Recover B, width of pixels and C, the sprite data (1 byte)&nbsp;
+&nbsp;rlc c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check leftmost bit of the sprite data&nbsp;
+&nbsp;djnz PSC_PutCol&nbsp;&nbsp;&nbsp; ; Loop for 8 columns of code&nbsp;
+
+&nbsp;pop hl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Recover the byte that points to the initial start of the display&nbsp;
+&nbsp;ld bc,16&nbsp;
+&nbsp;add hl,bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Now HL points to the next row in the LCD (display)&nbsp;
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Recover # of rows to plow&nbsp;
+&nbsp;djnz PSC_PutRow&nbsp;&nbsp;&nbsp; ; Loop for the number of rows (determined by clipping)&nbsp;
+
+EndPS:&nbsp;
+&nbsp;pop ix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore IX&nbsp;
+&nbsp;pop hl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore HL&nbsp;
+&nbsp;pop de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore DE&nbsp;
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore BC&nbsp;
+&nbsp;ret&nbsp;
+
+; Output: HL = address of byte in video memory?&nbsp;
+; A = bitmask (bit corresponding to pixel is set)&nbsp;
+
+FIND_PIXEL:&nbsp;
+&nbsp;push bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save BC&nbsp;
+&nbsp;push de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Save DE&nbsp;
+&nbsp;ld hl,ExpTable+1&nbsp;&nbsp; ; HL points to $80&nbsp;
+&nbsp;ld d,0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Clear D&nbsp;
+&nbsp;ld a,b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = X&nbsp;
+&nbsp;and $07&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Offset, last 3-bits, range from 0 - 7&nbsp;
+&nbsp;ld e,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; E = Offset&nbsp;
+&nbsp;add hl,de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; HL = HL + Offset (d was cleared), points to the correct bitmask&nbsp;
+&nbsp;ld e,(hl)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; E = correct bitask&nbsp;
+&nbsp;ld h,d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Clear H&nbsp;
+&nbsp;srl b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; X = X / 8, X now points to correct byte&nbsp;
+&nbsp;srl b&nbsp;
+&nbsp;srl b&nbsp;
+&nbsp;ld a,c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = Y&nbsp;
+&nbsp;add a,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Y = Y * 4, no carry will produce since max is 63 * 4 or 252&nbsp;
+&nbsp;add a,a&nbsp;
+&nbsp;ld l,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; L = A&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Now we do the rest of the multiplies with add hl, hl&nbsp;
+&nbsp;add hl,hl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Y = Y * 4, all carry's are correctly added&nbsp;
+&nbsp;add hl,hl&nbsp;
+&nbsp;ld a,e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = Bitmask&nbsp;
+&nbsp;ld e,b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; E = Byte offset (range 0 - 15)&nbsp;
+&nbsp;add hl,de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Add this offset to HL, now HL points to correct byte&nbsp;
+&nbsp;pop de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore DE&nbsp;
+&nbsp;pop bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restore BC&nbsp;
+&nbsp;ret</TT></PRE>
+That about wraps up this sprite section.&nbsp; If anyone sees anything
+missing, please email <A HREF="mailto:david@acz.org">me</A>.
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+
+
+</BODY>
+</HTML>

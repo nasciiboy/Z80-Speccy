@@ -1,0 +1,159 @@
+<HTML>
+<HEAD>
+   <META NAME="keywords" CONTENT="Debug, Debugging, Emulator debugging, diagnosing, trace, tracing, mem dump, memory dump, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+   <META NAME="description" CONTENT="86 Central - Tutorial: Using the emulator for debugging">
+   <TITLE>86 Central - Debugging with the emulator</TITLE>
+</HEAD>
+<BODY>
+
+<CENTER><IMG SRC="images/86Central.gif" ALT="86 Central Logo" BORDER=0 HEIGHT=76 WIDTH=301></CENTER>
+
+<CENTER>
+<H5>
+<FONT SIZE=-1>Best viewed in 1024x768</FONT></H5></CENTER>
+
+<CENTER>
+<H2>
+Debugging Progams with TI86EMU</H2></CENTER>
+It has happened to everyone who has written assembly code.&nbsp; You write
+a "bug free" routine, then send it to your calculator and run it, only
+to watch it crash.&nbsp; "That's great," you think, let us see what's wrong.&nbsp;
+After staring at the code for 10 minutes and running it in your head a
+few times, you are sure it is correct.&nbsp; However, it still crashes.&nbsp;
+Why?&nbsp;&nbsp; It sure would be great to have a debugger, would it not?&nbsp;
+To be able to watch the code and see what it is doing, along with seeing
+the registers and an area of memory that the code is reading or writing
+to.&nbsp; Guess what?&nbsp; There is.&nbsp; Its called <A HREF="ftp://ftp.ticalc.org/pub/win/ti86emu.zip">TI86EMU</A>
+for Win95/98/NT.&nbsp; This calculator emulator will allow you to not only
+test your program so you don't end up crashing your calculator every ten
+seconds, but will also allow you to debug it as described above.
+
+<P>Nevertheless, how do I use it to debug my programs, you ask.&nbsp; I
+do not even know how to run my programs with it.&nbsp; First, you need
+to download the emulator.&nbsp; You can get the emulator from&nbsp; <A HREF="http://86emu.acz.org">86
+Emulator Central</A>.&nbsp; After you have downloaded and unzipped the
+program, you will need a copy of the 86's ROM to run it.&nbsp; The ROM
+is the software that is built into the calculator.&nbsp; You can download
+it from your calculator with <A HREF="ftp://ftp.ticalc.org/pub/86/asm/programs/rom86.zip">Rom86</A>.&nbsp;
+If you cannot make this work, then ask around on IRC and you will probably
+find someone to send you a copy.
+
+<P>By now the emulator should be up and running.&nbsp; Make sure you <B>READ
+THE README FILE</B> that comes with the emulator before continuing this
+tutorial.&nbsp; The readme file will explain most common questions you
+have about the emulator.&nbsp; To start debugging, first <B>R<U>e</U>set</B>
+the emulated calc and <B><U>L</U>oad</B> your program.&nbsp; Most of the
+time you will be debugging a specific routine that is acting strangely.&nbsp;
+It is helpful to step through the code and see what is happening.&nbsp;
+Sometimes you may think an instruction will behave differently than it
+does, so the using emulator is a great way to spot that.&nbsp; Other times
+you will do something else dumb like reversing a test case (NC instead
+of C, for example), and will realize that while you are watching it execute.&nbsp;
+And it is always nice to be able to watch a memory area that the routine
+is using and see what is happening there.
+<CENTER><IMG SRC="images/pic1.gif" ALT="[Image of TI-86 Emulator]" BORDER=0 HEIGHT=298 WIDTH=427></CENTER>
+
+<P>To start debugging the routine, you first need the address of the routine.&nbsp;
+If you are using Assembly Studio 86, then you have it easy.&nbsp; Just
+press Shift-F5 (Statistics from the Assemble menu).&nbsp; If you are using
+TASM or another assembler, you will need to have it generate a "symbol
+table."&nbsp; A symbol table just shows the final memory address of all
+labels and equates in your program.&nbsp; Once you have done that, find
+the name of your routine in the symbol table and remember that address.
+
+<P>Use the <B><U>D</U>isassemble at:</B> button and type in that address.&nbsp;
+Double click on that address (in the disassembly window) to set a breakpoint.&nbsp;
+Now load your program and run it.&nbsp; When your program comes to that
+routine, it should stop right there with the first instruction highlighted.&nbsp;
+Now comes the fun part.&nbsp; If your routine modifies any memory, type
+in its address using the <B>D<U>u</U>mp mem at:</B> button.&nbsp; Now you
+should be at the top of the routine and everything will be setup.&nbsp;
+Now just click step to single-step through your program.&nbsp; Each time
+you click step, the highlighted instruction bar will move to the next instruction.&nbsp;
+All of the registers and memory will be updated as well.
+
+<P>&nbsp;If your routine calls any other routines, especially some ROM
+calls, you might run into problems.&nbsp; You will probably notice that
+step will move right into calls, which can be a real nuisance.&nbsp; To
+avoid stepping into ROM calls and having to watch them, you set the breakpoint
+to the instruction following the call.&nbsp; To do this, simply double-click
+on the instruction right after the call:
+
+<P>&nbsp;LD HL,($C013)
+<BR>&nbsp;XOR A
+<BR>&nbsp;CALL $4A33&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;---
+When it comes to this instruction, double click on the one below | it and
+press <B><U>R</U>un</B>
+<BR>&nbsp;LD A,$CD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;--------------------------------------------------------------------/
+
+<P>There are a few tips that I use when working with the emulator.&nbsp;
+If the program (game) you are writing is very graphics intensive, then
+turn off <B><U>F</U>rame skip</B> (under the <B>Optio<U>n</U>s</B> menu).&nbsp;
+This should not slow down your computer too much if you have a fast computer
+(probably anything at least 200Mhz).&nbsp; The other tip is to change the
+default numeric entry from decimal to hex (again under <B>Optio<U>n</U>s)</B>.&nbsp;
+This makes entering all those hex addresses much easier.
+
+<P>There is one more technique to debugging with the emulator that I have
+used, and that is a <B>Trap <U>a</U>ddress</B> (not pictured in the screen
+shot, as this is new in version 0.6).&nbsp; Before this will work, you
+have to <B>Enable memory tr<U>a</U>p</B>.&nbsp; What this will do is stop
+the emulator whenever an instruction accesses the memory that you are trapping.&nbsp;
+So if you are having problems with a variable acting erratic, trap the
+address of the variable (get it's value from the assembler's symbol table--see
+above).&nbsp; The emulator will stop every time it is read or changed,
+so you can see if something is changing it that you aren't expecting to
+change it.&nbsp; This method is kind of difficult to use.&nbsp; Before
+you use it, you should make sure your variables aren't overlapping (for
+example, you could have a 16-bit variable, but the next one starts only
+8-bits after it, so the second one is overwritting part of the first one).
+
+<P>That is about all there is to debugging with the emulator.&nbsp; It
+is not very hard once you use it a few times.&nbsp; If you do not understand
+something, read the documentation and play with it for a while.&nbsp; If
+you still cannot figure it out, send me some <A HREF="mailto:david@acz.org">email</A>.
+
+<P>(There are some other things you can do with the emulator, like dissassembling
+and tracing though the rom or other people's programs, but this is a rather
+advanced topic to be describe elsewhere.&nbsp; Maybe you can figure it
+out!)
+
+<P>
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+</BODY>
+</HTML>

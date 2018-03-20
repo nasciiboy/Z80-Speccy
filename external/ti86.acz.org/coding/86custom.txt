@@ -1,0 +1,72 @@
+!!!!View this file in a simple text editor like notepad!!!
+
+Here's a little info on the CUSTOM menu:
+
+First at D1C5 there is a table lasting 30 bytes, with a word pointer to each of the 15
+custom entries. (15 * 2 = 30)  Basically if there is a pointer present in the table, then
+the custom slot has something in it.
+
+At D1E3 ($D1C5 + 30d) the actual custom entries begin.
+They are ten bytes each.  The following is an example and explanation:
+
+	|---This byte tells the calc how to paste the text. More later...
+	|
+	|					|---The remaining bytes are in the same format as the first string
+	|					|	The difference is that this string is the what would appear
+	|					|	next in the catalog. In this case it is "AsmComp("
+	|					|	Note that the entire string entry is not there. "AsmC"
+	|					|	Also the "60" marker byte tells the ROM to use a parentheses
+	|					|
+	|					|
+	|			   |------------|
+	60 41 73 6D 00 60 41 73 6D 43			;This is the example entry for "Asm("
+	   |---------|
+	   	   |
+		   |---Following the first byte is the actual string, zero terminated.
+		   	   Note that the parentheses isn't there. The example is "Asm("
+			   That is what the first byte, which I'll call a marker byte now,
+			   is used for.
+
+The way that the entry is filled is probaly with a "ldir" instruction, where the source is
+the catalog entries somewhere in the ROM and the destination is the first byte of the custom
+entry and b is 10.  That is the reason for why the secong string which is present.
+
+More on the "marker" bytes:
+
+I'm guessing that the ROM routines use this byte to figure out how to paste to the screen.
+
+Here are the marker bytes I've seen with their functions:
+
+The example shown uses "String" as the basic custom entry, as it would be shown on home
+screen
+
+Byte			Use						Example
+----			--------------------------------------		--------
+00			Clean paste to home screen			"String"
+10			Same as above					Same as above
+20			Paste and adds a space				"String "
+30			Same as above					Same as above
+40			Same as 00 and 01				Same as 00 and 01
+50			Paste a space the string and a space		" String "
+60			Paste string with open parentheses		"String("
+70			Same as above					Same as above
+80			Paste Ans followed by string. No space!		"AnsString"
+90			Paste Ans, a space, and string			"Ans String"
+A0			Paste Ans, string, and space			"AnsString "
+B0			Paste Ans, space, string, space			"Ans String "
+C0			Same as 80					Same as 80
+D0			Same as B0					Same as B0
+E0			Paste Ans, string, and open parentheses		"AndString("
+F0			Paste Ans, space, string, and open paren.	"Ans String("
+
+I'm not sure why the marker bytes are in multiples of 16's but there again, I'm not sure how
+the ROM routines work.  This doesnt mean that patching the menu is totally impossible, yet I
+haven't found out how to do it.  I've attached a program which shows that it is possible. 
+It will patch your first slot to jump to the graphing menu. I think it is only possible to
+jump to areas in the ROM. Haven't been able to jump to RAM, which would be further
+complicated by 86' paged system.
+
+Andres Garcia
+
+email: xrigel@q-net.net
+

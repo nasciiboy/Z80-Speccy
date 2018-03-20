@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" >
+
+<title>Pasmo, ensamblador Z80 / Z80 assembler</title>
+
+<link rel="stylesheet" TYPE="text/css" HREF="css/estilo.css">
+
+</head>
+
+<body>
+
+<h1>
+Pasmo, ensamblador cruzado Z80 portable /
+portable Z80 cross assembler.
+</h1>
+
+<p>
+&Uacute;ltima actualizaci&oacute;n /
+Last updated: 24-apr-2009.
+</p>
+
+<p>
+&Uacute;ltima versi&oacute;n de Pasmo /
+Last Pasmo version: 0.5.3
+</p>
+
+<p>
+See also: 0.5.4.beta1, for testing new error detection feature.
+</p>
+
+<p>
+Ver tambi&eacute;n la pre-versi&oacute;n de 0.6 /
+See also the pre-version of 0.6
+</p>
+
+<h2>Index / &Iacute;ndice</h2>
+
+<table>
+<tr>
+<td>[ <a href="index.html#about">About</a> ]</td>
+<td>[ <a href="index.html#docu">Documentation</a> ]</td>
+<td>[ <a href="index.html#down">Download</a> ]</td>
+<td>[ <a href="index.html#links">Links</a> ]</td>
+<td>[ <a href="index.html#works">Works</a> ]</td>
+<td>[ <a href="index.html#bye">Bye</a> ]</td>
+</tr>
+
+<tr>
+<td>[ <a href="index.html#about">Acerca de</a> ]</td>
+<td>[ <a href="index.html#docu">Documentaci&oacute;n</a> ]</td>
+<td>[ <a href="index.html#down">Descargas</a> ]</td>
+<td>[ <a href="index.html#links">Enlaces</a> ]</td>
+<td>[ <a href="index.html#works">Trabajos</a> ]</td>
+<td>[ <a href="index.html#bye">Despedida</a> ]</td>
+</tr>
+</table>
+
+<h2><a name="about">Acerca de / About.</a></h2>
+
+<p>
+Pasmo es un ensamblador cruzado para Z80, escrito en C++ est&aacute;ndar
+que compila con facilidad en m&uacute;ltiples paltaformas.
+Actualmente genera c&oacute;digo obejto en los siguientes formatos:
+binario crudo, Intel HEX, PRL para RSX de CP/M Plus,
+Plus3Dos (Spectrum +3 disco), TAP,
+TZX y CDT (imagen de cinta para emuladores de Spectrum y Amstrad CPC),
+AmsDos (Amstrad CPC disco) y MSX (para uso con BLOAD desde disco en Basic).
+</p>
+
+<p>
+A partir de la versi&oacute;n 0.5.0 puede tambi&eacute;n generar c&oacute;digo
+8086 a partir de fuentes Z80, en formato binario pura para COM de Ms-dos o en
+formato CMD de CP/M 86.
+</p>
+
+<p>
+Pasmo is a Z80 cross assembler, written in standard C++ that compiles
+easily in multiple platforms. Actually can generate object code in the
+following formats: raw binary, Intel HEX, PRL for CP/M Plus RSX, Plus3Dos
+(Spectrum +3 disk), TAP, TZX and CDT (Spectrum and Amstrad CPC emulators
+tape images), AmsDos (Amstrad CPC disk) and MSX (for use with BLOAD from
+disk in Basic).
+</p>
+
+<p>
+Starting with version 0.5.0, can also generate 8086 code from Z80 sources,
+in binary format for Ms-dos COM files or in CP/M 86 CMD format.
+</p>
+
+<h2><a name="docu">Documentaci&oacute;n / Documentation.</a></h2>
+
+<p>
+<a href="pasmodoc.html">pasmodoc.html</a><br>
+You can also see the <a href="README">README</a> file and some .asm
+samples included with the sources.
+</p>
+
+<p>
+<a href="pasmodoc.html">pasmodoc.html</a> en ingl&eacute;s.<br>
+Tambi&eacute;n se puede consultar el fichero
+<a href="README">README</a>
+y algunos ejemplos incluidos con las fuentes.
+</p>
+
+<h2><a name="down">Descargas / Download.</a></h2>
+
+<h3>Version 0.5.4.beta2</h3>
+
+<p>
+This version add third pass option (--pass3),
+phase error detection in cases where a EQUated symbol changes value
+between passes, and automatic switch to third pass in that case.
+</p>
+
+<p>
+Fuentes y ejemplos / Sources and samples:<br>
+Gzipped tar file:
+	<a href="bin/pasmo-0.5.4.beta2.tgz">pasmo-0.5.4.beta2.tgz</a>
+</p>
+
+<p>
+Windows executable:
+	<a href="bin/pasmo-0.5.4.beta2.zip">pasmo-0.5.4.beta2.zip</a>
+</p>
+
+<h3>Version 0.5.3</h3>
+
+<p>
+In the previous version several error gives a 0 exit status.
+This versions fixes it.
+</p>
+
+<p>
+En las versiones anteriores algunos errores daban un estado de salida 0.
+Esta versi&oacute;n lo corrige.
+</p>
+
+<p>
+Fuentes y ejemplos / Sources and samples:<br>
+Gzipped tar file:
+	<a href="bin/pasmo-0.5.3.tgz">pasmo-0.5.3.tgz</a>
+</p>
+
+<p>Desempaquetad el .tgz y leed el README.</p>
+
+<p>Unpack the .tgz and read the README.</p>
+
+<p>Ejecutable para Windows / Windows executable:
+	<a href="bin/pasmo-0.5.3.zip">pasmo-0.5.3.zip</a>
+</p>
+
+<h3>Version 0.5.2</h3>
+
+<p>
+Added a warning when the 64 KiB limit is crossed in the middle of
+a instruction, all warnings now show line information, some changes
+to allow use of more compilers, gcc 4 in particular (thanks to the
+Debian people).
+</p>
+
+<p>
+A&ntilde;adido un aviso cuando se cruza el l&iacute;mite de 64 KiB en medio
+de una instrucci&oacute;n, ahora todos los avisos muestran informaci&oacute;n
+de la l&iacute;nea en que ocurren,
+algunos cambios para permitir el uso de m&aacute;s compiladores,
+gcc 4 especialmente (gracias a la gente de Debian).
+</p>
+
+<p>
+Fuentes y ejemplos / Sources and samples:<br>
+Gzipped tar file:
+	<a href="bin/pasmo-0.5.2.tgz">pasmo-0.5.2.tgz</a>
+</p>
+
+<p>Desempaquetad el .tgz y leed el README.</p>
+
+<p>Unpack the .tgz and read the README.</p>
+
+<p>Ejecutable para Windows / Windows executable:
+	<a href="bin/pasmo-0.5.2.zip">pasmo-0.5.2.zip</a>
+</p>
+
+<p>
+Eejcutable para Mac OS/X / Mac OS/X executable:
+	<a href="bin/pasmo-0.5.2-macosx.sitx">pasmo-0.5.2-macosx.sitx</a>
+</p>
+
+<p>Debian package:<br>
+Pasmo is now included in Debian stable as official package.<br>
+You can apt-get it, or download the package from
+<a href="http://packages.debian.org/testing/devel/pasmo"
+	>http://packages.debian.org/testing/devel/pasmo</a>
+or follow the <q>other versions of pasmo</q> link in
+that page.
+</p>
+
+<p>Ubuntu package:
+<a href="http://packages.ubuntu.com/breezy/devel/pasmo"
+	>http://packages.ubuntu.com/breezy/devel/pasmo</a>
+</p>
+
+<h3>Other versions and packages</h3>
+
+<p>
+You can download an rpm package
+<a href='http://www.speccy.org/sinclairmania/arch/emu/mandrake/10.0/RPMS/'
+	>from here</a>
+</p>
+
+<p>
+You can also download a deb package from the <a href="index.html#cbios">C-BIOS</a>
+<a href="https://sourceforge.net/project/showfiles.php?group_id=123693"
+	>project page in Surceforge</a>.
+</p>
+
+<p>
+<a href="http://pasmo.speccy.org/bin/">Older versions</a>.
+</p>
+
+<p>
+<a href="http://pasmo.speccy.org/bin/">Versiones anteriores</a>.
+</p>
+
+<h3>Preview of version 0.6.0</h3>
+
+<p>
+This version is unfinished, download only if you want to test the new
+features or help in development.
+</p>
+
+<p>
+In this version the parser is completely rewritten using bison.
+You need a recent version of bison to compile it unless you don't
+touch the grammar and don't modify the file timestamps when
+unpacking.
+</p>
+
+<p>
+Now can assemble 8080 code instead, or mixed with, Z80.
+</p>
+
+<p>
+Sources and samples:<br>
+Gzipped tar file:
+<a href="bin/pasmo-0.6.0.20070113.0.tgz">
+pasmo-0.6.0.20070113.0.tgz</a><br>
+</p>
+
+<p>
+Windows executable (built with mingw):<br>
+Zipped file:
+<a href="http://pasmo.speccy.org/pasmo-0.6.0.20061009.0.zip">pasmo-0.6.0.20061009.0.zip</a>
+</p>
+
+<p>Notes:<br>
+20070113: More bug fixes, more warnings<br>
+20061009: Some more bugs fixed.<br>
+20060425: Some bugs fixed.<br>
+pre6: Enhanced REL files support and added linker capbilities.<br>
+pre5: Corrected bug in JP flag introduced in pre4.<br>
+pre4: Initial support for generating REL files. Carriage return and other
+characters are considered white space again.<br>
+pre3: Corrected bug of comment after macro arguments.<br>
+pre2: This version fixes some bugs in pre1, and has the options handle code
+rewritten for clarity and make easier future extensions. Some other things
+has been modified for clarity and consistency of the naming conventions.
+</p>
+
+<p>
+Documentation (unfinished, revision 28-may-2006):<br>
+<a href="pasmodoc-0.6.0.pre.html">pasmodoc-0.6.0.pre.html</a><br>
+</p>
+
+
+<h2><a name="links">Links.</a></h2>
+
+<p>
+Links to some sites dedicated to the z80 processor, assembler and machines
+that use it.
+</p>
+
+<h3>Z80</h3>
+
+<dl>
+
+<dt>
+<a href="http://www.z80.info/">www.z80.info</a>
+</dt>
+<dd>
+Hardware - Software - Utilities - FAQ - Docs for Z80-Family.
+</dd>
+
+</dl>
+
+<h3>CP/M</h3>
+
+<dl>
+
+<dt>
+<a href="http://www.arrakis.es/~ninsesabe/aliados/">Aliados</a>
+</dt>
+<dd>
+My CP/M emulator for Linux and Unix. Can run CP/M programs directly
+from command line, no need to prepare disk images or other stuff. Very
+useful to test the Pasmo sample code.<br><br>
+Mi emulador de CP/M para Linux y unix. Puede ejecutar programas CP/M
+directamente desde línea de comandos, no necesita preparar imágenes de
+disco ni nada similar. Muy útil para probar los progrmas de ejemplo de 
+Pasmo.
+</dd>
+
+<dt>
+<a href="http://www.cpm.z80.de/">The Unofficial CP/M Web site</a>
+</dt>
+<dd>
+Software, documentation and links about the CP/M familiy of operating
+systems.
+</dd>
+
+<dt>
+<a href="http://www.gaby.de/">Gaby's Homepage for CP/M and Computer
+History</a>.
+</dt>
+<dd>
+Information, downloads, links... In english and deutsch.
+</dd>
+
+<dt>
+<a href="http://www.seasip.demon.co.uk/Cpm/index.html">John Elliot's
+pages about cp/m</a>
+</dt>
+<dd>
+Links, downloads, technical documentation.
+</dd>
+
+</dl>
+
+<h3>Sinclair ZX Spectrum</h3>
+
+<dl>
+
+<dt>
+<a href="http://www.worldofspectrum.org/">World of Spectrum</a>
+</dt>
+<dd>
+The official world archive for the Sinclair ZX Spectrum and the largest
+on-line gaming center on the Internet.
+</dd>
+
+<dt>
+<a href="http://www.speccy.org/">www.speccy.org - El portal del Spectrum</a>
+</dt>
+<dd>
+Spanish language site about the Spectrum, with links to many other spanish
+language Spectrum pages.<br>
+Sitio en espa&ntilde;ol sobre el Spectrum, con enlaces a muchas otras
+p&aacute;ginas sobre el Spectrum en espa&ntilde;ol.
+</dd>
+
+</dl>
+
+<h2>
+<a name="works">Some open source works written with Pasmo (or with
+several assemblers including Pasmo).</a>
+</h2>
+
+<ul>
+
+<li>
+Apology: A demo for Spectrum that uses 6-channel sound:
+<a href="http://www.west.co.tt/matt/speccy/apology/"
+>http://www.west.co.tt/matt/speccy/apology/</a>
+</li>
+
+<li>
+<a name=cbios>C-BIOS: A compatible replacement for the MSX BIOS:</a>
+<a href="http://cbios.sourceforge.net/">http://cbios.sourceforge.net/</a>
+</li>
+
+</ul>
+
+<p>
+Send me more links!
+</p>
+
+<h2><a name="bye">Despedida y cierre / Bye.</a></h2>
+
+<address>
+Cr&iacute;ticas furibundas y encendidos elogios a:
+<A HREF="mailto:julian.notfound@gmail.com">julian.notfound@gmail.com</A>
+</address>
+
+<address>
+Send comments and criticisms to:
+<A HREF="mailto:julian.notfound@gmail.com">julian.notfound@gmail.com</A>
+</address>
+
+<p>
+<a href="http://validator.w3.org/check?uri=referer">W3C valid HTML 4.0!</a>
+</p>
+
+<p class="fin"><span>&nbsp;Esto es todo amigos.&nbsp;</span>
+<span>&nbsp;That's all folks!&nbsp;</span></p>
+
+</body>
+
+</html>

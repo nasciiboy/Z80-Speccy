@@ -1,0 +1,35 @@
+body { background-color: #CFDFFF; }
+h1 { text-align: center; color: #007F00; }
+h2
+{
+	margin-left: 15%;
+	font-family: Verdana, Arial, sans-serif; font-weight: normal;
+}
+
+dt { margin-left: 5%; margin-top: 1em; }
+dd { margin-left: 10%; }
+
+address { margin-left: 5%; }
+
+.smile
+{
+	font-family: "Lucida Console", "Courier New", Courier, sans-serif; font-size: 125%;
+	color: red;
+}
+
+.fin { margin-left: 7%; margin-top: 2em; }
+.fin span
+{
+	font-family: Verdana, Arial, sans-serif; font-size: 1.5em;
+	color: #007F00; background-color: #C0C0C0;
+}
+
+table.marco
+{
+	width=100%;
+	background-color: #B0B0D4;
+	border-collapse: separate;
+	border: outset 2px;
+}
+table.marco td { border: inset 0px; text-align: center; }
+table.marco td a { text-decoration: none; }

@@ -1,0 +1,137 @@
+<HTML>
+<HEAD><TITLE>86 Central - Link Port</TITLE>
+<META NAME="keywords" CONTENT="link, linking, port seven, port 7, link port, linking port, TI port, Debug, Debugging, Emulator debugging, diagnosing, trace, tracing, mem dump, memory dump, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+<META NAME="description" CONTENT="86 Central - Basic link port information, port 7.">
+
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" WIDTH=301 HEIGHT=76 BORDER=0 ALT="86 Central"></CENTER>
+<CENTER><H5>Best viewed in 1024x768</H5></CENTER>
+<CENTER><H2>Link Port</H2><BR><IMG SRC="images/linkport.gif" WIDTH=264 HEIGHT=208 BORDER=0 ALT="Diagram of Linkport"></CENTER><BR>
+
+<FONT SIZE="+1">T</FONT>he Link port is a 2.55 mm jack on the bottom of the calculator. This is the interface between the calculator and the outisde world. The <A HREF="http://www.ti.com/calc/docs/link.htm">TI-Graphlink</A>, the <A HREF="http://www.ticalc.org/mirror/parallel/index.html">Parallel Cable</A>, and the <A HREF="http://www.salokin.demon.co.uk/ticalcs_serial.htm">Serial Cable</A> all use the Link port to interface the calculator with a computer. You can also use a 2.5mm (male) <-> 3.5mm (female) converter and <A HREF="http://cccsrv.trevano.ch/~blutz/TI85Spec/TICable.html">hook up the calculator to the headphones</A> to play sound. My program, <A HREF="programs/snddemo1.zip">Sound Demo v1.0</A>, takes advantage of this feature.<BR>
+
+<BR><FONT SIZE="-2">Much information was extracted from <A HREF="coding/86ports.txt">86ports.txt</A> (Alan Bailey), which was, in turn, extracted from <A HREF="http://b60414.student.cwru.edu/ti-philes/archives/doc&util/ti-ports.txt">ti-ports.txt</A> (Dan Eble). Refer to these files for more detail.</FONT>
+
+<P><H3>Electrical Specifications of the Link Port</H3>
+
+All data are transmitted in binary form - logical '1' or '0'<BR>
+<UL>
+<LI>1 = 5V - Not Active
+<LI>0 = 0V - Active Signal
+</UL>
+The TI-86 uses 'negative logic' which means that: 0 (0V) = active signal and 1 (5V) = not active signal.
+So if you measure the red and ground or the white and ground wires, it will measure 5V meaning the the link port
+is inactive. The red and white wires typically measures around 4.9V but on my multimeter I measured 5.5V (fresh batteries?). 
+When I ran my Sound Demo program, I used my frequency counter and it fluctuated at around 1500 hz, varying 100's of hertz
+in both directions. 
+
+<P>
+<P><H3>You can access the linkport with Port 7. Here are the specifications of Port 7:</H3>
+
+<TABLE BORDER=0 CELLPADDING="1" CELLSPACING="2">
+
+<TR><TD><B>Write</B> - 11----00</TD><TD></TD></TR>
+<TR><TD>&nbsp;</TD><TD>Bits 2 & 4 - </TD><TD>1: makes red wire inactive</TD>
+<TR><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>0: makes red wire possibly active if other calc says so</TD></TR>
+<TR><TD>&nbsp;</TD><TD>Bits 3 & 5 - </TD><TD>1: makes white wire inactive</TD></TR>
+<TR><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>0: makes white wire possibly active if other calc says so</TD></TR>
+
+</TABLE>
+<BR>
+
+<TABLE BORDER=0 CELLPADDING="1" CELLSPACING="2">
+
+<TR><TD><B>Read</B> - 0000----</TD><TD></TD></TR>
+
+<TR><TD>&nbsp;</TD><TD>Bit 3 - </TD> <TD>1: white wire current stop because this calc said so</TD>
+<TR><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>0: white wire possibly active</TD></TR>
+<TR><TD>&nbsp;</TD><TD>Bit 2 - </TD> <TD>1: red wire current stopped because this calc said so</TD>
+<TR><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>0: red wire possibly active</TD></TR>
+<TR><TD>&nbsp;</TD><TD>Bit 1 - </TD> <TD>1: white wire active</TD>
+<TR><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>0: white wire inactive</TD></TR>
+<TR><TD>&nbsp;</TD><TD>Bit 0 - </TD> <TD>1: red wire active</TD>
+<TR><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>0: red wire inactive</TD></TR>
+
+</TABLE>
+
+<BR>
+
+<B>Examples:</B><BR>
+
+To turn on certain wires, do the following:<BR>
+<PRE>
+		ld a,%11010100      ;White wire ON
+		out (7),a
+		ld a,%11000000      ;White wire ON, Red wire ON
+		out (7),a
+		ld a,%11101000      ;Red wire ON
+		out (7),a
+		ld a,%11111100      ;nothing ON
+		out (7),a
+</PRE>
+
+<BR>To check if certain wires are turned on, do the following:<BR>
+
+<PRE>
+		in a,(7)
+		and %00000011      ;only the lower two bits matter
+		cp 3               ;Bits 0 and 1 set
+		jr z,BothActive     
+		cp 2
+		jr z,WhiteActive   ;Bit 1 set
+		cp 1
+		jr z,RedActive     ;Bit 0 set
+		cp 0
+		jr z,NoneActive    ;Neither bits set
+
+</PRE>
+
+<BR><P>For more information on interfacing the link port with hardware, visit <A HREF="http://cccsrv.trevano.ch/~blutz/TIGen/TIElectronics.html">The TI-Electronics</A> web site.
+<P>There are also some linkport routines by Randy Gluvna  - <A HREF="source/linkport.h">linkport.h</A>. I am not sure how to use these, however.<BR><BR>
+
+<BR>
+
+
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+
+</BODY>
+
+</HTML>

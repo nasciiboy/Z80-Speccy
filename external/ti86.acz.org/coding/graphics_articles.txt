@@ -1,0 +1,177 @@
+<<--------------------[ NEW ARTICLE ]------------------->>
+
+>  Can somebody please explain how to do graphics in assembly?  I have
+> look at alot of sources but I still can't figure it out.  Thanks in advanced.
+>
+>                     -Ricci Adams
+
+Heres a quick way to put images on the screen
+(it will put 8x8 sprites on a screen of 16*8 "boxes") :
+to get you're sprite ANYWHERE you must use the findpixel
+routine and modify this code (alot)
+
+   .
+   :
+   ld hl,PIC    ; point to where your picture is
+   call DrawPic ; call the routine
+   ret
+
+DrawPic:        ; will draw picture at (0,0)
+    ex de, hl   ; DE now points to picture
+    ld hl,$FC00 ; HL points to first byte in the video memory
+
+; here you must increment HL by the numberof bytes you want, to get your
+  pic somewhere else then (0,0)  you might
+
+; want to you use (b,c) as your cord then multiply B * 16 add that to HL
+  then add C, or how ever you want to do it
+
+    ld b,8       ; we want 8 lines, of course you could change it to
+		     ; except a register for the number of lines, or to read it
+                 ; from memory, whatever, I just hardcoded this in for the ex.
+
+DrawPicLoop:
+    push bc          ;save the counter of lines
+    ld a,(de)        ;get one byte from PIC
+    ld (hl),a        ;put in vidmem
+    inc de           ;point to next byte
+
+    ld b,0           ;
+    ld c,16          ;
+    add hl,bc        ; here we add hl by 16 because we want our next line DIRECTLY
+		     ; under the one before it
+    pop bc           ;get the counter back
+    djnz DrawPicLoop ;and keep going until all 8 lines done
+
+
+
+
+PIC:                   ; this is your picture represented by 8
+bytes
+   .db %11111111       ; this just happens to be a box with a line
+through it :)
+   .db %11000001
+   .db %10100001
+   .db %10010001
+   .db %10001001
+   .db %10000101
+   .db %10000011
+   .db %11111111
+
+
+   That should get you started.  Of course I've only be doing this for
+about a week so I know there is a better way.  But that should help
+some.
+
+[Author: Trent Lillehaugen]
+
+<<--------------------[ NEW ARTICLE ]------------------->>
+
+>does anyone have the routines/calls to make menus in asm?
+>
+>
+
+this is for the 85, it draws the menu, but you still have to do the words
+yourself, just find the coordinate
+
+--------------------------------------
+
+;********************* Display Menu routine *************************
+;Description:   Draws the menu bar at the bottom of the screen
+;Parameters:    none
+;Destroys:      a, b, hl
+
+VIDEO_MEM = $FC00
+
+displaymenu:
+        ld      hl, VIDEO_MEM+$380
+        ld      b, 32
+displaymenuloop1:
+        ld      (hl), $FF
+        inc     hl
+        djnz    displaymenuloop1
+
+        ld      b, 36
+        ld      a, $C0
+displaymenuloop2:
+        ld      (hl), a
+        inc     hl
+        inc     hl
+        inc     hl
+        rra
+        cp      3
+        jr      nz, displaymenuloop2
+        ld      a, $C0
+        dec     hl
+        dec     hl
+        djnz    displaymenuloop2
+
+        ld      a, $FE
+        ld      (VIDEO_MEM+$38F), a
+        ld      (VIDEO_MEM+$39F), a
+        ret
+
+[Author: Alan Bailey]
+
+<<--------------------[ NEW ARTICLE ]------------------->>
+
+This is an updated version of the sprite routine I recived from Trent
+Lillehaugen last week.  This version allows you to put the sprite in any of
+the 8x8 squares on the screen.  To call this, use:
+
+  ld b,(x value)
+  ld c,(y value)
+  ld hl,(picture)
+  call DrawPic
+
+
+Here is the routine:
+
+DrawPic:
+  ex de,hl           ;Put sprite in DE
+  ld hl,$FC00        ;Point to video memory
+    
+  ld a,b             ;Put the X value in A
+
+  ld b,c             ;Now both B and C has the Y value
+
+  sra b
+    
+  sla c
+  sla c
+  sla c
+  sla c
+  sla c
+  sla c
+  sla c              ;Multiply BC by 2
+                     ;(This is done by dividing B by 2
+                     ; and multiply C by 128)
+  
+  add hl,bc          ;Now add the Y value to the video memory
+  
+  ld b,0             
+  ld c,a             ;Put the X value into C
+  add hl,bc          ;Now add the X value to the video memory
+  
+
+  ld b,8
+DrawPicLoop:
+  push bc
+  ld a,(de)
+  ld (hl),a
+  inc de
+  ld b,0
+  ld c,16
+  add hl,bc
+  pop bc
+  djnz DrawPicLoop
+  ret
+
+
+If you have any suggestions, comments, or ways I could optimize
+this please send it to ricci@chipsnet.com, Thanks!
+
+ - Ricci Adams
+
+
+

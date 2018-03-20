@@ -1,0 +1,133 @@
+<<--------------------[ NEW ARTICLE ]------------------->>
+
+    Well, I bought my 86 10 days ago, and my first game should be ready
+in a few days (I'm taking off for the 3 day weekend, so maybe not until
+after then), but anyway I encourage anyone/everyone to start learning
+ASM86.  It's not very difficult at all.
+
+For all the people asking "WHERE DO I START?!?":
+
+1) Look at other peoples source code...  I looked at the source for
+   Kollums, and looked at every line, and read every comment.  by the time
+   I read through it I had a basic idea of z80 ASM.  Then I looked at the
+   ZTetris source, which was not commented, and i figured out what he was
+   doing.
+
+2) look at Z80HREF.TXT,  I don't know who wrote it, but I found it at
+   ticalc.org.  Well anyway it gives a list of all the instructions you can
+   use in z80 ASM.
+
+3) experiment, experiment, experiment
+
+4) have fun, if you don't have fun doing it, then don't
+
+5) make some BAD ASS Games!!!!!!!
+
+  With less than 2 weeks experience, I almost have an Othello type game
+called ORBIX done, It's not the best game out there, not even second
+best, ok it could be the worst, but i got a LOT of experience out of
+it.  I'm ready to move on to a better game, so I will as soon as this
+one is done.
+
+  The point of this WHOLE message is:  If you want to learn ASM86, do it.
+Don't complain about not knowing where to start, just look at source,
+ask questions, fool around until something works.. The rest will come in
+time.
+
+[Author: Trent Lillehaugen]
+
+<<--------------------[ NEW ARTICLE ]------------------->>
+
+>does anyone know how to either (a) capture the ON key (b) the call to
+>shut the calc off  or both?
+
+
+To check for the ON key, it's on a different system from the rest of the keys.
+
+EX:  to check if ON is being pressed:
+
+  in a,(3) 	  	;port dealing with ON status
+  and $8          ;mask out everything but ON status
+  or a            ;cp 0
+  jr z,ONpressed  ;
+
+
+jr ONnotpressed
+
+    ONpressed:
+    res 4,(IY+$09)  ;After ON is pressed, this command should be executed to 
+                    ;'turn it off' again, or else the TI-OS will detect it too.
+		    ;and right after your program is finished you'll
+		    ;get an <error 6 break> if not
+
+[Author: Alan Bailey]
+
+<<--------------------[ NEW ARTICLE ]------------------->>
+
+>I just got an 86 and noticed it runs programs significantly slower than
+>the 85. Why??? It has the same processor. Is there anything I can do to
+>correct this?
+
+The 85 and 86 are essentially the same, except of course the size of
+RAM. essentially, you could call it the 85, ROM v11.0, with 4 times as
+much RAM. However, the Z80 can only access a  16-bit offset in memory.
+The first 32k is for ROM, and the last is for RAM. On the TI-85 *AND*
+the TI-86, there is more than 32k of rom. Whenever the ti-8x needs to
+access some code in ROM not currently in the 32k 'page', it changes
+the current rom 'page', and goes again. This is fairly fast. However,
+it does cause a minor slowdown. This happends in both the 85 and 86,
+so the problem isn't there. However, the 86 RAM is *ALSO* too big for
+it's 32k allotted space. so, the 86 pages it's RAM, and the 85, which
+has just 32k memory, which fits into the allocated memory range
+$8000-$FFFF, does not.
+
+Furthermore, due to the way variables are stored, *whenever* you
+access a variable, your calc needs to 'scan' through the variable name
+data blocks. Think of it as a harddrive: whenever you access a file,
+dos checks in the FAT where, then retrieves the data. Ie: the more
+variables, the more slowdown. NB: This does not affect assembly
+programs, unless of course they also use variables. in the 86, you
+have 128k. 4 times as much memory to put stuff in. Usually that means
+you have loads more variables.
+
+The solution:
+
+delete whatever you don't need.
+
+
+<<--------------------[ NEW ARTICLE ]------------------->>
+
+> If I have a hex number (say $A5) in the A register, is there any simple way
+> to display it in decimal (as opposed to hex) on the screen (as 165)?  I
+
+[Make sure that A=0]
+
+Set the cursor coordinates, put A into L, put 0 into H, and call $4A33.
+It displays HL as a decimal number, right-justified in a field of width 5.
+
+[A Little Later]
+
+I used the following code and got an output of "5535<black box>".  I was
+trying to get "165".  Interesting...
+
+> #include "asm86.h"
+> #include "ti86asm.inc"
+
+> .org _asm_exec_ram
+
+> Start:
+>        call _clrLCD
+>        ld hl,0000
+>        ld (_curRow),hl
+>        ld a,$A5
+>        ld l,a
+>        ld h,0
+>        call $4A33
+>        ret
+>
+> .end
+
+I forgot to mention that A should be 0 when you make the call.
+
+
+

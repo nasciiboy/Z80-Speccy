@@ -1,0 +1,313 @@
+<HTML>
+<HEAD>
+<META NAME="keywords" CONTENT="LCD, display, findpixel, detailed overview, Eble-Yopp, eble, yopp, display, rotate, shift, etc, TI-86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+<META NAME="description" CONTENT="86 Central - 86 asm tutorial - The fourth assembly tutorial, covers the TI-86 LCD display and a detailed overview of the findpixel routine. In addition, it goes over the shift and rotating instructions.">
+<TITLE>Tutorial #4 – Simple Display and Programming Techniques</TITLE>
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<B><FONT SIZE=5><P ALIGN="CENTER">Tutorial #4 – Simple Display and Programming Techniques</P>
+</B><P ALIGN="CENTER">Study of the LCD Display and FindPixel routine – plus more Z80 instructions</P>
+</FONT><FONT SIZE=4><P ALIGN="CENTER">Matthew Johnson</P>
+</FONT><P>Welcome to Matt’s Programming Tutorial, Part 4. This tutorial is an overview of the display area and how the findpixel routine works.</P>
+<P>The findpixel routine is a fairly common routine used for graphics programming on the TI-86. So how does it really work? I wanted to know, but no other document appeared to explain it. Maybe people figured it out themselves; maybe no one cared. I never liked using "foreign" code in my own source code. I always wanted to know how things worked before I used them. So I decided to study Dan Eble and James Yopp’s "famous" findpixel routine.</P>
+<P>More Z80 instructions! Very important! You never know when you might need a certain instruction.. and there are some weird ones (i.e. RLD)</P>
+<B><FONT SIZE=6><P>About the Display</P>
+</B></FONT><P>Memory mapped region $FC00 is the display memory. This location is the start of a 1024 byte screen. Set a bit on this region, and a pixel will be set. There are 8 pixels per byte. Every bit represents one pixel, 0 means off (light) and 1 means on (dark). Simple enough. </P>
+<P>The display is 128 pixels wide. 128/8 = 16. Thus there are 16 bytes per row. The display is 64 pixels in height. 64/8 = 8. Thus there are 8 rows.</P>
+<P>(128 x 64) / 8 = 1024, hence the 1024 bytes.</P>
+<P>Modifying the display is simple:</P>
+<PRE>
+&#9;#include "ti86asm.inc"
+
+&#9;.org _asm_exec_ram
+
+&#9;&#9;ld a, %10100000&#9;; Load byte into a
+&#9;&#9;ld hl, $FC00&#9;; HL points to $FC00, first byte of display
+&#9;&#9;ld (hl), a&#9;; Modify first byte of display
+
+&#9;.end</PRE>
+<FONT SIZE=4><P>&nbsp;</P>
+</FONT><P>This simple program sets the first and third pixel. What is wrong? Well, it also clears the other 6 bits. You need a routine that will let you modify any pixel on the screen without worrying about destroying other pixels or having to know the right byte offset.</P>
+<FONT SIZE=6><P>What the Findpixel routine does</P>
+</FONT><P>The findpixel routine is used for displaying a pixel, or dot on the screen. You can also use it to clear a bit or invert a bit (XOR) You give it an X and Y coordinate and it gives you a bitmask and the address of the byte (in display memory) to modify. Then you can OR, AND, or XOR the bitmask to the byte, which modifies the pixel by changing one byte.</P>
+<FONT SIZE=4><P>How to use it</P>
+</FONT><P>The display (LCD) screen becomes a 128 x 64 grid. Before calling the routine you pass the x value in the E register and the y value in the D register, where 0 &lt;= E &lt;= 127, and 0 &lt;= D &lt;=63. HL then becomes the address of the byte in video memory you need to modify. Since it is a byte, and you need to modify a bit, you use the bitmask for that purpose. The bitmask has only one bit that is set, since you are displaying only one pixel. Using logical operators such as AND, OR, XOR, etc, you can create different display combinations.</P>
+<FONT SIZE=4><P>An Example of its use</P>
+</FONT><PRE>;This example draws one pixel at 64, 32
+
+&nbsp;&#9;ld e, 64        ; X=64
+&#9;ld d, 32        ; Y=32
+&#9;call FindPixel  ; Bitmask returned in a. HL is the address pointing to the right byte to modify on the display.
+
+&#9;or (hl)         ; Logical OR with bitmask (in this example %100000000) and display. So only 1-bit is affected.
+&#9;ld (hl), a      ; Write changes</PRE>
+<FONT SIZE=4><P>&nbsp;</P>
+<P>Overview of how the Findpixel works</P>
+</FONT><P>&nbsp;</P>
+<H4>How it finds the correct byte:</H4>
+<P>The findpixel routine needs to find two things. The first thing it must find is the bitmask so later on when you call the routine the correct bit is modified. It then must find the address of the display to modify. Video memory starts at $FC00 and extends 1024 bytes from there. The general formula for finding the bitmask is:</P>
+<P>0 &lt; x &lt; 127</P>
+<P>0 &lt; y &lt; 63</P>
+<P>( y * 16 ) + (x / 8).</P>
+<P>Since there are 16 bytes per row, you can muliply y (the number of rows) by 16 and know how many bytes you much add to HL. Since there are 8 pixels stored per byte, you must divide x by 8 to get the correct byte. Then you add that result to HL also.</P>
+<P>Think of the display memory as a 16x64 grid of bytes. Like a multiplication table. (x/8) tells you how many bytes to move right and (y*16) tells you how much to move down. Suppose X=127 and Y=63, the last pixel on the display. (63*16)+(127/8)= 1008+15 = 1023. </P>
+<P>From byte 0 ($FC00) to byte 1023 ($FFFF) is the whole display area. $FFFF is the last byte of the display!</P>
+<H4>What is the bitmask? </H4>
+<P>The bitmask is used in conjunction with the byte to modify the display. The bitmask only has one bit set, for example: %01000000 which is the second bit. When you OR this to (HL), it will set the second bit on (HL). The other bits on (HL) are not changed. Using other logical operators, however, would allow you to perform other operations. For example….</P>
+<P>If you invert all the bits in the bitmask (using instruction CPL to complement A) and AND it to (HL), it will remove the pixel instead of setting it. Example: A = %10000000. You use CPL, so A = %01111111. You then AND these bits to (HL) and when bit 7 of (HL) is ANDed with bit 7 of A (which is 0) it will force the bit to be cleared, since AND needs both bits to be set. The other bits are fine because they are ANDed with all 1’s and that preserves the value.</P>
+<B><P>Note:</B> (HL) is the byte pointed to by HL. This byte is on the display.</P>
+<H4>&nbsp;</H4>
+<H4>How it finds the bitmask:</H4>
+<P>A byte is 8-bits, so there will only be a total of 8 bitmasks:</P>
+<PRE>$80 = %10000000
+$40 = %01000000
+$20 = %00100000
+$10 = %00010000
+$8 =  %00001000
+$4 =  %00000100
+$2 =  %00000010
+$1 =  %00000001</PRE>
+<P>First HL points to all the bitmasks. These are 8 bytes of bitmasks, starting at $80 and ending at $1. We need to find which number should we add to HL to get the correct bitmask.</P>
+<B><P>Look at it this way:</B> If we look at the last 3-bits of X, which is in the range of 0-7, we can determine the remainder of X if it is ever divided by 8 (which is done later). Just like we can look at the last bit in a byte (bit 0) and determine the remainder if it is ever divided by 2.</P>
+<B><P>Or Look at it this way:</B> Dividing by 8 (which is done later) is accomplished by shifting the bits to the right 3 times. Once X is shifted to the right three times (which is done later), those 3-bits (bit 0, 1, and 2) are lost forever. Those 3-bits determine the remainder. If you save those 3-bits you have the remainder and thus know which bit to modify. But since it is in a numeric form (0-7), it needs to be converted to a bitmask. So you add this remainder to HL and then HL now points to the correct bitmask.</P>
+<FONT SIZE=4><P>The Nitty Gritty… in a simple to understand way (I tried </FONT><FONT FACE="Wingdings" SIZE=4>L</FONT><FONT SIZE=4> …)</P>
+</FONT><P>The first thing the routine does is save the last 3-bits of X. It then adds those 3-bits to HL and gets the correct bitmask. To add the remainder to HL, it takes a short cut method of adding the remainder to L. It then saves the carry flag and adds that to H. This "simulated" 16-bit addition is explained more on the commented source of Findpixel.</P>
+<P>Good thing, because next it then does the RRCA routines, divides X by 8. The last 3-bits are rotated with the three RRCA instructions and are now the upper 3-bits of A. This is bad, but RLD, a weird instruction, comes to the rescue. (HL), which is Y, is multiplied by 16. This is accomplished because RLD takes the lower 4-bits of (HL) and moves it to the upper 4-bits. The previous upper 4-bits of (HL) was moved to A. Then RLD takes the lower 4-bits of A, which is in the range of 0-15, and "adds" it to (HL) by moving it to the last 4-bits of (HL). </P>
+<P>Effectively, RLD shifted (HL) 4-bits to the left through A. X was added to (HL) because it was moved to the lower 4-bits of A (which were not occupied after the shifting). If you think of A(HL) as a big 16-bit number, then you can imagine Y physically move 4-bits to the left and leaving room for X to be added to the lower 4-bits of that number.</P>
+<P>What about the 3-bits that were rotated when RRCA was performed? The last 3-bits would wrap around and affect the first 3-bits (bit 7, 6, 5). Well, the instruction OR $FC does two things: It adds $FC to A and overwrites those 3-bits. </P>
+<P>Note: Originally, A is X and (HL) is Y</P>
+<P>A(HL) was being treated like a 16-bit number. It doesn’t exist though, and is then converted into HL like this</P>
+<PRE>
+LD H, A 
+LD L, (HL) </PRE>
+<P>Thus we now have this completed equation:<B> HL = $FC00 + (16 * y) + x</P>
+
+<UL>
+</B><LI>X was found by dividing it by 8, using three RRCA instructions. </LI>
+<LI>RLD did the y * 16 and added X </LI>
+<LI>OR $FC is what added the $FC00 and cleared those 3-bits that wrapped around from the RRCA instructions</LI></UL>
+
+<FONT SIZE=5><P>The Actual Findpixel Routine</P>
+</FONT><U><P>I added more comments and re-written it so it is easier to understand!</P>
+</U><PRE>
+;--------------------------------------------------------------------
+; The Eble-Yopp-Yopp-Eble-Eble-Eble-Yopp Fast FindPixel Routine :)
+; 36 bytes / 121 t-states not counting ret or possible push/pop of BC
+;--------------------------------------------------------------------
+; Input: D = y
+; E = x
+; Output: HL= address of byte in video memory
+; A = bitmask (bit corresponding to pixel is set)
+; C is modified
+;
+; +-----------+
+; |(0,0)      | &amp;lt;- Screen layout
+; |           |
+; | (127,63)  |
+; +-----------+
+;
+;--------------------------------------------------------------------
+
+FindPixel:
+ld hl,FP_Bits&#9;&#9;; HL points to the address of FP_Bits
+ld a,e&#9;&#9;&#9;; Load x into a
+and %00000111 &#9;&#9;; Get last 3-bits, a = bit offset in range of 0-7
+
+&#9;&#9;&#9;; Prepare for 16-bit simulated addition. 
+&#9;&#9;&#9;; Adds the correct number (the 3-bit offset) to HL
+&#9;&#9;&#9;; to get the correct bitmask. 
+
+add a,l&#9;&#9;&#9;; A = A + L, any overflow stored in Carry flag
+ld l,a&#9;&#9;&#9;; Apply changes to L    , overflow is still in carry flag
+adc a,h&#9;&#9;&#9;; Adds the carry flag. The "side effect" is that L was added to A earlier and L is not needed
+sub l&#9;&#9;&#9;; Subtracts L
+ld h,a&#9;&#9;&#9;; Apply changes to H
+&#9;&#9;&#9;
+&#9;&#9;&#9;; Now a simulated 16-bit addition has been performed. 
+&#9;&#9;&#9;; Basically A was added to L, and any overflow was added to H
+&#9;&#9;&#9;; So HL = HL + A
+&#9;&#9;&#9;
+&#9;&#9;&#9;; Since A is in the range of 0-7, the correct bitmask has already been selected.
+&#9;&#9;&#9;; If a=%00000000 (a=0) then HL now points to value %10000000 (the first bit)
+&#9;&#9;&#9;; If a=%00000101 (a=5) then HL now points to value %00001000 (the fifth bit)
+
+&#9;&#9;&#9;
+ld c,(hl) &#9;&#9;; c = bitmask for (hl)
+ld hl,FP_RLD&#9;&#9;; HL points to FP_RLD
+ld (hl),d&#9;&#9;; FP_RLD = Y
+
+ld a,e &#9;&#9;&#9;; A = X
+&#9;&#9;
+&#9;&#9;&#9;; Divide X by 8, which is the correct byte in a row
+&#9;&#9;&#9;; (8 bits/byte), Divide by 8, get the correct byte
+
+rrca&#9;&#9;&#9;; /2
+rrca                    ; /2
+rrca                    ; /2
+rld                     ; Shift (HL) by 4, extra (upper) 4-bits from (HL) were moved to A because of shifting.
+                        ;  The lower 4-bits of A, which covers all of X, is moved to the lower 4-bits of (hl),
+                        ;  thus added to (hl). Summary: (y*16) + x
+&#9;&#9;&#9;
+or $FC                  ; HL = HL + $FC – it wont overwrite the bits because the most Y would ever be is (63 * 16) + 
+                        ; (127/8) = 1023, only affecting a total of 6-bits , which are
+                        ;  the 4-bits in (hl) and the 2-least significant bits on A.
+
+                        ; Since OR $FC is %11111100, the last 2-bits are OR’d, thus not affected. $FC was added  
+                        ;  successfully. X range of 0-7, Y range of 0-63. Thus: HL = $FC00 + (Y*16) + X
+
+ld l,(hl) &#9;&#9;; L = (y*16) + x, 2 most significant bits were shifted to H&#9;&#9;&#9;
+ld h,a                  ; $FC was added to H, but left room for the 2-bits shifted from L when Y*16
+&#9;&#9;&#9;
+ld a,c                  ; now a = bitmask for (hl)
+                        ;121 t-states up to this point
+ret
+
+FP_RLD: .db $00
+FP_Bits: .db $80,$40,$20,$10,$08,$04,$02,$01
+.end
+;--------------------------------------------------------------------</PRE>
+<B><FONT SIZE=6><P>&nbsp;</P>
+<P>More Z80 Instructions</P>
+</B></FONT><PRE>
+<B><FONT SIZE=4>Bit Manipulation Instructions
+</B></FONT>- r covers these registers: A, B, C, D, E, H, L
+
+**************************
+
+Instruction: <B>BIT
+</B>Purpose: Tests bit B of a byte and sets the Z flag accordingly.
+Condition Bits Set: Sets Z flag if bit is zero, reset otherwise. 
+
+Options: BIT b, (HL)
+         BIT b, (IX+d)
+         BIT b, (IY+d)
+         BIT b, r</PRE>
+<FONT FACE="Courier New" SIZE=2><P>&nbsp;</P>
+<P>Example: BIT 3, C</P>
+<P>If Bit 3 in register C was reset (0), then the Z flag would be set (1).</P>
+</FONT><PRE>
+**************************
+
+Instruction: <B>SET
+</B>Purpose: Sets (forces 1) bit B of a byte
+Condition Bits Set: None
+
+Options: SET b, (HL)
+         SET b, (IX+d)
+         SET b, (IY+d)
+         SET b, r</PRE>
+<FONT FACE="Courier New" SIZE=2><P>Example: SET 5, (HL)</P>
+<P>This will cause the memory location pointed to by HL to have bit 5 be 1 (set). So if (HL) is 0, then this instruction would cause HL to be 32 (%00100000). Bit 0 is the Least Significant Bit.</P>
+</FONT><P>**************************</P>
+<PRE>Instruction: <B>RES
+</B>Purpose: Resets (clears) bit B of a byte.
+Condition Bits Set: None
+
+Options: RES b, (HL)
+         RES b, (IX+d)
+         RES b, (IY+d)
+         RES b, r</PRE>
+<FONT FACE="Courier New" SIZE=2><P>Example: RES 6, A</P>
+<P>Bit 6 in register A would be cleared.</P>
+</FONT><FONT FACE="Courier New"><H3>MISC Instructions</H3>
+</FONT><FONT FACE="Courier New" SIZE=2><P>Instruction: CPL</P>
+<P>Purpose: Register A is inverted (one’s complement). All bits that were set are now reset and vise-versa.</P>
+</FONT><PRE>Condition Bits Set: H and N set
+
+Options: CPL</PRE>
+<FONT FACE="Courier New" SIZE=2><P>Example: If A=%10010110 (150 decimal) after CPL A would equal %01101001 (105). This is also like a great way of doing 255 – A.</P>
+</FONT><P>**************************</P>
+<FONT FACE="Courier New" SIZE=2><P>Instruction: NEG</P>
+<P>Purpose: Register A is inverted and added one. (two’s complement). This is the same as subtracting the contents of the Accumulator from zero.</P>
+</FONT><PRE>Condition Bits Set: Zero set if result was zero, reset otherwise. S set is result is negative. H set if borrow from bit
+4, P/V set if register A was 80H before operation, reset otherwise. N Set, C Set if register A was not 00H before operation, reset otherwise.
+
+Options: NEG</PRE>
+<FONT FACE="Courier New" SIZE=2><P>Example: If A=%10011000 (152) after NEG A=01101000 (104). Adds these two together you would get zero and the carry flag would be set.</P>
+</FONT><P>**************************</P>
+<FONT FACE="Courier New" SIZE=2><P>Instruction: CCF</P>
+<P>Purpose: The Carry flag is inverted.</P>
+</FONT><PRE>Condition Bits Set: H, previous carry will copy. N, Reset. C, Set if Carry flag was 0 before operation, reset otherwise
+Options: CCF</PRE>
+<FONT FACE="Courier New" SIZE=2><P>Example: If the carry flag was 1, call CCF and the carry flag is now 0</P>
+</FONT><P>**************************</P>
+<FONT FACE="Courier New" SIZE=2><P>Instruction: SCF</P>
+<P>Purpose: The Carry flag is set.</P>
+</FONT><PRE>Condition Bits Set: H &amp; N reset, C set
+Options: SCF</PRE>
+<FONT FACE="Courier New" SIZE=2><P>Example: If the carry flag was 0, call SCF and the carry flag is now 1</P>
+</FONT><P>**************************</P>
+<FONT FACE="Courier New" SIZE=2><P>Instruction: NOP</P>
+<P>Purpose: No operation, does nothing.</P>
+</FONT><PRE>Condition Bits Set: None at all</PRE>
+<FONT FACE="Courier New" SIZE=2><P>The 6MHZ Z80 can do 1,500,000 NOP’s per second running at full speed.</P>
+</FONT><B><FONT FACE="Courier New" SIZE=4><P>ROTATE AND SHIFT INSTRUCTIONS: (Brief Overview)</P>
+
+<UL>
+</B></FONT><LI>RLCA – Register A are rotated left 1-bit. Bit 7 is copied into the Carry flag and also into bit 0.</LI>
+<LI>RLA – Register A are rotated left 1-bit position <I>through the Carry flag.</I> The previous contents of the Carry flag are copied into bit 0.</LI>
+<LI>RRCA – Register A are rotated right 1-bit position. Bit 0 is copied into the Carry flag and also into bit 7. Bit 0 is the least significant bit.</LI>
+<LI>RRA – Register A are rotated right 1-bit position <I>through the Carry flag</I>. The previous contents of the Carry flag are copied into bit 7.</LI>
+<LI>RLC r, RLC (HL), RLC (IX+d), RLC (IY+d) – Same as RLCA but works with any 8-bit register plus (HL), (IX+d), and (IY+d)<B><FONT FACE="Courier New" SIZE=4> </LI>
+</B></FONT><LI>RL r, RL (HL), RL (IX+d), RL (IY+d) – Same as RRCA but works with any 8-bit register plus (HL), (IX+d), and (IY+d)</LI>
+<LI>RRC r, RRC (HL), RRC (IX+d), RRC (IY+d) – Same as RRCA but works with any 8-bit register plus (HL), (IX+d), and (IY+d)</LI>
+<LI>RR r, RR (HL), RR (IX+d), RR (IY+d) – Same as RRA but works with any 8-bit register plus (HL), (IX+d), and (IY+d)</LI>
+<LI>SLA r, SLA (HL), SLA (IX+d), SLA (IY+d) – An arithmetic shift left 1-bit on the specified byte. Bit 7 is copied into the carry flag and Bit 0 is reset. This is a quick way to multiply by 2.</LI>
+<LI>SRA r, SRA (HL), SRA (IX+d), SRA (IY+r) – An arithmetic shift right 1-bit position of the specified byte. Bit 7 does not change and Bit 0 is copied into the carry flag.</LI>
+<LI>SRL r, SRL (HL), SRL (IX+d), SRL (IY+r) – A shift 1-bit to the right on the specified byte. Bit 7 is reset and Bit 0 is copied into the carry flag. This is a quick way to divide by 2.</LI>
+<LI>RLD – Usually used in BCD. The low order 4-bits (bit 3,2,1,and 0) of memory location (HL) are copied into the high order 4-bits (7,6,5,4) of that same memory location; the previous contents of those high order 4-bits are copied into the low order four bits of register A and the previous contents of <I>those</I> low order 4-bits are copied into the low order 4-bits of  memory location (HL). The high order bits of register A are unaffected by this instruction.</LI>
+<LI>RRD – Usually used in BCD. The contents of the low order four bits (bits 3,2,1, and 0) of memory location (HL) are copied into the low order four bits of register A; the previous contents of the low order four bits register A are copied into the high order four bits (7,6,5, and 4) of location (HL); and the previous contents of the high order four bits of (HL) are copied into the low order four bits of (HL). The contents of the high order of bits on register A were unaffected.</LI></UL>
+
+<P>&nbsp;</P>
+<P>(HL) refers to the memory location pointed to by HL.</P>
+<B><FONT FACE="Courier New" SIZE=4><P>I hope you enjoyed my fourth tutorial! </P>
+</B></FONT>
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript">
+<!--
+function go(){
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none") {
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value
+	}
+}
+//-->
+</script>
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('<form name="selecter"><select name="select1" size=1>');
+document.write('<option value=none>3rd Level Domains');
+document.write('<option value=none>---------------------------------');
+document.write('<option value="http://www.acz.org">ACZ Frontpage');
+document.write('<option value="http://ti86.acz.org">86 Asm Central');
+document.write('<option value="http://ti89.acz.org">89 Asm Central');
+document.write('<option value="http://asmstudio.acz.org">Assembly Studio Site');
+document.write('<option value="http://vti.acz.org">Virtual TI Emulator Site');
+document.write('<option value=none>----------------------------------');
+document.write('<option value="http://brett.acz.org">Brett\'s Homepage');
+document.write('<option value="http://clem.acz.org">Clem\'s Homepage');
+document.write('<option value="http://dave.acz.org">Dave\'s Homepage');
+document.write('<option value="http://david.acz.org">David\'s Homepage');
+document.write('<option value="http://dux.acz.org">Dux\'s Homepage');
+document.write('<option value="http://james.acz.org">Jame\'s Homepage');
+document.write('<option value="http://jeremy.acz.org">Jeremy\'s Homepage'  );
+document.write('<option value="http://matt.acz.org">Matt\'s Homepage');
+document.write('<option value="http://rusty.acz.org">Rusty\'s Homepage');
+document.write('<option value="http://stephen.acz.org">Stephen\'s Homepage');
+document.write('<option value=none>----------------------------------');
+document.write('</select>');
+document.write('<input type="button" value="Go" onclick="go()">');
+document.write('</form>');
+// end hiding contents -->
+</script>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,138 @@
+<HTML>
+<HEAD><TITLE>86 Central - Sound</TITLE>
+<META NAME="keywords" CONTENT="Sound, sounds, music, sound effects, snd, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+<META NAME="description" CONTENT="86 Central - Sound - Information on sound and the sound demo.">
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" WIDTH=301 HEIGHT=76 BORDER=0 ALT="86 Central"></CENTER>
+<CENTER><H5>Best viewed in 1024x768</H5></CENTER>
+<CENTER><H2>Sound</H2></CENTER>
+
+<FONT SIZE="+1">S</FONT>ound on the calculator is simulated by rapidly turning on and off the linkport from 'High' to 'Low'. This is a similar technique they used to simulate digital audio onto a PC speaker, it was simply the rapid ON and OFF action of the speaker thousands of times per second.<BR><BR>
+
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=0>
+<TR><TD BGCOLOR="#CCCCCC" COLSPAN="2"><A HREF="programs/snddemo1.zip"><FONT SIZE="+2"><B>Sound Demo v1.0</B></FONT></A></TD></TR>
+
+<TR><TD BGCOLOR="#EEEEEE" WIDTH="90%">
+<P>This simple program uses the link port to output sound. This is the jack located on the
+bottom of the calculator, the same jack used to transfer programs from the computer to
+your calculator. You will need a 2.5mm <--> 3.5mm adapter. This can be purchased at Radio
+Shack. 
+
+<P>Instructions for hooking up the calculator to headphones or a speaker are located at: <A HREF="http://cccsrv.trevano.ch/~blutz/TIGen/TIElectronics.html">http://cccsrv.trevano.ch/~blutz/TIGen/TIElectronics.html</A>
+
+<P>Simply run the program, plug in the headphones, and enjoy. The source code can be
+found on my web page
+
+</TD></TR></TABLE><BR>
+
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=0>
+<TR><TD BGCOLOR="#CCCCCC" COLSPAN="2"><FONT SIZE="+2"><B>Brief Overview</B></TD></TR>
+
+<TR><TD BGCOLOR="#EEEEEE" WIDTH="90%">
+<P>Sound are Sine Waves. We can simulate sound waves with square waves,
+which can be produced by rapidly turning on and shutting off the speakers.<BR>
+
+
+<IMG SRC="images/snddemo.gif" width=278 height=183 border=0 alt="Sine/Square wave graphic">
+<BR><FONT SIZE="-1">(Frequency measured in hertz (hz) - full square waves second)</FONT>
+</PRE><BR>
+
+<P>You turn on the speaker by turning on the link port wires, wait a delay,
+and shut them off. Then you wait another delay, and shut it off. Make sure
+the delays are equal.
+
+<U>You have sound!</U>
+</TD></TD></TABLE><BR><BR>
+
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=0>
+<TR><TD BGCOLOR="#CCCCCC" COLSPAN="2"><FONT SIZE="+2"><B>Problems</B></FONT></TD></TR>
+
+<TR><TD BGCOLOR="#EEEEEE" WIDTH="90%">
+<P>One problem I didn't bother solving is the frequency <-> speed problem. Basically when
+you make a sound with twice the frequency, it takes only half the speed. Since the 
+program uses two inner loops (one when the speaker is on, the other when off) to create
+the full square wave, when the inner loop is halved, the frequency is doubled. This
+is what we want, that is great. But also it takes only half the time to complete the
+full square wave. So when one sound at 500 hz takes 1 second, then a sound at 1000 hz
+takes only half a second
+
+<P>Another problem is that it disables interrupts. You can re-enable them, it might not
+sound as good, but should still work. Disabling interrupts may cause some shells not
+to work, so...
+
+<P>Also the PlayTone function doesnt use a standard frequency measurement. C is used as 
+the frequency, but not in hertz. It's delay is the delay it takes the Z80 processor 
+to loop C number of times, using the djnz instruction. It uses all the speed toward
+the sound. Also, HL is not in seconds, really just any 'ol number - see the source
+code. 
+</TR></TD></TABLE><BR><BR>
+
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=0>
+<TR><TD BGCOLOR="#CCCCCC" COLSPAN="2"><FONT SIZE="+2"><B>Other Notes</B></FONT></TD></TR>
+
+<TR><TD BGCOLOR="#EEEEEE" WIDTH="90%">
+<P><B>Using Interrupts</B>
+
+<P>Interrupts are impossible. Interrupts execute at 200 hz per second, making it
+(therotically), only possible to have 100 hz sounds. (one interrupt turns the wire on,
+the other off) sounds. This sound is tooo low and not good for any purpose.
+
+<P><B>Sound Library</B>
+
+<P>86wav already came out. I was thinking about a midi thing, but the midi
+format is too complicated for me.
+
+<P><B>Achieving Real Time Sound</B>
+
+<P>To integrate sound in a game, you will need a constant slow down or a really small sound.
+To use a constant slowdown, have the sound routine check a flag byte that you make up.
+When a bit is set on this flag byte, play the sound, and reset the flag. If no bits are
+set, then do a bunch of nops to keep the speed constant whether a flag is set or not.
+
+<P>Or you can have a really small sounds during gameplay, or sounds that only play on
+the titlescreen and "Game Over". You get the idea.
+
+</TD></TR></TABLE><BR>
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+
+</BODY>
+
+</HTML>

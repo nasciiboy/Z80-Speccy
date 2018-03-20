@@ -1,0 +1,443 @@
+<HTML>
+<HEAD>
+   <TITLE>86 Central - Tilemaps</TITLE>
+	<META NAME="keywords" CONTENT="Tiles, tile, tilemaps, tile-based, tiles, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+	<META NAME="description" CONTENT="86 Central - Tutorial on Tilemaps and general tile-based programming.">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" ALT="86 Central" BORDER=0 HEIGHT=76 WIDTH=301></CENTER>
+
+<CENTER>
+<H5>
+Best viewed in 1024x768</H5></CENTER>
+
+<CENTER>
+<H2>
+Tilemaps</H2></CENTER>
+
+<CENTER><IMG SRC="images/tilemap.jpg" HEIGHT=138 WIDTH=266></CENTER>
+
+
+<P><B>T</B>ilemaps are a way of creating complex levels without alot of
+data. &nbsp;A titlemap is basically a collection of numbers that represent
+what sprite to draw at that location. &nbsp;The tilemap data for
+the above screenshot is below. &nbsp;Note that the hero and the bullet
+are not represented on the tilemap. &nbsp;The tilemap data only contains
+the "map" sprites to be drawn:
+<PRE><TT> .db $27,$00,$00,$00,$00,$00,$00,$00
+ .db $28,$00,$00,$00,$80,$00,$00,$00
+ .db $29,$00,$00,$00,$00,$00,$82,$00
+ .db $89,$00,$81,$00,$00,$00,$00,$00
+ .db $89,$00,$00,$00,$00,$00,$00,$00
+ .db $89,$00,$00,$00,$00,$80,$00,$28
+ .db $27,$87,$85,$85,$85,$85,$83,$29
+ .db $29,$88,$86,$86,$86,$86,$84,$27
+ .db $27,$28,$00,$00,$00,$00,$00,$28
+ .db $8c,$8b,$00,$00,$00,$80,$00,$27
+ .db $8c,$8b,$80,$00,$00,$00,$00,$27
+ .db $03,$8b,$00,$00,$00,$00,$27,$29
+ .db $04,$02,$00,$00,$81,$00,$28,$27
+ .db $05,$02,$00,$00,$00,$00,$28,$29</TT></PRE>
+If you look at the numbers and the picture closely, you can see that the
+numbers correlate to the sprites in the picture. &nbsp;Please note that
+the format for this tilemap is kind of different than what you would expect. 
+It goes bottom to top, left to right, instead of the "traditional" left
+to right, top to bottom. &nbsp;The format was chosen because it simplified
+the coding for this game. &nbsp;There will be many times that you will
+redo your data, and probably not just once, to make it easier on your routines
+while programming. &nbsp;Data should fit the code, not vice-versa.
+
+<P>Notice how the same numbers are used for the same sprites. &nbsp;The
+right part of the column in the middle is made up of sprite $85 and the
+left part is made up of 86. &nbsp;The rocky ground is made up of sprites
+$27 to $29. &nbsp;The water is made up of $89, the lava of $8c and $8b. 
+This is one huge advantage of tilemaps. &nbsp;A small set of sprites can
+be put together in many, many combinations over and over to create huge
+levels. &nbsp;This is the technique used by many of your favorite games: 
+Sqrxz, Super Mario 86, Insane Game, Slippy, etc.
+<BR> 
+<BR><FONT SIZE=+1>Screen Sized Tilemaps</FONT>
+
+<P>The simplest types of tilemaps are ones that are the size of the screen. 
+You see these in games like Slippy, Vexed, etc. &nbsp;These could be used
+for an RPG as well, if you wanted to use "paged scrolling". &nbsp;Pages
+scrolling is where the screen changes to a different screen whenever you
+get to the edge. &nbsp;This kind of scrolling is much easier to implement
+than smooth scrolling and allows you to use more tricks to save space than
+is possible with a side scroller. &nbsp;It is also much faster and easier
+to draw because all of the <A HREF="sprites.htm">Sprites</A> are aligned. 
+The screen is made up of 8 by 16 sprites (using 8x8 sprites):
+<PRE><TT>Map:
+ .db $8,$8,$3,$5,$1,$7,$0,$9,$2,$6,$9,$7,$4,$0,$5,$3
+ .db $9,$3,$7,$6,$6,$8,$5,$1,$7,$4,$1,$5,$2,$6,$4,$5
+ .db $4,$2,$1,$7,$4,$3,$1,$6,$8,$8,$5,$3,$7,$6,$5,$3
+ .db $2,$4,$3,$0,$4,$3,$2,$8,$2,$7,$7,$5,$9,$3,$1,$4
+ .db $0,$9,$8,$7,$9,$6,$6,$0,$8,$6,$4,$2,$6,$5,$1,$4
+ .db $3,$2,$3,$6,$0,$9,$1,$1,$6,$1,$0,$5,$9,$4,$5,$3
+ .db $4,$9,$8,$1,$2,$1,$4,$7,$2,$5,$6,$3,$6,$4,$1,$8
+ .db $3,$4,$3,$0,$8,$0,$0,$9,$6,$2,$6,$7,$3,$0,$1,$9</TT></PRE>
+Each byte of the map stands for the sprite to draw at that position. 
+The map goes left to right, top to bottom. &nbsp;This is a good configuration
+because it simplifies creating the map, especially if it is made by hand
+and not with an editor. &nbsp;The sprites for the map will normally be
+in a contiguous block, meaning each sprite will follow right after the
+one before it:
+<PRE><TT>Sprites:
+
+Sprite0:
+        .db %00000000
+        .db %00000000
+        .db %00000000
+        .db %00000000
+        .db %00000000
+        .db %00000000
+        .db %00000000
+        .db %00000000
+
+Sprite1:
+        .db %00000000
+        .db %01111111
+        .db %01000000
+        .db %01000000
+        .db %01000000
+        .db %01000000
+        .db %01111111
+        .db %00000000
+
+...</TT></PRE>
+Having the sprites is just about the only possible way they could be. &nbsp;
+If they were all scattered out, the <TT>DrawMap</TT> routine would be a
+nightmare to program. &nbsp;The basic idea of drawing the screen is to
+go through the map tile by tile, multiply the current tile by the 8 (the
+size of the sprite in bytes), add that to the start of the sprites (which
+gives us the correct sprite to draw), determine the correct location on
+the screen then finally draw the sprite. &nbsp;If we were doing this in
+a high level language, it would look something like the pseudo code below:
+<PRE><TT>FOR y = 1 to 8
+    FOR x = 1 to 16
+        sprite = Sprites + (Map[y][x] * 8)
+        GridPutSprite(x, y, sprite)
+    NEXT x
+NEXT y</TT></PRE>
+Of course, doing this in assembly takes a little more thinking, but it's
+not all that different. &nbsp;The basic idea stays the same, but the implementation
+is based around the actual assembly instructions. &nbsp;I would never say
+that my routine is the fastest way to draw a screen sized tilemap, but
+it is pretty fast:
+<PRE><TT>;============================================================
+; DrawMap -- draws an 8x16 tilemap  [Assembly Coder's Zenith]
+;  input: HL = pointer to tilemap to draw
+;  total: 34b/91529t (including ret and entire GridPutSprite)
+;============================================================
+DrawMap:
+ ld de,$0000            ; start drawing at (0, 0)
+DrawMapL:
+ push hl                ; save map pointer
+ ld l,(hl)              ; get the current tile
+ ld h,0                 ; clear the upper byte
+ add hl,hl              ; multiply by 8 (* 2)
+ add hl,hl              ; * 4
+ add hl,hl              ; * 8
+ ld bc,Sprites          ; load the start of the sprites
+ add hl,bc              ; add togehter to get correct sprite
+ push de                ; save sprite draw location
+ call GridPutSprite     ; draw the sprite
+ pop de                 ; restore sprite draw location
+ pop hl                 ; restore map pointer
+ inc hl                 ; go to next tile
+ inc e                  ; move location to the right
+ bit 4,e                ; if the 5th bit (e = 16), we're done
+ jr z,DrawMapL          ; only jump if the row isn't complete
+ ld e,0                 ; draw at the left again
+ inc d                  ; move location down a row
+ bit 3,d                ; check if it's done (e = 8)
+ ret nz                 ; return if we're done
+ jr DrawMapL            ; jump back to the top of the loop</TT></PRE>
+The code to call the routine would look something like this:
+<PRE><TT> ld hl,Map              ; point to the first byte of the map
+ call DrawMap           ; draw the map</TT></PRE>
+An example of all of this can be found <A HREF="map.asm">here</A>.
+
+<P><FONT SIZE=+1>Working with Tilemaps</FONT>
+
+<P>Tilemaps can be thought of as an array of memory. &nbsp;Each "element" 
+is the value of the sprite to draw for that location. &nbsp;To access 
+element N of the tilemap, you need to add N to the starting address of the 
+map:
+
+<P><PRE>
+; input: a = number of tile to get
+; returns: hl = pointer to tile
+GetTileN:
+ ld e,a                ; load N into low byte
+ ld d,0                ; clear the high byte
+ ld hl,Map             ; load the starting address of the map
+ add hl,de             ; add the offset (N) to the map's address
+ ret                   ; return
+</PRE>
+
+<P>This routine is the most basic of tilemap routines. &nbsp;It will most 
+likely not be useful, but is very important for understanding the concepts. 
+&nbsp;The offset N is passed to the routine. &nbsp;It is loaded into the
+low byte of a 16-bit register, then the high byte of the register is 
+cleared. &nbsp;The address or starting location of the map is loaded, and 
+the offset N is added to it. &nbsp;The pointer to tile N of tilemap Map is 
+returned in HL. &nbsp;The address would be used to load data from the map 
+or modify the data already there. &nbsp;
+
+<P><FONT SIZE=+1>Interacting with Sprites</FONT>
+
+<P>Now, I'm sure that the first thing you want to do after you draw the map 
+is to have a little guy walk around on the map. &nbsp;I'm going to assume 
+that you are familiar the concept of sprites (drawing, moving, erasing, 
+etc.). &nbsp;If not, then check out the <a href="sprites.htm">sprites</a> 
+section. &nbsp;Therefore, I'm not going to load this tutorial with more 
+sprite stuff than is necessary. &nbsp;We'll concentrate more on the actual 
+tilemap stuff.
+
+<P>Moving a sprite around on a tilemap isn't very different from moving a 
+sprite around normally. &nbsp;It just involves a little more checking. &nbsp;
+Since most putsprite routines use BC for the X,Y coords of the sprite, 
+that's what we'll use here. &nbsp;The most used function for tilemaps will 
+probably be GetTile. &nbsp;This routine returns a pointer to the tile at 
+the sprite coords BC. &nbsp;So, if you have a sprite at (8, 9), it will 
+return tile 17, or the 18th tile. &nbsp;Since tiles are 8x8, the tile number 
+can be found by this formula:
+
+<P><PRE><TT> tile = ((y / 8) * 16) + (x / 8)
+</TT></PRE>
+
+<P>The X and the Y coords are divided by the size of the sprite, which is 
+8. &nbsp;The Y coord is then multiplied by the width of the map, 16, and 
+added to the X coord. &nbsp;The first thing that should jump out at you 
+is that Y is divided by 8, then multiplied by 16. &nbsp;So why divide in 
+the first place, my not just multiply by 2? &nbsp;Good question. &nbsp;The 
+divisions are integer divisions, meaning that the result is truncated. &nbsp;
+So what really happens is that Y is rounded down (truncated) to the nearest
+8, then multiplied by 2. &nbsp;In assembly terms, this means that the lower 
+3 bits are masked off. &nbsp;The assembly implementation of this routine 
+is a good example of shifting for multiplication and divsion:
+
+<P><PRE>
+; bc = coords to get tile at (x, y)
+; returns: hl = pointer to map tile
+GetTile:
+ srl b             ; divide x by 2
+ srl b             ; / 4
+ srl b             ; / 8
+ ld a,c            ; get y coord
+ and %11111000     ; clear lower 3 bits (truncate to 8)
+ add a,a           ; y * 2
+ add a,b           ; add to x (was divided by 8)
+ ld l,a            ; load into low byte
+ ld h,0            ; clear high byte
+ ld bc,Map         ; point to start of the map
+ add hl,bc         ; compute offset in map
+ ret               ; return
+</PRE>
+
+<P>You would call this routine with your sprite coordinates in BC. &nbsp;
+It will return a pointer to the tile that the sprite is over in HL. &nbsp;
+A note about this is that the sprite's coords are not actually the center 
+of the sprite, but the upper-left corner. &nbsp;If you want the center of 
+the sprite, then you would center the coords first:
+
+<P><PRE>
+; bc = coords (x, y) to be centered
+; returns: b + 3, c + 3
+CenterCoords:
+ ld a,3        ; the coords are off by 3 pixels
+ add a,b       ; add 3 to the x coord
+ ld b,a        ; save the x coord
+ ld a,3        ; again, need to add 3
+ add a,c       ; now center the y coord
+ ld c,a        ; save the new y coord
+ ret           ; all done
+</PRE>
+
+<P>Perhaps the most interesting thing about assembly is that there is always 
+another way to to do things. &nbsp;If you don't mind trashing HL, you can 
+speed up the above routine by 1 t-state and make it 2 bytes shorter:
+
+<P><PRE>
+; bc = coords (x, y) to be centered
+; returns: b + 3, c + 3
+CenterCoords:
+ ld hl,$0303   ; add 3 to each of the coords
+ add hl,bc     ; add to the coords
+ ld b,h        ; save the x coord
+ ld c,l        ; save the y coord
+ ret           ; done
+</PRE>
+
+<P>You will probably never want to trash an important register like HL just 
+to save a couple of bytes, and 1 t-state is virtually nothing, but I just 
+felt like throwing it in here. &nbsp;It's always good to keep a lookout for 
+other ways to do things, because sometimes the difference will be much 
+greater. &nbsp;Anyway, back on the subject of tilemaps, you will need to 
+know if a given tile is "solid" or "clear", meaning that the player can or 
+cannot walk over it. &nbsp;Though you could include the code for this every 
+time you use it, I prefer to make it into a routine. &nbsp;This makes it 
+much easier if (when) you change which sprites are solid and which aren't. 
+&nbsp;It will sometimes be more than a simple compare. &nbsp;For this, let's 
+pretend that the solid sprites start at 8:
+
+<P><PRE>
+; hl = pointer to tile to check
+; returns: carry = tile is solid
+CheckSolid:
+ ld a,(hl)        ; load tile to check
+ cp 8             ; is it solid?
+ ccf              ; reverse check (no carry = clear)
+ ret              ; that's it
+</PRE>
+
+<P>Once you have this routine, you will need to check to see if the tile in 
+the direction the sprite is trying to move is clear. &nbsp;However, the 
+sprite could be in-between two tiles (it will be 7 out of 8 times). &nbsp;
+Therefore, two tiles must be checked. &nbsp;Checking can be done with two 
+routines, one for vertical and one for horizontal movement:
+
+<PRE>
+; check sprite and sprite to the right
+; bc = sprite location to check (x, y)
+; returns: carry = collision
+CheckSpriteVert:
+ call GetTile        ; calc address of tile on map
+ call CheckSolid     ; is it solid?
+ ret c               ; then we're done
+ ld a,b              ; get x coord
+ and %00000111       ; is it alligned?
+ ret z               ; then we're done
+ inc hl              ; check sprite to the right
+ call CheckSolid     ; is it solid?
+ ret                 ; we're done
+
+; check sprite and sprite to the bottom 
+; bc = sprite location to check (x, y)
+; returns: carry = collision
+CheckSpriteHorz:
+ call GetTile        ; calc address of tile on map
+ call CheckSolid     ; is it solid?
+ ret c               ; then we're done
+ ld a,c              ; get y coord
+ and %00000111       ; is it alligned?
+ ret z               ; then we're done
+ ld bc,16            ; get tile to the bottom
+ add hl,bc           ; calc offset
+ call CheckSolid     ; is it solid?
+ ret                 ; we're done
+</PRE>
+
+<P>You would call these routines with the destination coordinates for the
+sprite, meaning you move the sprite, check and if there was a collision,
+then move it back. &nbsp;Of course, there are better ways to do this, and
+these are just my examples. &nbsp;As a bonus, I'm going to include movement
+functions for all of this. &nbsp;Your coords should be stored with the Y
+coord first, then the X coord:
+
+<P><PRE>
+ PlayerY = _textShadow      ; [1]  player's y coord
+ PlayerX = _textShadow + 1  ; [1]  player's x coord
+</PRE>
+
+<P>The routines are called with HL pointing to the correct X or Y byte,
+depending on what direction the sprite is trying to move. &nbsp;For example,
+if moving up, that would change the Y coord, so HL should point to the Y
+coordinate. &nbsp;The coords of the sprite should be loaded into BC. &nbsp;
+If the tile is clear, then the sprite's coords will be updated:
+
+<PRE>
+; hl = address of x or y coord
+; bc = coords loaded (x, y)
+
+TryMoveUp:
+ dec c                  ; check tile above
+ call CheckSpriteVert   ; check for collision
+ ret c                  ; if we collided, return
+ dec (hl)               ; move up
+ ret                    ; return
+
+TryMoveDown:
+ ld a,8                 ; check tile below
+ add a,c                ; sprites are 8 pixels
+ ld c,a                 ; save coord
+ call CheckSpriteVert   ; check for collision
+ ret c                  ; if we collided, return
+ inc (hl)               ; move down
+ ret                    ; return
+
+TryMoveLeft:
+ dec b                  ; check tile to the left
+ call CheckSpriteHorz   ; check for collision
+ ret c                  ; if we collided, return
+ dec (hl)               ; move left
+ ret                    ; return
+
+TryMoveRight:
+ ld a,8                 ; check tile to the right
+ add a,b                ; sprites are 8 pixels
+ ld b,a                 ; save coord
+ call CheckSpriteHorz   ; check for collision
+ ret c                  ; if we collided, return
+ inc (hl)               ; move right
+ ret                    ; return
+</PRE>
+
+<P><FONT SIZE=+1>Notes</FONT>
+
+<P>I found a good FAQ on tilemaps a while back, and figured that
+<a href="tile_faq.txt">this</a> might help clear up some questions or
+confusions about tilemaps. &nbsp;It taught me something, at least. &nbsp;
+A good place to find this info is at <a href="http://www.gameprog.com">
+gameprog.com</a>. &nbsp;The theory behind this stuff is very important.
+
+<P><FONT SIZE=+1>Conclusion</FONT>
+
+<P>I hope this clears up some of the confusion on tilemaps. &nbsp;If you
+still don't understand, I suggest that you sit back and think about exactly
+what a tilemap is and what it represents, rather than trying to figure out
+how to code it. &nbsp;Almost all of your problems with programming will not
+be the actual coding, but the design behind the code. &nbsp;If the code is
+the problem, then you just need a little more experience with the language.
+&nbsp;In time, you will spend more time figuring out how to code it than
+actually coding it, and the coding will become quite easy.
+
+<P><BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+</BODY>
+</HTML>

@@ -1,0 +1,32 @@
+                     +--------------------------------+
+                     | 8 Bit Logical Boolean Commands |
+                     |         By James Sulak         |
+                     |             10/2/96            |
+                     +--------------------------------+
+
+The results of these operations are left in the accumulator (A register).  
+The carry flag is reset in all logical operations.  The Z, P, and S flags 
+are affected.  The first table in the example is a chart of how the 
+operation works.  The second is a sample problem with the result.  The 
+third is an example mnemonic (s is and 8 bit register).
+
+AND compares two bytes bit by bit.  If a bit is set in both operands, 
+it is set to 1 in the result.  Otherwise the bit is reset to 0 in the result.   
+
+  A   B   A AND B            11000011    A             Mnemonic:
+  1   1      1         AND   10100101    B             AND s
+  1   0      0         -------------------   
+  0   1      0               10000001    A AND B   
+  0   0      0
+
+OR operator compares two bytes bit by bit.  If a bit is in either operand, 
+it is set in the result.  Otherwise it is reset in the result.   
+
+  A   B   A OR B             11000011    A             Mnemonic:
+  1   1     1          OR    10100101    B             OR s
+  1   0     1          -------------------   
+  0   1     1                11100111    A OR B   
+  0   0     0
+
+XOR (exclusive OR) operator comares the two bytes bit by bit.  If the 
+bit is set in either operand, but not in both, it is set in th

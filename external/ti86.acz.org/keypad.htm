@@ -1,0 +1,320 @@
+<HTML>
+<HEAD>
+   <META NAME="keywords" CONTENT="Keys, key, ascii, keypad, keycodes, key codes, getkey, getky, ports, port 1, port one,  TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+   <META NAME="description" CONTENT="86 Central - Keypad - Reading keypresses with getkey, getky, and using the ports. Includes the col/row port 1 map.">
+   <TITLE>86 Central - Keypad</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" ALT="86 Central Logo" BORDER=0 HEIGHT=76 WIDTH=301></CENTER>
+
+<CENTER>
+<H5>
+Best viewed in 1024x768</H5></CENTER>
+
+<CENTER>
+<H2>
+TI-86 Keypad</H2></CENTER>
+
+<CENTER><IMG SRC="images/keypad.jpg" ALT="Keypad from TI-86" BORDER=0 HEIGHT=337 WIDTH=222></CENTER>
+
+
+<P>The KeyPad is the set of all the keys on the TI-86 Graphic Calculator.
+There are three ways to read keypresses of the TI-86:
+<UL>
+<LI>
+_getky - Poll's for a keypress and returns the row/column code in OP2 (floating
+point value). The key code diagram is in the TI-86 manual. For more information,
+check out <A HREF="http://www.ti.com/calc/docs/86asmkey.htm">TI's Reading
+Keypresses on the TI-86</A>. The disadvantages are that the calculator
+runs at full speed and that sucks the battery life out of the 86.&nbsp;
+This was also called GET_KEY on the TI-85, and many programs use that name.&nbsp;
+The name GET_KEY and the key codes (K_UP, K_ENTER, K_2ND, etc.) are defined
+in asm86.h.&nbsp; This is the routine to use to detect 2nd and Alpha without
+having to read the ports directly.</LI>
+
+<BR>&nbsp;
+<LI>
+_getkey - Enters into low power mode and waits for a key press or for APD
+(Auto Power Down). It returns the actual keypresses in the a register.
+For more information, check out <A HREF="http://www.ti.com/calc/docs/86asmkey.htm">TI's
+Reading Keypresses on the TI-86</A>. The disadvantages are that the calculator
+has the down-left bug.&nbsp; This the same input routine that used by the
+ROM most of the time.&nbsp; It handles 2nd, alpha and the contrast changing
+internally.&nbsp; I have had some problems using this routine, and I prefer
+to use&nbsp; _getky.&nbsp; But this is the only routine to handle APD and
+the other functions.</LI>
+
+<LI>
+Using port #1 - By far the most efficient, if you want a key press all
+you have to do is write one byte and read one byte. The whole program does
+not stop waiting for the keypress either.&nbsp; Read below to find out
+how to do this.&nbsp; Reading the ports directly is the only way to detect
+multiple keypresses, which is essential to programming many games.</LI>
+</UL>
+<FONT SIZE=-1>Note: Much of the info was derived from 86ports.txt by Alan
+Bailey</FONT>
+<CENTER>
+<H1>
+Port 1</H1></CENTER>
+&nbsp;
+<TABLE BORDER=5 CELLSPACING=0 CELLPADDING=4 WIDTH="300" >
+<TR>
+<TH></TH>
+
+<TH>7</TH>
+
+<TH>6</TH>
+
+<TH>5</TH>
+
+<TH>4</TH>
+
+<TH>3</TH>
+
+<TH>2</TH>
+
+<TH>1</TH>
+
+<TH>0</TH>
+</TR>
+
+<TR>
+<TD>6</TD>
+
+<TD>MORE</TD>
+
+<TD>EXIT</TD>
+
+<TD>2nd</TD>
+
+<TD>F1</TD>
+
+<TD>F2</TD>
+
+<TD>F3</TD>
+
+<TD>F4</TD>
+
+<TD>F5</TD>
+</TR>
+
+<TR>
+<TD>5</TD>
+
+<TD>ALPHA</TD>
+
+<TD>GRAPH</TD>
+
+<TD>LOG</TD>
+
+<TD>LN</TD>
+
+<TD>x^2</TD>
+
+<TD>,</TD>
+
+<TD>STO</TD>
+
+<TD>--</TD>
+</TR>
+
+<TR>
+<TD>4</TD>
+
+<TD>x-var</TD>
+
+<TD>TABLE</TD>
+
+<TD>SIN</TD>
+
+<TD>EE</TD>
+
+<TD>7</TD>
+
+<TD>4</TD>
+
+<TD>1</TD>
+
+<TD>0</TD>
+</TR>
+
+<TR>
+<TD>3</TD>
+
+<TD>DEL</TD>
+
+<TD>PRGM</TD>
+
+<TD>COS</TD>
+
+<TD>(</TD>
+
+<TD>8</TD>
+
+<TD>5</TD>
+
+<TD>2</TD>
+
+<TD>.</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+
+<TD>--</TD>
+
+<TD>CUSTOM</TD>
+
+<TD>TAN</TD>
+
+<TD>)</TD>
+
+<TD>9</TD>
+
+<TD>6</TD>
+
+<TD>3</TD>
+
+<TD>(-)</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+
+<TD>--</TD>
+
+<TD>CLEAR</TD>
+
+<TD>^</TD>
+
+<TD>/</TD>
+
+<TD>*</TD>
+
+<TD>-</TD>
+
+<TD>+</TD>
+
+<TD>ENTER</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+
+<TD>--</TD>
+
+<TD>--</TD>
+
+<TD>--</TD>
+
+<TD>--</TD>
+
+<TD>UP</TD>
+
+<TD>RIGHT</TD>
+
+<TD>LEFT</TD>
+
+<TD>DOWN</TD>
+</TR>
+</TABLE>
+This port can be represented as a 7x8 grid, as shown above.
+<UL>
+<LI>
+First you must select which row you want by writing a byte to port 1. This
+byte (bitmask) represents the ROWS. The corresponding row you want represents
+the corresponding bit number. In this bitmask, Bit 7 is unused, and Bit
+6-0 all contain 1's except for the row you want, in which case that bit
+number would be 0. For example, if you want to select row 3, the bitmask
+would be %011110111, where bit 3 is cleared and bit 7 is unused.</LI>
+
+<LI>
+Next you wait a few T-states by using NOP, to give the port time to process
+the information</LI>
+
+<LI>
+Now you read a byte from the port. This byte represents the COLS. The cooresponding
+bit that is set represents the corresponding column in the diagram. The
+row and the column intersect to give you the correct status of that key.</LI>
+</UL>
+<B>Example:</B>
+<PRE><TT>#include "ti86asm.inc"
+
+.org _asm_exec_ram
+
+
+Start:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call _clrLCD
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld hl, $0000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Set up Pen row and column locations at 0,0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld (_penCol), hl
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld HL, Prompt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; HL points to Prompt string
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call _vputs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Show string
+
+Loop:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld a,%01110111&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Checking Row 3 (Bit 7 unused. Bit 3 represents row 3)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out (1),a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Put bitmask into port
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Give time for the port to acknowledge
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in a,(1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; A = byte. Each bit corresponds to one column
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bit 7,a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Checking for bit 7, which is the Col 7
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Row 3, Col 7 is the DEL key
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Other code can be placed here while waiting!
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jr nz, Loop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The bit is cleared (thus zero flag set) if the key was pressed.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Continue:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld HL, GoodBye&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; HL points to GoodBye string
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call _vputs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Show string (15 pixels below the previous)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Return to TI-OS or shell
+
+Prompt: .db "Waiting for DEL Key...", 0
+GoodBye: .db "Pressed.", 0
+
+.end</TT></PRE>
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+</BODY>
+</HTML>

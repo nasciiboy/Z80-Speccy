@@ -1,0 +1,1017 @@
+<HTML><HEAD><TITLE>Assembly 86 Unofficial FAQ</TITLE>
+<META NAME="keywords" CONTENT="Emulation, emulators, emulate, emulators, simulate, simulators, simulation, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+<META NAME="description" CONTENT="86 Central - Static Asm FAQ, covers compiling, OP numbers, math, VAT, TI-OS, tokens, graphics, grayscale, and a glossary at the end.">
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<CENTER><H1><FONT COLOR="BLUE">The Unofficial</FONT></H1></CENTER>
+<CENTER><H2>TI-86 Z80 Assembly Language Frequently Asked Questions</H2></CENTER>
+
+<FONT SIZE="-1">Updated 5/10/98 , Created by: Matt Johnson (see credits)</FONT>
+
+<P>Welcome to the Unofficial Z80 Assembly FAQ! This FAQ talks is about TI-86 Assembly language but is not endorsed by TI. The newest update is an attempt to make this document a more comphrehensive FAQ and worthwhile to readers. Enjoy!
+
+<P>
+<B>History:</B><BR>
+This FAQ was "thrown" together some six-months ago, around late-1997 I believe, and I am now updating it. I learned quite a lot in the mean time. Here is some questions and answers that people wonder, ask, think, or speculate. For some questions, people really asked (including me!), some other people answered, some I answered, and some are questions that people would most likely ask. Understand? ;)
+
+<P>
+<B>Credits:</B><BR>
+This FAQ has information derived from many sources, heavily modified and intertwined with my explanations. If I left someone's name out or offended someone for use of his or her information, feel free to tell me.  Thanks goes to Dan Eble (answered many of my questions, developed Zshell, and the Find_Pixel routine), Alan Bailey (Asm 86 III, plus answering many of my questions), Jimmy Mardell (SQRXZ rules, answered many of my Z80 and compiler specific questions), Steve Wetmur (aka Trey Jazz) (help with (sqrt)KEY and other questions),Kirk Meyer (help with questions) ,  Dux Gregis (a lot of help with (sqrt) KEY and interrupts), Stephen Hicks (help with questions), Pat Milheron (the mysterious TI dude who often slips in a few helpful hints ), and Andreas Ess (his cool programs, .WAV players, Daedulus, etc.), Steve Gordon (always have the earliest version of his TI-86 Emulator and I host his web site), Matthew Shepcar (aka ScaBBy) (answered some of my questions, let me preview Vertigo, and added a lot to Rom Central), Joshua Seagoe (great site) and everyone else I didn't mention. If you have any questions, e-mail me at matt2000@dogtech.com (Cyber Optic 2000) and I will try to find the answer to your question. If you have any additions, corrections, comments, complaints, etc, PLEASE E-MAIL ME!!!
+
+<P>
+Matthew Johnson
+
+<P>
+Nick: Optic2000<BR>
+ICQ #: 8342478<BR>
+E-mail: <A HREF="mailto:matt2000@dogtech.com">matt2000@gte.net</A><BR><BR>
+
+TI-86 Page: <A HREF="http://www.dogtech.com/cybop/ti86">http://www.dogtech.com/cybop/ti86</A><BR>
+ Home Page: <A HREF="http://www.dogtech.com/cybop/">http://www.dogtech.com/cybop (still have not completed)</A><BR><BR>
+
+<CENTER><H2>General</H2></CENTER>
+
+<P><B>What is assembly language?</B><BR>
+Assembly Language is a low-level programming language. When we speak of low-level, we mean that we are dealing with all aspects of the hardware directly. Zilog Z80 Assembly Language gives us the power to control all aspects of the Z80 CPU. The gateway between the Z80 and other peripherals (i.e., LCD, Keypad, etc) are through the 
+
+<P><B>Why is assembly language faster then BASIC?</B><BR>
+BASIC is a high level language. Each command must be interpreted as it is ran, and then each BASIC command may be converted into dozens and dozens of opcodes. It also does a lot of things in the background. Thus BASIC is too slow for games. Assembly Language deals directly with the CPU and controls the hardware <I>directly</I>. This takes full advantage of the 6 MHZ speed and this explains why assembly language is hundreds of times faster then BASIC.
+
+<CENTER><H2>Tasm / asm86 Compiler</H2></CENTER>
+
+<P><B>What does the assembler do? How does it work?</B>
+<BR>Not having the dictionary definition on the top of my head, I shall do my best to explain what it does. The assembler will use the .ORG statement to keep track of what address each Z80 opcode will be on. It will then convert every Label into an offset of the .ORG value. The assembler will convert all the Z80 opcodes into there binary representations. All opcodes such as ld have an equivalent binary number. Some opcodes take one byte, and some take two. Then the information after those bytes, like the registers or where to jump or whatever, will be in one or more byte after that. Not only are the instructions (opcodes) converted into binary, but so are the .db's and the .dw's. You must realize that in asm, everything is binary, it is all about interpretation. For example, you could write a a z80 instruction using a few .db's, because .db defines a byte and a z80 instruction is just a regular old byte. Remember, it is all about interpretation.
+
+<P>So after everything is converted into binary it is stored as an object file, which is basically the raw binary data that is waiting to be in an organized file format of some kind, such as a .86p file.
+
+<P><B>.org $D748  ;This is used to tell where all asm programs start on the TI-86, correct?</B>
+<BR>Yes. It's probably better to use ".org _asm_exec_ram" because it's more meaningful to the programmer. _asm_exec_ram is defined in ti86asm.inc. $D748 is located on Page 0, which is fixed between $0000 and $4000. The actual asm program is somewhere between Ram Page 2 and Ram Page 7, but it is later transferred to $D748 when Asm(  or _exec_assembly.
+
+<P><B>How does .ORG work?</B>
+<BR>.ORG sets the instruction pointer in an asm program.. In the Z80 the instruction pointer is called PC, and it is a 16-bit register. The compile needs to keep track of the instruction pointer so it can calculate calls and jumps, which may  need to use a label in the asm program. If you JP to a label it must calculate the 16-bit address the label is at. So when you .ORG to _asm_exec_ram ($D748),  all fixed addresses can be calculated correctly. The main reason to use .ORG is so that the compiler can translate labels into addresses, such as if a JP was called.
+
+<P><B>What does the term equate mean? </B>
+<BR>An equate is a definition the assembler will use when it's assembling. For example _asm_exec_ram is equated to $D748. It makes programs more readable.
+
+<P><B>What does .db do? .dw? </B>
+<BR>.db = Define Byte. It defines one byte (8-bits) right there at that address, multiple bytes can be separated by commas.
+
+<P><B>To define a number, do this:</B><BR>
+<UL>
+<LI>MyNum1: .db 128
+<LI>MyNum2: .db $33
+<LI>MyNum3: .db %10101110
+</UL>
+
+<P>Each are defining a byte, so three bytes are defined. 1000 is a decimal, $ means hex so $33 is a hex number, and % means binary so %10101110 is a binary number. You can define a byte in the range of 0-255 and a word in the range of 0-65535. The MyNum1:, MyNum2:, and MyNum3: are just labels that refer to the instruction counter.
+
+<P>If you want a string, you could do:<BR>
+&nbsp;.db "This is a string of characters each 1 byte a piece."<BR>
+
+<P>Every character represents a number, thus enclosing them in quotes is a quick way of converting multiple characters into numbers using ASCII.
+
+<P>And if you want a NULL terminated string:
+&nbsp;.db "Hello, World", 0
+
+<P>.dw = Defines a Word, which is two bytes
+
+<P><B>MyWord:</B><BR>
+&nbsp;.dw 32000<BR>
+&nbsp;.dw $FFCC<BR>
+
+<CENTER><H2>Summary of Memory Layout - Alan Bailey</H2></CENTER>
+
+<B>Info on the memory layout of the TI-86</B><BR>
+By: Alan Bailey
+
+<P>The memory of the TI-86 is made up of 256k of ROM and 128k of RAM. However, only 64k of memory is accessible at one time. The TI-86 uses a paging system, which means that 16k of memory can be loaded into an accessible area. This 16k is known as a page. There are 8 pages of RAM and 16 pages of ROM, likewise. All of the ROM pages contain certain system calls and routines used by the OS and by user ASM programs. A brief description of the RAM pages follows: Think that the RAM and ROM pages are stored on a memory chip else where, and they are put in when needed. Now where do these pages go? Well, the main running, accessible part of the memory is 64k. A memory map of this 64k would be helpful.
+
+<P>
+
+<TABLE BORDER=5 WIDTH="450" CELLSPACING=0 CELLPADDING=5 ALIGN="CENTER">
+<TR><TD WIDTH=60 ALIGN="CENTER">0000h</TD><TD ALIGN="CENTER">ROM PAGE 0</TD></TR>
+<TR><TD WIDTH=60 ALIGN="CENTER">4000h</TD><TD ALIGN="CENTER">SWAPPED ROM PAGE(1-F)</TD></TR>
+<TR><TD WIDTH=60 ALIGN="CENTER">8000h</TD><TD ALIGN="CENTER">SWAPPED RAM PAGE (1-7)</TD></TR>
+<TR><TD WIDTH=60 ALIGN="CENTER">C000h</TD><TD ALIGN="CENTER">STATIC RAM PAGE (0) </TD></TR>
+</TABLE><BR>
+
+<P>The memory area from 0000h to 3FFFh is set; it cannot be changed. It contains many routines that are used frequently by the system. It is rom page 0, also
+<P>The memory area from 4000h to 7FFFh is where the ROM page is swapped in. Remember, there are 16 pages that can be swapped into this area
+<P>The memory area from 8000h to BFFFh is where the RAM page is swappped in. There are only 8 pages of RAM The memory from C000h to FFFFh is a set ram page. Literally, it is ram page 0.
+<P><B>RAM page info - description</B><BR>
+<UL>
+<LI>$00 - The page permanently at $B000-$FFFF, this contains all of the system variables, I think, and then space for running asm programs, then the stack, then video memory
+<LI>$01 - page in use when asm program is called, I think most of it is not used, so that us people making asm programs won't mess up things ;)
+<LI>$02 - The start of user memory, starts with xStat, and all those
+<LI>$03 - More user memory
+<LI>$04 - More user memory
+<LI>$05 - More user memory
+<LI>$06 - More user memory
+<LI>$07 - More user memory, with the vat at the end of page 7, notice that there are 6 pages of 16k which equals 96k, the space limit of user memory
+</UL>
+
+<CENTER><H2>Memory - The Basics</H2></CENTER>
+
+<P><B>What is the shadow ram?</B>
+<BR>Shadow RAM is a place to store (shadow) information. When you turn on your calculator, you see what's on the LCD, but those letters are just pixels. The text is shadowed elsewhere.
+
+<P><B>What exactly is the _cmdShadow? What does it mean? How large is it? What do the other two shadows mean? How large are they?</B>
+<BR>I think it's where the commands that the user enters are stored. textShadow holds the text on the home screen (168 bytes), and _plotSScreen is probably a bitmap of the graph screen (1024 bytes?).
+
+<P><B>How large is the Rom?</B>
+<BR>The ROM is 256K (16 16-K pages).
+
+<P><B>How do you display a register as a number? I suspect its a ROM call.</B>
+<BR>You can display AHL as a decimal number with $4A33.
+<BR>I have an example of this in Rom Central on my site
+
+<P><B>How can you use addressing on the calculator… (i.e. indirect, direct,etc)</B>
+<UL>
+<LI>ld c,4 
+<LI>ld d,e 
+<LI>ld a,(_curRow) 
+<LI>ld b,(hl) 
+<LI>ld h,(ix+7) 
+<LI>set 3,(iy+2) 
+<LI>out (5),a 
+<LI>in b,(c)
+</UL>
+
+<CENTER><H2>Memory – Absolute Addressing</H2></CENTER>
+
+<P><B>What is absolute addressing?</B>
+<BR>Absolute addressing is a method of accessing all 128K of RAM in the TI-86. The Z80 can only address up to 64K of memory using a 16-bit address, but TI has designed the 86 so you can use a virtual 24-bit register for addressing. This is AHL and BDE. This isn't one register, but a combination of three (A, H, L), and (B, D, E), where A is the most significant byte and B is the most significant byte.
+
+<P><CENTER>ABS = 24-bit absolute address, ASIC = 16-bit "normal" address</CENTER><BR>
+
+<TABLE BORDER=5 CELLSPACING=0 CELLPADDING=5 ALIGN="CENTER">
+<TR><TH>ABS</TH><TH>RAM PAGE</TH><TH>ASIC ADDR</TH></TR>
+
+<TR><TD>0C000-0FFFF</TD><TD ALIGN="CENTER">0</TD><TD>C000-FFFF  - always available</TD></TR>
+<TR><TD>10000-13FFF</TD><TD ALIGN="CENTER">1</TD><TD>8000-BFFF  - these are all paged</TD></TR>
+<TR><TD>14000-17FFF</TD><TD ALIGN="CENTER">2</TD><TD>8000-BFFF</TD></TR>
+<TR><TD>18000-1BFFF</TD><TD ALIGN="CENTER">3</TD><TD>8000-BFFF</TD></TR>
+<TR><TD>1C000-1FFFF</TD><TD ALIGN="CENTER">4</TD><TD>8000-BFFF</TD></TR>
+<TR><TD>20000-23FFF</TD><TD ALIGN="CENTER">5</TD><TD>8000-BFFF</TD></TR>
+<TR><TD>24000-27FFF</TD><TD ALIGN="CENTER">6</TD><TD>8000-BFFF</TD></TR>
+<TR><TD>28000-2BFFF</TD><TD ALIGN="CENTER">7</TD><TD>8000-BFFF</TD></TR>
+</TABLE><BR>
+
+<P><U>Some results from implementing a paged RAM system:</U>
+<UL><LI>All memory accesses and moves involving paged RAM cannot be done directly, system routines are required to handle these operations.
+<LI>Loss of efficiency
+<LI>A 3-byte address must be used instead of 2 byte.
+</UL><BR>
+
+<P><B>How are absolute addresses stored in memory?</B>
+<BR>An absolute address is stored with the high byte first, then the low byte, then the middle byte. For example, 02BFFF would be stored as 02, FF, BF
+
+<P><B>What routines deal with absolute addressing?</B>
+<BR>When you use rst 10 (for example), it returns a 24-bit virtual address. You can use the following routines to manipulate these 24-bit addresses. The ROM seems to rely mostly on AHL and BDE. Here are routines that manipulate 24-bit pseudoregisters.
+
+<P>
+<PRE>
+_load_ram_ahl   equ    462Fh    ; Load Ram Page, RAM Page returned in A and HL = ASIC physical address
+_GETB_AHL       equ    46C3h    ; A = byte pointed to by AHL. hl = asic address now
+_TRANS_AHL_TO_PAGED equ 4633h	; RAM Page returned in A and HL = ASIC physical address
+
+_inc_ptr_ahl    equ    4637h    ; ahl = ahl + 1
+_dec_ptr_ahl    equ    463Bh    ; ahl = ahl - 1
+_inc_ptr_bde    equ    463Fh    ; bde = bde + 1 , ahl & status intact
+_dec_ptr_dbe    equ    4643h    ; bde = bde - 1 , ahl & status intact
+_dec_ptr_ade    equ    46BFh    ; ade = ade - 1
+</PRE>
+
+<P>4633 takes a 24-bit address in AHL and returns the RAM page in A and the physical address in HL. 462F does the same, but also sets the page for you. The 16-bit portion gets returned in HL..  There are some other block transfer absolute addressing routines, I may cover these at a later date. In the mean time, read ti86abs.inc
+
+<CENTER><H2>Memory - OP REGISTERS</H2></CENTER>
+
+<P><B>What are/is the OP Registers? I believe Assembly Studio 86 documentation explains it best: </B>
+<P>The OP registers are not really registers, but are a block of memory that is used to store data, such as floating point values, to pass as arguments to system routines that operate on such values, and to retrieve the value returned by them. They are most often used with the math routines , but are also used to store variable names for user variable manipulation routines. There are six OP registers, named OP1 through OP6. Each is 11 bytes long, and if used to store a floating-point value, has the following format:
+
+<P>The first byte (_OP1) is the sign byte, which is either $00, $01, $80, or $81. The bits are composed as follows:
+<BR>Bit 0 = 0 if real, 1 if complex
+<BR>Bits 1-6 = 0
+<BR>Bit 7 = 0 if positive, 1 if negative
+
+<P>Complex numbers are stored in two OP registers, with the real portion in one register and the imaginary portion in the following register.
+<P>The next two bytes are the exponent bytes (_OP1EXPM and _OP1EXPL). The exponent is calculated by subtracting $FC00 from this word (don't forget to store the least significant byte first). This indicates how many places to move the decimal point.
+<P>The next 7 bytes are the mantissa (starting at _OP1M) in BCD format, a sequence of 14 digits. The last byte (_OP1EXT) is an extra byte that is not used.
+
+<P><B>Example:</B>
+&nbsp;ld hl,FPNum1
+&nbsp;call _MOV10TOOP1
+&nbsp;ret
+
+<P>FPNum1: ; 3.1415926535900e+00 = pi<BR>
+&nbsp;&nbsp;.db $00, $00, $FC, $31, $41, $59, $26, $53, $59, $00
+<P>FPNum2: ; 1.2000000000000e+02 = 120<BR>
+&nbsp;&nbsp;.db $00, $02, $FC, $12, $00, $00, $00, $00, $00, $00
+<P>FPNum3: ;-3.6512000000000e-04 = -.00036512<BR>
+&nbsp;&nbsp;.db $80, $FC, $FB, $36, $51, $20, $00, $00, $00, $00
+
+<P><B>What are the OP "registers" used for?</B>
+<BR>The OP registers have many purposes. The primary purpose is to hold and manipulate floating point values. A floating point value can be negative, positive, and can contain many decimal places. Another use of the OP registers are for variable names. The floating point and the variables are both ten bytes (with another byte not used) so that the utilities for moving the OP registers can be used to move variables. You will read more about variables later on.
+
+<P><B>How do I convert a regular register into an OP number?</B>
+<BR>Use these three routines:
+
+<PRE>
+_setxxOP1    equ     $4613  ;convert hex # in a to flt point in OP1
+_setxxxxOP2  equ     $461b  ;convert hex # in hl to flt point in OP2
+_setxxOP2    equ     $4617  ;convert hex # in a to flt point in OP2
+</PRE>
+
+<BR>An example of this in in Rom Central on my site. These are found on the ti86un.inc file, an include file with undocumented rom calls. This file is on Dux Gregis's site.
+
+<P><B>What else can I do with an OP number?</B>
+<BR>A bunch of stuff. Physically, you can move one OP into another, push it on a stack, move bytes around, and etc. Mathematically, you can find the SIN from it, Square Root it, multiply two OP numbers, etc.  The routines that deal with OP numbers themselves are located on the ti86ops.inc file. The routines that deal with OP math are in ti86math.inc file.
+
+<P><B>How do I convert an OP number into a regular integer?</B>
+<BR>_CONVOP1 – Convert Floating Point # IN OP1 to AHL (untested)
+<BR>The ti86asm.inc file contains this call. Obviously some rounding is done, regular registers cannot hold decimal places. If you know that the number is less then or equal to 65,536 (the max a 16-bit number can hold), then you can just deal with HL because A wouldn't be used. 
+
+<P><B>How can I push/pop OP numbers? What does FPST and OPS stand for?</B>
+
+<P><U>Take a look at this diagram:</U><BR><BR>
+
+<CENTER>'FPS' = floating point stack. 'FPST' = floating point stack top</CENTER>
+<TABLE BORDER=3 CELLSPACING=0 CELLPADDING=0 ALIGN=CENTER WIDTH=80%>
+<TR><TD ALIGN="CENTER" WIDTH="80%">Ram page 1</TD></TR>
+<TR><TD ALIGN="CENTER" WIDTH="80%">FPS<BR>|<BR>V<BR>^<BR>|<BR>OPS<BR></TD></TR>
+</TABLE>
+
+<UL>
+<LI>The FPS is mainly used to hold pending operands when executing.
+<LI>The OPS = operator stack.
+<LI>Each entry on the FPS is 10 bytes, the size of a floating point # or var name. 
+<LI>Each entry on the OPS is a byte.
+<LI>The FPS can also be used as temp storage during computations. The user of the stack is responsible for removing what they put on.
+<LI>(FPS) is the pointer to the byte after the last entry of the stack, next place for entry.
+</UL>
+
+<P><U>Here are some routins that use the stack:</U>
+
+<BR>
+<UL>
+<LI>pushrealo1 equ 4813h - push op1 onto FPS 10 bytes
+<LI>poprealo1  equ 47B7h - pop FPS into op110 bytes
+</UL>
+
+<P>rst $18 is the faster version of pushrealo1 (see rst list below)
+
+<P><B>Are there any other OP calls that are not documented?</B>
+
+If you are looking for a call dealing with OP registers, check these three sources:
+<UL>
+<LI><A HREF="http://user1.netcarrier.com/~grams/joshua/files/j86math.inc">Joshua Grams TI-86 OP's .INC file</A>
+<LI><A HREF="http://user1.netcarrier.com/~grams/joshua/files/j86ops.inc">Joshua Grams TI-86 Math OP's .INC file</A>
+<LI><A HREF="http://user1.netcarrier.com/~grams/joshua/files/j86ops.inc">Dux Gregis's Undocumented .INC file</A>
+</UL><BR>
+
+Here are some more OP calls that were only mentioned in the mailing list:<BR><BR>
+
+<PRE>
+_GEQNAMEA				equ $4e71          ; OP1=NAME OF CURRENT EQ
+_CPYTO1FPST				equ $4897          ; OP1=NAME OF EQ VAR WITH EXP
+_CPYO2TOFPST				equ $48d7          ; SAVE RESULT IN FPST INSTEAD
+_GFUDYDX				equ $4b9f          ; OP1=dy/dx
+_CKOP1REAL				equ $41cb          ; check if op1 real, sets z flag
+_CPYTO2FpS2				equ $48c3          ; OP2=y1
+_INVSUB					equ $45e3          ; OP1=y1-(dy/dy) x1
+_INVOP1s				equ $5494
+_deallocfps1				equ $47db          ; clean fps
+_cpyto2fps1				equ $48af          ; OP2= x
+_cpyto2fps2				equ $48c3          ; op2 = dy/dx
+_CPYTO2FPST				equ $4893          ; constant
+
+10 byte copy:
+$48DB 10b(fps-10)->_OP6
+$48DF 10b(fps-10)->_OP1
+$48E3 10b(fps-10)->(de)
+$48E7 10b(hl-10)->(de) page1
+$48EB 10b(hl)->(de) page1
+$48EF 10b(fps-20)->_OP5
+$48F3 10b(fps-10)->_OP2, 10b(fps-20)->_OP1
+$48F7 10b(fps-20)->_OP1
+$48FB 10b(fps-20)->(de)
+$48FF 10b(hl-20)->(de) page1
+$4903 10b(fps-30)->_OP2
+$4907 10b(fps-30)->_OP3
+$490B 10b(fps-30)->_OP6
+$490F 10b(fps-30)->_OP1
+$4913 10b(fps-30)->(de)
+$4917 10b(hl-30)->(de) page1
+$491B 10b(fps-40)->_OP5
+$491F 10b(fps-30)->_OP2, 10b(fps-40)->_OP1
+$4923 10b(fps-40)->_OP1
+$4927 10b(fps-40)->(de)
+$492B 10b(hl-40)->(de) page1
+$492F 10b(fps-50)->_OP1
+$4933 10b(fps-50)->(de)
+$4937 10b(hl-50)->(de) page1
+$493B 10b(fps-70)->_OP1
+$493F 10b(fps-80)->_OP1
+$4943 10b(fps-90)->_OP1
+</PRE>
+
+<BR><P>
+
+<CENTER><H2>Memory – Variables, VAT, and Variable Data</H2></CENTER> 
+
+<P><B>What is a variable name?</B>
+<BR>A variable name (except of the VAT) is 10 bytes of data that identifies an object type, such as a string, program, matrix, etc. A variable is used for creating a new object (program, string, etc), deleting an object, and finding an object. When the variable name is used in conjunction with the certain routines that "create" a new object type, a new variable (VAT entry) is created that is the header of the object type.
+<P>The variable name is stored in the OP registers and are the same size as the floating point numbers so that all the "utility" functions that move around floating point numbers can also be used to transport variable names.
+
+<P>The first byte is a 'sign' byte. This byte identifies the variable type, such as a program, a string, a matrix, etc.. Only the lower 5-bits are used for this type so use: AND %00011111 on this byte to find the object type.
+<BR>The second byte, NL, is the length of the variable name, between one and eight. 
+<P>Bytes 3 – 8 refer to the variable name.
+
+<TABLE BORDER=3 CELLPADDING=3 CELLSPACING=0><TR><TD ALIGN="CENTER">S</TD><TD>NL</TD><TD>VAR NAME 1 - 8 BYTES</TD></TR></TABLE>
+<TABLE><TR><TD>OP1</TD><TD>&nbsp;&nbsp;</TD><TD><FONT SIZE="-1"> +1   +2   +3   +4   +5   +6   +7   +8   +9</FONT></TABLE>
+ 
+<BR>NL =  Length of Variable Name
+<BR>S = SIGN BYTE – Uses Bit 0 – Bit 5 to describe the object type.<BR><BR>
+<TABLE BORDER=3 CELLPADDING="3" CELLSPACING="0">
+<TR><TH>S</TH><TH>Variable Type</TH></TR>
+<TR><TD>00</TD><TD>REAL</TD></TR>
+<TR><TD>01</TD><TD>COMPLEX</TD></TR>
+<TR><TD>02</TD><TD>VECTOR - REAL</TD></TR>
+<TR><TD>03</TD><TD>VECTOR - COMPLEX</TD></TR>
+<TR><TD>04</TD><TD>LIST - REAL</TD></TR>
+<TR><TD>05</TD><TD>LIST - COMPLEX</TD></TR>
+<TR><TD>06</TD><TD>MATRIX - REAL</TD></TR>
+<TR><TD>07</TD><TD>MATRIX - COMPLEX</TD></TR>
+<TR><TD>08</TD><TD>CONSTANT - REAL</TD></TR>
+<TR><TD>09</TD><TD>CONSTANT - COMPLEX</TD></TR>
+<TR><TD>0A</TD><TD>EQUATION</TD></TR>
+<TR><TD>0B</TD><TD>system use</TD></TR>
+<TR><TD>0C</TD><TD>STRING</TD></TR>
+<TR><TD>0D</TD><TD>GRAPH DATABASE - STANDARD</TD></TR>
+<TR><TD>0E</TD><TD>GRAPH DATABASE - POLAR</TD></TR>
+<TR><TD>0F</TD><TD>GRAPH DATABASE - PARAMETRIC</TD></TR>
+<TR><TD>10</TD><TD>GRAPH DATABASE - DIFFERENTIAL EQUATION</TD></TR>
+<TR><TD>11</TD><TD>PICTURE</TD></TR>
+<TR><TD>12</TD><TD>PROGRAM</TD></TR>
+<TR><TD>13</TD><TD>CONVERSION</TD></TR>
+<TR><TD>14</TD><TD>system use</TD></TR>
+<TR><TD>15</TD><TD>system use</TD></TR>
+<TR><TD>16</TD><TD>system use</TD></TR>
+<TR><TD>17</TD><TD>system use</TD></TR>
+<TR><TD>18</TD><TD>system use</TD></TR>
+<TR><TD>19</TD><TD>system use</TD></TR>
+<TR><TD>1A</TD><TD>system use</TD></TR>
+<TR><TD>1B</TD><TD>system use</TD></TR>
+<TR><TD>1C</TD><TD>system use</TD></TR>
+<TR><TD>1D</TD><TD>system use</TD></TR>
+<TR><TD>1E</TD><TD>system use</TD></TR>
+<TR><TD>1F</TD><TD>system use</TD></TR>
+</TABLE><BR>
+
+<P><B>What is a Variable?</B>
+<BR>The Variable Name is used for accessing the variables. Variables, in turn, are used for accessing data types. Variables are stored on the very last RAM page in an area called the VAT.  Variables describe all data types, such as programs, matrix's, lists, strings, and more. If you want access to another asm program, for example, you deal with variables. The variable name is the means of identifying the data type and the actual variable is a VAT entry which is the variable name and an absolute pointer to the variable data.
+
+<P><B>So what is the VAT (also called Symbol Table)?</B>
+<BR>The VAT, or Variable Allocation Table, is basically a table of variables in the RAM with pointers to the variable data. Variable data starts on RAM Page 2 and ends somewhere in Ram Page 7. There is a VAT entry for each variable. A VAT entry is basically the variable name with a pointer to the variable data.
+
+<P>The VAT starts at the end of RAM Page 7 (C000) and builds downward.
+
+<P>The VAT entry format is:
+
+<TABLE BORDER=2 CELLSPACING=0 CELLPADDING=2>
+<TR><TH>Description</TH><TH>Bytes</TH></TR>
+<TR><TD ALIGN="CENTER">1</TD><TD>Type Byte</TD></TR>
+<TR><TD ALIGN="CENTER">3</TD><TD>Absolute Pointer to Variable Data</TD></TR>
+<TR><TD ALIGN="CENTER">1</TD><TD>Appears to be Zero, possible flag byte</TD></TR>
+<TR><TD ALIGN="CENTER">1</TD><TD>Name Length</TD></TR>
+<TR><TD ALIGN="CENTER">&lt; 8</TD><TD>Name</TD></TR>
+</TABLE><BR>
+
+<P>Since the VAT builds downward, the type byte is at the highest address and the name is at the lowest address.
+
+<P><B>What is the Variable Data then? Where is that stored?</B>
+<BR>The Variable Data is the actual data of the object type. Variable Data starts at Ram Page 2 and ends in Ram Page 7, right before the VAT. Example: If the variable is a program, then the VAT entry will contain an absolute address to the actual program, among other things.
+
+<P><B>How do I create a Variable?</B>
+<BR>There are separate routines for creating each type of variable. These routines use the 10-byte format shown above but do not need the type byte since each routine is different for every data type. 
+<BR>All these routines have common parameters and output.
+
+<BR>
+<PRE>
+Input: (OP1+1) = Length of Variable Name
+       (OP1+2) to (OP1+9) = Name of Variable, up to 8 characters
+</PRE>
+
+<BR><B>Output:</B>
+<UL>
+<LI>If not successful memory error.
+<LI>The variable name and the type of the object (data-type) are used to form a new VAT entry
+<LI>The memory is then allocated for the new data type in the User Memory area (between RAM Page 2 and 7)
+<LI>Memory Allocation includes the actual data-type skeleton and this will be created in the user memory, like if you created a program the first two bytes of BDE will be the size of the program, and the rest will be the actual program.
+<LI>BDE will be the absolute pointer for the variable data in the user memory, and HL will be the pointer to the entry in the VAT (not usually needed). Page 7 is loaded which makes HL a valid pointer. No default clearing of the data is done.
+</UL>
+
+<BR><U>Here are the routines for creating your own data type:</U>
+
+<BR><PRE>
+_CREATEREAL    equ      46EBh   ; CREATE REAL VAR OP1, NO INPUTS
+_CREATECPLX    equ      46F7h   ; CREATE CPLX VAR OP1, NO INPUTS
+_CREATERCONST  equ      46EFh   ; CREATE REAL CONSTANT VAR OP1, NO INPUTS
+_CREATECCONST  equ      46F3h   ; CREATE CPLX CONSTANT VAR OP1, NO INPUTS
+_CREATERVECT   equ      46FFh   ; CREATE REAL VECTOR OP1, L = # ELEMENTS
+_CREATECVECT   equ      4707h   ; CREATE CPLX VECTOR OP1, L = # ELEMENTS
+_CREATERLIST   equ      470Fh   ; CREATE REAL LIST OP1, HL = # ELEMENTS
+_CREATECLIST   equ      4717h   ; CREATE CPLX LIST OP1, HL = # ELEMENTS
+_CREATERMAT    equ      471Fh   ; CREATE REAL MATRIX OP1, HL = ROW,COL
+_CREATECMAT    equ      4727h   ; CREATE CPLX MATRIX OP1, HL = ROW,COL
+_CREATESTRNG   equ      472Fh   ; CREATE STRING OP1, HL = # BYTES
+_CREATEEQU     equ      4737h   ; CREATE EQUATION OP1, HL = # BYTES
+_CREATEPICT    equ      473Bh   ; CREATE PICTURE VAR OP1, NO INPUTS
+_CREATEPROG    equ      474Fh   ; CREATE PROGRAM VAR OP1, HL = # BYTES
+</PRE>
+
+<P>In order to create a program, we must first load the variable name you want into OP1.
+
+<P>_MOV10TOOP1 is the routine used to move 10 bytes from (HL) into OP1. However, rst $20 is a much faster way of doing the same thing (see rst description in next section). 
+
+To create a 1000 byte string called cool:<BR>
+<PRE>
+	ld hl, var-1        ; We are not using the type byte (not needed for _create routines)
+	rst $20             ; Moves 10 bytes from (hl) to OP1
+	ld hl, 1000
+	call _CREATESTRNG   ; Create a string, string name in OP1 and # bytes in HL
+
+var: .db 3, "cool"      ; Type byte not used, just length of variable name and actual name
+</PRE>
+
+<P>
+Once I created my own variable, and the user memory is allocated for this new data type, how do I modify the variable data itself?
+You use absolute addresses routines that will transfer a block of memory, sort of an LDIR for absolute addresses. See ti86abs.inc. I will explain this is more detail later, for now check out the source for Yugi2.asm found on Dux Gregis's site.<BR>
+
+<P><B>How do I find a variable?</B>
+<BR>Good question ;) To find a variable in memory we use a routine called _FINDSYM. This routine takes the same input as the _CREATE routines, where OP1+1 = Length of Variable name and (OP1+2) to (OP1+9) is the name of the var. A quicker way to use _FINDSYM is to do an rst $10 (see rst list in the next section)
+
+<P><B>Input:</B>
+<UL><LI>OP1+1 = Length of Variable name
+<LI>(OP1+2) to (OP1+9) is the name of the var
+</UL>
+
+<BR><B>This routine returns:</B>
+<UL>
+<LI> A = DATA TYPE (Use AND %00011111 to get type)
+<LI> OP1 = Variable Format of Var, with type.
+<LI> HL = effectively the 16-bit pointer to VAT entry, Page 7 swapped in
+<LI> BDE = Absolute address pointer to variable data
+<LI> Carry Flag set/clear depending on if it finds the variable or not.
+</UL>
+
+<P>If the variable cannot be found that means it does not exist and the carry flag will be set.
+
+<PRE>
+Example:
+
+	; To find a program named bob
+	ld hl, var-1   ; Type byte not used so ld hl, var-1
+	rst $20        ; Moves 10 bytes from (hl) to OP1
+	rst $10        ; _FINDSYM, finds variable at OP1
+
+var: .db 3, "bob" 
+</PRE>
+
+<P><B>How do I find <I>the size (length in bytes)</I> of a variable? (data type)</B>
+<BR>The first word of the variable data (not the VAT) is the size. It's the same as the word you use for the corresponding create var call.
+There's a call (_get_var_size equ 477Fh) that gets the size of any variable.
+
+<BR>
+<PRE>
+	ld hl,name
+	call _FINDSYM
+	ex de,hl
+	call _get_var_size
+	...
+</PRE>
+
+<P><FONT SIZE="-1">_get_var_size takes the type in a (returned by _FINDSYM) and the pointer to the var data in bhl (_FINDSYM returns it in bde). It returns the size of the variable (in bytes) in de, and the var data ptr in ahl.</FONT>
+
+
+
+<CENTER><H2>Memory - Advanced</H2></CENTER>
+
+<P><B>What is rst and what do they do?</B>
+<BR>RST is a Z80 instruction that is just like any normal CALL, but is smaller and faster. There are some restrictions however, in that you only can jump to eight memory locations, which are all on Ram Page 0. This includes $00, $08, $10, $18, $20, $28, $30, and $38.
+
+<UL>
+<LI>RST $00 power up/reset      ; Restarts the calculator, erases all memory
+<LI>RST $08 _OP1TOOP2           ; OP2 = OP1
+<LI>RST $10 _FINDSYM            ; Finds a variable and returns an abs address
+<LI>RST $18 _push_FP            ; Pushes a real number (in OP1) or a complex number (in OP1&OP2) onto the floating point stack
+<LI>RST $20 _MOV10TOOP1         ; Move 10 bytes starting at (hl) into OP1
+<LI>RST $28 _FPMULT             ; OP1 = OP1 * OP2
+<LI>RST $30 _FPADD              ; OP1 = OP1 + OP2
+<LI>RST $38 hardware interrupt  ; IM 1 - Called 200 times per second
+</UL>
+
+<P><B>How do you swap RAM and ROM pages?</B>
+<BR>Ports 5 and 6. Alan Bailey wrote up a port description. This can be found in the tutorial section on my site.
+
+<P><B>If I have a program's data stored in a separate asm program (because the one program is becoming too big to store its own data), and I use rst 20h\rst 10h to find the data program, as long as it's less than 16k, will it always be on only 1 page or will it most likely span pages?</B>
+
+What I like to do is use both ports 5 and 6
+Load the page told to you by rst 10 into port 5, and the following page into 6. Therefore, if it overlaps into the next page, it's right there. Of course, this will stop all ROM calls you want to make to the jump table. 
+
+That was probably confusing:
+port 5 - $4000-$7FFF ;this is the first part of the program
+port 6 - $8000-$BFFF ;here's the second part
+16K will work all the time, however, more than that, and it might overlap into 3 pages.
+
+<P>
+<CENTER><H2>Text</H2></CENTER>
+
+<P><B>How do you display a string with a Rom Call</B>
+<BR>To display a string, call _puts, _putps, _vputs, or _vputsn. For example, to display "Pat hacked a black calc" in the fixed-width font, use the following program:<BR>
+
+<PRE>
+#include "ti86asm.inc"
+.org _asm_exec_ram
+
+	ld a,3
+	ld (_curRow),a  ; set the cursor location
+	ld a,0          ; (not the best way, but clear)
+	ld (_curCol),a
+	call _clrLCD    ; clear the home screen
+	ld hl,String    ; hl contains address of String
+	call _puts      ; put the string on the screen
+	ret             ; return from the program
+
+String: .db "Pat hacked a black calc",0 ; notice null byte
+</PRE>
+<BR>
+
+<CENTER><H2>Interrupts</H2></CENTER>
+<P><B>What is an interrupt?</B>
+<BR>On the Z80 processor, an interrupt is an action (<I>triggered by hardware</I>) that will suspend CPU operation and force the CPU to perform another function, or execute another routine. Once the interrupt cycle is completed, the CPU returns to the operation from which it was interrupted. There are three modes of interrupt response, Mode 1, Mode 2, and Mode 3. Which response mode is set is choosen with the asm instructions IM 1, IM 2, and IM 3, respectively.
+
+
+<P><B>What actions take place during Interrupt Response Mode 0? Mode 1? Mode 2?</B>
+<BR>
+<UL>
+<LI>Mode 0 - Mode 0 is not and cannot be used with TI - Calcs. During mode 0, the CPU will read any instruction placed on the data bus and execute that instruction immediately. This has no use, since we cannot determine what instruction will be placed on the data bus nor can we provide an instruction.
+<LI>Mode 1 - Mode 1 is the default interrupt mode used by the TI-0S. A Mode 1 interrupt is triggered by the TI-86 hardware 200 times per second. During the interrupt, a restart (1 byte jump) is performed at memory location $0038. Thus $0038 is called 200 times per second. 
+<LI>Mode 2 - I believe Jimmy Mardell explained it best when he says: When an interrupt is called in IM 2, the CPU jumps to an address where the I reg is the MSB and the data bus is the LSB which means that the LSB is a random number that you don't know. That means that you must make a table of 257 byte (yeah, not 256) beginning at $xx00 to $x(x+1)00. In the table you store a lot of $F8 for example, and then a jump to $F8F8 will occor, where you store the interrupt handler which should end with a jp $38 (you only need this if you need the TI-OS to continue it's normal interrupt cycle - thus it is not usually needed in assembly programs)
+</UL>
+
+<P><B>What role does an interrupt mode 1 play in the TI-OS?</B>
+<BR>During Mode 1, an interrupt is executed 200 times per second, and a jump to $0038 is accomplished. So what does the calculator do 200 times per second after it jumps to $0038? I believe these are some of the things the calculator does 200 times per second, not necessarily in this order (anyone have any additions or corrections?)<BR>
+<UL>
+<LI>The calculator checks to see if a certain flag is set, and if so, executes the user interrupt routine
+<LI>The calculator checks for keypresses
+<UL>
+<LI>If a keypress is found but a certain flag is set, the calculator will execute a (sqrt) KEY hidden program even before the keypress is registered.
+<LI>If a keypress is found but the flag is not set, it will handle that flag accordingly.
+</UL>
+<LI>The calculator checks for the ON key and handles that accordingly.
+<LI>The calculator updates the APD (Auto Power Down) memory location.
+<LI>If the APD expires, the calculator turns off the LCD display and executes a HALT. Then when the ON key is pressed, this executes an interrupt and then the calculator is back again!
+<LI>Does other stuff I don't know about
+</UL>
+<BR>
+<CENTER><H2>Graphics</H2></CENTER>
+
+<P><B>Are the certain preparations you need to make before using graphics?</B>
+<BR>I depends what you want to do. Usually, no.
+
+<P><B>Is there a faster way to write a pixel, like write it to the video memory? If so, how? How does the video memory work?</B>
+<BR>The video memory ($FC00) is a 1024-byte bitmap. If a bit in the memory is set, it's corresponding LCD pixel will be black.  See my LCD section
+
+<P><B>How do you draw a pixel?</B>
+<BR>Use the findpixel routine. Check out the LCD section in my site, recently updated, and tutorial #4 on my site.
+
+<P><B>What is a sprite?</B>
+<BR>A sprite is a grid of bytes that represent a 'box' of memory and in this memory stores an image or picture of some kind. The frog in frogger and the bug in SQRXZ are all sprites. See my Sprite Section on my site.
+
+<P><B>How do you draw a sprite?</B><BR>
+Check out the Sprite section on my sprite. I explain both an 8 by X sprite routine and a 16 by X (created by me!) sprite routine. Trent Lillehaugen explains this quite nicely. Check out his Frogger tutorial, the link is on, you guessed it, on my web page.
+
+<P><B>How do you create a fancy little Black and White Splash Screen?</B>
+<BR>You can use BMP2ASM (on my tools page) to convert a 1-bit B/W 128x64 bitmap into a bunch of .db's, 16 bytes down and 64 bytes across (1-bit/pixel) (64x16=1024). You may need to re-open the bitmap with MS-Paint and re-save it as a BMP if you make the picture with another paint program, the program is good but not perfect.
+
+<P>Then you use LDIR to copy the data to the screen. 
+
+<PRE>
+Example:
+
+; Loads the Title Screen into the Display Area
+	ld hl, TitleScreen  ; Source
+	ld de, $FC00        ; Destination
+	ld bc, 1024         ; Length of Display Area
+	ldir                ; Moves a BC length block of memory
+                            ; Source is TitleScreen, Destination is $FC00
+
+	ret                 ; Return to Shell or TI-OS
+
+TitleScreen:
+; The .DB's are stored here from BMP2ASM
+
+</PRE>
+
+<P><B>Would it be possible to do a fade-in/fade-out on the 86 by calling the functions to increase and decrease the contrast? If it would, does anybody have the contrast functions? </B>
+<BR>Yes. This involves the use of Port 2
+
+<P>
+<HR ALIGN="LEFT" WIDTH="30%">
+<B>Port 2 - Contrast, WRITE ONLY</B><BR>
+<HR ALIGN="LEFT" WIDTH="30%">
+Write –  XXX.....
+
+<P>Value in range of $00-$1F (0d-31d), higher number makes darker
+
+<P>NO READING FROM THE PORT, however, $C008 contains the contrast, so if you read from there, inc or dec it, then load it into the port AND $C008, all will be fine, and your screen will change contrast
+
+<P>
+
+<B>Example:</B><BR>
+<PRE>
+ld a,($C008)
+inc a         ;or dec if you want to
+ld ($C008),a
+out (2),a
+</PRE>
+
+<CENTER><H2>MATH</H2></CENTER>
+<P><B>How do you multiply or divide in Z80? </B><BR>
+
+<HR ALIGN="LEFT" WIDTH="30%">
+_HLdivA , located at 4048h
+<HR ALIGN="LEFT" WIDTH="30%">
+<P>Divides register HL by the accumulator (register A). The quotient is stored in HL and the remainder is stored in A.
+<BR>
+Input	HL = dividend, A = divisor
+Output	HL = quotient, A = remainder
+
+<P>
+<HR ALIGN="LEFT" WIDTH="30%">
+MUL_HL equ $4547
+<HR ALIGN="LEFT" WIDTH="30%">
+<P>HL = H*L  (but H=0 => H=256)
+<BR>
+
+If you have a long number that you want to divide by 10 (decimal), use the following two calls:<BR>
+<UL>
+<LI>$4044 Divide HL by 10
+<LI>$404C Divide HL by 10, taking into account a previous division
+</UL>
+
+<P>Division by powers of two is fast and easy: use right-shift instructions. Typically, when you need to mutiply in a program, you know ahead of time what value you want to use, which is good. Any positive integer can be expressed as a sum of powers of 2, and it's possible to multiply using bit shifts and additions. For example, to multiply register A by 21 (the number of characters in a row of fixed-width text), do this:
+
+<PRE>
+	ld b,a  ; save original value for later use
+	add a,a ; a = 2*(original value)
+	add a,a ; a = 4*(original value)
+	add a,b ; a = 5*(original value)
+	add a,a ; a = 10*(original value)
+	add a,a ; a = 20*(original value)
+	add a,b ; a = 21*(original value)
+</PRE>
+
+<P>There's also ROM routine to multiply by 10, if you want to save space.<BR>
+<UL><LI>$41BF Multiply HL by 10 (decimal)
+</UL>
+
+<P>Here are some additional routines that may be worth calling, if you don't care about speed.<BR>
+<UL>
+<LI>$437F A = C/16
+<LI>$4383 A = A/16
+<LI>$4387 A = C*16
+<LI>$438B A = A*16
+</UL><BR>
+
+<CENTER><H2>TI-OS - TI-86 Operating System</H2></CENTER>
+
+<P><B>What is a token?</B>
+<BR>The numerical representation of an OS command / function, or the command / function itself. Tokens are useful to know when dealing with the TI-OS, but are rarely used in Game Programming. I will explain more on the subject at a later data. Here is Dan Eble's Token List.
+This list is not complete, but I think it contains all the tokens that extend the 85 code (all those 8Exx codes).  8E29 is of particular interest.<BR>
+<FONT SIZE="-1">
+<PRE>
+01 (convert to) Rec
+02 (convert to) Pol
+03 (convert to) Cyl
+04 (convert to) Sph
+05 (convert to) DMS
+06 (convert to) Bin
+07 (convert to) Hex
+08 (convert to) Oct
+09 (convert to) Dec
+0A (convert to) Frac
+0B (store arrow)
+0C [
+0D ]
+0E {
+0F }
+10 (
+11 )
+12 round
+13 max
+14 min
+15 mod
+16 cross
+17 dot
+18 aug
+19 rSwap
+1A rAdd
+1B multR
+1C mRAdd
+1D sub
+1E lcm
+1F gcd
+20 simult
+21 inter
+22 pEval
+23 randM
+24 seq
+25 evalF
+26 fnInt
+27 arc
+28 fMin
+29 fMax
+2A der1
+2B der2
+2C nDer
+2D (ASCII string follows)
+2E (angle)
+2F ,
+30 or
+31 xor
+32nn... (system variable name follows length byte) (see 3C)
+33 (1-letter variable name follows)
+34 (2-letter variable name follows)
+35 (3-letter variable name follows)
+36 (4-letter variable name follows)
+37 (5-letter variable name follows)
+38 (6-letter variable name follows)
+39 (7-letter variable name follows)
+3A (8-letter variable name follows)
+3Bnn... (equation variable name follows length byte)
+3Cnn... (system variable name follows length byte) (see 32)
+3Dnn (1-byte index of constant or range variable follows)
+3E (ignored?)
+
+44 (ASCIZ numerical expression follows)
+
+6E :
+6F (new line)
+
+71 /
+8E00 PxOn
+8E01 PxOff
+8E02 PxChg
+8E03 Get
+8E04 Send
+8E05 SinR
+8E06 LgstR
+8E07 TwoVar
+8E08 GrStl
+8E09 DrEqu
+8E0A LCust
+8E0B Form
+8E0C Select
+8E0D PlOn
+8E0E PlOff
+8E0F ClrEnt
+8E10 StReg
+8E11 IAsk
+8E12 IAuto
+8E13 Text
+8E14 Horiz
+8E15 DispT
+8E16 ClTbl
+8E17 Delvar
+8E18 Box
+8E19 MBox
+8E1A ClrLsts
+8E1B FldOff
+8E1C DirFld
+8E1D SlpFld
+8E1E SetLEdit
+8E1F Plot1
+8E20 Plot2
+8E21 Plot3
+8E22 RK
+8E23 Euler
+8E24 ZData
+8E25 Asm
+8E26 AsmComp
+8E27 AsmPrgm (ASCII hex)(useful as first two bytes in program)
+8E28 AsmPrgm (binary)   (useful as first two bytes in program)
+8E29 (edit lock)        (useful as first two bytes in program)
+8E2A PxTest
+8E2B randInt
+8E2C randBin
+8E2D randNorm
+8E2E median (undocumented function) (doesn't do anything)
+8E2F cSum   (causes various errors)
+8E30 cSum   (the *real* cSum)
+8E31 Deltalst
+8E32 (causes ERROR 14 UNDEFINED when run, ERROR 15 MEMORY when recalled)
+8E33 PrtScrn (causes ERROR 14 UNDEFINED)
+
+DD For
+
+E9 Disp
+</PRE></FONT><BR>
+
+<CENTER><H2>Miscellaneous</H2></CENTER>
+
+<P><B>Explain to me the cp command and how to use it to find if a is greater than b (those are just example variables)</B>
+<BR>CP is like SUB, except that it does not store the result anywhere. Only the flags are modified.
+
+<P>
+<PRE>
+cp b
+jr z,a_equals_b
+jr c,a_less_than_b
+jr nc,a_greater_than_or_equal_to_b
+</PRE>
+<P>
+
+<BR><CENTER><H1>Glossary of Assembly Terms</H1></CENTER>
+
+<UL>
+<LI><B>ASAP</B> - A term that refers to a user definable token
+
+<LI><B>TI - Texas Instruments</B> - Company that created all the TI-8x and TI-92 calcs. There web site is at www.ti.com
+<LI><B>TI-86</B> - A cool calculator with 128K of RAM, Nice LCD screen, improved Keypad layout, and more.
+<LI><B>BIT</B> - A binary unit containing 0 or 1
+<LI><B>BYTE</B> -  A unit of measurement in computers that typically contains 8-bits.
+<LI><B>Nibble</B> - A unit of measure in computers that typically contains 4-bits, or one hex digit
+<LI><B>Hex</B> - A base 16 numbering system, where each digit has a range of: 1,2,3,4,5,6,7,8,9,A,B,C,D,E,F (read my first tutorial)
+<LI><B>Binary</B> - A base 2 numbering system where each digit contains 0 or 1. This is represented by ON or OFF, TRUE or FALSE, etc, and is the key ingredient to all digital computers. (Read my first tutorial)
+<LI><B>Token</B> - The numerical representation of an OS command / function, or the command / function itself
+<LI><B>Tokenize</B> - to change the string representation of a command or function to a numerical representation
+<LI><B>User Defined Tokens</B> - A token which can be programmed into the calculator
+<LI><B>Function Token</B> - Reads parameter(s) and returns a value to the EOS, or modifies handling; types of functions: unary (ex: cos), immediate unary (ex: >mile), binary (ex: +), function w/ multiple arguments (ex: Line), function w/ no arguments (ex: rand)
+<LI><B>Command Token</B> - modifies some aspect of the calculator's handling; has no numerical value (ex: AxesOff)
+<LI><B>Parser</B> - Calculator utility which tokenizes and then evalutes tokens
+<LI><B>asap</B> - A customizeable RAM location to house user defined tokens
+<LI><B>EOS (Equation Operating System) </B> - handles the calculator's function hierarchy
+<LI><B>Hierarchy</B> - the order of token evaluation (ex: * takes priority over +)
+<LI><B>Interrupt</B> - In the TI-86, A interrupt is an action occuring in that causes a calculator to stop what it is doing to perform another action. The default interrupt mode is called IM 1. When IM 1 occurs, once every 200 seconds, the calculator will jump to 38h.
+<LI><B>MODE 0</B> - This mode gets the data from the data bus and thus isnt used for TI programming.
+<LI><B>MODE 1</B> - Default Interrupt Response Mode, when this interrupt occurs (200 times/second on the TI-86), the calculator performs a restart (rst) to location 38h.
+<LI><B>MODE 2</B> - Mode 2 interrupt response mode is an interrupt that will jump to a table in memory to form a 16-bit address from that table. It will then use that 16-bit  value gotten from the table to jump there.
+<LI><B>LCD</B> - Liquid Crystal Display, the basic display screen on the calculator. An LCD contains special crystals (covalent bonds?) that change color when electricity flows through them.
+<LI><B>Keypad</B> - Refers to the keys on the calculator
+<LI><B>Linkport</B> - Refers to the 2.5mm jack on the bottom of the calculator where the TI-Graphlink plugs in. 
+<LI><B>Sprite</B> - A Sprite is a 'grid' of bytes that represent an image or picture. The typical size of a sprite is 8 pixels by 8 pixels, and you need 8 bytes for this sprite (8 pixels/byte). Sprites are mainly used in games. For example, in SQRXZ, the bug is a sprite, and in frogger, the frog is the sprite. 
+<LI><B>Assembly Language</B> - A low-level language that deals with programming the CPU directly. 
+<LI><B>CPU</B> - Central Processing Unit, the main processor in a computer. The Z80 is the CPU of the calculator
+<LI><B>Ram Page</B> - On the TI-86, refers to a 16K page of memory. There is one static ram page and seven swappable ram pages.
+<LI><B>Static</B> - Means it doesn't change, stays the same, set
+<LI><B>Swappable RAM Page</B> - A RAM Page that is located in memory but has to be loaded (swapped) into a 16K region (generally $8000) in order to be used.
+<LI><B>Swappable ROM Page</B> - A ROM Page that is located in memory but has to be loaded (swapped) into a l6K region (generally $4000) in order to be used.
+<LI><B>RAM</B> - Random Access Memory - Memory that can be accessed freely and written to freely. The RAM needs constant power to hold it's information.
+<LI><B>ROM</B> - Read Only Memory - The ROM never changes, and cannot be changed. The ROM holds all the system data and the actual operating system. This is the stuff that cannot be erased, no matter how many batteries you take out ;)
+<LI><B>TI-OS</B> - Texas Instruments Operating System - Refers to the Operating System of the calculator, the actual parsing and math utilities and the normal functionality of the calculator.
+<LI><B>Cache</B> - Temporary Memory used for whatever
+<LI><B>Stack</B> - A section in memory that is designed like a 'stack' of plates. This is a LIFO structure, Last In First Out, meaning that when you PUSH a byte on the stack the stack growns downward, and when you POP a byte from the stack, the stack grows upward. The byte POPed is the last byte PUSHed.
+<LI><B>User Memory</B> - Memory in the Calculator between RAM pages 2 - 7 that holds variables (data types) such as programs, strings, matrix's, etc
+<LI><B>VAT</B> - Also called Symbol Table - Variable Allocation Table. The VAT is the combination of variable names and a 24-bit pointer to the variable data. The VAT is like a FAT that can be used to find data-types such as programs and strings.
+<LI><B>Variable</B> - Also called Symbol - A variable is a broad term that describes a data type. A variable has a 'header' that describes a data-type in the VAT, and the VAT contains a 24-bit absolute pointer to the actual variable data.
+<LI><B>Variable Data</B> - Sort of means data type - The Variable Data is the data type itself and the contents of this data type. The Variable Data also may have a header of it's own. For example, if the variable was a Program then the first two bytes of the variable data would be the size. The next two bytes would be the token 'AsmPgrm' and then the rest of the bytes would be the actual program itself.
+<LI><B>Variable Name</B> - Outside of the VAT there needs to be a way to refer to a variable. The TI-86 uses a variable name, which is 10 bytes of data (stored in the OP registers, i.e. OP1) that is used to refer to a variable. You need a variable name if you are going to search for a variable, create a variable, or delete a variable.
+<LI><B>Pointer</B> - A pointer is a general term that means one memory location holds the address of another memory location. You can then use the first memory address to indirectly access the second.
+<LI><B>Flag</B> - A flag is a bit in memory that is reserved for indicating the status of something on the TI-86. All flags are stored in the bit flag area accessed off of IY. A flag could be used to indicate, for example, whether to display text as white over black or black over white
+<LI><B>Label</B> - A label is an assembly directive (meaning an addition to the assembler) that mainly is a simple method of holding an address. Labels are 'nicknames' for a memory location and are used for convience when using the JR, JP, or DJNZ instructions.
+<LI><B>Grayscale</B> - A technique that makes the LCD screen display multiple shades of gray. The LCD screen can normally only display two shades (ON or OFF), but grayscale uses rapid buffer exchange 200 times per second to trick your eyes into thinking there are more than one shade of gray. Grayscale can work with 4 or 8 shades, although 8 shades sometimes can flicker.
+<LI><B>Zilog</B> - Company that made the Z80 microprocessor.
+<LI><B>Z80</B> - A cool 8-bit processor designed for small computer systems. This processor has speeds up to 20 MHZ and has an address bus of 16-bits, meaning it can address up to 64K of memory at one time. The TI-86 uses a 6 MHZ Z80. Systems that use the Z80 include the Gameboy, TRS-80, and Commodore 128.
+</UL>
+
+<H3>Popular Programmers who indirectly or directly helped me with this FAQ - 'The Players', Ehh Dux? ;)</H3>
+<UL>
+<LI><B>Alan Bailey</B> - Programmer who developed Asm86 III, 86ports.txt, Kollumns, and other games
+<LI><B>Pat Milheron</B> - Programmer for Texas Instruments who monitors the A86 Mailing List and gives helpful hints. This is the guy who knows *everything* about the TI-86, but cannot always legally disclose the information.
+<LI><B>Dan Eble</B> - Famous Programmer who created most of Zshell and does vast programming for the TI-85 and TI-86.
+<LI><B>Jimmy Mardell</B> - Popular Programmer who created SQRXZ and other popular games. 
+<LI><B>Dux Gregis</B> - Programmer who created Yugi2, a program that prevents memory deletion. He deals a lot with programming the (sqrt) KEY programs and other TI-OS stuff.
+<LI><B>Stephen Hicks</B> - Also interest in programming with the TI-0S, created asaptrig.
+<LI><B>Andreas Ess</B>- Another awesome programmer, created Daedulus, a 3D game for the TI-85, Balloon, another popular game, and a program that allowed you to play .WAV files over the TI-85.
+<LI><B>Steve Gordon</B> - Developed the Win32 TI-86 Emulator, I host his web page on my site.
+<LI><B>Matthew Shepcar</B> - Created Repton, Rascall, and is working on Vertigo. Gives Bill Nagel a run for his money!
+<LI><B>Bill Nagel</B>  - Created ASE, Ashell Enhanced 1.3 with TI-85/TI-82 emulation. Does not seem to contribute much to the assembly community, keeps all his source to himself. Awesome programmer though
+<LI><B>Trent Lillehaugen</B> - Author of the popular game Frogger and he created many game programming tutorials.
+<LI><B>Joshua Seagoe</B> - He is working on a ROM map and has a rst list, I think his calculator got stolen though (sucks for him!)
+</UL>
+
+<CENTER><H2>More Information</H2></CENTER>
+
+<P>There are a few examples of source code at www.ticalc.org. my web page, and TI-Philes. Go to Zilog's web page and you can order a book for free, the Z80 Users Manual and the Z80 Discret Controllers Databook. The Zilog's User Manual is very helpful and you may find it very difficult to learn (or live) without it ;)
+
+<P>Check your local library for assembly language books, specifically on the TRS-80 (it used a Z80). You can also look through books about the Commodore 128 and the Sinclair, these also used a Z80. And if you think that the Z80 isnt popular with kids, then you have not seen a game boy. Yes ladies and gentlemen, the Game Boy also uses a Z80.
+
+<BR>
+<CENTER><H2>Find Pixel Routine</H2></CENTER>
+
+<P><B>What is the Find Pixel used for?</B>
+<BR>When you draw a pixel on the screen, you must know which byte to modify. And since there are 8-bits per pixel on the screen, you will also need to know the bit. The findpixel is a routine that will translate a X, Y coordinate into a memory address and bitmask. The memory address that it returns is the one that is in the display and needs to be modified, and this routine also returns with a bitmask the contains the specified bit you want to modify  and this bit is set. With a combination of ld and logical operators, you can quickly and easily set a pixel, clear a pixel, XOR a pixel, etc. 
+
+<P>My tutorial #4 on my web site explains in detail, line by line, how the findpixel routine works, and examples of it's use are explained in my Display section of my web site in the TI-86 R & D (Research and Development) category.
+
+
+<PRE>
+;--------------------------------------------------------------------
+; The Eble-Yopp-Yopp-Eble-Eble-Eble-Yopp Fast FindPixel Routine :)
+; 36 bytes / 121 t-states not counting ret or possible push/pop of BC
+;--------------------------------------------------------------------
+; Input: D = y
+; E = x
+; Output: HL= address of byte in video memory
+; A = bitmask (bit corresponding to pixel is set)
+; C is modified
+;
+; +-----------+
+; |(0,0)      | <- Screen layout
+; |           |
+; | (127,63)  |
+; +-----------+
+;
+;--------------------------------------------------------------------
+
+FindPixel:
+ld hl,FP_Bits
+ld a,e
+and $07 ; a = bit offset
+add a,l
+ld l,a
+adc a,h
+sub l
+ld h,a
+ld c,(hl) ; c = bitmask for (hl)
+;48 t-states up to this point
+ld hl,FP_RLD
+ld (hl),d
+ld a,e ; a = x/8 (byte offset within row)
+rrca
+rrca
+rrca
+rld
+or $FC
+ld l,(hl)
+ld h,a ; hl -> byte in vid mem
+ld a,c ; now a = bitmask for (hl)
+;121 t-states up to this point
+ret
+FP_RLD: .db $00
+FP_Bits: .db $80,$40,$20,$10,$08,$04,$02,$01
+.end
+;--------------------------------------------------------------------
+</PRE>
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript">
+<!--
+function go(){
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none") {
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value
+	}
+}
+//-->
+</script>
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('<form name="selecter"><select name="select1" size=1>');
+document.write('<option value=none>3rd Level Domains');
+document.write('<option value=none>---------------------------------');
+document.write('<option value="http://www.acz.org">ACZ Frontpage');
+document.write('<option value="http://ti86.acz.org">86 Asm Central');
+document.write('<option value="http://ti89.acz.org">89 Asm Central');
+document.write('<option value="http://asmstudio.acz.org">Assembly Studio Site');
+document.write('<option value="http://vti.acz.org">Virtual TI Emulator Site');
+document.write('<option value=none>----------------------------------');
+document.write('<option value="http://brett.acz.org">Brett\'s Homepage');
+document.write('<option value="http://clem.acz.org">Clem\'s Homepage');
+document.write('<option value="http://dave.acz.org">Dave\'s Homepage');
+document.write('<option value="http://david.acz.org">David\'s Homepage');
+document.write('<option value="http://dux.acz.org">Dux\'s Homepage');
+document.write('<option value="http://james.acz.org">Jame\'s Homepage');
+document.write('<option value="http://jeremy.acz.org">Jeremy\'s Homepage'  );
+document.write('<option value="http://matt.acz.org">Matt\'s Homepage');
+document.write('<option value="http://rusty.acz.org">Rusty\'s Homepage');
+document.write('<option value="http://stephen.acz.org">Stephen\'s Homepage');
+document.write('<option value=none>----------------------------------');
+document.write('</select>');
+document.write('<input type="button" value="Go" onclick="go()">');
+document.write('</form>');
+// end hiding contents -->
+</script>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+
+ 
+</BODY>
+</HTML>

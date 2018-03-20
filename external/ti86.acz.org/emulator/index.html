@@ -1,0 +1,248 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="keywords" CONTENT="TI-86,TI86,emulator,emulate,disassembler,rom,calc,calculator,graphic,dump,rom dump,emulates,simulate,simulator,Z80,zilog,asm,assembly,programming">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (Win95; I) [Netscape]">
+   <TITLE>86 CENTRAL - Optic2000's TI-86 Assembly Page</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000CC" ALINK="#FF0000">
+
+<CENTER><IMG SRC="logo.gif" ALT="[86 Emulator Central - Steve Gordon's TI-86 Web Page]" BORDER=0 HEIGHT=100 WIDTH=427></CENTER>
+
+<CENTER><IMG SRC="pic1.gif" ALT="[Image of TI-86 Emulator]" BORDER=0 HEIGHT=298 WIDTH=427></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=3 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" HEIGHT="270" >
+<TR>
+<TD ALIGN=CENTER BGCOLOR="#E0E0E0"><FONT SIZE=+1>The Windows TI-86 Emulator</FONT></TD>
+</TR>
+
+<TR>
+<TD>&nbsp;TI86EMU is a free MS Windows based program that emulates your
+TI-86 calculator in a window. What separates TI86EMU from other emulators
+is its full featured monitor/debugger. These features make it perfect for
+debugging TI-86 ASM and BASIC programs on your PC. TI86EMU requires a WIN32
+platform (WIN95 or WINNT) although I havent tested it on WINNT. Source
+code will probably be released at version 1.0. TI86EMU Does not work with
+"LARGE TEXT" option in windows.&nbsp;</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=3 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" HEIGHT="270" >
+<TR>
+<TD ALIGN=CENTER BGCOLOR="#E0E0E0"><FONT SIZE=+1>Features</FONT></TD>
+</TR>
+
+<TR>
+<TD>
+<UL>
+<LI>
+Almost Perfect TI-86 emulation&nbsp;</LI>
+
+<LI>
+Works with every TI86 Game and BASIC program I have tried&nbsp;</LI>
+
+<LI>
+2 to 8 times as fast as TI86 (on P200MMX)&nbsp;</LI>
+
+<LI>
+Load .86P BASIC and ASM programs, 86I pictures, 86S, and 85S strings from
+PC right into calculator's TI86 variables.&nbsp;</LI>
+
+<LI>
+Save/load emulator machine state to your PC&nbsp;</LI>
+
+<LI>
+Save/load raw memory to you PC&nbsp;</LI>
+
+<LI>
+Save/load workspace to your PC&nbsp;</LI>
+
+<LI>
+Run multiple TI-86s at once&nbsp;</LI>
+
+<LI>
+Controllable though keyboard or virtual TI86 keypad&nbsp;</LI>
+
+<LI>
+Speed control&nbsp;</LI>
+</UL>
+</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=3 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" >
+<TR>
+<TD ALIGN=CENTER BGCOLOR="#E0E0E0"><FONT SIZE=+1>What's New?</FONT></TD>
+</TR>
+
+<TR>
+<TD><B>NEW IN VERSION .6 (3/25/98)</B>&nbsp;
+<UL>
+<LI>
+Around a 20% speed improvement.&nbsp;</LI>
+
+<LI>
+New file type: .85S, a very important addition as it allows most TI85 zshell,
+USGARD, and other programs to run using ASE (ASE is a shell program for
+the TI86 by Bill Nagel that lists and runs TI85 and TI86 programs. TI86EMU
+has been tested and works with ASE 1.3.&nbsp;</LI>
+
+<LI>
+TI86EMU is now a TI85/86 emulator, but will still be called TI86EMU, see
+section on 85 emulation. There is no file loading support for TI85 (yet).&nbsp;</LI>
+
+<LI>
+Memory address trap. You can set an address to trap and any access to that
+memory location will pause z80 execution and allow debugging&nbsp;</LI>
+
+<LI>
+Lower resident memory requirement and executable size&nbsp;</LI>
+
+<LI>
+Virtual keypad "always on top"&nbsp;</LI>
+
+<LI>
+TI86EMU Always on top when in run mode.&nbsp;</LI>
+
+<LI>
+Fixed a variable loading bug that in some rare cases, could corrupt memory
+when loading a variable&nbsp;</LI>
+
+<LI>
+Default foreground color now ink blue&nbsp;</LI>
+
+<LI>
+Added "." key&nbsp;</LI>
+
+<LI>
+Added "^(shift-6)" key&nbsp;</LI>
+
+<LI>
+Can dump virtual or z80 address space&nbsp;</LI>
+
+<LI>
+Numeric entry default either hex or decimal&nbsp;</LI>
+
+<LI>
+Search form can stay open while you do other things&nbsp;</LI>
+
+<LI>
+"Frame skip options" draws only every other frame, this speeds up TI86EMU
+by a fair amount while adding a slight amount of choppyness (unnoticable
+in most games)&nbsp;</LI>
+</UL>
+&nbsp;
+
+<P><B>NEW IN VERSION .5 (2/12/98)</B>&nbsp;
+<UL>
+<LI>
+Total overhaul of the Key emulation system, this fixes games like sqrxz
+and boulderdash that depend on a realistic emulation of the keypad.</LI>
+
+<LI>
+Added support for multiple keys</LI>
+
+<LI>
+Changed key layout so that now arrow keys are used plus remapped a couple
+other keys</LI>
+
+<LI>
+Now two keyboard emulation modes:</LI>
+
+<UL>
+<LI>
+Realistic mode: An exact emulation of the TI86 Keyboard hardware.</LI>
+
+<LI>
+Typing mode: This mode works with most games and programs, plus lets you
+type ALOT faster than you can in Realistic mode. Multiple keys are not
+supported in this mode, so if a game doesnt work, choose realistic mode
+instead.</LI>
+</UL>
+</UL>
+</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=3 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" HEIGHT="170" >
+<TR>
+<TD ALIGN=CENTER BGCOLOR="#E0E0E0"><FONT SIZE=+2>Download TI86EMU <A HREF="http://www.ticalc.org/pub/win/ti86emu.zip">here</A></FONT></TD>
+</TR>
+
+<TR>
+<TD>TI86EMU is a completely free program. You can download the newest version
+from <A HREF="http://www.ticalc.org/">ticalc.org</A>.</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=3 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" HEIGHT="170" >
+<TR>
+<TD ALIGN=CENTER BGCOLOR="#E0E0E0"><FONT SIZE=+2>Contact <A HREF="mailto:sgordon@mich.com">Steve
+Gordon</A> Here</FONT></TD>
+</TR>
+
+<TR>
+<TD>Any comments, questions, or complaints? Please contact <A HREF="mailto:sgordon@mich.com">Steve
+Gordon</A> by E-mail, and he will answer you as soon as possible. <B><I>Do
+not</I></B> e-mail him asking for rom images!</TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=3 CELLSPACING=0 CELLPADDING=3 WIDTH="90%" HEIGHT="170" >
+<TR>
+<TD ALIGN=CENTER BGCOLOR="#E0E0E0"><FONT SIZE=+1>Links to other sites</FONT></TD>
+</TR>
+
+<TR>
+<TD>
+<UL>
+<LI>
+&nbsp;<A HREF="http://www.dogtech.com/cybop/ti86/">Matt's TI-86 asm Page</A></LI>
+
+<LI>
+&nbsp;<A HREF="http://www.algonet.se/~mja/">Jimmy Mardell's Homepage</A></LI>
+
+<LI>
+&nbsp;<A HREF="http://www.iit.edu/~bailela/">Alan Bailey's Homepage</A></LI>
+
+<LI>
+&nbsp;<A HREF="http://www.calpoly.edu/~tllilleh/a86/a86.html">Trent Lillehaugen's
+A86 site</A></LI>
+
+<LI>
+&nbsp;<A HREF="http://www.cis.ohio-state.edu/~eble/">Dan Eble's Homepage</A></LI>
+
+<LI>
+&nbsp;<A HREF="http://members.home.com/gluvna">Randy Gluvna's Homepage</A></LI>
+</UL>
+</TD>
+</TR>
+</TABLE></CENTER>
+
+<CENTER>&nbsp;</CENTER>
+
+<CENTER>
+<H1>
+Various Screenshots</H1></CENTER>
+
+<CENTER><IMG SRC="pic1.gif" ></CENTER>
+
+<CENTER><IMG SRC="pic2.gif" >&nbsp;<IMG SRC="pic3.gif" >&nbsp;<IMG SRC="pic4.gif" >&nbsp;<IMG SRC="pic5.gif" ></CENTER>
+
+<CENTER><IMG SRC="keypad.gif" ></CENTER>
+&nbsp;
+<CENTER><TABLE BORDER=0 >
+<TR>
+<TD>
+<HR WIDTH=50></TD>
+
+<TD>Homepage designed for <A HREF="mailto:sgordon@mich.com">Steve Gordon</A>
+by <A HREF="mailto:matt2000@dogtech.com">Matthew Johnson</A>&nbsp;</TD>
+
+<TD>
+<HR WIDTH=50></TD>
+</TR>
+</TABLE></CENTER>
+&nbsp;
+</BODY>
+</HTML>

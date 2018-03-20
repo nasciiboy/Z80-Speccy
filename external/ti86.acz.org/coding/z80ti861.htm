@@ -1,0 +1,265 @@
+<HTML>
+<HEAD>
+<TITLE>Matt Johnson's TI-86 Z80 Asm Tutorial - Part I - The Basics</TITLE>
+<META NAME="keywords" CONTENT="Basics, basic, general asm, beginning, compiling, starting out, where to start, where to begin, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+<META NAME="description" CONTENT="86 Central - 86 Asm tutorial - The first general TI-86 tutorial, covers compiling, recovering from crashes, and transfering files to and forth thou calc.">
+
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000ff">
+
+<B><FONT FACE="Comic Sans MS" SIZE=5><P ALIGN="CENTER">Matt Johnson's Z80 Programming Tutorial</P>
+</B></FONT><FONT FACE="Comic Sans MS" SIZE=4><P>        </P>
+<P ALIGN="CENTER">Programming the TI-86 [PART 01]</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+</FONT><FONT FACE="Courier New" SIZE=1><P ALIGN="CENTER">Introduction to TI-86 Z80 programming</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>                </P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">INTRODUCTION</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>    Welcome to this Tutorial! Someone once said, the best way to learn something is to teach it. Well once again Cyber Optic is back to teach his wisdom! Well.. Uhh.. at least I can try! This tutorial teaches you how to program Z80 assembly language for the TI-86.</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">HOW TO FIND ME</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P> Who ever reads this tutorial and finds it useful should e-mail me your comments, questions, or complaints. Keep in mind that I am also a beginner in programming, so don't be disappointed if I can't answer your questions.</P>
+
+</FONT><FONT FACE="Courier New" SIZE=1><P>If you catch any mistakes or have any additions, comments, anything, e-mail me immediately!</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>My e-mail address is <A HREF="mailto:matt2000@dogtech.com">Matt2000@gte.net</A></P>
+<P>My Home Page is at <A HREF="http://home1.gte.net/cybop/">http://www.dogtech.com/cybop/</A> (Under Construction)</P>
+<P>My TI-86 Web Page is at <A HREF="http://www.dogtech.com/cybop/ti86/">http://www.dogtech.com/cybop/ti86/</A> (Under Construction)</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">REQUIREMENTS</P>
+<P ALIGN="CENTER"></P>
+</FONT>
+<FONT FACE="Courier New" SIZE=2>Hardware
+<BR>---------
+<BR>- TI-86 (Duh!)<BR>
+<BR>- TI Graphlink Cable
+<BR>
+<BR>Software
+<BR>--------
+<BR> - asm86 III
+<BR> - TI Updated Include Files
+<BR> - TASM 3.01
+<BR> - TASM80.TAB
+<BR> - TI Graphlink Software
+<BR>
+
+<P> NOTE: One of these programs requires a DPMI environment, which Windows 95 fulfills.</P>
+
+<P>&nbsp;</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">DISCLAIMER</P>
+<P ALIGN="CENTER"></P>
+</FONT><FONT FACE="Courier New" SIZE=2><P>Use all this information at your own risk and copy it freely as long as credit is give where credit is due (to me!). No Modifications allowed without permissions. If you catch any mistakes or have any additions, comments, anything, e-mail me immediately! I am not responsible if your calculator crashes! This should not be, since I will test out every complete program on my own TI-86.</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">THE BASICS</P>
+</FONT><FONT FACE="Courier New" SIZE=2><P>        The TI-86 is an amazing graphic calculator. The 86 was created by Texas Instruments. It is commonly described as a hybrid between the TI-83 and TI-85. With 128K of RAM, assembly support, and a slick design, this calculator should become popular in no time at all! In fact, it is becoming even more popular then the TI-85, although that is a classic calculator.</P>
+
+<P>Assembly for a calculator? Yes that is correct! This calculator officially supports Z80 assembly language, just like the TI-83.</P>
+
+<P>Z80!!?? What the hell is that? Well Z80 is a microprocessor created by Zilog, Inc. The TI-86 uses a 6MHZ Z80. This same CPU is also used in the TI-82, 83, &amp; 85. It was also used in some very old personal computers, such as the TRS-80. Only 6MHZ?? It's amazing what you can do with 6MHZ. People have written 3D games resembling Wolf3D style games for the TI-85. The TI-86 is the newest one made by Texas Instruments, and the asm documentation for the calculator has not even been completed yet. This is where this tutorial comes in.</P>
+
+<P>Is this Z80 asm stuff resemble the assembly language of IBM/Compatible computers? In a short word, NO. The Z80 is a very simple processor. It has few instructions, it does not even contain a multiply instruction.</P>
+
+<P>Why learn Z80? Why program for a calculator? Why not program BASIC then? Well.. why???</P>
+
+
+<UL>
+</FONT><FONT FACE="Courier New" SIZE=1><LI>Well imagine creating your own programs for your own calculator, to show off to your friends.. To mess with instead of listening to your boring math teacher.. To expand your knowledge... To finally be able to program something other then an IBM..</LI></UL>
+
+
+
+<UL>
+<LI>Because your not only are you programming for a calculator, your programming for a computer. Then the question becomes, why program? If you have to ask this question, you are at the wrong place!</LI></UL>
+
+<UL>
+<LI>BASIC sucks! I'm sorry, but it just does. I seen a DOOM game in Basic on the TI-82 and it just plain sucked!! It was not smooth scrolling, you could actually see it redrawing the screen!! Ahh! When I saw a Zshell version for the TI-85, damn it was impressive for just a Z80 6MHZ CPU.</LI></UL>
+
+</FONT><FONT FACE="Courier New" SIZE=2>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">What you need to do to begin</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>These files can be found at my web page or TICALC.ORG. Unzip and move</P>
+<P>these files into a seperate directory such as C:\ASM</P>
+
+<P> - asm86 v2.0</P>
+<P> - TI Updated Include Files (There should be 3)</P>
+<P> - TASM 3.01</P>
+<P> - Updated TASM80.TAB</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Writing your first program</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P> This section should give you the "feel" of Z80 asm programming, by showing you an example of an TI-86 asm program, letting you type it out, compile it, and test it on your calculator! This is only to give you the basic procedure for programming the TI-86, do not worry about understanding how any of the instructions work, since this section is made for you to learn the procedure.</P>
+<P>Note: I include the comments on all source code given so it will become a habit for me and clarify the programs for you.</P>
+
+</FONT>
+<FONT FACE="Courier New" SIZE=3>
+<PRE>
+;------------ BEGIN HERE --------------
+#include "asm86.h"       ;Includes procedures that came with asm86.
+#include "ti86asm.inc"   ;Includes common procedures that TI provides.
+
+.org _asm_exec_ram       ;All TI-86 asm programs start at this address 
+                         
+        call _clrLCD     ;Calls a ROM routine to clear the screen
+        ld hl,$0000      ;Stores $00 in h, $00 in l
+        ld (_curRow),hl  ;Stores 00 in _curRow, 00 in _curCol
+        ld hl,hello      ;Stores the address of hello into hl
+        call _puts       ;Calls a ROM routine to display a string
+                         ;at address hl until it reaches NULL (binary 0)
+
+        ret              ;Returns to the calling program
+                         ;Calculator will crash without it
+
+
+hello:
+; Defines a string. This is stored in address hello
+;    where hello is a label and represents the address
+;    of the start of the string. It ends with a
+;    binary 0, also called NULL
+
+        .db "TI-86 Z80 Asm is Easy",0
+           
+
+.end ; The end of the source code
+;------------- END HERE ---------------------
+</PRE>
+</FONT>
+
+<FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Compiling Programs</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P> After you type out the program in the previous section, save the file under Samp1.asm. Take this file and put it in your asm directory.</P>
+
+<P>To compile the file, type:</P>
+
+<P>make86p samp1</P>
+
+<P>If all goes well, some stuff will be displayed and you will see the message:</P>
+
+<P>***samp1.86p created successfully***</P>
+
+<P>CAUTION! Be sure to type the program exactly as it is. Don't leave</P>
+<P>         out the "ret" instruction or else your calc shall crash!</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Recovering from Calculator Crashes</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P> If you ever make a mistake in your asm program and your calculator crashes, then press the "ON" button (which may break out of the program), if not then take out the batteries, and then put them back in.</P>
+
+<P> Then press "ON" and your calculator is turned on. It WON'T TURN ON, you say! Well probably it is on, you just can't see it. Press [2ND] [UP ARROW], to change the contrast higher so you can see the cursor. Press [2ND][DOWN ARROW] to lower the contrast. Odviously taking out the batteries reset the calculator to the default settings.</P>
+
+<P> If you use those alkaline rechargeable batteries then you know you need to recharge them once the contrast setting needs to be set to "7", I believe.</P>
+
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Testing It Out</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P> This is fairly simple. After you compile the program, the file SAMP1.86P has been created. Turn on the calculator and keep it on the home screen (the main screen with the flashing cursor). Do NOT use [2ND][LINK] to get a program. Don't ask me why, it won't work for downloading programs to the calculator.</P>
+
+<P>Use the TI-Graphlink software to send SAMP1.86P to your calculator. You can do this by going to the Link Menu, hit Send, find SAMP1.86P, hit the Add button. Then your cursor stops blinking on the calculator briefly while the file is being sent.</P>
+
+<P> TROUBLESHOOTING: If you have problems sending the file, check:</P>
+
+<UL>
+<LI>You have a 25-pin serial port and it is using a com port that is not conflicting</LI></UL>
+<DIR>
+
+<P>with your serial mouse or modem. If you have a serial mouse and a modem, use COM 3 or 4. Hopefully your have a motherboard has an onboard I/O in the BIOS. Then your 2nd Serial port is probably disabled because COM2 is being used by the modem. Simply re-enable it under COM3 or COM4 and Windows 95 should detect the new serial port. Now set up the TI graphlink software under COM3 or 4.</P>
+</DIR>
+
+
+<UL>
+<LI>If your I/O is on a seperate board (daughterboard), then you need to find the manual for that and set some jumpers, enabling the 25-pin serial port to be used as COM3 or COM4.</LI></UL>
+
+
+
+<UL>
+<LI>This seems really obvious, but trust me, Make sure that the TI graphlink is plugged in to the serial port snuggly and especially the calculator! It may seem to be in, but you would be suprised.</LI></UL>
+
+
+<P>Ok, now hopefully everything went great. You think that the program sended OK, no error messages. The TI-86 didn't do anything really, it just blanked out briefly. The TI graphlink software will say **Completed** on the bottom of the window. Very Good!</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER">Running an Assembly language Program</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P> This is simple. Just type out "asm(", or hit [2ND][CUSTOM][F1], then select "Asm("</P>
+
+<P> Then hit [PRGM][F1] and then use [MORE] and [F1] through [F5] to select your program. Select SAMP1</P>
+
+<P> You should see this:</P>
+
+<P> asm(SAMP1</P>
+
+<P> NOTE: "asm(SAMP1" or "asm(SAMP1)" will both work fine.</P>
+
+<P>Then press Enter to run the program! Yeah! Ti-86 asm is Easy! I do agree myself! Then "Done" is shown to tell you the program has ended.</P>
+
+<P> By the WAY: To run a BASIC program, just type in the name or select it in the program menu and hit enter.</P>
+
+</FONT><B><FONT FACE="Courier New"><P ALIGN="CENTER">This is not Zshell School Boys and Girls</P>
+</B></FONT><FONT FACE="Courier New" SIZE=2>
+<P> Jimmy Mardell is a very good programmer, and his tutorials were very good, but I never thought they were very descriptive, especially on the intense stuff. I hope to change that on these tutorials...</P>
+
+<P> I love SQRXZ by the way!! ;)</P>
+</FONT><FONT FACE="Comic Sans MS"><P ALIGN="CENTER"></P>
+<P ALIGN="CENTER">Summary / Wrap Up / What's coming up Next?!!!?</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P> Well, Well, first of all, the next lessons I won't be holding your hand for you like this one. That doesn't mean I will cut out the explanations or remove the comments, I just wont add stuff that you should know by now! For example, there won't be any needless comments like</P>
+
+<P>NOTE: "asm(SAMP1" or "asm(SAMP1)" will both work fine.</P>
+
+<P>Because I can't teach common sense on the more advanced lessons.</P>
+
+<P>HOWEVER! I will have all kinds of comments, multiple lines if necessary! I WILL explain the difficult stuff and will go into math if I must. I won't go on until I         fully understand it, and my understanding and reasoning will be on these tutorials!!</P>
+<P>         </P>
+<P>I AM NOT AN EXPERT - I am a sophomore in high school, my creative                     skills might be lacking until later years and my ability and learning rate are also slower then people that are older then me like in college. So my tutorials may take a while, but each will be descriptive and uhh.. Cool!</P>
+
+<P>NEXT TUTORIAL WILL BE ON - Compiler directives i.e. db, comments, binary, hex, registers and flags! (Not necessarily in that order!)</P>
+
+<P>IT WILL BE SOON - Since I seem to only be a few lessons ahead of each of my tutorials!</P>
+
+</FONT>
+
+<P>See ya later!</P>
+
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript">
+<!--
+function go(){
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none") {
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value
+	}
+}
+//-->
+</script>
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('<form name="selecter"><select name="select1" size=1>');
+document.write('<option value=none>3rd Level Domains');
+document.write('<option value=none>---------------------------------');
+document.write('<option value="http://www.acz.org">ACZ Frontpage');
+document.write('<option value="http://ti86.acz.org">86 Asm Central');
+document.write('<option value="http://ti89.acz.org">89 Asm Central');
+document.write('<option value="http://asmstudio.acz.org">Assembly Studio Site');
+document.write('<option value="http://vti.acz.org">Virtual TI Emulator Site');
+document.write('<option value=none>----------------------------------');
+document.write('<option value="http://brett.acz.org">Brett\'s Homepage');
+document.write('<option value="http://clem.acz.org">Clem\'s Homepage');
+document.write('<option value="http://dave.acz.org">Dave\'s Homepage');
+document.write('<option value="http://david.acz.org">David\'s Homepage');
+document.write('<option value="http://dux.acz.org">Dux\'s Homepage');
+document.write('<option value="http://james.acz.org">Jame\'s Homepage');
+document.write('<option value="http://jeremy.acz.org">Jeremy\'s Homepage'  );
+document.write('<option value="http://matt.acz.org">Matt\'s Homepage');
+document.write('<option value="http://rusty.acz.org">Rusty\'s Homepage');
+document.write('<option value="http://stephen.acz.org">Stephen\'s Homepage');
+document.write('<option value=none>----------------------------------');
+document.write('</select>');
+document.write('<input type="button" value="Go" onclick="go()">');
+document.write('</form>');
+// end hiding contents -->
+</script>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+
+
+</BODY>
+</HTML>

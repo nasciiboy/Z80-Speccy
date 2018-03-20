@@ -1,0 +1,800 @@
++-------------------------------------------------+
+|  TI-86 Link Protocol and Variable Format Guide  |
+|      by Tim Singer                              |
++-------------------------------------------------+
+
+In order for this document to be of any use to you, you must already know
+how to receive and transmit individual bytes to/from the calculator through
+a link cable.  I have a couple of assembly-language routines that I might
+put on my webpage if you e-mail me at tsinger@gladstone.uoregon.edu
+
+
+Contents
+========
+
+Section 1 - General link protocol
+  1.1  Machine ID's
+  1.2  TI-86 command bytes
+  1.3  How to calculate checksums
+  1.4  The TI-86 variable header format
+    1.4.1  Variable type codes on the TI-86
+Section 2 - Data transfers
+  2.1  Calc-to-calc "manual" variable transfers
+  2.2  "Silent" link capability
+    2.2.1  Getting the TI-86 directory and free memory
+    2.2.2  Requesting a variable
+    2.2.3  Sending a variable
+  2.3  Requesting a TI-86 screenshot
+Section 3 - Variable formats
+  3.1  Real
+  3.2  Complex
+  3.3  Vector
+  3.4  List
+  3.5  Matrix
+  3.6  Constant
+  3.7  Equation
+  3.8  String
+  3.9  GDB
+    3.9.1  Function
+    3.9.2  Polar
+    3.9.3  Parametric
+    3.9.4  Differential Equation
+  3.10 Picture
+  3.11 Program
+  3.12 Window Setup
+    3.12.1 Function
+    3.12.2 Polar
+    3.12.3 Parametric
+    3.12.4 Differential Equation
+    3.12.5 Saved Window Setup
+Section 4 - *.86? File formats
+Appendix A - TI-86 tokens in equations and programs
+
+
+Note:  All 2-byte words are LSB first, so {5B 01} = 015B.
+
+=====================
+Section 1:
+General Link Protocol
+=====================
+The TI-86 sends information in packets.  Each packet has the following format:
+
+Offset	Length	Description
+--------------------------------------------------------
+0       1       Machine ID
+1       1       Command ID
+2       2       Length of data in bytes if data attached
+4       n       Data if attached
+4+n     2       Checksum if data attached
+
+                             +--Machine ID=Computer linked to TI-86
+                             |  +--Command ID=Skip/Exit
+                             |  |   +--Data length=0001 bytes
+                             |  |   |    +--Data=01 (Exit pressed)
+                             |  |  / \   | Checksum=0001
+A typical packet would be:  06 36 01 00 01 01 00
+Packets can have up to 65535 bytes in the Data section.
+
+ 1.1: Machine ID byte
+   The Machine ID byte identifies the machine so the calculator can decide
+   whether or not to accept the transmission.  Here are the possible values:
+
+      Machine ID    Machine Description
+      ---------------------------------------------------
+      02            Computer to TI-82 (rejected by TI-86)
+      03            Computer to TI-83 (rejected by TI-86)
+      05            Computer to TI-85
+      06            Computer to TI-86
+      09            Computer to TI-92 (rejected by TI-86)
+      15            CBL/CBR to TI-85???
+      82            TI-82 (rejected by TI-86)
+      83            TI-83 (rejected by TI-86)
+      85            TI-85
+      86            TI-86
+      89            TI-92 (rejected by TI-86)
+
+ 1.2: Command ID bytes for TI-86
+   The command ID byte specifies the type of packet that it is.  Packets with
+   asterisks (*) by them have data attached.
+
+      Command ID    Command Description
+      ---------------------------------------------------------------------
+      06 *          Variable Header - includes a standard variable header
+      09            Continue - used to signal OK to send a variable
+      15 *          Data packet - Pure data
+      36 *          Skip/Exit - used when duplicate name is found
+      56            Acknowledge
+      5A            Checksum error: send last packet again
+      6D            Request screenshot
+      92            End Of Transmission: no more variables to send
+      A2 *          Request variable - includes a standard variable header
+      C9 *          Request to send - includes a padded variable header
+
+ 1.3: How to calculate checksums
+   The checksum tells the receiving machine if the data in a packet with data
+   was received correctly.  It is actually the least significant 16 bits of
+   the sum of all data bytes.  Here's a C function to calculate the checksum.
+
+   int calculateChecksum(unsigned char* data, unsigned short datalength) {
+      int x, checksum;
+      checksum=0;
+      for(x=0; x<datalength; x++) {
+         checksum+=data[x];  //overflow automatically limits it to 16 bits
+      }
+      return checksum;
+   }
+
+ 1.4: The TI-86 variable header format
+   The variable header is up to 12 bytes long.  It has the following format:
+
+      Offset   Length   Description
+      ---------------------------------------------
+      0        2        Data length
+      2        1        Variable Type
+      3        1        Name length (0..8)
+      4        n        Name (not zero-terminated)
+
+   Note: If the variable header is "padded," then the name is always 8 bytes
+     long, but padded on the right with 0x20's.  This format is only used
+     when requesting to send a variable to the TI-86 or when receiving a
+     directory entry.
+
+   If the variable is a WIND or DIR, then the name is a single 0 byte.
+   If the header is describing a memory backup, the variable header will take
+   the following format:
+
+      Offset   Length   Description
+      --------------------------------------------------------
+      0        2        Data length of first data packet
+      2        1        Variable Type = 1D
+      3        2        Data length of second data packet
+      5        2        Data length of third data packet
+      7        2        Data length of fourth data packet
+
+   1.4.1: TI-86 variable types:
+
+      Type ID   Description
+      ------------------------------------
+      00        Real Number
+      01        Complex Number
+      02        Real Vector
+      03        Complex Vector
+      04        Real List
+      05        Complex List
+      06        Real Matrix
+      07        Complex Matrix
+      08        Real Constant
+      09        Complex Constant
+      0A        Equation
+      0C        String
+      0D        Function GDB
+      0E        Polar GDB
+      0F        Parametric GDB
+      10        Differential Equation GDB
+      11        Picture
+      12        Program
+      15        Directory (only used when requesting dir)
+      17        Function Window Settings
+      18        Polar Window Settings
+      19        Parametric Window Settings
+      1A        Differential Equation Window Settings
+      1B        Saved Window Size (ZRCL)
+      1D        Memory backup
+      1E        Unknown (only used when requesting var)
+
+
+
+
+
+==============
+Section 2:
+Data Transfers
+==============
+ 2.1: Calc-to-calc "manual" variable transfers
+    The TI-86 follows its predecessors in the variable transfer protocol it
+    uses, which enables it to communicate with a TI-85.  The SND85 menu only
+    prompts the TI-86 to send a TI-85 machine ID byte and not to transfer
+    certain data types.
+
+    Here's the general idea (Transmitting unit is "xmit", receiving unit is
+    "recv"):
+
+     Step Direction   Command/Description
+     --------------------------------------------------------------------
+     1) XMIT-->RECV   Variable Header - specifies the variable being sent
+     2)     <--       Acknowledge
+     3)     <--       Continue or Skip/Exit: If skip go to step 6,
+                                             if exit go to step 8.
+     4)     -->       Acknowledge
+     5)     -->       Data - the variable data
+     6)     <--       Acknowledge
+     7)     -->       EOT or another variable header: if variable header,
+                                                      go to step 2.
+     8)     <--       Acknowledge
+
+     Note:  The "Skip/Exit" packet has one data byte: 01 means that the
+       variable was skipped, and 02 means that the link was cancelled.
+
+ 2.2: "Silent" link capability
+    TI incorporated a "Silent Link" capability into the TI-83, TI-86, and
+    TI-92.  It allows you to send and receive variables from the calculator
+    without putting the calculator in link mode.  The only drawback is that
+    the silent send function automatically overwrites any data already in
+    that variable on the calculator.  Therefore, any program that
+    incorporates this capability must also check to make sure this doesn't
+    happen.
+
+    2.2.1: Getting the TI-86 directory and free memory
+       To get a directory of all the variables on a TI-86:
+
+       Step Direction   Command/Description
+       -------------------------------------------------------
+       1) Comp-->Calc   Request: (datasize=0, type=0x15, namelength=0,
+                                  name[0]=0)
+       2)     <--       Acknowledge
+       3)     <--       Data: 3 bytes - memfree=data[0]*65536+data[1]+
+                                       data[2]*256
+       4)     -->       Acknowledge
+         (Repeat steps 5 and 6 for as many variables as there are in memory)
+       5)     <--       Padded Variable Header - one directory entry
+       6)     -->       Acknowledge
+
+       7)     <--       EOT
+       8)     -->       Acknowledge
+
+    2.2.2: Requesting a variable
+       To request a variable from the TI-86:
+
+       Step Direction   Command/Description
+       ---------------------------------------------------------------
+       1) Comp-->Calc   Request - with "expected" header
+       2)     <--       Acknowledge
+       3)     <--       Variable Header - "actual" variable header
+       4)     -->       Acknowledge
+       5)     -->       Continue
+       6)     <--       Acknowledge
+       7)     <--       Data
+       8)     -->       Acknowledge
+
+   2.2.3: Sending a variable
+       To send a variable to the TI-86:
+       Step Direction   Command/Description
+       ---------------------------------------------------------------
+       1) Comp-->Calc   Request to send - with padded variable header
+       2)     <--       Acknowledge
+       3)     <--       Continue (always overwrites)
+       5)     -->       Acknowledge
+       4)     -->       Data
+       5)     <--       Acknowledge
+
+ 2.3: Requesting a TI-86 screenshot
+    To request a screenshot:
+       Step Direction   Command/Description
+       ---------------------------------------------------------------
+       1) Comp-->Calc   Request Screenshot
+       2)     <--       Acknowledge
+       3)     <--       Data - 1024 bytes: 8 pixels per byte.
+       4)     -->       Acknowledge
+
+
+
+================
+Section 3:
+Variable Formats
+================
+This is the format of the data sent in the "data" section of the "Data"
+package.
+ 3.1: Real (Data type 00)
+   This format is used in all real numeric data types.
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       01       Flags
+     01       02       Exponent
+     03       07       Mantissa
+   The Flags byte has the following bits:
+     bit 0 (LSB):  If set, the number is half of a complex variable
+     bit 6:  I've only found this bit set on graph variables, but not
+             all the time.  My best guess is that it has something to
+             do with the "smart graph" redraw-if-needed feature.
+     bit 7 (MSB):  If set, the number is negative.
+
+ 3.2: Complex (Data Type 01)
+   This format is used in all complex data types.
+     Offset   Length   Description
+     ----------------------------------------------------------------------
+     00       0A       A REAL describing the "real" part of the number
+     0A       0A       A REAL describing the "imaginary" part of the number
+
+ 3.3: Vector (Data types 02 and 03)
+   This data type shares the same format as a Matrix (See Section 3.5), but
+   with the number of rows always equal to 1.
+
+ 3.4: List (Data types 04 and 05)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       02       Number of elements in the list
+     02       n        List elements (left to right): Either REAL or CPLX
+
+ 3.5: Matrix (Data types 06 and 07)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       01       Number of rows in the matrix
+     01       01       Number of columns in the matrix
+     02       n        The actual matrix data: Either REAL or CPLX
+   The matrix data consists of row definitions from top to bottom.  Each row
+    consists of a number of values (one for each column).  Therefore,
+     [[1,2][3,4]] would be ordered {1,2,3,4}.
+
+ 3.6: Constant (Data types 08 and 09)
+   Real constants share the same format as Real numbers (See section 3.1).
+   Complex constants share the same format as Complex numbers (See section
+   3.2).
+
+ 3.7: Equation (Data type 0A)
+   Equations share the same format as Strings (See section 3.8).  Equations
+   are always tokenized (See Appendix A).
+
+ 3.8: String (Data type 0C)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       02       Length of String
+     02       n        String data (not zero-terminated)
+
+ 3.9: GDB
+   3.9.1: Function (Data type 0D)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       01       Mode settings
+     01       0A       xMin
+     0B       0A       xMax
+     15       0A       xScl
+     1F       0A       yMin
+     29       0A       yMax
+     33       0A       yScl
+     3D       0A       xRes
+     47       01       Number of functions defined (up to 99)
+     48       n        Function table - n functions one after another
+     48+n     32       Style table - 4 bits per function
+
+     Possible styles: 0=solid line, 1=thick line, 2=shade above,
+                      3=shade below, 4=trace, 5=animate, 6=dotted line
+
+     Each function has one ID byte followed by an equation (see 3.7).  The ID
+     byte is the number of the function.  Bit 7 (MSB) is set if the function
+     is selected.  So a selected y12 would be 0x8C.
+
+     The Mode bytes save the graphing mode settings.  Each mode setting is
+     represented by one bit.
+       bit   Value   Meaning if set   Meaning if clear
+       --------------------------------------------------------------
+       0     0x01    DrawDot          DrawLine   (Not available in DifEq)
+       1     0x02    SimulG           SeqG       (Not available in DifEq)
+       2     0x04    GridOn           GridOff
+       3     0x08    PolarGC          RectGC     (Not available in DifEq)
+       4     0x10    CoordOff         CoordOn
+       5     0x20    AxesOff          AxesOn
+       6     0x40    LabelOn          LabelOff
+       7     0x80    Signature: THIS BIT MUST BE SET.
+
+   3.9.2: Polar (Data type 0E)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       01       Mode settings
+     01       0A       ThetaMin
+     0B       0A       ThetaMax
+     15       0A       ThetaStep
+     1F       0A       xMin
+     29       0A       xMax
+     33       0A       xScl
+     3D       0A       yMin
+     47       0A       yMax
+     51       0A       yScl
+     5B       01       Number of functions defined (up to 99)
+     5C       n        Function table - n functions one after another
+     5C+n     32       Style table - 4 bits per function
+
+     See 3.9.1 for function, style and mode definitions.
+
+   3.9.3: Parametric (Data type 0F)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       01       Mode settings
+     01       0A       tMin
+     0B       0A       tMax
+     15       0A       tStep
+     1F       0A       xMin
+     29       0A       xMax
+     33       0A       xScl
+     3D       0A       yMin
+     47       0A       yMax
+     51       0A       yScl
+     5B       01       Number of functions defined (up to 99)
+     5C       n        Function table - n functions one after another
+     5C+n     32       Style table - 4 bits per function
+
+     Each function has one ID byte (see 3.9.1) immediately followed by 2
+     equations (See section 3.7).
+     See 3.9.1 for style and mode definitions.
+
+   3.9.4: Differential Equation (Data type 10)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       01       Mode settings
+     01       01       Extended DifEq mode settings
+     02       0A       difTol
+     0C       0A       tPlot
+     16       0A       tMin
+     20       0A       tMax
+     2A       0A       tStep
+     34       0A       xMin
+     3E       0A       xMax
+     48       0A       xScl
+     52       0A       yMin
+     5C       0A       yMax
+     66       0A       yScl
+     70       01       FldOff x Axis
+     7A       01       FldOff y Axis
+     7B       01       SlpFld y Axis
+     7C       01       DirFld x Axis
+     7D       01       DirFld y Axis
+     7E       0A       dTime
+     88       0A       fldRes
+     92       0A       EStep
+     AC       01       Number of functions defined (up to 99)
+     AD       n        Function Table
+     AD+n     05       Style table - 4 bits per function
+
+     Extended DifEq mode settings:
+       bit   Value   Meaning if set   Meaning if clear
+       --------------------------------------------------------------
+       0     0x01    SlpFld
+       1     0x02    DirFld
+       2     0x03    FldOff
+       5     0x20    Euler            RK
+
+     For the axes, 00=t, 10=Q, 11..19=Q1..Q9, 20=Q', 21..29=Q'1..Q'9.
+     Each function has one ID byte, then one equation., a 00 byte, then ten
+     bytes for the initial conditions.  If the initial condition is set, this
+     will be a REAL representing QIn, where n is the number of the function.
+     If the condition is not defined, then the first two bytes are {FF 03},
+     followed by "QI1" or whatever the initial condition variable is for that
+     function, followed by 5 00's.
+
+     See 3.9.1 for style and mode definitions.
+
+ 3.10: Picture (Data type 11)
+     Offset   Length   Description
+     ---------------------------------------------------------------------
+     00       02       Length of picture (Always F003)
+     02       F003     Picture bitmap (128x63)
+
+ 3.11: Program (Data type 12)
+   Programs share the same format as Strings (See section 3.8).  Hence a
+   program cannot be more than 64K long, contrary to what TI says in their
+   FAQ; the largest program is 65434 characters long.  Programs can be plain
+   text or tokenized, edit-locked or edit-unlocked.  If the program starts
+   with an 00 byte, it is plain text.  If it starts with two 00 bytes, then
+   it is edit-locked plain text.  If it starts with 8E 29, then it is edit-
+   locked tokenized.  Anything else is just plain tokenized.
+   See Appendix A for token definitions.
+
+
+ 3.12: Window Setup
+   3.12.1: Function (Data type 17)
+       Offset   Length   Description
+       ---------------------------------------------------------------------
+       00       01       Reserved
+       01       0A       xMin
+       0B       0A       xMax
+       15       0A       xScl
+       1F       0A       yMin
+       29       0A       yMax
+       33       0A       yScl
+       3D       0A       Reserved
+       47       0A       Reserved
+       51       0A       xRes
+
+   3.12.2: Polar (Data type 18)
+       Offset   Length   Description
+       ---------------------------------------------------------------------
+       00       01       Reserved
+       01       0A       ThetaMin
+       0B       0A       ThetaMax
+       15       0A       ThetaStep
+       1F       0A       xMin
+       29       0A       xMax
+       33       0A       xScl
+       3D       0A       yMin
+       47       0A       yMax
+       51       0A       yScl
+
+   3.12.3: Parametric (Data type 19)
+       Offset   Length   Description
+       ---------------------------------------------------------------------
+       00       01       Reserved
+       01       0A       tMin
+       0B       0A       tMax
+       15       0A       tStep
+       1F       0A       xMin
+       29       0A       xMax
+       33       0A       xScl
+       3D       0A       yMin
+       47       0A       yMax
+       51       0A       yScl
+
+   3.12.4: Differential Equation (Data type 1A)
+       Offset   Length   Description
+       ---------------------------------------------------------------------
+       00       01       Reserved
+       01       0A       difTol
+       0B       0A       tPlot
+       15       0A       tMin
+       1F       0A       tMax
+       29       0A       tStep
+       33       0A       xMin
+       3D       0A       xMax
+       47       0A       xScl
+       51       0A       yMin
+       5B       0A       yMax
+       65       0A       yScl
+       6F       01       Reserved
+       70       01       Reserved
+       71       01       Reserved
+       72       01       Reserved
+       73       01       Reserved
+       74       0A       dTime
+       7E       0A       fldRes
+       88       0A       EStep
+
+   3.12.5: Saved Window Setup (Data type 1B)
+       Offset   Length   Description
+       ---------------------------------------------------------------------
+       00       0A       zThetaMin
+       0A       0A       zThetaMax
+       14       0A       zThetaStep
+       1E       0A       ztPlot
+       28       0A       ztMin
+       32       0A       ztMax
+       3C       0A       ztStep
+       46       0A       zxMin
+       50       0A       zxMax
+       5A       0A       zxScl
+       64       0A       zyMin
+       6E       0A       zyMax
+       78       0A       zyScl
+       82       0A       zxRes
+
+
+==================
+Section 4:
+*.86? file formats
+==================
+All files share the same format; they only differ in extension and the fact
+that the non-group files cannot have more than one variable.
+Here is the *.86? file format:
+
+Offset   Length   Description
+--------------------------------------------------
+00       08       "**TI86**" - file signature
+08       03       1A 0A 00   - further signature
+0B       2A       Comment - space- or null-padded.  No special characters.
+35       02       Length of data part of file - should be 39h less than the
+                                                file length
+37       n        Data part - consists of a number of entries.
+37+n     02       File checksum
+
+Here is the entry format:
+Offset   Length   Description
+--------------------------------------------------
+00       02       000C - pointer to offset 0E
+02       02       Length of variable
+04       01       Variable type
+05       01       Name length
+06       08       Name (padded with spaces on the right)
+0E       02       Same as offset 02
+10       n        Variable data
+
+
+I propose this new format for backup files:
+Since backup files are multipart and can be >64K, while the first section is
+never >64K, the first data section (the TI-86 system area) should be stored
+in a standard .86G file, then appended to that should be the size, data, and
+checksum of the second, third, and fourth parts in succession.  So the new
+format would look like this:
+  Offset   Length   Description
+  --------------------------------------------------
+  00       08       "**TI86**" - file signature
+  08       03       1A 0A 00   - further signature
+  0B       2A       Comment - space- or null-padded.  No special characters.
+  35       02       Length of first data part
+  37       x        First data part (standard variable entry) - TI-86 system
+                                                                area
+  37+x     02       First data part checksum
+  39+x     02       Length of second data part
+  3B+x     y        Second data part (raw data dump) - TI-86 user area
+  3B+x+y   02       Second data part checksum
+  3D+x+y   02       Length of third data part
+  3F+x+y   z        Third data part (raw data dump) - TI-86 user area over 64K
+  3F+x+y+z 02       Third data part checksum (0 if third part not used)
+  41+x+y+z 02       Length of fourth data part
+  43+x+y+z w        Fourth data part (raw data dump) - TI-86 variable table
+  43+x+y+z+w 02     Fourth data part checksum
+
+The first data part variable entry would be the following:
+  Offset   Length   Description
+  --------------------------------------------------
+  00       02       000C - pointer to offset 0E
+  02       02       Length of first data part
+  04       01       Variable type = 1D
+  05       01       Name length = 6
+  06       08       Name = {'S' 'Y' 'S' 'T' 'E' 'M' 20 20}
+  0E       02       Same as offset 02
+  10       n        First data part
+
+
+=======================================
+Appendix A:
+TI-86 tokens for Equations and Programs
+=======================================
+These tokens can be expanded in place.  Sometimes the TI-86 puts a space
+between the expansions of two tokens.  I'm not sure of the exact rules, but
+it seems to be to separate two alphanumeric words.
+
+01:  >Rec            40:  and                8E 2E:  median
+02:  >Pol            41:  rand               8E 2F:  cSum
+03:  >Cyl            42:  <pi>               8E 30:  cSum
+04:  >Sph            43:  getKy              8E 31:  Deltalst
+05:  >DMS            44:  (See note 5)       8E 32:  (See note 8)
+06:  >Bin            45:  %                  8E xx:  PrtScrn
+07:  >Hex            46:  !                  8F:  DrawF
+08:  >Oct            47:  ^r (Radian)        90:  FnOn
+09:  >Dec            48:  ^o (Degree)        91:  FnOff
+0A:  >Frac           49:  ^-1 (Inverse)      92:  StPic
+0B:  ->  (STO>)      4A:  ^2 (Square)        93:  RcPic
+0C:  [               4B:  ^T (Determinant)   94:  StGDB
+0D:  ]               4C:  Menu               95:  RcGDB
+0E:  {               4D:  P2Reg              96:  Line
+0F:  }               4E:  P3Reg              97:  Vert
+10:  (               4F:  P4Reg              98:  PtOn
+11:  )               50:  ==                 99:  PtOff
+12:  round           51:  <                  9A:  PtChg
+13:  max             52:  >                  9B:  Shade
+14:  min             53:  <= (Less-equal)    9C:  Circl
+15:  mod             54:  >= (Greater-equal) 9D:  Axes
+16:  cross           55:  =/= (Not-equal)    9E:  TanLn
+17:  dot             56:  Radian             9F:  DrInv
+18:  aug             57:  Degree             A0:  ./ (Square Root)
+19:  rSwap           58:  Normal             A1:  ^- (Negative)
+1A:  rAdd            59:  Sci                A2:  abs
+1B:  multR           5A:  Eng                A3:  iPart
+1C:  mRAdd           5B:  Float              A4:  fPart
+1D:  sub             5C:  Fix                A5:  int
+1E:  lcm             5D:  RectV              A6:  ln
+1F:  gcd             5E:  CylV               A7:  e^
+20:  simult          5F:  SphereV            A8:  log
+21:  inter           60:  +                  A9:  10^
+22:  pEval           61:  -                  AA:  sin
+23:  randM           62:  Func               AB:  sin^-1 (Arcsin)
+24:  seq             63:  Param              AC:  cos
+25:  evalF           64:  Pol                AD:  cos^-1 (Arccos)
+26:  fnInt           65:  DifEq              AE:  tan
+27:  arc             66:  Bin                AF:  tan^-1 (Arctan)
+28:  fMin            67:  Oct                B0:  sinh
+29:  fMax            68:  Hex                B1:  sinh^-1 (Arcsinh)
+2A:  der1            69:  Dec                B2:  cosh
+2B:  der2            6A:  RectC              B3:  cosh^-1 (Arccosh)
+2C:  nDer            6B:  PolarC             B4:  tanh
+2D:  (See note 1)    6C:  dxDer1             B5:  tanh^-1 (Arctanh)
+2E:  /_ (Angle sign) 6D:  dxNDer             B6:  sign
+2F:  ,               6E:  :                  B7:  det
+30:  or              6F:     (return)        B8:  ident
+31:  xor             70:  *                  B9:  unitV
+32:  (See note 2)    71:  /                  BA:  norm
+33:  (See note 3)    72:  SeqG               BB:  rnorm
+34:  (See note 3)    73:  SimulG             BC:  cnorm
+35:  (See note 3)    74:  PolarGC            BD:  ref
+36:  (See note 3)    75:  RectGC             BE:  rref
+37:  (See note 3)    76:  CoordOn            BF:  dim
+38:  (See note 3)    77:  CoordOff           C0:  dimL
+39:  (See note 3)    78:  DrawLine           C1:  sum
+3A:  (See note 3)    79:  DrawDot            C2:  prod
+3B:  (See note 2)    7A:  AxesOn             C3:  sortA
+3C:  (See note 2)    7B:  AxesOff            C4:  sortD
+3D 00:  zxScl        7C:  GridOn             C5:  li>vc
+3D 01:  zyScl        7D:  GridOff            C6:  vc>li
+3D 02:  xScl         7E:  LabelOn            C7:  lngth
+3D 03:  yScl         7F:  LabelOff           C8:  conj
+3D 04:  xMin         80:  nPr                C9:  real
+3D 05:  xMax         81:  nCr                CA:  imag
+3D 06:  yMin         82:  Trace              CB:  angle
+3D 07:  yMax         83:  ClDrw              CC:  not
+3D 08:  tMin         84:  ZStd               CD:  rotR
+3D 09:  tMax         85:  ZTrig              CE:  rotL
+3D 0A:  tStep        86:  ZFit               CF:  shftR
+3D 0B:  <Theta>Step  87:  ZIn                D0:  shftL
+3D 0C:  ztStep       88:  ZOut               D1:  eigVl
+3D 0D:  z<Theta>Step 89:  ZSqr               D2:  eigVc
+3D 0E:  tPlot        8A:  ZInt               D3:  cond
+3D 0F:  <Theta>Min   8B:  ZPrev              D4:  poly
+3D 10:  <Theta>Max   8C:  ZDecm              D5:  fcstx
+3D 11:  zxMin        8D:  ZRcl               D6:  fcsty
+3D 12:  zxMax        8E 00:  PxOn            D7:  eval
+3D 13:  zyMin        8E 01:  PxOff           D8:  If
+3D 14:  zyMax        8E 02:  PxChg           D9:  Then
+3D 15:  ztPlot       8E 03:  Get             DA:  Else
+3D 16:  z<Theta>Min  8E 04:  Send            DB:  While
+3D 17:  z<Theta>Max  8E 05:  SinR            DC:  Repeat
+3D 18:  ztMin        8E 06:  LgstR           DD:  For
+3D 19:  ztMax        8E 07:  TwoVar          DE:  End
+3D 1A:  lower        8E 08:  GrStl           DF:  Return
+3D 1B:  upper        8E 09:  DrEqu           E0:  Lbl (See note 9)
+3D 1C:  <Delta>x     8E 0A:  LCust           E1:  Goto (See note 9)
+3D 1D:  <Delta>y     8E 0B:  Form            E2:  Pause
+3D 1E:  xFact        8E 0C:  Select          E3:  Stop
+3D 1F:  yFact        8E 0D:  PlOn            E4:  IS>
+3D 20:  difTol       8E 0E:  PlOff           E5:  DS<
+3D 21:  tol          8E 0F:  ClrEnt          E6:  Input
+3D 22:  <delta>      8E 10:  StReg           E7:  Prompt
+3D 23:  Na           8E 11:  IAsk            E8:  InpSt
+3D 24:  k            8E 12:  IAuto           E9:  Disp
+3D 25:  Cc           8E 13:  Text            EA:  DispG
+3D 26:  ec           8E 14:  Horiz           EB:  Outpt
+3D 27:  Rc           8E 15:  DispT           EC:  ClLCD
+3D 28:  Gc           8E 16:  ClTbl           ED:  Eq>St
+3D 29:  g            8E 17:  DelVar          EE:  St>Eq
+3D 2A:  Me           8E 18:  Box             EF:  Fill
+3D 2B:  Mp           8E 19:  MBox            F0:  ^
+3D 2C:  Mn           8E 1A:  ClrLsts         F1:  ^x./ (xth root)
+3D 2D:  <mu>0        8E 1B:  FldOff          F2:  Solver
+3D 2E:  <epsilon>0   8E 1C:  DirFld          F3:  OneVar
+3D 2F:  h            8E 1D:  SlpFld          F4:  LinR
+3D 30:  c            8E 1E:  SetLEdit        F5:  ExpR
+3D 31:  u            8E 1F:  Plot1           F6:  LnR
+3D 32:  e            8E 20:  Plot2           F7:  PwrR
+3D 33:  xStat        8E 21:  Plot3           F8:  ShwSt
+3D 34:  yStat        8E 22:  RK              F9:  Hist
+3D 35:  fStat        8E 23:  Euler           FA:  xyLine
+3D 36:  TblStart     8E 24:  ZData           FB:  Scatter
+3D 37:  <Delta>Tbl   8E 25:  Asm             FC:  SortX
+3D 38:  fldRes       8E 26:  AsmComp         FD:  SortY
+3D 39:  EStep        8E 27:  (See Note 6)    FE:  LU
+3D 3A:  dTime        8E 28:  (See Note 7)    FF:  (Invalid Program)
+3D 3B:  xRes         8E 29:  (Edit-lock)
+3D 3C:  zxRes        8E 2A:  PxTest
+3D 3D:  FldPic       8E 2B:  randInt
+3E:  (See note 4)    8E 2C:  randBin
+3F: =                8E 2D:  randNorm
+
+Note 1:  Token 2D is an opening quote.  A Zero-terminated ASCII string
+         immediately follows token 2D, where the zero byte at the end is the
+         closing quote.  So "Hi" would be 2D 48 68 00
+Note 2:  Tokens 32, 3B and 3C are variable-name tokens.  The first byte after
+         the token is the name-length byte, then the name of the variable,
+         not zero-terminated and not padded on the right.
+         Token 32 is used for Q1..Q9, QI1..QI9, r, t, x, y, and <theta>.
+         Token 3B is used for y1..y99, xt1..xt99, yt1..yt99, r1..r99,
+              Q'1..Q'9.
+         Token 3C is used for a, b, corr, maxX, maxY, Med, minX, minY, n,
+              PRegC, Qrtl1, Qrtl3, RegEq, Sx, Sy, sigma-x, sigma-y, sum-x,
+              sum-x^2, sum-xy, sum-y, sum-y^2, tolMet, x-mean, y-mean.
+Note 3:  Tokens 33..3A are 1..8-character variable-name tokens, respectively.
+         The name of the variable follows, not zero-terminated and not padded
+         on the right.
+Note 4:  Token 3E is the conversion token.  Following is the name-length byte
+         for the convert-from unit, then the name for the convert-from unit,
+         then the name-length byte for the convert-to unit, then the convert-
+         to unit.  Both names are ASCII and are neither zero-terminated nor
+         padded on the right.
+Note 5:  Token 44 is a literal-number token.  Following the token is a zero-
+         terminated ASCII string that represents the number.  Valid characters
+         are 0..9, the hex digits A..F, base descriptors b h o and d, the
+         negation character, and the exponent (E) character.
+Note 6:  This is the AsmPrgm token.  Everything that follows is a literal
+         ASCII character.  Valid characters are 0..9, A..F, and the hard
+         return character (not the token!).
+Note 7:  This token is the first token in a compiled assembly-language
+         program.
+Note 8:  I have no idea what this token is for.
+Note 9:  Tokens E0 and E1 are Lbl and Goto.  Following is a zero-terminated
+         ASCII label name.
+

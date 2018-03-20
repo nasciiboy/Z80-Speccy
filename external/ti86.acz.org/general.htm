@@ -1,0 +1,345 @@
+<HTML>
+<HEAD>
+   <META NAME="keywords" CONTENT="General info, programming, compiling, running, TI-86,TI86,Z80,zilog,asm,assembly,programming,coding,graphic,calculator,TI,Texas Instruments,games,programs,software,docs,faq,tutorials,tutors,articles,links,tools,IDE,emulate,emulators,LCD,display,keypad,link,link port,David Phillips">
+   <META NAME="description" CONTENT="86 Central - General TI-86 info, and information on compiling and running asm programs.">
+   <TITLE>86 Central - General TI-86 Information</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0055FF">
+
+<CENTER><IMG SRC="images/86Central.gif" ALT="86 Central Logo" BORDER=0 HEIGHT=76 WIDTH=301></CENTER>
+
+<CENTER>
+<H5>
+Best viewed in 1024x768</H5></CENTER>
+
+<CENTER><IMG SRC="images/calcpic.jpg" ALT="Picture of the TI-86" HEIGHT=212 WIDTH=198></CENTER>
+&nbsp;
+<CENTER>
+<H2>
+Basic TI-86 Asm Information</H2></CENTER>
+The TI-86 is the newest <A HREF="http://www.ti.com">Texas Instruments</A>
+Graphic Calculators of the Z80 line. The TI-86 is a hybrid of the TI-85
+and TI-83. Along with a slick screen, more memory, and assembly support,
+no wonder why the TI-86 has become so popular!&nbsp; The TI-89 is newer
+than the TI-86, but I still like the TI-86 better.&nbsp; Go figure.
+<H2>
+Basic Assembly Information</H2>
+
+<H3>
+How to transfer a program to your calculator, run an asm program, or troubleshoot
+what may be wrong</H3>
+This is all explained in my first programming tutorial, <A HREF="coding/z80ti861.htm">The
+Basics</A>
+<H3>
+How to display a program as a series of hex codes:</H3>
+Two choices:
+<UL>
+<LI>
+Use <TT>TASM -80 -h ProgramName.asm</TT></LI>
+
+
+<P>Where ProgramName.asm is the name of your program. And it will produce
+a listing file called ProgramName.lst This file contains the hex codes
+to the right of the autoincrementing number. It is fairly obvious.
+<LI>
+Use the program <A HREF="http://www.ticalc.org/pub/win/asm/86p2hex.zip">TI-86 Program --> Hex Converter</A>
+to easily convert the specified program into a hex listing.</LI>
+</UL>
+
+<H3>
+How to enter a program via hex codes:</H3>
+
+<PRE>Press [PGRM][F2] (Edit)
+
+Name=(Enter name here)
+
+Then a : prompt comes up.
+
+Press [2nd][Custom][F1] then move to AsmPgrm and press enter twice.
+
+:AsmPgrm
+:
+
+To enter a letter select [ALPHA] then the letter
+To enter a number simply select the number
+
+Press enter for each new group of hex codes.
+
+The program automatically gets saved everytime you select a character.
+Use the arrow keys and [DEL] key to edit a line.</PRE>
+
+<H2>
+Specs and Advantages of the TI-86</H2>
+
+<UL>
+<LI>
+<FONT SIZE=-1>6 MHZ Zilog Z80</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>128K RAM with 96K user-available, 4x as much as the TI-85.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Official Assembly Language support</FONT></LI>
+
+<LI>
+<FONT SIZE=-1><A HREF="http://www.ti.com/calc/docs/86graphs.htm">Graphs</A>
+- Functions, polar, parametric, and differential equations in up to 7 different
+graphing styles</FONT></LI>
+
+<LI>
+<FONT SIZE=-1><A HREF="http://www.ti.com/calc/docs/86calculus.htm">Powerful
+calculus features</A> - Integration, derivatives, minimums, maximums, roots,
+and arcs.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1><A HREF="http://www.ti.com/calc/docs/86table.htm">Function
+evaluation table</A> - Evaluate graphs in the TI-83 style table format.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>TI-83 style <A HREF="http://www.ti.com/calc/docs/86list.htm">list</A>
+and <A HREF="http://www.ti.com/calc/docs/86matrix.htm">matrix</A> editor
+improvements - Allows data exploration for lists up to 6,000 elements long
+and up to 80 x 80 matrices.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Assembly Language Programming - In addition to the regular
+programming capabilities, the TI-86 also supports Z80 assembly language
+programming.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Replay and edit - Recall prior homescreen entries using deep
+recall</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Input/Output port, ability to link to a computer</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Nice LCD screen - Shows 8 lines of 21 characters each or
+64 x 128 pixel screen plus two levels of display menus.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Tables - Function evaluation table shows numeric output for
+function, polar, parametric, and differential equation modes.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Keyboard entries - Improved interactive graphing. Choose
+from a line graph, thick line graph, improved shading, and more. Enter
+specific values at prompts for math operations and during tracing.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>New list editor - View multiple lists at one time in an improved
+stat/list editor. Attach formulas to lists for automatic computation.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Differential equations - Solve nine first-order differential
+equations or up to one ninth-order differential equation. Easily solve
+a family of curves with a list of initial values. Interactively select
+initial conditions via the graph screen.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Slope &amp; direction fields - Additional tools for exploring
+differential equations. Pause first or immediately follow the slope or
+direction field with a graph of the solution or a family of solutions.
+In addition, choose from two methods (RK and Euler) to solve your differential
+equations.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Equation solving tools -Interactively solve for any variable
+in an equation with the built-in SOLVER. Build a library of equations to
+solve and share via the link port. Simultaneous equation solver. Polynomial
+root finder solves real and complex polynomials up to 30th order.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>New matrix editor - The TI-86 contains enhanced tools for
+solving a variety of linear algebra problems. Matrix abilities include:
+eigenvalues, eigenvectors, determinates, ref, rref and more.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Most powerful calculator that is still allowed on the SAT's
+(and most other standard tests)</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Cost: $120</FONT></LI>
+</UL>
+&nbsp;
+
+<P>Advanced Specifications:
+<UL>
+<LI>
+<FONT SIZE=-1>8-line by 21-character display.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Advanced functions accessed through redefinable menu keys.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Real and complex numbers calculated to 14-digit accuracy
+and displayed with 12-digits plus 3-digit exponent.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Up to 99 traceable graphing functions defined, saved, graphed
+and analyzed at one time.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>7 different graphing styles.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Function evaluation table.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Graphs parametric equations, polar equations, and solutions
+to differential equations.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>16 interactive zoom features.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Simultaneous graphing of more than one function.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Operates on lists of numbers as well as single numbers.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Real and complex matrices with dimensions up to 80 x 80.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Additional data types include strings, pictures, and vectors.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>TI-83 style list and matrix editor improvements.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>List-based one- and two-variable statistical analysis, including
+linear, logarithmic, exponential, power, sine, logistic, 2nd, 3rd, and
+4th order polynomial regressions.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Systems-of-equation solving, polynomial-root solving.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Build a custom equation library to store, analyze, or solve
+for any unknown variable.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Replay and edit up to 10 homescreen entries using deep recall.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Optional Machine Language programming with number of programs
+limited only by available memory.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>128K RAM with 96K user-available.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Slope and direction fields for exploring differential equations.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>RK and Euler differential equation solve methods.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Executes TI-85 programs.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>TI-tested Machine Language program applications available
+for download from worldwide web* (Inferential Statistics, Distributions,
+and Finance).</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Link capabilities for data transfer through I/O port.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Unit-to-unit link included.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Accessories allow information to be transferred to a computer
+and be printed or stored on disk.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Overhead projector unit available - compatible with TI-85
+ViewScreen™ LCD.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Compatible with the Calculator-Based Laboratory™ (CBL™) and
+Calculator-Based Ranger™ (CBR) Systems to allow analysis of real-world
+data.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Powered by 4 AAA batteries with a lithium battery backup
+to protect memory during main battery change.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Impact-resistant slide case.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Teacher Pack available (includes ten calculators and guidebooks
+with classroom poster).</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Toll-free hotline.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Calculator poster and keyboard transparency available.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>One-year limited warranty.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Volume Purchase Program: proofs of purchase redeemable for
+additional product.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Workshop Loan Program.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Applications newsletter available free of charge.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Guidebook included.</FONT></LI>
+</UL>
+&nbsp;
+
+<P>More Information:
+<BR>&nbsp;&nbsp; <A HREF="http://www.ti.com/calc/docs/faq86main.htm">TI-86
+(General) Official FAQ</A>
+<BR>&nbsp;&nbsp; <A HREF="http://www.ti.com/calc/docs/gmtrx.htm">Graphic
+Calculator Comparison</A>
+<BR>&nbsp;&nbsp; <A HREF="http://www.ti.com/calc/docs/buy86.htm">Where
+to buy the TI-86</A>
+
+<P>
+<BR>
+<HR>
+<p>
+<center>
+<script language="JavaScript" type="text/javascript"> <!--
+function go() {
+	if (document.selecter.select1.options[document.selecter.select1.selectedIndex].value != "none")
+		window.top.location = document.selecter.select1.options[document.selecter.select1.selectedIndex].value; }
+//--> </script>
+<form name="selecter"><select name="select1" size=1>
+<option value=none>Our Websites</option>
+<option value=none>---------------------------------</option>
+<option value="http://www.acz.org">ACZ Frontpage</option>
+<option value="http://ti83plus.acz.org">83+ Asm Central</option>
+<option value="http://ti86.acz.org">86 Asm Central</option>
+<option value="http://ti89.acz.org">89 Asm Central</option>
+<option value="http://vti.acz.org">Virtual TI Emulator Site</option>
+<option value="http://asmstudio.acz.org">Assembly Studio Site</option>
+<option value=none>----------------------------------</option>
+<option value="http://brett.acz.org">Brett's Homepage</option>
+<option value="http://corey.acz.org">Corey's Homepage</option>
+<option value="http://david.acz.org">David's Homepage</option>
+<option value="http://dux.acz.org">Dux's Homepage</option>
+<option value="http://james.acz.org">James' Homepage</option>
+<option value="http://jeremy.acz.org">Jeremy's Homepage</option>
+<option value="http://matt.acz.org">Matt's Homepage</option>
+<option value="http://rusty.acz.org">Rusty's Homepage</option>
+<option value="http://scott.acz.org">Scott's Homepage</option>
+<option value=none>----------------------------------</option>
+</select>
+<input type="button" value="Go" onclick="go()">
+</form>
+</center>
+
+<p><center>&copy; 1998 - 1999 <A HREF="http://www.acz.org" TARGET="_TOP">ACZ</A></center>
+</BODY>
+</HTML>
