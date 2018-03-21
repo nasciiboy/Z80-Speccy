@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+
+
+
+
+
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Jose Manuel">
+   <meta name="GENERATOR" content="Mozilla/4.78 [es] (Win98; U) [Netscape]"><title>Pasando cintas al PC</title></head><body alink="#ff0000" background="Specsfon.jpg" bgcolor="#ffffff" link="#0000ee" text="#000000" vlink="#551a8b">
+
+<blockquote>&nbsp;
+<br><b><u><font face="Arial,Helvetica"><font color="#ff0000"><font size="+3"></font></font></font></u></b>&nbsp;
+  
+<p><b><u><font face="Arial,Helvetica"><font color="#ff0000"><font size="+2">Nueva
+receta de elaboración de TZX</font></font></font></u></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#009900">Por Manuel Gómez:</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#3333ff"><font size="+1">Ingredientes
+para preparar un tzx rico, rico...</font></font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">- Reproductor
+de cintas (preferiblemente monofónico)</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">- Cable de conexión
+no muy largo (por la pérdida)</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">- Editor de muestras
+como GoldWave, CoolEdit o similar</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">- Tarjeta de
+audio instalada en Windows (preferible ISA si quieres convertir de forma
+directa)</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">- Conversor/es
+para pasar los archivos de muestras WAV en TZX</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">- Una pizca de
+paciencia...</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#3333ff"><font size="+1">Fase
+1: ajuste de la señal</font></font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Conecta el cable
+al cassette y a la entrada de línea de la tarjeta. Ajusta el volumen
+a un nivel ni demasiado alto ni demasiado bajo y monitoriza la entrada
+(o graba unos pocos segundos) para asegurarte. Procura que la señal
+no llegue al máximo de la escala, siempre es preferible quedarte
+un poco bajo que alto (yo he obtenido mejores resultados con los máximos
+más cerca</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">del 50% que&nbsp;
+del 80%).</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#3333ff"><font size="+1">Fase
+2: lectura de muestras</font></font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Toma muestras
+de 8 bits sin signo a la frecuencia más alta que soporte tu tarjeta
+(normalmente 44100 Hz para los juegos sin complicaciones y 48000 Hz para
+los que usan carga a alta velocidad o cintas muy envejecidas) y la grabas
+sin comprimir en formato WAV. Tendrás unos archivos enormes, pero
+que después de convertirlos a TZX podrás borrar sin problemas.</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#3333ff"><font size="+1">Fase
+3: conversión a tzx</font></font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Es recomendable
+empezar con maketzx hasta que cojas experiencia. Puedes usar la interfaz
+gráfica o la línea de órdenes, según prefieras.
+En cualquier caso tienes tres opciones, dependiendo del programa:</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">a) Si usa el esquema
+de carga de ROM o similar, en 'decoder options' pon 'normal (ROM)' o 'none'</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">b) Si usa un
+esquema de carga distinto, pero no lo conoces, marca 'autodetect loader'.</font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000">c) Si las dos
+opciones anteriores han fallado, puedes probar con los esquemas que no
+se reconocen automáticamente, dejarlo para cuando tengas más
+experiencia o enviarle a alguien el archivo de muestras (por ejemplo a
+mí), preferiblemente como está o comprimido con CSW para
+ahorrar espacio.</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">En cualquier caso
+puedes activar y ajustar el filtro digital, que da muy buenos resultados
+cuando la señal tiene mucho ruido o componente de continua. Te recomiendo
+el Butterworth pasa-banda, entre 600 y 4100 Hz si la carga se hace a la
+velocidad normal de la ROM, y amplío hasta 6000 Hz (a incrementos
+de 500) si es a más velocidad.</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Por otra parte,
+es muy importante que nunca actives la casilla 'TZX beautifier', ya que
+redondea los pausas de separación entre bloques y hace que no sean
+los originales, con lo que el programa funcionaría, pero no valdría
+para archivo.</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Una vez que te
+hayas familiarizado con maketzx, puedes probar con Taper o voc2tzx. Como
+ventaja tiene que es capaz de convertir esquemas de carga que utilizan
+bloques con cualquier número de bits, o con velocidades ligeramente
+diferentes a la normal de la ROM (sobre 85 - 115%), donde maketzx falla.
+Los inconvenientes son que tienes que afinar mucho la configuración,
+no tiene opción de reconocer automáticamente el esquema de
+protección y el filtro es peor y no se puede ajustar.</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#3333ff"><font size="+1">Fase
+4: consejos</font></font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Si el punto medio
+de la señal, al observarla con el editor, presenta grandes oscilaciones
+respecto al centro de la escala, tiene una componente de continua que puede
+dificultar la conversión, por lo que puede ser necesario filtrar
+o ecualizar.</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Si los pulsos
+de datos tienen amplitudes muy diferentes, puede deberse a que el azimut
+está mal ajustado o el cable de conexión es muy largo. De
+nuevo, si el filtro no resuelve, puede ayudar una ecualización o,
+como última instancia, un ajuste del azimut.</font></font></b>
+</p><p><b><font face="Arial,Helvetica"><font color="#000000">Cuando el archivo
+WAV está bien tomado, deberías poder cargarlo en un emulador
+(por ejemplo RealSpectrum). Si no lo hace es probable que la conversión
+sea defectuosa (es posible obtener una buena conversión de un archivo
+de muestras que no cargue en un emulador, aunque es preferible usar una
+que sí lo haga).</font></font></b>
+</p><center><p><b><font face="Arial,Helvetica"><a href="index.html">Volver</a></font></b></p></center>
+</blockquote>
+
+</body></html>
