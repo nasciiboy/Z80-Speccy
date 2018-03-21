@@ -1,0 +1,556 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Past news '99</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>12/26/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>No news for quite some time, really. We've been working further on the HiColour library, and a few other little projects. Just updated the page to wish all our visitors a merry Christmas (a bit too late...), a happy new year. We hope you enjoy your holidays!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>11/22/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>During the last weeks, I (Andreas) got quite a few mails asking on how to run Plainjump on the ION shell for the TI-83+. Please note that I had not any part in writing the port of Plainjump from the original TI-85 version to any other platform, so generally, I can't give you information on how to run it there. Thus, contact the appropriate porter.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>10/26/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>First update after quite some time brings a big surprise: get <A HREF="ti86.html">Maze3D</A> including much requested sourcecode!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>09/15/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Released ZAC 0.9, a on-calc assembler compiler for the <A HREF="ti86.html">TI 86</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/29/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>As of tomorrow monday, 08/30/1999, Andreas has to do his military service. This means that he will only be at home at weekends for the next 8 months. Thus, replies to e-mails may be delayed.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/27/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Updated <A HREF="http://icarus.ticalc.org/ti83.html">TI-83</A> games Boulderdash, Squarez and Picross. Thanks Sam!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/25/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Check out <A HREF=http://pocket.ign.com/news/9823.html>pocket.ign.com</A> and read a interview with us about the hi colour demo and other activities!<BR>New support address: <A HREF="mailto:support@icarus.ticalc.org">support@icarus.ticalc.org</A>. Feel free to mail us with your questions, suggestions, etc.!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/17/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Q&A from 08/13/1999 on <A HREF=http://pocket.ign.com>pocket.ign.com</A> contain a rather funny, Icarus-related question. Check it out!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/15/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Updated webpage logo<BR>Willy Wonderworm available again (was temporary unavailable)<BR>Watch out for a Sqrxz review and a interview with us on <A HREF=http://pocket.ign.com>pocket.ign.com</A>!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/07/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>New question in <A HREF="http://icarus.ticalc.org/articles/hicolour.html">Hi Colour hype!</A> answered.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/06/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>New FAQ: <A HREF="articles/icarus_faq.html">Icarus Productions FAQ</A><BR>Updated: <A HREF="http://icarus.ticalc.org/contact.html">Contact us</A> information<BR><I>Attention publishers:</I> Learn more <A HREF="pubinfo.html">about us and our programs</A>!<BR>New article: <A HREF="http://icarus.ticalc.org/articles/hicolour.html">Hi Colour hype!</A>. Also covers an easteregg of the demo.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/04/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Check out the new version of our high colour image viewer for the <A HREF="http://icarus.ticalc.org/gb.html">Game Boy Color</A>. Besides having added fading between images, further ones have been added, all adjusted in contrast and there is a musical soundtrack now for you to listen to while admiring the pictures.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/03/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Scabby achieved something thought to be impossible: more than 2000 colors in a picture. Check out the <A HREF="http://icarus.ticalc.org/gb.html">Game boy section</A>! The demo includes four very colorful pictures. Only works on the real thing, though.<BR>Clem has release version 1.0 of his Text Viewer. Get it in the <A HREF="ti86.html">TI86 section</A>. The new version has some bugs fixed, and also supports text file descriptions now. If no bugs are found, this can be considered the final version.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>08/02/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Jimmy has been able to get 2560 colors on the GBC screen at once. This more than 45 times the standard colors available (56). We're investigating the possibility to use this method for nicely colored pictures. Meanwhile, you can get the demo <A HREF="bin/programs/colors.zip">here</A>.<BR>Find an interview with me in August's <A HREF=http://www.ticalc.org>ticalc.org's</A> newletter.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/30/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Jimmy has updated <A HREF=http://www.acc.umu.se/~yarin>his personal homepage</A> after more than a year! It's mostly general updates, but expect more updates soon. He has his TI 85 again now, meaning that there might be soon a final version of Usgard (include source code).<BR>Maybe it's time to update my (Andreas) homepage, too :) Anyways, today was my last day at my summer job, and there should be some more news the next days.<BR>There have been a few general updates to the site, so that the <A HREF=http://www.siteowner.com>siteowner.com</A> results turns out a bit better. We improved from three to four simleys, but there's still stuff left. To increase popularity, we might soon add a link section. Anyone interested in trading links can mail <A HREF="mailto:ess.andreas@cable.vol.at">me</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/26/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Please check out <A HREF=http://www.tiworld.com/~newskin>New Skin</A>, a new, informative online magazine for TI-calculators, containing a few interviews with Jimmy and me. It also contains some other interesting reviews, articles and other tidbits! Definitely worth to check out!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/23/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Changed the way newsitems look back again. The other layout wasn't too useful, really. Maybe it's time for complete overhaul, but as we currently focus on Gameboy Color programming, this won't happen too soon.<BR>For those interested or lucky enough to live at the East Coast: Roger Waters, bassist and co-founder of Pink Floyd tours for the first time for twelve years. He was the main force behind albums like Dark Side of the Moon or The Wall. Get more info <A HREF=http://www.ingsoc.com/waters/>here</A>. Some tickets for the August leg are still available.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/22/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Scabby has finished his personal homepage, you can visit it <A HREF=http://www.shepcar.force9.co.uk>here</A>. Updated the <A HREF="aboutus.html">About us</A> page with the new homepage address.<BR>Modified the news item look a bit, so it now contains the main subject of the idea. I'm not too content with it, might change it again.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/16/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><IMG SRC="img/screenshots/potofgold.gif" ALIGN=RIGHT BORDER=1>Markus Ess has taken part in <A HREF=http://www.metacreations.com>Metacreation's</A> RayDream 3D contest with his picture <A HREF=http://icarus.ticalc.org/potofgold.jpg>"Pot of gold"</A>. He's currently also setting up a new page with various raytracing stuff. We wish him good luck for the contest!<BR>Some minor site updates have been done, like fixing the "keyword" tag for better search results or a slightly modified contents bar.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/13/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Icarus Productions has a new member! <I>Clement Vasseur</I>, formerly with ACZ, has been acclaimed for his work for Texas Instrument's TI-86 calculators, especially "Maze3D". However, his interest shifted to commercial GBC (TM) programming in the last months, and will thus support us with our GBC and various other projects.<BR>Clem's programs for the Texas Instruments calculators will be uploaded here soon.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/12/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Get a fix for Usgard's SRCWIZ.EXE <A HREF="bin/programs/srcwiz.exe">here</A>. It not only works with faster computers, but should also work with NT without causing the aforementioned "move troubles".</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/10/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Sam Heald reported that Usgard's C.BAT file wouldn't work in Windows NT. This is due to the fact that the "move" command doesn't overwrite existing data (for security reasons, I suppose). To circumpass this, simply replace each "move" with an "copy" followed by a "del". You could of course also download the fixed C.BAT file <A HREF="bin/programs/c.bat">here</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/08/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Grab the finished version of Willy Wonderworm in the <A HREF="http://icarus.ticalc.org/gb.html">GB section</A>. This version also includes standard Gameboy support and some other bugfixes and additions.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/07/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Happy birthday, Philipp! Most of you won't know him, as he's a rather passive member of Icarus. He's responsible for several PC conversion programs and tools used by us internally. Hopefully he'll soon start on a PC game in OpenGL.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/05/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>The newest version of Willy Wonderworm, to be found in the <A HREF="http://icarus.ticalc.org/gb.html">Gameboy section</A>, contains a few new graphics by Johannes as well as working sound effects. For some reason though, it doesn't work on the real thing yet. Stay tuned.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/03/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>We have a new parttime member to support us with our GBC projects. <I>John Escobedo</I> will provide us with additional graphics for one upcoming GBC project. We hope to be able to post some screenshots here soon.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/02/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Check out Scabby's new game for the <A HREF="http://icarus.ticalc.org/gb.html">Gameboy Color</A>, Willy Wonderworm! It's a small game, but rather addictive! Features include color graphics, hi score saving, music and sound effects.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>07/01/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><A HREF="mailto:phantom@pifran.neurology.umaryland.edu">Mikolaj Franaszczuk</A> has made some changes and additions to his Hyperion compiler. The newest version can be downloaded in our <A HREF="http://icarus.ticalc.org/tools.html">tools section</A>.<BR>Mikolaj is also working on version 2.0, which will have a full visual editor, in which one will be able to load, edit, and save programs. It will also have a built in help system.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>06/30/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><IMG SRC="img/screenshots/willyw.gif" ALT="Willy Wonderworm" ALIGN="RIGHT" BORDER="1">In order to get used to GBC coding, Scabby is currently converting Peaworm for the <A HREF="ti86.html">TI-86</A> to the Gameboy. "Willy Wonderworm", as the new version is called, will feature various levels with obstacles, nice palette effects and some music. We expect it to be finished by the end of this week.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>06/29/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Well, again no update for a long time. I hope to improve that in the next weeks.<BR>Anyways, I decided to release a few source codes like M.C.Mik, Balloon, XC-1701 II and finally also Usgard. The start is done by the <A HREF="http://icarus.ticalc.org/source.html">M.C.Mik source code</A>. Download the source for episode one and do whatever you want with it :).</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>06/20/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Ah, finally back again! This is Andreas, having returned from his vacation from Rhodes.<BR>As you all may have noticed, there haven't been to many updates lately. As Jimmy says, we were pretty lazy during the last few weeks, but we also had quite some stress due to our exams. This should be over now...<BR>In case you wondered what we're up to the next time, I can only say: there's only one TI - specific plan by me, namely a more generic text viewer for all TI graphing calculators, with a text format that also works for HP calculators and is partly menu driven. It's a project together with a friend of mine, but I can't guarantee anything yet... Other than that, we're currently focusing more on (commercial) CGB projects, where I have no clear information on yet.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>06/14/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>No, we're not dead... we're just very lazy. Almost a month since last update, and not much has happened really. Things should get better next week when Andreas Ess comes back from his vacation in Rhodos, and resumes the maintenance of this page.<BR><BR><IMG SRC="img/screenshots/laser.gif" ALIGN="RIGHT"><IMG SRC="http://icarus.ticalc.org/img/transcol.gif" ALIGN=RIGHT>Johannes Rajala has been working on his TI-85 project LaserSquad, and here's an animated screenshot (taken with the Virtual TI Emulator by Rusty Wagner) from the mapengine.<BR><BR>Are you wondering what happened to the ZCP? Well, so do I... I don't know when the next round will appear - you'll just have to check this page every now and then...</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>05/17/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Very little has happened during the last week. Both Andreas and I, Jimmy, are busy with studies, so don't expect many updates in the 2-3 weeks to come. Because of this, the <A HREF="features/zpc.html">ZPC</A> round 4 will be delayed a week, until Sunday 23 May.<BR>The source codes to ZPC round 3 has been uploaded. Check them out <A HREF="features/zpc_0502.html">here</A>!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>05/09/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><A HREF="features/zpc.html">ZPC</A> round 3 is over! The winner is Jeff Hellrung with his 350 byte routine.<BR>Disappointingly, only two people entered the competition this round. Too hard problems, maybe? We'll see - the next round (starting May 16th) will contain several, easier problems (like round 1).</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>05/08/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Jeff Hellrung enters the current <A HREF="features/zpc.html">ZPC</A> round with an astonishing 350 byte solution!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>05/06/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><B>FINALLY</B>, after almost a year, a new version of your favourite homebrewn Nintendo Gameboy game, <B>SQRXZ</B>, is released! You'll find it, of course, in the <A HREF="http://icarus.ticalc.org/gb.html">Nintendo Gameboy section</A>.<BR><BR>Jonah Cohen is the first one to submit a working solution to <A HREF="features/zpc.html">ZPC</A> round 3.
+</DIV></TD></TR>
+</TABLE><P><TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/30/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>The problem statements for ZPC round 3 is finally <A HREF="features/zpc_prob.html">online</A>. The problem should be easier than the last round, but harder than the first. Deadline is May 9th 6.00 pm (CET).</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/27/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>The specifications of the next ZPC round won't appear until friday because I have a pretty tough final on thursday evening. However, it will be about spelling out numbers. The <I>beginning</I> of <A HREF=http://www.ibm.com/java/education/spellout/spellout.html>this</A> page describes the problem pretty good, and there's even an algorithm (in Java) presented.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/25/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>The ZPC solutions to round 2 is finally <A HREF="features/zpc_0418.html">online</A>. The problems for round 3 will appear shortly.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/18/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><A HREF="features/zpc.html">ZPC round 2</A> is over, after a thrilling last day, where the top three all submitted a better solution. The winner is the team <B>Clem Vasseur</B> and <B>Gregory Apou</B> (score 137), followed by <B>Jeff Hellrung</B> (139) and <B>Ian Collier</B> (143). All of them have done a tremendous work!<BR>For the rest of you, please come back the next week, as round 3 of the ZPC will start - with more easy-to-solve problems...<BR><BR>Sqrxz for the Gameboy Color system is approaching its release! Be sure to check out some hot <A HREF="http://icarus.ticalc.org/gb.html">screenshots</A> from this game...</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/16/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>A new no. 1 in the ZPC! <B>Jeff Hellrung, Macross Software</B> has found a 140 byte solution!!! See the results <A HREF="features/zpc_list.html">here</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/13/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><B>Clem Vasseur</B> has optimized his <A HREF="features/zpc_list.html">ZPC score</A>. Can you beat the current top score of 164 bytes?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/12/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Finally, two submissions to ZPC, look at them <A HREF="features/zpc_list.html">here</A>. Can you beat the current top score of 171 bytes?<BR><B>Mikolaj Fransczuk</B> sent in the correct solution to yesterday's problem: both a and b are 5, resulting in a sum of a+b = 10.<BR>In case you wondered why this was the last math problem for a while: I'm not only running out of problems, but I don't have enough time due to my finals, either. Therefore, Jimmy will lead you through the next few weeks! If there is enough interest, I might continue with the problems later on.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/11/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Another update to the <A HREF="features/zpc_prob.html">ZPC problem stating</A>: you do <I>not</I> have to worry about empty strings (that is, just a 0) because that special case is probably handled before calling the evaluation routine (if you were to implement the routine in a real program).<BR><B>Nobody</B> solved yesterday's problem. The solutions would have been -1/a, 2a.<BR>Last task for a while:Given that 1 * 3 * 5 * 7 * 9 = 10!/(a!*2<SUP>b</SUP>). Find a + b!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/10/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Seem like we'll be getting two <A HREF="features/zpc.html">ZPC</A> submissions soon! Here's some clarifications which have been added to the problem page:<BR>() is <I>not</I> a valid expression.<BR>You do <I>not</I> have to worry about precedense order of errors. That is, no test data will have both division by zero and an invalid expression.<BR><B>Verena Schmid</B> solved yesterday's task: 2*a*b/sqrt(b<SUP>2</SUP>+a<SUP>2</SUP>))<BR>What are the roots of the equation x<SUP>2</SUP> - (2a-1/a)x - 2 = 0?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/09/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Chances are that a new version Sqrxz GB will be released soon. Jimmy continued working on it again. There's still quite some stuff to do (also from my side), but keep checking this site, maybe it's ready the next week!<BR><B>JayEll</B> solved yesterday's problem: the height of the tower is 61.5m. Given an ellipsis with x<SUP>2</SUP>/a<SUP>2</SUP>+y<SUP>2</SUP>/b<SUP>2</SUP> = 1. What's the length of the side of the best fitting quadrat (sides are parallel to the axis)?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/08/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Finally, there could be a new game in the next time from Icarus Productions. Johannes is coding a war strategy game for the TI-85. Stay tuned for more news.<BR><B>Nobody</B> solved yesterday's problem (maybe it was too easy?). Anyways, here's another one: Someone sees the peak of a tower (standing in a horizontal plane) in a distance of 45m in a angle which is double as big as the angle in the distance of 120m. Calculate the height of the tower, given that the persons' eyes are 1.5m above the ground.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/07/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Kinda reversed the date of the past few news. Fixed that now. Still no entry, but a few people have started with their solution for the ZPC problem.<BR><B>Tim Adkisson</B> solved yesterday's math problem: the answer is 38.<BR>Another complex equation 2z<SUP>2</SUP> - (1,sqrt(3))*z - (1,-sqrt(3)) = 0.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/06/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Already started working on your solutions for the <A HREF="features/zpc.html">ZPC problem?</A> We hope so!<BR>Yesterday's problem was indeed a bit weird, as there seems to be nearly an infinite amount of solutions, according to Bibi. Oh well, try that one: Find the sum of all positive integers n for which n<SUP>2</SUP> - 19n + 99 is a perfect square.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/05/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Finally, a new <A HREF="features/zpc.html">ZPC problem</A> is available. It is maybe the hardest problem ever to be posed, as it requires quite some work and time to solve! Therefore, the competition will last 2 weeks this time! Also check out the sources to the previous problems which have been archived now.<BR>Added Mikolaj's <A HREF=http://www.geocities.com/TimesSquare/Arcade/2505/hyperion.html>webpage</A> address to the <A HREF="http://icarus.ticalc.org/tools.html">tools section</A>.<BR><B>Nobody</B> managed once again to solve yesterday's problem. And the new one is maybe a bit odd, too: how many <I>n</I> are there so there is an integer solution for <I>x</I>: (4+x)<SUP>n</SUP> = 7. Bibi just made that up, so...</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/04/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Happy Easter to you all! I hope you all have a nice weekend!<BR>Unfortunately, there is no new ZPC problem today, because Jimmy wants to solve the problem himself first and he has to get a completely crashed computer working before that. Expect the new problem tomorrow! Sorry for any inconveniences!<BR>Unfortunately, I made some mistake yesterday when giving the equation (5(1+i)) would be correct. <B>Verena Schmid</B> asked for the correct equation and solved the task correctly: p = -4-i, z2 = 3-i.<BR>Today's problem comes from Bibi: the first derivate of (ln(sqrt((3x²+1)/(x-5)))) = ?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/03/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>It seems that finally, Usgard could also reach the programmers who use Macintosh. Inostock asked me for the source of string85 to convert. When this is done, there shouldn't be any further obstacles.<BR><B>Keith Batten</B> sent in the answers for the two last preceding problems: p = 2.5 and the last digit is 1!<BR>Given the complex equation z<SUP>2</SUP> + pz +(5+i) = 0, with the two solutions z1 and z2. z1 = 1 + 2i. Calculate both p and z2!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/02/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Generated a new page: the <A HREF="http://icarus.ticalc.org/tools.html">tools section</A> contains various programs (written both by Icarus Production members as well as other contributors) which can be of great help when coding.<BR>Mikolaj Franaszczuk's <I>Hyperion</I> is the first program to be found in this section. The Hyperion compiler was created to provide a simpler way for programming in TI-85 assembly. It is based on a cross between the PCs C and BASIC languages, providing ease of use and powerful features at the same time.<BR><B>Nobody</B> seems to have understood the problem posed yesterday. Hm... Anyways, today's problem is pretty easy: what's the last digit of the sequence 1999<SUP>1998<SUP>1997...n</SUP></SUP>?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>04/01/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY><B>Mikolaj Franaszczuk</B>, author of "ZBasic", a BASIC-to-Z80 compiler, has been working on a new, improved editor for coding Z80 programs. According to his descriptions, <I>Hyperion</I> is a fantastic editor with loads of useful functions and good documentation. Stay tuned here for news about this great program!<BR><B>Bill Kinnersley</B> sent in the correct answer to yesterday's problem: k < 0.5.<BR>Given is the circle x<SUP>2</SUP> + y<SUP>2</SUP> = 100 and the curve y<SUP>2</SUP> =  2px. They have a common chord, resulting in a curve-segment. For which value of p is the area of this segment maximal?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/31/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Unfortunately, I have been unable to verify any of the sent in answers, but I suppose that <B>JayEll</B>'s solution, 4.449 is the correct one?<BR>If x<SUP>2</SUP>+y<SUP>2</SUP>-x+y+k = 0 represents a circle, then what is the range of values of k?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/30/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Updated ZTetris in the <A HREF="http://icarus.ticalc.org/ti83.html">TI-83</A> section. This version fixes a bug with the new Z180 TI-83s.<BR><B>Eugene Fridman</B> was the first to send me an e-mail with the solution 1 (e * (1/e)) for yesterday's problem!<BR>Here's one I didn't manage to solve: Four equally sized spheres with radius 2 are set together to a "sphere pyramid". This "sphere pyramid" is inside another, bigger sphere. What's its radius?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/29/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Sam Heald released both Plainjump 82 and Plainjump 83, v1.4. Get it in the respective section!<BR><B>Verena Schmid</B> sent in the right solutions to the math problem posed yesterday: a = -1.25, b = 2.5, c = 4.75.<BR>What's the product of all real roots of the equation x<SUP>ln x</SUP> = e?</DIV></TD></TR>
+</TABLE><P> 
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/28/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>The ZPC contest is over! <B>Dux Gregis and Tim Adkisson</B> won the contest as a team, scoring 68 bytes! Check the <A HREF="features/zpc_list.html">scores</A>! Summary and comment will follow in 48 hours!<BR>Updated <A HREF="articles/z80_opt.html">optimization page</A>, thanks to Kirk Meyer.<BR>The latter also entered <A HREF="features/zpc.html">ZPC</A> yesterday. If you can manage to optimize your routines yet, then send them in as quickly as possible!<BR><B>Jimmy</B> found the solution to yesterday's problem: a = 2n(n+1) for every non-negative integer n (0, 4, 12, 24, ...).<BR>Given is the function y = ln(ax<SUP>2</SUP> + bx + c). In the point P(1;ln 6), the tangent of the graph is horizontal. Furthermore, the x-interception is at x = -1. Calculate a, b and c!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/27/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>ZPC standings list has been updated once more. Finally, Aaron Curtis reached the famous 69 bytes! You still have time until tomorrow to send in your programs!<BR><B>Tim Adkisson</B> sent in the possible solutions to yesterday's problem, the most probable being 32 (daughter) and 62 (father).<BR>Given that <I>N</I> is the set of all positive integers, then find all numbers <I>a</I> out of <I>N</I>, in order that the equation: x<SUP>2</SUP> = 1+2a is solvable in N (i.e. the solution is contained in N).</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/26/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Finally, army time is over for Jimmy! Congratulations! He spent the whole evening yesterday doing some ZPC test program. You can check the newest stats <A HREF="features/zpc.html">here</A>. Note that there are two submissions where not all programs did work with the test program. A score of 69 is achievable!<BR>Eugene Fridman was the first to send in the correct solution for yesterday's problem: 29 (the list is 5,11,17,23,29). On a side note, I got this question from Bill Kinnersley, and just found that I'm not allowed to use them on the site. I will therefore get back to my own problems, as well as some of Keith Batten ones.<BR>So: 17 years ago, the father was three times older than his daughter. How old are they today, if the digits of the age of the daughter have been reversed in 9 years?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/25/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>I guess Chris Romagni was the first one ever to release levels for my game Balloon. Get them <A HREF="bin/programs/ballevel.zip">here</A>.<BR>The solution to yesterday's problem, 366001, was found by <B>Tim Adkisson</B>.<BR>This one's a bit difficult: Find the smallest prime that is the fifth term of an increasing arithmetic sequence, all four preceding terms also being prim.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/24/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Jimmy will unfortunately not be able to verify the new ZPC entries before thursday evening. According to him, it's pretty even now, between 77 - 82 bytes. Therefore, a close examination is necessary.<BR><B>Dan Englender</B> sent in the first correct solution to the problem posed yesterday: 34 digits.<BR>What's the sum of the first 1999 positive odd integers?</DIV></TD></TR>
+</TABLE><P> 
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/23/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Updated the <A HREF="features/zpc.html">ZPC pages</A>, as well as the <A HREF="articles/z80_faq.html">Z80 FAQ</A>, and the <A HREF="articles/z80_opt.html">Z80 optimization guide</A>.<BR><B>Keith Batten</B> was the first to submit the answers to yesterday's problem: x intercept is 1, and the domain of the function is -2 < x < 2.<BR>Keith Batten and Bill Kinnersley also sent me some further math problems, the first of which you can enjoy today: How many digits does the number 25<SUP>16</SUP> * 2<SUP>38</SUP> have? Send results to <A HREF="mailto:ess.andreas@cable.vol.at">ess.andreas@cable.vol.at</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/22/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>If you came here looking for the ZPC, follow <A HREF="features/zpc.html">this link</A> please.<BR><B>Steve Russo</B> was the first one to send in the two correct solutions for yesterday's math problem: x=1 and x=16.<BR>Today we've got another equation:<BR><DIV ALIGN=CENTER><IMG SRC="http://icarus.ticalc.org/img/func.gif"></DIV><BR>Find the X-intercepts as well as the set of numbers for which this function is defined. Solutions to <A HREF="mailto:ess.andreas@cable.vol.at">ess.andreas@cable.vol.at</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/21/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Announcing our first feature: the <A HREF="features/zpc.html">Z80 programming competition</A>! Click the link for more information, if you dare! ;-)<BR>The math contest will later on be added to the feature section, too. But for now... <B>JayEll</B> was once again the first one to send in the correct answer: 0.8115 is the radius.<BR>Yet another simple task: solve the following equation.<BR><DIV ALIGN=CENTER><IMG SRC="http://icarus.ticalc.org/img/equ.gif"></DIV></DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/20/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Oops! Little bug in the last answer: the correct answer was -c/b. The solution for yesterday's problem was found by <B>Verena Schmid</B>: the 100th digit is 9. This can be found by adding together 3 (number of one-digit squares), 12 (twice the number of two-digit squares) and 66 (three times the number of three-digit squares). Then, 19 digits are left. The 100th digit is the 3rd digit of 36<SUP>2</SUP>.<BR>Another simple one: the corners of a rectangle (3,4) are rounded off (creditcard like) so that the new circumference is 10% smaller than the old one. Find the radius of the arcs in the corners!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/19/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Scabby has got one month of vacation from now on. He hopes to be very productive and release another version of Bomberbloke among other.<BR><B>Wolfgang Stadler</B> found the solution to the last math problem: the limit of x2 is 0.<BR>Today's problem is pretty simple: given you put all quadratic numbers together in the form: 1491625364964 ... What's the 100th digit?<BR>On a side note, Microsoft released their Internet Explorer 5.0. If you have difficulties viewing these pages, you may want to get it!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/18/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>No one solved yesterday's problem correctly :( (or maybe I did some error?) Anyways, the shortest rope can be easily calculated with two circle sectors plus some trigonometry. This results in: l = 44/30*pi+1.92*2 = 8.4477.<BR><BR>Given the quadratic equation: ax<SUP>2</SUP> + bx + c = 0, with solutions x2 and x1, where x2 > x1. Calculate the limit of x2 as a tends to 0, i.e. lim x2 for a->0.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/17/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Uploaded Picross 82 v1.3 to the <A HREF="http://icarus.ticalc.org/ti82.html">TI-82 page</A>.<BR>The solution for yesterday's task was: a) 504 = 9 * 8 * 7, b) 279 720 = (56*45)*(100+10+1). <B>JayEll</B> was the first to send in the correct solution.<BR>Now what about this one: give are two circles with r1 = 1, and r2 = 0.2. The distance of their centres d = 1.6. A rope is tied around the two circles. Find the shortest possible length of the rope!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/16/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Thanks to Matthew Shepcar, Sam Heald got the Planejump level editor on the <A HREF="http://icarus.ticalc.org/ti82.html">TI-82</A> working. The <A HREF="http://icarus.ticalc.org/ti83.html">TI-83</A> version has been updated as well.<BR>Not only does Johannes draw the graphics for a game by Macross, but he also helps Clem of ACZ drawing. Seems that he's the only one of us actually doing something at the moment. The rest of us hopefully get some time again soon - a new version of Bomberbloke might be released this week.<BR>The last math task could be simply solved by splitting the quadrilateral into triangles and rectangles. The solution was 30. <B>Bill Kinnersley</B> was the first one to send in the correct answer! <B>JayEll</B> even sent it in with complete sketches how he did it, etc. :)<BR>Today's task consists of two subtasks:<BR>1) How many three digit numbers are there such that<BR><LI><FONT FACE=Arial SIZE=2> none of the digits are zero<BR><LI><FONT FACE=Arial SIZE=2> no digit is used more than once in each number?<BR>2) Evaluate the sum of these numbers!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/15/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Added <A HREF="http://icarus.ticalc.org/ti82.html">TI-82</A> and <A HREF="http://icarus.ticalc.org/ti83.html">TI-83 section</A>, containing mainly ports of our games done by other people.<BR>Yesterday's exercise seemed to pretty simple, as quite a few people sent in the correct solution: using Heron's formula, the area can be calculated as 10.3923 or 6*sqrt(3). <B>Terence Wong</B> was the first to send in the correct solution!<BR>JayEll asked me to make the tasks a bit more difficult, so I'll keep on making them harder. The following one's still pretty simple:<BR><IMG SRC="http://icarus.ticalc.org/img/quad.gif" ALIGN=RIGHT BORDER=1>In a quadrilateral as seen in the image, the length of side AB = 10. Points C and D lie on a semicircle above AB. The distance from C to AB is 4, the distance from D to AB 3. Calculate the area of the quadrilateral.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/14/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Happy birthday Markus! Our level designer and rendering artist turned 15 today!<BR>Updated <A HREF="filehead.html">file header list</A> once more.<BR>The correct solution to yesterday's mathematical problem was NOT 60 degrees, nor was it a digital clock! Due to the movement of the hour hand by 10 degrees, the correct solution is 70 degrees. <B>JayEll</B> of Macross sent in the correct answer.<BR>Before getting to a few more difficult tasks - what's the area of a triangle sides of length 3, 7 and 8? <A HREF="mailto:ess.andreas@cable.vol.at">mail us</A> the solution!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/13/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Bibi and Andreas have been to a math contest in germany today (no TIs allowed :( ). There were three competitions, group, speed and individual competition. In group and speed competition together, their group ranked third of a total of 29 groups. These next weeks, you'll be presented with some of the simpler tasks of this competition (i.e. the speed competition ones). Most of them can be solved without a calculator.<BR>What's the angle between the minute hand and the hour hand of a clock showing 18:20? <A HREF="mailto:ess.andreas@cable.vol.at">E-mail</A> us your solution!<BR>Updated the <A HREF="filehead.html">file header list</A> and uploaded a working version of the SVI emulator to the <A HREF="http://icarus.ticalc.org/pc.html">PC section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/12/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Find out how to deal with external variables using Usgard - <A HREF="articles/usgard_faq.html">Usgard FAQ</A>.<BR>Besides tracking down some other minor errors in Bomberbloke, Scabby has changed the link routines back to the old ones. In his opinion, not the routines themselves are the source of the errors. He hopes to release a bug fixed version these next days.<BR>Sam Heald has proposed a solution for the earlier stated problem concerning the ports. The new change will be applied these next days.<BR>Made <A HREF="filehead.html">file header list</A> available. Contact us if your program is missing.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/11/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Some people wondered where the port section has gone. We were planning to make ports downloadable directly from each program page, so you could select between the various versions of Sqrxz, for instance. However, now it seems that this isn't the best solution. If anyone has an idea, then <A HREF="http://icarus.ticalc.org/contact.html">contact us</A>.<BR>For now, you can get an updated Picross for the TI-82 <A HREF="bin/ports/pic82.zip">here</A> and the source <A HREF="bin/ports/pic82src.zip">here</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/09/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Scabby turns 19 today. HAPPY BIRTHDAY! We hope that you'll continue to be a great friend and programmer in the future as you've been until now!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/07/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>A new version of Bomberbloke is out! Besides improved link routines, v0.96 features new working boni like the Zapper, the Boots and various bug fixes. In addition to this, there are now even more levels (15) to beat. Definitely worth a download - go to the <A HREF="ti86.html">TI-86 section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/06/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Released MC Mik, episode 2 for Usgard. This is the second and last episode which was originally done for ZShell. In the future, I might release the source code for for Episode 3. Get MC Mik in the <A HREF="ti85.html">TI-85 section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/05/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>The next program to be released is M.C.Mik Epsiode #2, be prepared to download it from here tomorrow.<BR>We also intended to release Usgard 1.6, but Jimmy's recent discovery of a ROM version 1.0 lead to a delay. We still hope to release the new version with ROM 1.0 & 2.0 support and source code soon.<BR>Scabby has meanwhile added a few things to Bomberbloke, but has to struggle with some bugs. Let's hope he'll fix them soon.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>03/03/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Finally, we moved to TICALC.ORG! Johannes and Andreas have re-designed and re-organized the entire page. Hopefully you like the new look!<BR>Some sections aren't up yet, but this will change soon. We intend to update the page more frequently these next days.<BR>At this point, we'd also like to thank Bryan, Magnus and the rest of the TICALC.ORG team for providing us with this webspace and help!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/14/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>First off, Icarus Productions would wish all our visitors a happy Valentine's Day!<BR>We're sorry that there's no updated program today, we originally intended to release Bomberbloke, but Scabby didn't get around finishing it. Anyways, be prepared for some surprises the next few days - Stay tuned!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/13/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Forgot to include the WinShell source itself in winlib.zip. Updated the ZIP in the <A HREF="http://icarus.ticalc.org/source.html">Source section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/12/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Another day, another update - I won't keep this daily update stuff too long anymore. At least, I won't do every update on the new page, there'll be special, regularly occuring features. Talking of the new page, Johannes has done some great graphics for it, and it seems to get into shape slowly. As soon as we've got one page completely ready, the rest is no problem anymore thanks to HTMLWiz... Could last a while though (hopefully not too long).<BR>Scabby didn't have the time yet to work a lot on Bomberbloke, but he confirmed to me that the new version will also feature the zappers. Maybe he'll even get the Capture-the-Flag-mode in? Who knows! I for myself am anticipating the update!<BR>I intend to release M.C.Mik Episode #2 these next days, followed by the (more than messy) source code to M.C.Mik.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/11/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Updated SpanIt! in the <A HREF="http://icarus.ticalc.org/pc.html">PC section</A> and some other stuff on the homepage.<BR>The new version of Bomberbloke will feature improved link play and bug fixes.<BR>I (Andreas) talked to Clem concerning a RPG engine with editor for easy RPG development based on the Wrath of Zalthar engine. It also seems that CashOnly is interested to continue the project. So you should be presented with some RPG news soon...</DIV></TD></TR>
+</TABLE><P> 
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/10/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>A bugfix for Bomberbloke by Scabby is on its way. Icarus Productions is also proud to announce that we will start developing professional games for the popular PalmIII (3Com) in the near future...</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/09/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>*Yawn*... It's 3:37 AM and I'm off to the CERN laboratories in a few minutes. Before getting to know more about particle acceleration, here's the update for today: M.C.Mik Epsiode #1 with improved collision detection. Not sure whether it works for 100%, but check it out in the <A HREF="http://icarus.ticalc.org/z80.html">Z80 section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/08/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Converted the Wrath of Zalthar source to Usgard (thanks to CashOnly) and added a few little things. There's also a level editor in the ZIP, which enables to do some 40x20 maps for WOZ. Still, enemies and stuff should be added first. Get the update in the <A HREF="http://icarus.ticalc.org/source.html">Source section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/07/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Finally we reached over 10000 visitors today! Well, this should be of course celebrated, shouldn't it? And would there be any better way than releasing a beta of Bomberbloke by Scabby? I'd say definitely no - this game simply rocks. Get it in the <A HREF="http://icarus.ticalc.org/z80.html">Z80 section</A>!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/06/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Some time ago, there was no RPG available for the TI-85, and I decided to start with one. Unfortunately, as I'm not a very avid gamer, I didn't have too much experience with the topic and stopped working on Wrath of Zalthar for ZShell. Maybe someone is interested in the code, which is now available to the public in the <A HREF="http://icarus.ticalc.org/source.html">Source section</A>. It's still for ZShell, and not very optimized, I believe, but I might at least convert it to Usgard in future. See what you can make out of it.<BR>Okay, the number of visitors is now approaching 10000 :) And to celebrate this number, you should find here Bomberbloke tomorrow!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/05/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>New versions of Picross for Ash and AShell 83 available in the <A HREF="http://icarus.ticalc.org/ports.html">Ports section</A>.<BR>Added question to the <A HREF="articles/usgard_faq.html">Usgard FAQ</A>.<BR>As you may have noticed, I've tried to update the page now every day. To quote Jimmy, doing this is a bit of an overkill, and I won't be able to do that much longer (aside from the fact that the items themselves aren't getting more interesting). I'll try to do that for the next few days, maybe even the next week, but then there might be a bigger pause. Until then, await Bomberbloke, maybe Sqrxz GB, the second episode of M.C.Mik and some other sourcecodes.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/04/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Erik Piel updated Squarez 82, eliminating the need for Squarez XL, updated the <A HREF="http://icarus.ticalc.org/ports.html">Ports section</A>. Also uploaded Squarez 86 to the <A HREF="http://icarus.ticalc.org/z80.html">Z80 section</A>.<BR>We will soon move to TICALC.ORGs server. I just signed a contract today, and the new design has to be elaborated by Johannes and me. Hope to get to icarus.ticalc.org next week.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/03/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Updated M.C.Mik in the <A HREF="http://icarus.ticalc.org/z80.html">Z80 section</A> once again. Program is 200 bytes smaller, coins get erased when collected, and drawing is slightly faster. Also thanks to Nathan Haines for fixing up the documentation's grammar (hey, that was two years ago!).<BR>Anyways, I've been asked a few times on how to beat the first level. After getting the oxygen in the cave, go back to the main level, and there to right most screen. You can dive into the water there (note the coins indicating a down arrow!). If you're lucky, you'll soon face the boss of the level then.<BR>Updated link to Johannes' page in the <A HREF="aboutus.html">About us section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/02/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Uploaded a bugfix for <A HREF="http://icarus.ticalc.org/bin/programs/string85.exe">String85</A>. Earlier versions had problems with the H parameter, resulting in an invalid file. Thanks to CashOnly for reporting this bug.<BR>In addition, I also uploaded Squarez to the <A HREF="http://icarus.ticalc.org/z80.html">Z80 page</A> - we completely forgot this one when setting up the page!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>02/01/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Some two and a half years ago, I released the first jump'n'run for ZShell. Even though it didn't include smooth scrolling, it had some nice features, like grayscale graphics, nine different enemies, bosses and more. Alas, <B>M.C.Mik</B> was only shareware. Until today. You can get now episode #1 of M.C.Mik for free. I converted it to Usgard, so it's smaller and maybe a little bit faster, too! More episodes and source code may follow. Get it on the <A HREF="http://icarus.ticalc.org/z80.html">Z80 page</A>!</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/31/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>As the exams are over for Scabby, he intends to release a public beta of Bomberbloke to the public in the next week.<BR>What's more, Jimmy's currently working on Sqrxz GB. The new version will support all levels of the original game, new musical tunes, plus (hopefully!) colors!<BR>We've been also thinking about making a level design competition using the Sqrxz level editor, which is soon to be released.<BR>Finally, as I am converting a ZShell program to Usgard, I elaborated <A HREF="http://icarus.ticalc.org/bin/programs/zsh2usg.rtb">this table</A> for ReplaceIt! which helps converting ZShell source code to Usgard one. Maybe you want to use it with the Planejump II source code I released yesterday?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/30/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>It seems that the future Icarus Productions site will be located at TICALC.ORG's server. We hope to move there during the next two weeks. Expect also a new site design by then. As we won't have CGI support at first, the pages won't be generated by HTMLWiz anymore, resulting in the fact that we're again searchable!<BR>Uploaded the Planejump II source code to the <A HREF="http://icarus.ticalc.org/source.html">source section</A>. Someone feels like adding link play, or simply converting it to Usgard?</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/29/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Ever wondered how to move a plus sign over the screen? Well, I for myself didn't until I received a mail to add this question to the <A HREF="articles/usgard_faq.html">Usgard FAQ</A>...</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/28/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>As I don't have the time nor the desire to get WinLib working, I uploaded both the winlib and the winshell source to the <A HREF="http://icarus.ticalc.org/source.html">source section</A>. If you can fix it in any way, tell me :).</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/27/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Downtime due to some problems with server (once again) and HTMLWiz. Anyways, we might soon move either to TICALC.ORG's server (icarus.ticalc.org) or Dimention-TI's server (icarus.calc.org). This would of course result in much faster loading times.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/22/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>As faster PCs have problems with Pascal programs like SrcWiz, etc. which are needed to develop programs for Usgard, I decided to upload this <A HREF="bin/programs/tppatch.exe">patch</A>, applicable to the EXE file directly.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/15/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Uploaded Squarez XL versions for the TI-82 (Ash) and the TI-83 (SOS) to the <A HREF="http://icarus.ticalc.org/ports.html">ports section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/14/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Added Peaworm =:) for the 86 by Matthew Shepcar to the <A HREF="http://icarus.ticalc.org/z80.html">Z80 section</A>.</DIV></TD></TR>
+</TABLE><P>
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>01/01/1999</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Happy new year to you all!<BR>As you may have noticed, there haven't been any real updates these last weeks. Well, I hope that this will change in the new year. We've been very busy recently and still will be in the new year, but we intend to present you with a few new stuff in the new year. These will cover (in estimated order of appearance):<BR><BR><UL><LI><FONT FACE=Arial SIZE=2> Sqrxz GB<LI><FONT FACE=Arial SIZE=2>Generic Sqrxz level editor for Windows<LI><FONT FACE=Arial SIZE=2>Bomberbloke<LI><FONT FACE=Arial SIZE=2>Peaworm<LI><FONT FACE=Arial SIZE=2>New FAQ<LI><FONT FACE=Arial SIZE=2>New HP design<LI><FONT FACE=Arial SIZE=2>Usgard 1.6<LI><FONT FACE=Arial SIZE=2>Hopefully an own server &amp; domain - contact us if you can help</UL>Besides these, we also hope to be able to support you with sourcecodes, and similar stuff.<BR>A few days before the beginning of the new year, Ben Wise has joined Icarus Productions. He is very eager to learn and brings in a lot of ideas. See the <A HREF="aboutus.html">About us section</A>.</DIV></TD></TR>
+</TABLE><P>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Feb 06 16:36:36 2000
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="news99.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

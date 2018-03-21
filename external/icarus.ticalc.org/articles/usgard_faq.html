@@ -1,0 +1,409 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Usgard FAQ</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="../ip.css">
+<SCRIPT language="JavaScript">
+<!--
+function MM_showHideLayers() { //v2.0
+  var i, visStr, args, theObj;
+  args = MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-1); i+=2) { //with arg triples (objNS,objIE,visStr)
+    visStr = args[i+1];
+    if (navigator.appName == 'Netscape' && document.layers != null) {
+      theObj = eval('document.layers[\''+args[i]+'\']');
+      if (theObj) theObj.visibility = visStr;
+    } else if (document.all != null) { //IE
+      if (visStr == 'show') visStr = 'visible'; //convert vals
+      if (visStr == 'hide') visStr = 'hidden';
+      theObj = eval('document.all[\''+args[i]+'\']');
+      if (theObj) theObj.style.visibility = visStr;
+  } }
+}
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF link=#6800A0 vlink=#6800A0 LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0>
+
+<A NAME="top">
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="../img/web_left.gif"><A HREF="http://icarus.ticalc.org/articles/index.html"><IMG src="../img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents onMouseOver="MM_showHideLayers('Team','show','Project','hide','Articles','hide','Features','hide','Appearances','hide')">The team</A></TD>
+    <TD width=105 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents onMouseOver="MM_showHideLayers('Team','hide','Project','show','Articles','hide','Features','hide','Appearances','hide')">Projects</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents onMouseOver="MM_showHideLayers('Team','hide','Project','hide','Articles','show','Features','hide','Appearances','hide')">Articles</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents onMouseOver="MM_showHideLayers('Team','hide','Project','hide','Articles','hide','Features','show','Appearances','hide')">Features</A></TD>
+    <TD width=12 valign=top> <img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR onMouseOver="MM_showHideLayers('Team','hide','Project','hide','Articles','hide','Features','hide','Appearances','hide')">
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<B CLASS=question>What exactly is Usgard?</B><BR>
+Usgard is a state-of-the-art operating system for the TI-85 graphing calculator which allows to run assembly programs. This wasn't possible until ZShell, and we took up the idea of ZShell and vastly improved it.<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>What does the name Usgard stand for?</B><BR>
+Usgard is the way you pronounce the word "Asgard" in germanic languages. In ancient norse mythology, Asgard was a place in the world where the gods lived.<P>
+
+
+<B CLASS=question>Can you give some examples why Usgard is better than any other shell?</B><BR>
+Sure. First off, by using "relocation", programs not only get faster, but also smaller. Second, Usgard features many built-in calls and new ROM calls which ease the programmer's live. What's more, it is very configurable by the user, who can choose between various shells, and more. Last but not least, many fantastic Z80 programmers use Usgard for their programs!<P>
+
+
+<B CLASS=question>"Relocation?". Can you explain that to me?</B><BR>
+On the TI85, you can't predict where a program is in memory, therefore, you need some way to get the addresses of functions, etc. inside programs. In ZShell/CShell/OS-85,..., this was done on the other hand by using special shell functions, which weren't only slow, but also uncomfortable to use, and on the other hand, by adding (PROGRAM_ADDR) to data values. Relocation solves that problem by anchoring a table to the program, which allows the OS to clearly identify addresses inside a program.<P>
+
+
+<B CLASS=question>Where can I learn programming for Usgard?</B><BR>
+Please check the <A HREF="http://icarus.ticalc.org/articles/z80_programming.html">Z80 programming</A> page, which contains a few links.<P>
+
+
+<B CLASS=question>I want to program for Usgard. What do I need?</B><BR>
+Basically, everything is included in the <A HREF=http://www.ticalc.org/pub/85/asm/shells/usgard.zip>Usgard ZIP</A>. You just have to ensure that you decompress the file with directories, i.e. using the -d switch with PKUNZIP. Next, you'll need a text editor, some knowledge of asm and a link program. That's all.<P>
+
+
+<B CLASS=question>How do you use relocation now?</B><BR>
+Given you have a data byte in your program, called "Hiscore". To access it, you'd just write: ld A, (&Hiscore). Note the ampersand (&) character, which tells Usgard to automatically add the absolute program address to the relative offset of Hiscore.<P>
+
+
+<B CLASS=question>After writing the .ASM file, what do I have to do next?</B><BR>
+Compile it by typing "C myname" at the command prompt, where "myname" stands for the name of your ASM file <B>without</B> the extension! After compiling it, you should get a .85S file you can send to your calc.<P>
+
+
+<B CLASS=question>I get lots of errors when compiling? What should I do?</B><BR>
+At first, you should ensure that you have a blank line after the ".end" of the ASM file. Then, it's best to look at the lines told to you by the compiler and compare the instructions you wrote with a Z80 instruction reference.<P>
+
+
+<B CLASS=question>How can I transfer Usgard/a program to my calculator?</B><BR>
+To start with, you need a link cable. There are two types of those: serial and parallel. Serial ones can be purchased directly from TI (Graph-Link), or you can also try yourself at building one on your own (see <A HREF=http://www.ticalc.org/pub/text/hardware/4serial.gif>the $4 link schematics</A>). There were even some people who built cables for a very low price. Parallel cables are only available as homemade ones. Next, you need a program to send/receive variables from/to the calculator. In case you purchased the Graph-Link, you'll receive a transmitting program with it, otherwise, you may want to get one from the <A HREF=http://www.ticalc.org/pub/>ticalc.org Archive</A>. After choosing the platform you should easily find some transmitting program.<P>
+
+
+<B CLASS=question>How do I include a picture?</B><BR>
+A simple picture can be displayed the following way round: <OL>
+<LI><FONT FACE=Arial SIZE=2> the Usgard ZIP contains GCP.EXE, a program to convert PCX files to ASM code
+<LI><FONT FACE=Arial SIZE=2> convert your 256 color picture to ASM by typing: GCP myfile.PCX g2
+<LI><FONT FACE=Arial SIZE=2> paste the asm file you get before the .end in your program, and add a lable to it
+<LI><FONT FACE=Arial SIZE=2> at the place where you want to display the picture, enter:
+</OL>
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld HL, &label    ;(the one you previously defined)
+ld DE, VIDEO_MEM ;DE=destination, LCD memory
+ld BC, 1024      ;screensize=128x64, 1 byte=8 pixels->16x64=1024
+ldir             ;copy BC bytes from HL to DE
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+
+<B CLASS=question>And what about sprites?</B><BR>
+Nearly as simple as that. Take an 8x8 image, convert it, paste it, as described above, and then:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld HL, &label    ;your sprite
+ld B, 10         ;x coordinate
+ld C, 10         ;y coordinate
+#fncall PSPR_NR  ;put the sprite!
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+You store the image like that:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+label:
+.db %11111111
+.db %11000011
+.db %10100101
+.db %10011001
+.db %10011001
+.db %10100101
+.db %11000011
+.db %11111111
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+0 being white and 1 black.<P>
+
+
+<B CLASS=question>How can one find out the length of a variable?</B><BR>
+Given that HL contains the name, you could do the following, after that, DE will contain the actual string length, NOT containing the length word (+ 2 bytes) and the length of the VAT entry (+5 + [length of name] bytes).
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+call VAR_GET
+dec HL
+dec HL
+ld E, (HL)
+inc HL
+ld D, (HL)
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+
+<B CLASS=question>What's the easiest way to check whether to objects intersect?</B><BR>
+The simplest way to do is by just checking whether the condition (abs(x1-x2)&#60tilesize+1)and(abs(y1-y2)&#60tilesize+1) is true. If so, the two objects intersect. Here's a code snippet from XC-1701:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ ld    A, B		;compute absolute amount of overlap
+ sub   H
+ bit   7, A
+ jr    z, GoOnTesting
+ neg
+GoOnTesting:
+ cp    9   		;test X-Overlap
+ jr    nc, NoColl1
+ ;X-Test succeeded, but what about Y?
+ ld    A, C
+ sub   L
+ bit   7, A
+ jr    z, GoOnTesting1
+ neg
+GoOnTesting1:
+ cp    9
+ ret   c
+NoColl1:
+ or    A 		;clear carry flag
+ ret
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+
+<B CLASS=question>Whenever I take a battery out, the  calculator restores its defaults??</B><BR>
+Actually, the calculator should only restore the original contrast, because he "thinks" that you've changed batteries. However, if you pressed the ON key while some batteries are taken out, the memory will be reset.<P>
+
+
+<B CLASS=question>How do I use the Textviewer?</B><BR>
+To use the textview program that comes with Usgard, you first need to convert any .TXT file to a .85S using TEXTCONV.EXE / STRING85.EXE, which both can be found in the Usgard ZIP. Furthermore, you'll need textview, qview and the plus version of CoolShell (available in the <A HREF="http://icarus.ticalc.org/z80.html">Z80 section</A>). After transfering all these programs to your calc, you just need to press '*' in CoolShell to show all files available. Selecting the textfile will start textview automatically.<P>
+
+
+<B CLASS=question>I have troubles using WinShell with Usgard 1.5. What's wrong?</B><BR>
+Unfortunately, WinShell doesn't work at all with Usgard 1.5 or above versions for some obscure reason. We tried fixing the problem quite a few times, but without success. Perhaps we may find the bug sometime, but until then, you have to bear with the other shells, like CoolShell. Sorry for the inconvenience.<P>
+
+
+<B CLASS=question>How can I display snapshots taken using usgcap on my PC?</B><BR>
+Using GCP, which is available in the <A HREF="http://icarus.ticalc.org/pc.html">PC section</A>. The program allows you to convert .85S-image files to PCX files viewable by nearly every painting program.<P>
+
+
+<B CLASS=question>I've finished a game/program. Is there a place where I can upload it?</B><BR>
+For sure! Go to <A HREF=http://www.ticalc.org">ticalc.org</A> and upload it there! It's always good to see new programs for the calculator!!<P>
+
+If you want to add a new question mail to <A HREF="mailto:ess.andreas@cable.vol.at">Andreas Ess</A>.<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>How do I make one of those small plus signs bounce around the screen?</B><BR>
+The following code just explains how to move a bitmap across the screen. You can use a plus sign as bitmap, or use M_CHARPUT to display the character instead.<BR>
+The following code uses B and C as position of the sign, D and E as movement vectors. Further you should have a bitmap called PlusSign.
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ ld    BC, 0
+ ld    DE, $0101
+Loop:
+ ld    A, B
+ add   A, D
+ ld    B, A
+ cp    127-8
+ jr    c, NoChangeX
+ ld    A, D
+ neg
+ ld    D, A
+NoChangeX:
+ ld    A, C
+ add   A, E
+ ld    C, A
+ cp    63-8
+ jr    c, NoChangeY
+ ld    A, E
+ neg
+ ld    E, A
+NoChangeY:
+ ld    HL, PlusSign
+ push  DE
+ #fncall PSPR_NR
+ pop   DE
+ jr    Loop
+</PRE>
+</TD></TR>
+</TABLE>
+<P><P>
+
+
+<B CLASS=question>I know x and y coordinates for basic, but in ASM?</B><BR>
+When programming in assembler, the screen consists of 128 pixels in horizontal direction and 64 in vertical. The upper left corner has the x/y coordinate (0/0), the lower right (127/63). Therefore, to move an object down the screen, you would increase its Y coordinate - not as you are used to do from standard basic programming!<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>How can I search for levels inside a program?</B><BR>
+In many games like Sqrxz, Plainjump or Vertigo, the user can select between various level files. These level files are strings with a special two byte header. Check the <A HREF="../filehead.html">file header</A> data file to get your free header. To find all the level files for your game, you can take advantage of the Usgard function SEARCH_VAT to search for all strings at first, and then use a simple CP command to sort out the string you really need:<P>
+
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ ld    HL, VAT_Start-10  ;Skip the first entry, the Usgard string itself
+SearchStr:
+ ld    A, $12            ;$0C = strings
+ call  SEARCH_VAT        ;search the Variable Allocation Table for strings
+ jr    c, TypeNotFound   ;If carry flag is set, no more strings exist
+ push  HL                ;save HL = pointer to current VAT entry
+ ld    A, (DE)           ;DE points to current string itself
+ and   A                 ;normally, the first byte is zero
+ jr    nz, SearchStr     ;if not, then skip the string and search for another one
+ inc   DE                ;check second byte
+ ld    A, (DE)           ;get it
+ cp    $xx               ;insert your second file header byte here
+ jr    nz, SearchStr     ;if not equal, it's not a string for your proggy
+ ...                     ;here you could store the data in VAT_Name in a table
+ pop   HL                ;restore HL again
+ jr    SearchStr         ;search for next string
+TypeNotFound:            ;done searching
+</PRE>
+</TD></TR>
+</TABLE>
+<P><P>
+
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="../img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="../img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Fri Mar 12 18:52:30 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="../img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="../img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="usgard_faq.html#top"><img src="../img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="http://icarus.ticalc.org/articles/img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+<DIV id="Team" style="position:absolute; width:160px; z-index:7; left: 200px; top: 24px; border: 1px none #000000; overflow: hidden; visibility: hidden">
+<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR><TD BACKGROUND="../img/menutop.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+<TR><TD BACKGROUND="../img/menumid.gif">
+<TABLE WIDTH=90% ALIGN="CENTER" BACKGROUND="../img/transparent.gif"><TR><TD>
+ <A CLASS="subcontents" href="../aboutus.html">About us</A><BR>
+ <A CLASS="subcontents" href="../pubinfo.html">Info for publishers</A><BR>
+ <A CLASS="subcontents" href="../news.html">Recent news</A><BR>
+</TD></TR></TABLE>
+</TD></TR>
+<TR><TD BACKGROUND="http://icarus.ticalc.org/articles/img/menubot.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+</TABLE>
+</DIV>
+
+<DIV id="Project" style="position:absolute; width:160px; z-index:7; left: 310px; top: 24px; border: 1px none #000000; overflow: hidden; visibility: hidden"> 
+<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR><TD BACKGROUND="../img/menutop.gif"><IMG SRC="../img/transparent.gif" WIDTH="150" HEIGHT="10"></TR>
+<TR><TD BACKGROUND="../img/menumid.gif">
+<TABLE WIDTH=90% ALIGN="CENTER" CELLPADDING="0" BACKGROUND="../img/transparent.gif">
+ <TR><TD><A CLASS="subcontents" href="../hicolour.html">HiColour library GBC</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="../sqrxz.html">Sqrxz GBC</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="http://icarus.ticalc.org/daedalus.html">Daedalus GBC</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="../ti85.html">TI-85</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="../ti86.html">TI-86</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="../others.html">Others</A></TD><TD></TD></TR>
+</TABLE>
+</TD></TR>
+<TR><TD BACKGROUND="../img/menubot.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+</TABLE>
+</DIV>
+
+<DIV id="Articles" style="position:absolute; width:160px; z-index:9; left: 422px; top: 24px; overflow: hidden; border: 1px none #000000; visibility: hidden">
+<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR><TD BACKGROUND="../img/menutop.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+<TR><TD BACKGROUND="../img/menumid.gif">
+<TABLE WIDTH=90% ALIGN=CENTER BACKGROUND="../img/transparent.gif">
+ <TR><TD><A CLASS="subcontents" href="icarus_faq.html">Icarus FAQ</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="z80_faq.html">Z80 FAQ</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="z80_coding.html">Z80 coding</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="z80_opt.html">Z80 optimization</A></TD><TD></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="../index.html" onMouseOver="MM_showHideLayers('Appearances','show')">Appearances</A></TD><TD><A HREF="usgard_faq.html" onMouseOver="MM_showHideLayers('Appearances','show')"><IMG SRC="../img/arrow.gif" BORDER=0></A></TD></TR>
+</TABLE>
+</TD></TR>
+<TR><TD BACKGROUND="../img/menubot.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+</TABLE>
+</DIV>
+
+<DIV id="Features" style="position:absolute; width:160px; z-index:10; left: 516px; top: 24px; overflow: hidden; border: 1px none #000000; visibility: hidden">
+<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR><TD BACKGROUND="../img/menutop.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+<TR><TD BACKGROUND="../img/menumid.gif">
+<TABLE WIDTH=90% ALIGN=CENTER BACKGROUND="../img/transparent.gif">
+ <TR><TD><A CLASS="subcontents" href="../features/zpc.html">Z80 Program Compo</A></TD><TD><IMG SRC="../img/arrow.gif"></TD></TR>
+</TABLE>
+</TD></TR>
+<TR><TD BACKGROUND="http://icarus.ticalc.org/articles/img/menubot.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+</TABLE>
+</DIV>
+
+<DIV id="Appearances" style="position:absolute; width:160px; z-index:10; left: 582px; top: 110px; overflow: hidden; border: 1px none #000000; visibility: hidden">
+<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR><TD BACKGROUND="../img/menutop.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+<TR><TD BACKGROUND="../img/menumid.gif">
+<TABLE WIDTH=90% ALIGN=CENTER BACKGROUND="../img/transparent.gif">
+ <TR><TD><A CLASS="subcontents" href="http://pocket.ign.com/news/9823.html">pocket.ign.ncom</A></TD></TR>
+ <TR><TD><A CLASS="subcontents" href="http://www.dailyradar.com">DailyRadar</A></TD></TR>
+</TABLE>
+</TD></TR>
+<TR><TD BACKGROUND="../img/menubot.gif"><IMG SRC="../img/transparent.gif" WIDTH="160" HEIGHT="10"></TR>
+</TABLE>
+</DIV>
+
+</BODY>
+</HTML>
+

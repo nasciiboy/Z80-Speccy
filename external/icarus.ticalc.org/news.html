@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Recent news</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+Here you can find the most recent news happening at Icarus.<P>
+
+
+<A NAME="02/17/2002">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>TI-83 Plus Application</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Clement and Andreas have been working on a TI-83 Plus Flash application for Texas Instruments. <A HREF=http://epsstore.ti.com/webs/ProdInfo.asp?deptid=157&catid=514&sku=2728>Math by Hand</A> familiarizes students with the "standard" mathematical algorithms for addition, subtraction, multiplication and division. It is available for free.</DIV><BR><DIV ALIGN=RIGHT><I>added on 02/17/2002</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="06/02/2001">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Port of Balloon available</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Andreas Finne has finished the port of IP's Balloon to the TI-86, it is now available at <A HREF=http://www.ticalc.org>ticalc.org</A>. Enjoy!</DIV><BR><DIV ALIGN=RIGHT><I>added on 06/02/2001</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="05/23/2001">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Ports of Picross/Balloon</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Andreas Finne is currently working on ports of IP's games Picross and Balloon for the TI-86. The port of Picross is already finished and can be downloaded at <A HREF=http://www.ticalc.org>ticalc.org</A>, Balloon should be done soon.</DIV><BR><DIV ALIGN=RIGHT><I>added on 05/23/2001</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="04/29/2001">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Pics from the ECTS</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>It's been pretty silent @ Icarus, as we've been busy with university, etc. We might investigate in the new GameBoy Advance in the near future, though. For the time being, a few shots from our meeting at the ECTS last year:<UL><LI><A HREF="img/090500_ects.jpg">Matthew, Johannes, Andreas, Jimmy</A> @ ECTS<LI><A HREF="img/090500_iproom.jpg">Andreas, Jimmy, Johannes</A> in our hotel.<LI><A HREF="img/090300_freestyler.jpg">Johannes</A> in the tube</UL></DIV><BR><DIV ALIGN=RIGHT><I>added on 04/29/2001</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="10/20/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Stooges on IGN</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>The GBC conversion of the Amiga classic "The Three Stooges" we've been working on for <A HREF=http://www.cinemaware.com>Cinemaware, Inc.</A> has been previewed on <A HREF=http://pocket.ign.com/previews/15496.html>IGN</A>, including quite a few screenshots and videos!</DIV><BR><DIV ALIGN=RIGHT><I>added on 10/20/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="09/15/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>GBC game</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Jimmy and Johannes, together with Andreas and Clem, have been working on a game for <A HREF=http://www.cinemaware.com>Cinemaware, Inc.</A> for the past few months. The game is basically a conversion of the Amiga classic "The Three Stooges", with some added elements.<BR>The game features state of the art graphics on the Game Boy Color with almost the whole game using HiColour graphics and detailed sprites, as well as digitized samples, crazy music and a lot more!<BR>For further details, see the <A HREF=http://www.cinemaware.com/stoogepress.asp>Cinemaware press release</A>.</DIV><BR><DIV ALIGN=RIGHT><I>added on 09/15/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="08/27/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>ECTS</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Four of us will be present at the ECTS: Andreas, Jimmy, Johannes and Matthew. This is going to be the very first meeting of us in real life, and combined with a show such as the ECTS, it should make up for quite an experience. We will mainly investigate other people's works in the pocket sector, but will take a demo of a game done by us with ourselves.</DIV><BR><DIV ALIGN=RIGHT><I>added on 08/27/2000</I></DIV></TD></TR>
+</TABLE><P>
+
+Check the archives:
+<UL>
+<LI><FONT FACE=Arial SIZE=2> <A HREF="news00.html">archives 2000</A>
+<LI><FONT FACE=Arial SIZE=2> <A HREF="news99.html">archives 1999</A>
+<LI><FONT FACE=Arial SIZE=2> <A HREF="news98.html">archives 1998</A>
+</UL>
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Feb 17 13:22:22 2002
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="news.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

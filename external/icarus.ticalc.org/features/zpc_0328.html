@@ -1,0 +1,289 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - ZPC - problems 03/28/1999</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="../ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF link=#6800A0 vlink=#6800A0 LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="../bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="../img/web_left.gif"><A HREF="../index.html"><IMG src="../img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+The list of the winners of the contest which ended 03/28/99:<P>
+
+
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1>
+<TR>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=100 HEIGHT=23>Place</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=300>Name</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=100>Scores</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=50>Sum</TH>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>1.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:dux@acz.org">Dux Gregis &amp; Tim Adkisson</A></TD>
+ <TD ALIGN=CENTER>23 + 25 + 20</TD>
+ <TD ALIGN=CENTER><A HREF="win0328.zip">68</A></TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>2.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:acurtil@umbc.edu">Aaron Curtis</A></TD>
+ <TD ALIGN=CENTER>23 + 25 + 21</TD>
+ <TD ALIGN=CENTER>69</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>3.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:kirk@ticalc.org">Kirk Meyer</A></TD>
+ <TD ALIGN=CENTER>23 + 25 + 21</TD>
+ <TD ALIGN=CENTER>69</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>4.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:Ian.Collier@comlab.ox.ac.uk">Ian Collier</A></TD>
+ <TD ALIGN=CENTER>27 + 26 + 21</TD>
+ <TD ALIGN=CENTER>74</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>5.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:ComAsYuAre@aol.com">Jonah Cohen</A></TD>
+ <TD ALIGN=CENTER>25 + 26 + 23</TD>
+ <TD ALIGN=CENTER>74</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>6.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:aralbrec@concentric.net">Alvin Albrecht</A></TD>
+ <TD ALIGN=CENTER>27 + 26 + 21</TD>
+ <TD ALIGN=CENTER>74</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>7.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:JayEll64@aol.com">Jeff Hellrung</A></TD>
+ <TD ALIGN=CENTER>23 + 32 + 21</TD>
+ <TD ALIGN=CENTER>76</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>8.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:the.ulterior@usa.net">Dmitry Semyonov</A></TD>
+ <TD ALIGN=CENTER>36 + 39 + 29</TD>
+ <TD ALIGN=CENTER>104</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>--</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:david@acz.org">David Philips</A></TD>
+ <TD ALIGN=CENTER>25 + -- + --</TD>
+ <TD ALIGN=CENTER>--</TD>
+</TR>
+</TABLE><P>
+
+
+This <A HREF="rout0328.zip">ZIP</A> contains all the solutions sent in. Be aware of the fact that some may not work!
+
+These were the problems to be solved:<P>
+
+
+<B>Optimization:</B> Size<P>
+
+
+<B>Abbreviations:</B><UL>
+Z-string = null-terminated string<BR>
+ZF = zero flag set<BR>
+NZ = zero flag cleared<BR>
+CF = carry flag set<BR>
+NC = carry flag cleared<BR>
+</UL>
+
+Unless otherwise specified, all strings are Z-strings.<P>
+
+
+<TABLE CLASS=nrm WIDTH=100% ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR BGCOLOR=#C4D4E4><TD><FONT SIZE=2><B>Problem 1</B></FONT></TD></TR>
+</TABLE><BR>
+Reverse the bits in a string of bytes<P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> string of bits, A = length of substring (0 < A < 256)</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>The bits in the string should be reversed</TD></TR>
+<TR><TD VALIGN=TOP>Special:</TD><TD>You may use 256 bytes of temporary storage, starting at TEMP</TD></TR>
+</TABLE><P>
+
+<B>Example:</B><BR>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL = $C000, A = 5<BR>($C000)=%10010111<BR>($C001)=%00011011<BR>($C002)=%10101111<BR>($C003)=%00011001<BR>($C004)=%11010010</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>($C000)=%01001011<BR>($C001)=%10011000<BR>($C002)=%11110101<BR>($C003)=%11011000<BR>($C004)=%11101001</TD></TR>
+</TABLE><P>
+
+<TABLE CLASS=nrm WIDTH=100% ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR BGCOLOR=#C4D4E4><TD><FONT SIZE=2><B>Problem 2</B></FONT></TD></TR>
+</TABLE><BR>
+Decide whether a Z-string is a palindrome or not (A palindrome is a number, word or phrase that reads the same backwards as forwards).<P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> string</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>Return with zeroflag set if the string is a palindrome, else the flag should be cleared</TD></TR>
+<TR><TD VALIGN=TOP>Special:</TD><TD>You mayy assume that the string will <I>only</I> contain the lowercase letters a-z <I>and</I> word spacing. Note that white spaces should be discarded!!!</TD></TR>
+</TABLE><P>
+
+<B>Examples:</B><BR>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "rise to vote sir",0</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>ZF</TD></TR>
+</TABLE><P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "abcdcb",0</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>NZ</TD></TR>
+</TABLE><P>
+
+Don't forget to check special cases, like a string of size 0 (which <I>should</I> be considered as a palindrome).<P>
+
+
+<TABLE CLASS=nrm WIDTH=100% ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR BGCOLOR=#C4D4E4><TD><FONT SIZE=2><B>Problem 3</B></FONT></TD></TR>
+</TABLE><BR>
+Search for a substring in a string (case-sensitive).<P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> string, DE <FONT FACE="Symbol">®</FONT> substring</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>If the substring exists, the carry flag should be cleared, and HL point to the first position in the string where the substring occurs.<BR>If the substring doesn't exist, the carry flag should be set, and HL may be anything.</TD></TR>
+<TR><TD VALIGN=TOP>Special:</TD><TD>You may assume that the substring has at least 1 byte. The string itself can be of length 0 though.</TD></TR>
+</TABLE><P>
+
+<B>Examples:</B><BR>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "This is a string!!",0<BR>DE <FONT FACE="Symbol">®</FONT> "ring",0</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>NC, HL <FONT FACE="Symbol">®</FONT> "ring!!",0</TD></TR>
+</TABLE><P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "Another string!!",0<BR>DE <FONT FACE="Symbol">®</FONT> "another",0</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>CF</TD></TR>
+</TABLE><P>
+
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="../img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="../img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Apr 25 23:57:46 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="../img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="../img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="zpc_0328.html#top"><img src="../img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="../img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

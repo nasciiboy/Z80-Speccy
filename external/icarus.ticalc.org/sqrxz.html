@@ -1,0 +1,179 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Sqrxz</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<IMG SRC="img/screenshots/sqtitle.gif" ALIGN=LEFT BORDER=1>
+This smooth scrolling jump'n'run which is very popular on the TI-8x calcs is now even available for the Nintendo Gameboy! Guide Sqrxz - a bug - through tricky levels to his home. Avoid spiktraps, nasty blobs, dangerours hedgehogs and flying bats!<BR>
+The new version supports <B>CoLoR</B> and thus much better graphics! The game also includes 10 musical tunes, 12 tough levels + lots of cool effects!<P>
+
+
+<B>THE GAME</B><BR>
+<IMG SRC="img/screenshots/sq01.gif" ALIGN=RIGHT BORDER=1>
+Upon starting the game, our logo is displayed, followed by the title screen. Please note the smooth gradient coloring of the title and the palette mirroring effects of the scrolling credits text. After all of the text has scrolled by (takes approx. 20 seconds), a demo of the game is shown demonstrating how to solve the very first level to give the player a clue of what's to come.<BR>
+Pressing the START button will begin the game itself. The left and right arrows are used for movement in either direction and the up arrow or A can be used for jumping. Additionally the down arrow or B in conjunction with the left/right arrows allow you to move more slowly enabling you to fall into certain pits. Re-pressing the jump button when landing on an enemy will make Sqrxz jump higher.<BR>
+The aim of the game is to get to the exit door and collect as many apples as possible in the given time (red bar at bottom). Later levels also feature water (remaining oxygen = blue bar).<P>
+
+
+<B>NOTES</B><BR>
+During the game, please note the color transition of the sky, the very smooth scrolling, as well as the sound driver, although this is currently in its beta stages - it may produce some little errors together with sound effects at the present point but it already features special effects including tremolo and vibrato to enrich the sound!<P>
+
+
+<B>FUTURE ADDITIONS</B><BR>
+The current ROM only gives an idea of the final game. Here's what we're currently adding/intending to add:
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Various, more colorful scenarios. The current scenario, graveyard, doesn't feature many different colors. Future scenarios (like jungle, ice planet, ...) will be more colorful and have more background detail - we're also planning to bring more than the standard 56 colors on screen (actually, the current beta has 70 on-screen colors). There'll be also a load of new enemies, and Sqrxz will wear various clothes according to the scenario.
+<LI><FONT FACE=Arial SIZE=2> New game elements, including elevators, slanted tiles (for hills, ...), springboards, traps, other ways the kill enemies and new moving techniques (such as flying on a bird's back, ...) ensure more fun in playing.
+<LI><FONT FACE=Arial SIZE=2> Vertical scrolling levels.
+<LI><FONT FACE=Arial SIZE=2> Completely new soundtrack and sound FX, using the GBC's capabilities to the full (such as digitized wave playback, etc.)
+</UL>
+
+<P>
+
+<B>Related documents</B><BR>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> <A HREF="bin/programs/sqrxzgb.zip">Download Sqrxz</A>
+<LI><FONT FACE=Arial SIZE=2> <A HREF="ti85.html">TI-85 version</A>
+<LI><FONT FACE=Arial SIZE=2> <A HREF="ti86.html">TI-86 version</A>
+<LI><FONT FACE=Arial SIZE=2> <A HREF=http://www.acc.umu.se/~macce/sqrxz/>The official Sqrxz homepage</A> by Marcus Westerlund
+</UL>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Fri Aug 25 11:10:52 2000
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="sqrxz.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

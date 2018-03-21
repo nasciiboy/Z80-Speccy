@@ -1,0 +1,210 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Others</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<B>Available</B>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Source codes
+<LI><FONT FACE=Arial SIZE=2> Other programs
+</UL>
+
+These sourcecodes may provide you with some help when coding. If you use them in your programs, or want to release a modified version of them, please <A HREF="mailto:support.icarus@ganymed.org">contact us</A> first!<P>
+
+
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=360 HEIGHT=23>Description</TH>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=105>Platform</TH>
+</TR>
+<TR CLASS=nrm>
+ <TD ALIGN=LEFT>
+  <A HREF="bin/source/woz.zip">Wrath of Zalthar</A><BR>
+  <IMG SRC="img/source/woz.gif" ALIGN=RIGHT BORDER=1>
+  <DIV ALIGN=JUSTIFY>I started with this RPG quite some time ago. Maybe you want to add some stuff (enemies, story)? Give it a go! Features grayscale graphics.</DIV>
+ </TD><TD ALIGN=CENTER>TI-85
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN=LEFT>
+  <A HREF="bin/source/pj2.zip">Planejump II</A><BR>
+  <IMG SRC="img/source/pj2.gif" ALIGN=RIGHT BORDER=1>
+  <DIV ALIGN=JUSTIFY>Planejump II still lacks some features, like link play or Usgard support. Get the source code and see what you can do!</DIV>
+ </TD><TD ALIGN=CENTER>TI-85
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN=LEFT>
+  <A HREF="bin/source/torus.zip">3D rotating Torus</A><BR>
+  <IMG SRC="img/source/torus.gif" ALIGN=RIGHT BORDER=1>
+  <DIV ALIGN=JUSTIFY>This code shows how to do realtime 3D rotation on a TI-86!</DIV>
+ </TD><TD ALIGN=CENTER>TI-86
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN=LEFT>
+  <A HREF="bin/source/winlib.zip">WinLib/WinShell</A><BR>
+  <IMG SRC="img/source/usgshell.gif" ALIGN=RIGHT BORDER=1>
+  <DIV ALIGN=JUSTIFY>The source code of the popular WinShell and WinLib for Usgard. Never got it quite working. Maybe you want to give it a go?</DIV>
+ </TD><TD ALIGN=CENTER>TI-85
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN=LEFT>
+  <A HREF="bin/source/mcmsrc.zip">M.C.Mik episode #1</A><BR>
+  <IMG SRC="img/source/mcmik.gif" ALIGN=RIGHT BORDER=1>
+  <DIV ALIGN=JUSTIFY>M.C.Mik was the first game that ressembled a jump'n'run for the TI-85. This is the source code for the Usgard version. As it's one of my earlier programming attempts, it's not that optimized at all.</DIV>
+ </TD><TD ALIGN=CENTER>TI-85
+</TD></TR>
+</TABLE>
+
+<P>
+
+
+Currently, the only other program available is for the GameBoy Color.
+
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=360 HEIGHT=23>Description</TH>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=105>Notes</TH>
+</TR>
+<TR CLASS=list> 
+  <TD CLASS=nrm ALIGN=JUSTIFY><IMG SRC="img/screenshots/willyw.gif" ALIGN=RIGHT BORDER=1><A HREF="bin/programs/willyw.zip">Willy Wonderworm GBC (0.95)</A><BR>In this small game, a port of the <A HREF="ti86.html">TI-86's Peaworm</A>, you have to guide a worm through a room, and help him to eat various food in order for him to get longer. The game features 5 levels, color graphics, hi score table and music/sound fx.</TD>
+  <TD CLASS=nrm ALIGN=CENTER>Catridge: MBC5, 32 KByte ROM + 8 KByte extra RAM</TD>
+</TR>
+</TABLE>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sat Feb 19 10:06:30 2000
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="others.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

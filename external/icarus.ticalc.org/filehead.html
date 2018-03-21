@@ -1,0 +1,203 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Usgard file headers</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+This list contains the file headers reserved for various program types. A file header is comprised of 2 bytes. All numbers are given in hexadecimal, unless otherwise noted.<P>
+
+
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=115 HEIGHT=23>Header</TH>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=350>Reserved for</TH>
+</TR>
+<TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>00 FD</TD>
+ <TD CLASS=nrm ALIGN=CENTER>ZShell programs</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>00 FB</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Usgard 1.0 programs</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>00 F9</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Usgard 1.1 programs</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>00 F8</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Usgard 1.5 programs</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>00 F7</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Usgard 1.6 programs</TD>
+</TR>
+<TR>
+ <TH CLASS=nrm BGCOLOR=#400060 COLSPAN=2>Level files</TH>
+</TR>
+ <TD CLASS=nrm ALIGN=CENTER>01 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Plainjump II level file</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>02 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Sqrxz world (not compressed)</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>02 01</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Sqrxz world (compressed)</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>03 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Plainjump I level file</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>04 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Balloon house file (compressed)</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>05 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>not used for some reason</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>06 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>Solomon's Key level file</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>07 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>XC-1701 II world (compressed)</TD>
+</TR><TR CLASS=list>
+ <TD CLASS=nrm ALIGN=CENTER>08 00</TD>
+ <TD CLASS=nrm ALIGN=CENTER>reserved (Macross)</TD>
+</TR>
+</TABLE><P>
+
+
+<A HREF="http://icarus.ticalc.org/contact.html">Contact us</A> if your header sequence is not listed here, so noone can use a header already occupied by someone else.
+
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Mar 14 10:07:48 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="filehead.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

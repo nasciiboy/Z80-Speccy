@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - TI and Gameboy programming</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<TABLE ALIGN="CENTER">
+<TR><TD>Welcome, no.</TD><TD><IMG SRC="http://c1.thecounter.com/id=125511" BORDER=0 VSPACE=3></A></TD></TR>
+</TABLE>
+
+<P><FONT SIZE=4>W</FONT>elcome to renovated pages of Icarus Productions. Here you will find all our projects, from state-of-the-art Z80 programming (for the GameBoy Color<SUP>TM</SUP> and TI-8x calculators) to programs for the PC and m68k platforms. We also have some very useful articles for those starting out on their programming adventures. Catch up on all the latest developments here at Icarus Productions with our news service.</P>
+
+<TABLE WIDTH=407 BORDER=0 CELLSPACING=4 CELLPADDING=0 VALIGN=top>
+<TR><TD WIDTH=203 VALIGN=top> 
+ <IMG SRC="img/bar_news.gif" WIDTH=203 HEIGHT=16>
+  <TABLE WIDTH=99% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+   <TR><TD>&#149;</TD><TD><A HREF="news.html#02/17/2002" CLASS="news">TI-83 Plus Application</A></TD><TD ROWSPAN=2 WIDTH=22><IMG SRC="img/icons/web.gif"></TD></TR>
+<TR><TD>&nbsp;</TD><TD CLASS="tiny">added on 02/17/2002<BR><BR></TD></TR>
+   <TR><TD>&#149;</TD><TD><A HREF="news.html#06/02/2001" CLASS="news">Port of Balloon available</A></TD><TD ROWSPAN=2 WIDTH=22><IMG SRC="img/icons/file.gif"></TD></TR>
+<TR><TD>&nbsp;</TD><TD CLASS="tiny">added on 06/02/2001<BR><BR></TD></TR>
+   <TR><TD>&#149;</TD><TD><A HREF="news.html#05/23/2001" CLASS="news">Ports of Picross/Balloon</A></TD><TD ROWSPAN=2 WIDTH=22><IMG SRC="img/icons/file.gif"></TD></TR>
+<TR><TD>&nbsp;</TD><TD CLASS="tiny">added on 05/23/2001<BR><BR></TD></TR>
+   <TR><TD>&#149;</TD><TD><A HREF="news.html#04/29/2001" CLASS="news">Pics from the ECTS</A></TD><TD ROWSPAN=2 WIDTH=22><IMG SRC="img/icons/member.gif"></TD></TR>
+<TR><TD>&nbsp;</TD><TD CLASS="tiny">added on 04/29/2001<BR><BR></TD></TR>
+   <TR><TD>&#149;</TD><TD><A HREF="news.html#10/20/2000" CLASS="news">Stooges on IGN</A></TD><TD ROWSPAN=2 WIDTH=22><IMG SRC="img/icons/web.gif"></TD></TR>
+<TR><TD>&nbsp;</TD><TD CLASS="tiny">added on 10/20/2000<BR><BR></TD></TR>
+   <TR><TD>&#149;</TD><TD><A HREF="news.html#09/15/2000" CLASS="news">GBC game</A></TD><TD ROWSPAN=2 WIDTH=22><IMG SRC="img/icons/web.gif"></TD></TR>
+<TR><TD>&nbsp;</TD><TD CLASS="tiny">added on 09/15/2000<BR><BR></TD></TR>
+   <TR><TD>&nbsp;</TD><TD>&nbsp;</TD></TR>
+   <TR><TD WIDTH=5%>&nbsp;</TD><TD ALIGN=RIGHT><A HREF="news99.html" CLASS="news">archives</A></TD></TR>
+  </TABLE>
+</TD><TD WIDTH=1 BGCOLOR=#000000>
+ <IMG SRC="img/transparent.gif" WIDTH=1 HEIGHT=16>
+</TD><TD WIDTH=203 VALIGN=top>
+ <IMG SRC="img/bar_feature.gif" WIDTH=203 HEIGHT=16>
+  <TABLE WIDTH=99% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+  <TR><TD COLSPAN=2>
+  <IMG SRC="img/hicol.jpg" WIDTH=96 HEIGHT=86 ALIGN=LEFT BORDER=1>
+  Using a special technique, IP has managed to dramatically increase the onscreen colors of the GameBoy Color. What started as a demo displaying some still pictures has now emerged as a full-fledged library with exciting features such as FMV playback. See the following pages for detailed information:<BR>
+  </TR></TD>
+  <TR><TD WIDTH=5%>&#149;</TD><TD><A HREF="hicolour.html">HiColour library</A></TD></TR>
+  <TR><TD WIDTH=5%>&#149;</TD><TD><A HREF="articles/hicol_faq.html">HiColour FAQ</A></TD></TR>
+  </TABLE>
+</TD></TR>
+</TABLE>
+
+<P>
+
+Problems with viewing these pages? Check the <A HREF="notes.html">viewing notes</A>.
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Feb 17 13:15:34 2002
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="index.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

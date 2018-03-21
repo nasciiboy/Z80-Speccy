@@ -1,0 +1,337 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - TI-85</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+The following list contains our games and programs for the TI-85 graphing calculator from <A HREF=http://www.ti.com>Texas instruments</A>.<P>
+Files are ordered alphabetically.<BR>
+
+<BR>
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=300 HEIGHT=23>Programs<BR><IMG SRC="img/transparent.gif" WIDTH=298 HEIGHT=1></TH>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=100>Author-Notes<BR><IMG SRC="img/transparent.gif" WIDTH=100 HEIGHT=1></TH>
+</TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/usgdcool.zip">Cool Shell (1.16)</A><BR>
+  <IMG SRC="img/screenshots/usgdcool.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>This shell can be used together with Usgard. It's a comfortable GUI which has extra features like APD, MPD and delete.</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard 1.5 or higher required.</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/custcust.zip">CustCust</A><BR>
+  <IMG SRC="img/screenshots/custcust.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>This is the ONLY program that allows to place normal Assembler programs in the CUSTOM menu, and therefore it's VERY useful! A must to download</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Sam Davies
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard standard shell required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/usgard.zip">Usgard (1.5)</A><BR>
+  <IMG SRC="img/screenshots/usgshell.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>A new generation of shell for the TI85. Smaller, but yet more powerful then ZShell this points the way to go. Most todays TI85 programs/games use Usgard over ZShell because of its advantages.<BR><BR>See <A HREF="articles/usgard_faq.html">Usgard FAQ</A> for more details.</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Icarus Productions
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">ROM 2.0 - 10.0 required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+</TABLE>
+<BR>
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=300 HEIGHT=23>Games<BR><IMG SRC="img/transparent.gif" WIDTH=298 HEIGHT=1></TH>
+ <TH BACKGROUND="img/web_top.gif" CLASS=nrm WIDTH=100>Author-Notes<BR><IMG SRC="img/transparent.gif" WIDTH=100 HEIGHT=1></TH>
+</TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/balloon.zip">Balloon (1.1)</A><BR>
+  <IMG SRC="img/screenshots/balloon.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>The thrilling story of a balloon which has to find his way through enemys, traps, etc.<BR>A fantastic game, well worth downloading!<BR>And if you get tired of the included levels, you can make your own ones using a PC level editor!</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">2K of free memory are required for level decompression</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/bd85.zip">Boulder Dash (1.0)</A><BR>
+  <IMG SRC="img/screenshots/bd85.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>A classic C64 game, now for your TI-85! Guide Rockford through caves filled with diamonds, fireflies, amoeba and other strange things!<BR><BR><B>The levels are from the original BoulderDash I!</B></DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Jimmy M&aring;rdell
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">ZShell or Usgard required.</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/mcmik.zip">M.C. Mik (1.1u)</A><BR>
+  <IMG SRC="img/screenshots/mcmik.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>A fascinating jump 'n' run game with great graphics. These are the adventures of M.C. Mik, who has to find his way home through 5 levels with various backgrounds, cool enemies and more! <B>New, free Usgard version of the ZShell classic</B>!<BR><BR><B CLASS=question>Olov Gredvall wrote: I've tried your excellent game on my TI-85 and I've never seen anything like it!! It's great!!</B><BR></DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">File itself needs 19K!<BR>Grayscale graphics require 3 additional KB free<BR>Usgard 1.5 or higher required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/mcmik2.zip">M.C. Mik #2 (1.0u)</A><BR>
+  <IMG SRC="img/screenshots/mcmik2.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>The second episode of the first jump 'n' run game for the TI-85. These are the adventures of M.C. Mik, who has to find his way home through 5 levels with various backgrounds, cool enemies and more! This version features better collision detection than the original.</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">File itself needs 17K!<BR>Grayscale graphics require 3 additional KB free<BR>Usgard 1.5 or higher required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/picross.zip">Picross (1.1)</A><BR>
+  <IMG SRC="img/screenshots/picross.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>Picross is a little puzzler game for Usgard. You have to draw images according to numbers. This version contains 100 levels!!</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard 1.5 or higher required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/pj1.zip">Plainjump (1.1)</A><BR>
+  <IMG SRC="img/screenshots/pj1.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>This is the second game Andreas Ess wrote for ZShell. You have to steer a marble over a plane with lots of holes.<BR>This file contains old classic for Usgard, about 1K smaller, with better perspective, 8 instead of 4 tiles, external level editor and a nifty title picture by Johannes Rajala!<BR><BR><B CLASS=question>Damien Vardelle wrote: Congratulations and thank you very much for your realistic, speedy and captivating Plainjump!</B><BR></DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard 1.1 or higher required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/pj2.zip">Plainjump II (1.0)</A><BR>
+  <IMG SRC="img/screenshots/pj2.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>The sequel to Plainjump. Now you may load up to 30 levels besides the built-in one, each level may have it's own saved game. Top 3 marbles, link playing feature(not included in 0.9b yet), cool grayscale graphics, 2 new plane types, etc. It's really worth to take a look at the beta.</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Grayscale graphics, needs 3K free memory</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/sqrxz85.zip">Sqrxz (1.01)</A><BR>
+  <IMG SRC="img/screenshots/sqrxz85.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>The first smooth scrolling jump'n'run game for the TI-85! Guide Sqrxz - a bug - through tricky levels to his home. Avoid spiktraps, nasty blobs, dangerours hedgehogs and flying bats!<BR>When you're tired of playing, you can create your own levels with the PC level editor!!<BR><BR><B CLASS=question>Josh Christensen wrote: Once again I have to say thanks for creating the absolute best game ever grace the ti85, sqrxz.</B><BR></DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Jimmy M&aring;rdell
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard 1.0 or higher required + about 2K of free memory.</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/squarez.zip">Squarez (1.0)</A><BR>
+  <IMG SRC="img/screenshots/squarez.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>A small, somewhat addictive game that reminds of Ttetris. The goal is to connect different pieces into 3x3 blocks as fast as possible. Not as easy as it sounds, because a lot of trash from previous pieces will be left on the screen.</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Jimmy M&aring;rdell
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">ZShell or Usgard required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/uchip8.zip">uChip8 (0.1)</A><BR>
+  <IMG SRC="img/screenshots/uchip8.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>uChip8 lets you play old CHIP8 and SCHIP8 games on your TI-85 calculator. CHIP8 was a popular game interpreter in the late 70s. SCHIP8 is an advanced version used in the early 90s to program games for the HP48 calcs. In the ZIP you'll find some games and an assembler to code your own games.</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard 1.5 or higher required</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/vert85.zip">Vertigo 85 (0.94)</A><BR>
+  <IMG SRC="img/screenshots/vertigo.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>In this very challenging game of skill, you have to guide a ball over an isometric 3D field to a gem stone. Vertigo features 50 levels, excellent grayscale graphics and a built-in editor.</DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Matthew Shepcar
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">1.5K for grayscale graphics</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/xc1701_2.zip">XC-1701 II (1.0)</A><BR>
+  <IMG SRC="img/screenshots/xc1701_2.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>The long awaited sequel to the almost classic shoot-em up game for the TI-85, XC-1701!! Features 14 enemies, difficult bosses, bonus, savegame and loadable levels!!<BR>Make your own levels using <A HREF="bin/programs/xcedit.zip">XCEDIT</A> by Stuntworks!<BR><BR><B CLASS=question>JayEll64@aol.com wrote: Awesome game, incredible graphics and gameplay! And challenging!</B><BR></DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Andreas Ess
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard 1.5 or higher required<BR><BR>About 1K necessary for level decompression</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="LEFT" ROWSPAN=2>
+  <A HREF="bin/programs/ztet85.zip">ZTetris (3.0)</A><BR>
+  <IMG SRC="img/screenshots/ztet85.gif" ALIGN="RIGHT" BORDER=1>
+  <DIV ALIGN=JUSTIFY>Who doesn't know this classical game? All features you ever wanted are here: 20 levels, trash rows, teacher key, hiscore table, and <I>linkplay</I>.<BR><BR><B CLASS=question>Philip R Dignard wrote: Just wanted to say that your ZTetris kicks serious ass.</B><BR></DIV>
+ </TD><TD ALIGN="CENTER" HEIGHT=16>Jimmy M&aring;rdell
+</TD></TR>
+<TR CLASS=nrm>
+ <TD ALIGN="CENTER">Usgard 1.0 or higher required.</TD>
+</TR>
+<TR><TD></TD><TD></TD></TR>
+</TABLE>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Tue Feb 01 22:55:28 2000
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="ti85.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,192 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - HiColour library</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<IMG SRC="img/hicol.jpg" ALIGN=LEFT BORDER=1>
+While gaming platforms such as the Nintendo 64 or the PC boast a wide variety of on-screen colors, the GameBoy Color™ is only able to show a total of 56 colors at once. Especially in a time where good presented games (this includes intro sequences, etc.) are a must, this lack of colors is a major drawback.<P>
+
+After more than half a year of work, we at Icarus Productions are thus proud to present you a valuable library for enhancing your GameBoy Color™ games. As shown on the next pages, our HiColour library provides an easy and flexible way to include stunning still pictures and even short FMV sequences in your games.<P>
+
+
+Using a special technique taking advantage of interrupts, we are able to increase the colors shown at once on the GameBoy Color's screen from 56 to as much as 2048. This technology can be used effectively in still pictures, as the large data to be processed by the CPU as well as some other hinderances don't allow for a whole game in HiColour. However, several effects, such as vertical scrolling or wobbling, as well as FMV sequences can be easily achieved with a few calls to our library.<P>
+
+<TABLE ALIGN=RIGHT WIDTH=210 BORDER=0 CELLSPACING=1 CELLPADDING=1 BGCOLOR=#000000>
+<TR><TD BGCOLOR=#FFFFFF><IMG SRC="img/hicolconv.jpg"></TD></TR>
+<TR><TD CLASS="tiny" BGCOLOR=#FFFFFF>Using the Windows-based conversion program, you can easily compare the original (left) and the converted picture.</TD></TR>
+</TABLE>
+Pictures can be drawn with any program that supports the Windows' BMP standard. These pictures can then be loaded into our conversion program, which takes care of dithering and filters (to reduce the "washed-out" colors effect of the GameBoy) as wanted by the user. There's even the possibility to make small changes to the converted picture with a small pencil. The then saved binary file can be included in the respective program and displayed with an easy call to the library.<P>
+
+The same goes for movies. All the user has to do is provide a standard Windows AVI file, the rest is done by the converter. There's even the possibility of also converting the digital sound of your movie and have it played back on the GameBoy Color. Due to lossy compression, there's a slight impact on the quality of the movie, however, this is made up with nearly three times as much frames as if it was not compressed.<P>
+
+<!-- <TABLE ALIGN=LEFT WIDTH=190 BORDER=0 CELLSPACING=1 CELLPADDING=1 BGCOLOR=#000000>
+<TR><TD BGCOLOR=#CCCCCC COLSPAN=2><B>Requirements</B></TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">ROM code</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>bytes</TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">RAM</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>bytes</TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">RAM (fade FX)</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>bytes</TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">Fullscreen pic</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>8192 bytes</TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">Fullscreen FMV (10 sec.)</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>bytes</TD></TR>
+</TABLE> -->
+During displayal of a picture or FMV, the library uses a considerable amount of CPU power. However, it is still possible to have an interrupt perform minor tasks in the back-ground, such as playback of music or a menu on the title screen. The program just has to keep the picture "alive" by calling a function at every start of a VBlank.<P>
+
+A few transition effects are included as well with the library in order to achieve a smooth blend from HiColour to normal pictures. These effects temporarily occupy RAM memory, which is of course freed up afterwards.<P>
+
+Several versions are available, reaching from simple displayal of images to top-notch FMV sequence playing. The ROM requirement of the code is minimal, and the images and movies are compressed as well, latter ones down to as much as 35% of their original size.<P>
+
+<!-- <TABLE ALIGN=RIGHT WIDTH=200 BORDER=0 CELLSPACING=1 CELLPADDING=1 BGCOLOR=#000000>
+<TR><TD BGCOLOR=#CCCCCC COLSPAN=2><B>Pricing</B></TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">Stills only</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>EUR</TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">+ FMV playback</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>EUR</TD></TR>
+<TR><TD BGCOLOR=#FFFFFF CLASS="tiny">+ audio support</TD><TD ALIGN=RIGHT BGCOLOR=#FFFFFF>EUR</TD></TR>
+</TABLE> -->
+All versions of the library come with extensive documentation, the conversion program, as well as sample code demonstrating how to use the various functions of the respective version.<P>
+
+For further information, don't hesitate to contact <A HREF="mailto:ess.andreas@cable.vol.at">Andreas Ess</A>! We're looking forward hearing from you!<P>
+
+
+<B>Related documents</B>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Download HiColour demo (coming soon)
+<LI><FONT FACE=Arial SIZE=2> HiColour is used in... (coming soon)
+<LI><FONT FACE=Arial SIZE=2> Interview on <A HREF=http://pocket.ign.com/news/9823.html>pocket.ign.com</A>
+<LI><FONT FACE=Arial SIZE=2> <A HREF="articles/hicol_faq.html">HiColour FAQ</A>
+</UL>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Tue Feb 01 23:02:26 2000
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="hicolour.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

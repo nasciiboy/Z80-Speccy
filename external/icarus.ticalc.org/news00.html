@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Past news 2000</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<A NAME="08/25/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Link to Sqrxz page added</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Marcus Westerlund, original author of Sqrxz, designed a little page dedicated to it, including a final Java version of the game: <A HREF=http://www.acc.umu.se/~macce/sqrxz/>The official Sqrxz homepage</A>.</DIV><BR><DIV ALIGN=RIGHT><I>added on 08/25/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="07/26/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>No, we're not dead</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>First, our apologies for not updating the website for such a long time. One reason for this is that there haven't been any news worth mentioning. Another reason is that many of us have been busy with other things. The current status of each member is as follows:<UL><LI><FONT FACE=Arial SIZE=2>Matthew is working for the company Möbius since February. He hardly had any involvement with IP, but the recent interest in the HiColour library convinced him to continue with the project.<LI><FONT FACE=Arial SIZE=2>Clement was busy with school until recently, he's back to action now.<LI><FONT FACE=Arial SIZE=2>Andreas is currently in the US, pursuing a summer job. He as well supports<LI><FONT FACE=Arial SIZE=2>Jimmy and Johannes, who are currently working on a GBC title.</UL>The recently gained interest in the HiColour library has convinced Matthew to continue working on it. We hope to be able to present you a demo of the library very soon.<BR>Seeing that we have received a healthy amount of mails with similar questions, we try to answer them here:<P>
+<B CLASS=question>Where can I download the HiColour library?</B><BR><BR>As of now, the library is not yet available. We hope to provide a demo within the month of August.<BR>Also, please note that you will only be able to download a demo, not the library. The library will only be available for a fee.<P>
+<B CLASS=question>How much will the library cost?</B><BR>No final price is set. The library will be available for commercial use only. There will be two version of the library, one with and one without a HiColour FMV player. The package will come with both the library and a windows based conversion program.<P>
+<B CLASS=question>Why charge for it when there are free HiColor converters available on the net?</B><BR>All public domain HiColor converters that we've seen appears to be very limited in usage. Our library will allow actual gameplay when displaying high quality HiColor pictures, with any number of sprites on the screen (up to the hardware maximum), digitzed samples and more, without consuming any extra CPU load.</DIV><BR><DIV ALIGN=RIGHT><I>added on 07/26/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="02/19/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Sqrxz online</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Both Sqrxz GBC and Willy Wonderworm GBC have been uploaded again. Former can be found on <A HREF="sqrxz.html">its own page</A>, latter in the <A HREF="others.html">others</A> section.<BR>Marcus Westerlund, original author of Sqrxz, is currently preparing a page dedicated to this popular J'n'R. He has also coded a nice Sqrxz applet, so you can play Sqrxz in your browser. Check the link on the Sqrxz page!</DIV><BR><DIV ALIGN=RIGHT><I>added on 02/19/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="02/12/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Webpage optimized</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>In order to shorten download times, the menus have been moved into a seperate file which only has to be loaded once, saving about 5KB on each HTML file.<BR>What's more, Andreas has completely rewritten the menu system, which should now work better in Internet Explorer and Netscape Navigator. Maybe it also fixes the Netscape crashing bug. Please let <A HREF="mailto:ess.andreas@cable.vol.at">Andreas</A> know of any bugs you encounter.</DIV><BR><DIV ALIGN=RIGHT><I>added on 02/12/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="02/09/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Icarus wins several awards</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>In the course of <A HREF=http://www.ticalc.org/mil/>ticalc.org and Dim-TI's</A> millenium awards, Icarus members and programs appeared in several categories' top ten lists. Top favourite was Jimmy, awarded best programmer and best game (ZTetris). Matthew and Andreas also made it into the Top 10 of the programmers, as well as our games Sqrxz and Bomberbloke in the game category. ZAC made it to the 3rd place in the assembly programs category, Usgard scored the 4th place at assembly shells, Rascall the 10th.<BR>Check out the lists <A HREF=http://calc.org/mil/milfinal.html>here</A>.</DIV><BR><DIV ALIGN=RIGHT><I>added on 02/09/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="02/06/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Bugs (Netscape) fixed</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>After quite some work, I hopefully have fixed the nasty problems with Netscape. Menus should disappear now and the (updated) About us page should work nicely, too. If you still encounter some bug, please <A HREF="mailto:ess.andreas@cable.vol.at">contact me</A> immediately!</DIV><BR><DIV ALIGN=RIGHT><I>added on 02/06/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="02/01/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>New page unveiled</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Finally, the new website of Icarus Productions is finished. The focus on GameBoy Color programming should come out more, we've streamlined some of the information a bit, while adding other articles. There is still some new information to come, and the news service will is supposed to work on a more regular basis again. Please <A HREF="mailto:support@icarus.ticalc.org">tell us</A> what you think of the new site!<BR>Note that there are still some minor things left, as well as problems with Netscape Communicator. These will be resolved during the next few days.</DIV><BR><DIV ALIGN=RIGHT><I>added on 02/01/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="01/31/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Released ION emulator</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Clem has finished Ion86, which allows to run most of the TI-83 programs written for this shell to be executed on a TI-86. Be sure to check out the emulator in the <A HREF="ti86.html">TI-86 section</A>.</DIV><BR><DIV ALIGN=RIGHT><I>added on 01/31/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="01/29/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Added new infos</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>In order to better represent our GameBoy Color products to publishers, we've added extensive information regarding the HiColour library and Sqrxz. More pages with project information and downloads will follow soon, so stay tuned.</DIV><BR><DIV ALIGN=RIGHT><I>added on 01/29/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="01/25/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>Michael Kristiansen joins IP</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>We have a new member! While the bulk of us will continue with GameBoy Color coding, Michael will take care of TI-89 related stuff, so we won't lose our original TI focus. He'll also be responsible for other general things, like webpage maintenance, etc.<BR>When checking the <A HREF="aboutus.html">about us section</A>, you'll also notice it's new layout. Hope you like it.</DIV><BR><DIV ALIGN=RIGHT><I>added on 01/25/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="01/24/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>New webpage design</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>Andreas and Johannes have yet again started with a new website design. Special focus lies in better a color scheme and fresher layout. We hope you like the new menu system, as well as the news system, which makes the front page not look too overloaded.</DIV><BR><DIV ALIGN=RIGHT><I>added on 01/24/2000</I></DIV></TD></TR>
+</TABLE><P>
+<A NAME="01/16/2000">
+<TABLE CLASS=nrm ALIGN=CENTER WIDTH=400 CELLSPACING=1 CELLPADDING=2 BORDER=0 BGCOLOR=#6800A0>
+<TR><TH CLASS=nrm BACKGROUND="img/web_top.gif" HEIGHT=23>First game in new millenium</TH></TR>
+<TR><TD CLASS=nrm BGCOLOR="#FFFFFF"><DIV ALIGN=JUSTIFY>We're lucky to present our first game in the year 2000: uploaded Ben's Kikstart to the <A HREF="http://icarus.ticalc.org/ti83.html">TI-83 section</A>.</DIV><BR><DIV ALIGN=RIGHT><I>added on 01/16/2000</I></DIV></TD></TR>
+</TABLE><P>
+
+brary has convinced Matthew to continue working on it. We hope to be able to present you a demo of the library very soon.[BR]Seeing that we have received a healthy amount of mails with similar questions, we try to answer them here:[P][QUESTION Where can I download the HiColour library?][BR]As of now, the library is not yet available. We hope to provide a demo within the month of August.[BR]Also, please note that you will only be able to download a demo, not the library. The library will only be available for a fee.[P][QUESTION How much will the library cost?]No final price is set. The library will be available for commercial use only. There will be two version of the library, one with and one without a HiColour FMV player. The package will come with both the library and a windows based conversion program.[P][QUESTION Why charge for it when there are free HiColor converters available on the net?]All public domain HiColor converters that we've seen appears to be very limited in usage. Our library will allow actual gameplay when displaying high quality HiColor pictures, with any number of sprites on the screen (up to the hardware maximum), digitzed samples and more, without consuming any extra CPU load.</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Jun 03 13:59:40 2001
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="news00.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

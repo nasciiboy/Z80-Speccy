@@ -1,0 +1,303 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - ZPC - problems 04/18/1999</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="../ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF link=#6800A0 vlink=#6800A0 LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="../bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="../img/web_left.gif"><A HREF="../index.html"><IMG src="../img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+The list of the winners of the contest which ended 04/18/99:<P>
+
+
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1>
+<TR>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=100 HEIGHT=23>Place</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=300>Name</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=50>Score</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=50>Sum</TH>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>1.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:clem@acz.org">Clem Vasseur & Gregory Apou</A></TD>
+ <TD ALIGN=CENTER>137</TD>
+ <TD ALIGN=CENTER><A HREF="win0418.zip">137</A></TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>2.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:JayEll64@aol.com">Jeff Hellrung, Macross Software</A></TD>
+ <TD ALIGN=CENTER>139</TD>
+ <TD ALIGN=CENTER>139</TD>
+</TR>
+<TR CLASS=nrm>
+ <TD ALGIN=CENTER>3.</TD>
+ <TD ALIGN=CENTER><A HREF="mailto:Ian.Collier@comlab.ox.ac.uk">Ian Collier</A></TD>
+ <TD ALIGN=CENTER>143</TD>
+ <TD ALIGN=CENTER>143</TD>
+</TR>
+</TABLE><P>
+
+
+This <A HREF="rout0418.zip">ZIP</A> contains all the solutions sent in. Be aware of the fact that some may not work!
+
+These were the problems to be solved:<P>
+
+
+<B>Optimization:</B> Size<P>
+
+
+Unless otherwise specified, all strings are Z-strings.<P>
+
+
+<TABLE CLASS=nrm WIDTH=100% ALIGN=CENTER CELLSPACING=1 BORDER=0>
+<TR BGCOLOR=#C4D4E4><TD><FONT SIZE=2><B>Problem &nbsp;</B></FONT></TD></TR>
+</TABLE><BR>
+Evaluate an arithmetic expression<P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> expression</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>If the expression is valid, the result should be stored in HL, and the carry flag should be cleared. If the expression is <I>not</I> valid (see below), the carry flag should be set, and A should be set to an error code: 1 = invalid expression, 2 = divison by zero. You don't have to set A to anything special if the expression is valid.</TD></TR>
+<TR><TD VALIGN=TOP>Special:</TD><TD>You may use 8 byte of temporary storage for scalars. You <I>don't</I> have to worry about the stack space not being big enough!</TD></TR>
+</TABLE><P>
+
+In this problem, an arithmetic expression (from now on referred to as <I>expr</I>) is any of the following...
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2>An integer <I>n</I>, where -32767 <=n <= 32767
+<LI><FONT FACE=Arial SIZE=2>-<I>n</I> (unary minus)
+<LI><FONT FACE=Arial SIZE=2>-(<I>expr</I>) (unary minus)
+<LI><FONT FACE=Arial SIZE=2><I>expr</I>+<I>expr</I>
+<LI><FONT FACE=Arial SIZE=2><I>expr</I>-<I>expr</I>
+<LI><FONT FACE=Arial SIZE=2><I>expr</I>*<I>expr</I>
+<LI><FONT FACE=Arial SIZE=2><I>expr</I>/<I>expr</I> (integer divison)
+<LI><FONT FACE=Arial SIZE=2>(<I>expr</I>)
+</UL>
+
+<I>Integer divison means that the result is truncated, and the remainder is discarded. For instance, 7/4=1, -23/5=-4.</I><P>
+
+
+Anything else is <I>not</I> an expression!! That means that <I>no blanks</I> are allowed! Furthermore, (), is <I>not</I> an expression.<P>
+
+
+<B>Precedense</B>
+<P>
+The precedense order is the same as in regular math, that is...
+
+<OL>
+<LI><FONT FACE=Arial SIZE=2>parenthesis
+<LI><FONT FACE=Arial SIZE=2>unary minus
+<LI><FONT FACE=Arial SIZE=2>multiplication and divison (from left to right)
+<LI><FONT FACE=Arial SIZE=2>addition and subtraction (from left to right)
+</OL>
+You do <I>not</I> have to worry about precedense order of errors. That is, no test data will have both divison by zero and an invalid expression...
+<P>
+
+
+
+
+<B>ASCII codes</B>
+<P>
+The ASCII codes for the valid characters are...
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2>0-9 has the ASCII codes 48-59 (dec) and 30-39 (hex)
+<LI><FONT FACE=Arial SIZE=2>+ has the ASCII code 43 (dec) and 2B (hex)
+<LI><FONT FACE=Arial SIZE=2>- has the ASCII code 45 (dec) and 2D (hex)
+<LI><FONT FACE=Arial SIZE=2>* has the ASCII code 42 (dec) and 2A (hex)
+<LI><FONT FACE=Arial SIZE=2>/ has the ASCII code 47 (dec) and 2F (hex)
+<LI><FONT FACE=Arial SIZE=2>( has the ASCII code 40 (dec) and 28 (hex)
+<LI><FONT FACE=Arial SIZE=2>) has the ASCII code 41 (dec) and 29 (hex)
+</UL>
+
+Note that unary minus and binary minus uses the same character!! This is usually
+not the case in calculators, math programs etc. This shouldn't cause any coding problems
+as, for instance, --5 is <I>not</I> a valid expression (but -(-5) is).<P>
+
+
+<B>Invalidity</B>
+<P>
+
+If an expression is invalid, the error can be...
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2>Invalid character (example: <I>5*x</I>)
+<LI><FONT FACE=Arial SIZE=2>End of parenthesis missing (example: <I>"5+(3+2"</I>)
+<LI><FONT FACE=Arial SIZE=2>Unexpected end of parenthesis (example: <I>"5*(2+3))"</I>)
+<LI><FONT FACE=Arial SIZE=2>Number missing (example: <I>"5-+2"</I>)
+</UL>
+
+All these examples should return with the carry flag set and A should equal 1.<BR>
+
+Another error is divison by zero (example: <I>3/(5-5)</I>) where the function should return with carry set and A=2.<P>
+
+
+<B>Important</B>
+<P>
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2>You <I>may</I> assume that all numbers will lie in the
+range -32767 - 32767 <I>and</I> that and partial result (if evaluated from
+left to right) will be in that range as well!
+<LI><FONT FACE=Arial SIZE=2>Since multiplication and divison is a bit tricky, you don't have to write
+those routines! You will be provided with two external routines, Mult and Div
+(download the file <A HREF="multdiv.h">multdiv.h</A>). The arguments to those
+routines are explained in the file <A HREF="multdiv.h">multdiv.h</A>).
+Note that you <I>must</I> use these routines!! Just don't include them in the
+source file when submitting - the size of the <A HREF="multdiv.h">multdiv.h</A>
+will not be counted anyway.
+<LI><FONT FACE=Arial SIZE=2>You do <I>not</I> have to worry about empty strings (that is, just a 0) because that special case is probably handled before calling the evaluation routine (if you were to implement the routine in a real program).
+</UL>
+
+<B>Examples</B>
+<P>
+
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "5*(2-8)/3"</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>HL = -10, NC</TD></TR>
+</TABLE><P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "-(76/8)"</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>HL = -9, NC</TD></TR>
+</TABLE><P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "32767-32767-32767"</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>HL = -32767, NC</TD></TR>
+</TABLE><P>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD VALIGN=TOP WIDTH=60>Input:</TD><TD>HL <FONT FACE="Symbol">®</FONT> "2*(((100--100))+((5--5)))*2</TD></TR>
+<TR><TD VALIGN=TOP>Output:</TD><TD>HL = 840, NC</TD></TR>
+</TABLE><P>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="../img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="../img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Apr 25 23:57:52 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="../img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="../img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="zpc_0418.html#top"><img src="../img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="../img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

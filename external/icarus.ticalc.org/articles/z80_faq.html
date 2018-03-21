@@ -1,0 +1,490 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Z80 FAQ</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="../ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF link=#6800A0 vlink=#6800A0 LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="../bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="../img/web_left.gif"><A HREF="../index.html"><IMG src="../img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<B CLASS=question>The Z80 processor? Never heard of that one!</B><BR>
+The Z80 is indeed a very old processor, I think it was first released in 1977 (correct me if I'm wrong). But it is still used in various hand-held calculators, and gaming consoles, as it is quite robust, fast (a 6MHz Z80 CPU is quite a bit faster than a 6MHz Intel CPU) and furthermore it doesn't need too much power.<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>Where is the Z80 used?</B><BR>
+I can only state a few examples: <A HREF=http://www.ti.com>TI-8x calculators</A>, <A HREF=http://www.nintendo.com>Nintendo Gameboy</A>, the <A HREF=http://www.sega.com>Sega Master System</A> and the Sinclair Spectrum, to name a few. I believe that is also used for various simple hardware as controller.<P>
+
+
+<B CLASS=question>Is the Z80 still being produced?</B><BR>
+The Z80 is still in production, but you can't get the chip from Zilog. You have to get it from other distributers, like <A HREF=http://www.jdrmicrodevices.com>this one</A>. They are really cheap, you can get the 5 MHz version for about $2, the 20 MHz version for $5.<P>
+
+
+<B CLASS=question>Do you know any good books on programming the Z80?</B><BR>
+"Programming the Z80" by Rodnay Zaks is BY FAR the best book on assembly language programming. There also exist some other useful ones, like "Z80 assembly language subroutines" by Lance A. Leventhal and Winthrop Saville. What's more, I suggest at least getting an opcode table, so you can look up all possible combinations while programming.<BR>You might also find some information on the net.<P>
+
+
+<B CLASS=question>An opcode - what's that?</B><BR>
+The Z80 is able to perform various instructions. An instruction specifies the operation to be performed by the microprocessor. From a simplified standpoint, every instruction may be represented as an opcode followed by an optional literl or address field, comprising one or two words. The opcode specifies the operation to be carried out.<P>
+
+
+<B CLASS=question>What is a register?</B><BR>
+For faster access, the CPU itself contains a few "variables", so-called registers. All main operations, like math, etc. are performed using these, as they can be accessed more quickly than the main memory.<BR>On the Z80, these registers are called: A, B, C, D, E, H, L (and IX, IY, F, I, R, SP: see below), A = accumulator being the most important one. As the Z80 is an 8-bit processor, these registers are all 8-bit wide, this means they can hold any value from 0-255 (= 8 bit or one byte). However, to store larger numbers, you can combine a few of them: BC, DE, HL. The result is a 16 bit register, having a range from 0-65535. Note that if you modify for instance B, the upper byte from BC will be modified, too:
+Given that BC is $467C. Now you execute the instruction:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld	B, $58	;load $58 (hexadecimal) into B
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+Then B will be equal to $58, and BC will be $587C. Same's true for DE and HL.
+<P>
+
+
+<B CLASS=question>You didn't mention the IX, IY, F, I, R and SP registers.</B><BR>
+These are special purpose registers. They can be only used (or directly accessed) for few operations:
+<UL>
+<LI><FONT FACE=Arial SIZE=2>The index registers <B>IX and IY</B> are mostly used as auxiliary HL. They are both 16 bit registers where you can't modify the upper/lower byte independently (without using special code). The reason for their name is that they can be used to index fields in a structure, like
+</UL>
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld	IX, $8000  ;point IX to memory location at $8000
+ld	A, (IX+$10);load A with value of memory location
+...		   ;at IX+$10 = $8010
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+<UL>
+This is of course comfortable in some cases, however, it is suggested to avoid using the index registers, as the execution is slower and one opcode needs more memory.
+<LI><FONT FACE=Arial SIZE=2>The <B>F</B> (flag) register is perhaps the most important one of those listed here. It contains the so-called flags, which store certain conditions after executing opcodes. The flag register is basically a normal 8 bit register, but each of the eight bits represent a flag:
+
+<PRE>
+| S | Z |   | H |P/V| N | C |
+
+S ... sign flag (P = plus / M = minus)
+Z ... zero flag (Z = zero flag set / NZ = not set)
+H ... used internally
+P ... parity (PE = even / PO = odd)
+N ... used internally
+C ... carry flag (C = carry flag set / NC = not set)
+</PRE>
+The S,Z,P and C flags can be checked using various instructions, like the conditional calls (call nc, ...) or jumps. The most important flags are the zero flag and the carry flag. The zero flag indicates whether the result of the last operation was zero (Z) or not (NZ). The carry flag indicates an overflow (i.e. if you add 20 to 240, even though the register only can handle numbers from 0-255, the carry flag will be set (C)).
+<LI><FONT FACE=Arial SIZE=2><B>I</B> is the interrupt register. It's an 8 bit register that contains the upperword of the interrupt table. (this is in most cases uninteresting, since the OS would handle it, like Usgard). This register is interrupt specific, you can only load it with A (the accumulator) or load A from it.
+<LI><FONT FACE=Arial SIZE=2>The <B>R</B> register is the memory refresh register. After each instruction, it'll be incremented. It can be used as a poor random number generator. Like the I register, it can only be loaded with A or the other way round.
+<LI><FONT FACE=Arial SIZE=2>The Stackpointer (<B>SP</B>) is a very important register, though it's changed most of time indirectly by PUSHing/POPing values to/from the <A HREF="z80_faq.html#stack">stack</A>.
+</UL>
+<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>How would you use S and P flags?</B><BR>
+These two flags can only be checked using the CALL or the JP instruction. The Sign flag is used to indicate whether the result of the last operation has a positive or negative result (that is, depending on the operation, the 7th bit or the 15th bit set to 1).<BR>
+The partiy/overflow flag performs two different functions. Specific instructions will set or reset this flag depening on the parity of the result, which is determined by counting the total number of ones in the result. If this number is odd, partiby bit will be set to 0, otherwise to 1. Parity is most frequently used on blocks of characters. The parity bit is an additional bit which is added to the seven-bit code representing the character, in order to verify the integrity of data which has been stored in a memory device. FOr example, if one bit in the code representing the character has been changed by accident, due to a malfunction in the memory device, then the total number of ones in the seven-bit code will have changed. This error can be detected using the parity flag.<BR>
+Furthermore, the parity flag is also used as an overflow flag. It detects the fact that, during an addition or subtraction, the sign of the result is "accidentally" changed due to the overflow of the result into the sign bit.<BR>
+Finally, this bit is also used for two unrelated functions: during the block transfer and search instructions, this flag is used to detect whether the counter register BC has attained the value 0.<P>
+
+
+<B CLASS=question>How can you represent negative numbers?</B><BR>
+Basically, the Z80 doesn't know real negative numbers. However, you can regard the numbers from 0-255 also as numbers from -128 to 127. Take a look at the following example:
+We want to add a number to A, which will result in an overflow. We'll see what happens.
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld      A, 10
+add     A, 254		;overflow: carry set, A = 8
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+As you see, the result is 8, which would be practically the same as if we would do a SUB 2. Generally speaking, this means that X+(256+Y) = X-Y. Example: 14+(256+(-1)) = 14+255 = 13, which is the same as 14-1. Of course, the compiler will accept code like this:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld      A, 14
+add     A, -1
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+This is of course more comfortable. As you can see above, negative 8 bit numbers reach from -128 to -1 to 127. This would be, converted with the formula above, 128 (10000000b) to 255 (11111111b) to 127 (01111111b). If you read this carefully, you should have noticed that negative numbers have bit 7 set. So bit 7 can also be referred to as "sign" bit.<BR>
+The same is true for 16 bit numbers, where the 15th bit can be treated as sign bit.
+<P>
+
+
+<B CLASS=question>And what about decimal numbers?</B><BR>
+You can handle decimal numbers on the Z80 in two ways:
+<UL>
+<LI><FONT FACE=Arial SIZE=2><B>Fixed-point decimal numbers:</B> divide a 16 bit (or more bits) number into two sections: integer and fractional part. Typically, you use the upper 8 bits as integer part and the lower 8 bits as fractional part, resulting in an accuracy of 1/256 = 0.0039. Addition and subtraction can be performed just as normal, but after multiplication and division, you have to correct the values again. (example: 8*8 would be $0800 * $0800 = $400000, you have to perform a shift right by 8 bits to get the correct number $4000).<BR>Fixed point numbers are typically faster, use them in critical passages where you don't need very accurate numbers.
+<LI><FONT FACE=Arial SIZE=2><B>BCD numbers:</B> this is an approach which can serve you with as accurate numbers as you want, however, processing time is slower and you need special routines. A BCD byte is parted in two 4 bit parts, each representing a number from 0-9. A BCD number can consist of as many BCD bytes as you want. Therefore, if you want to have a 20 digit number, you need 10 BCD bytes and an additional byte specifying the location of the decimal point. Mathematical operations are more difficult to perform, however, the Z80 serves with the DAA instructions, which will correct BCD numbers after addition, subtraction, etc.<BR>Use BCD if you need very huge or accurate numbers, but not in time-consuming passages.
+</UL>
+<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>Can you explain the basic arithmetic operations in BCD?</B><BR>
+Of course. The following functions for addition and subtraction assume that both BCD numbersare stored with their least significant digits at the lowest address. Both numbers <I>must have the same length.</I> Multiplication and division are pretty difficult to program in BCD, plus, they need about 520 bytes of free memory space. I might cover them later, but I don't think so.
+<UL>
+<LI><FONT FACE=Arial SIZE=2>Addition:<BR>
+<I>Input:</I> HL = base address of addend, DE = base address of adder, B = length of numbers<BR>
+<I>Output:</I> Addend replaced by addend plus adder
+</UL>
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld      A, B
+or      A
+ret     z	;test whether length = 0
+Loop:
+ld      A, (DE)	;get byte of adder
+adc     A, (HL)	;add it to addend, care for carry
+daa		;convert to BCD-decimal
+ld      (HL), A	;save number back in addend
+inc     HL	;next number
+inc     DE
+djnz    Loop   	;continue until all bytes summed
+ret
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+<UL>
+<LI><FONT FACE=Arial SIZE=2>Subtraction:<BR>
+Works nearly the same, but instead of the ADC, a SBC is used.<BR>
+<I>Input:</I> HL = base address of minued, DE = base address of subtrahend, B = length of numbers<BR>
+<I>Output:</I> Minuend replaced by minuend minus subtrahend
+</UL>
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+ld      A, B
+or      A
+ret     z	;test whether length = 0
+ex      DE, HL	;exchange subtrahend and minuend
+Loop:
+ld      A, (DE)	;get byte of minuend
+sbc     A, (HL)	;subtract byte of subtrahend
+daa		;convert to BCD-decimal
+ld      (DE), A	;save number back in minuend
+inc     HL	;next number
+inc     DE
+djnz    Loop	;continue until all bytes summed
+ret
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+
+<B CLASS=question>What's the purpose of the stack?</B><BR>
+The stack is used for two different things: first, for storing temporary values(PUSHing/POPing) and to store the return address of a calling program. Here's a little example:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+...			;DE contains some important number
+push    DE		;save DE onto the stack, as we'll
+...			;need it later on
+...			;use DE for other stuff meanwhile
+pop     DE		;now we need it, load it from stack.
+...
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+Notes: only 16 bit registers can be PUSHed/POPed: AF (A and flags), BC, DE, HL, IX, IY. Also, note that PUSHing isn't equal to saving. Here's a more precise example:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+...
+push    DE		;write DE to memory pointed to by SP-2,
+...			;decrement stack pointer by 2 bytes
+...
+push    HL		;write HL to memory pointed to by SP-2,
+...			;decrement SP by 2
+;NOTE: if you would now do a pop DE, DE would actually contain
+;the value of HL!
+pop     BC		;load BC with memory pointed to by SP,
+...			;this is, in fact, the previous HL.
+...			;After that, increment BC by 2
+...
+pop     DE		;load DE with memory pointed to by SP,
+...			;which is the same as the DE above.
+...			;Increment SP by 2 after that.
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+This could be looked at like this:
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+DE	->	(SP-2), SP = SP-2
+  HL	->	(SP-2), SP = SP-2
+  BC	<-	(SP), SP = SP+2
+DE	<-	(SP), SP = SP+2
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+<P>
+
+
+<B CLASS=question>How can I use the OR, AND &amp; XOR instructions?</B><BR>
+These instructions are used for bit manipulation. Before reading the following example, look at the following tables. The first number (in the tables, referred to as X) is on the Z80 always the A register, the second number (table: Y) can be any register or number. The tables only show what happens with each bit.
+
+<TABLE CELLSPACING=2 BORDER=0 CELLPADDING=3 WIDTH=90% ALIGN="CENTER">
+<TR><TH COLSPAN=3>AND</TH><TH COLSPAN=3>OR</TH><TH COLSPAN=3>XOR</TH></TR>
+<TR><TH CLASS="caption">X</TH><TH CLASS="caption">Y</TH><TH CLASS="caption">X and Y</TH><TH CLASS="caption">X</TH><TH CLASS="caption">Y</TH><TH CLASS="caption">X or Y</TH><TH CLASS="caption">X</TH><TH CLASS="caption">Y</TH><TH CLASS="caption">X xor Y</TH></TR>
+<TR><TD ALIGN=CENTER>1</TD><TD ALIGN=CENTER>1</TD><TH CLASS="caption">1</TH><TD ALIGN=CENTER>1</TD><TD ALIGN=CENTER>1</TD><TH CLASS="caption">1</TH><TD ALIGN=CENTER>1</TD><TD ALIGN=CENTER>1</TD><TH CLASS="caption">0</TH></TR>
+<TR><TD ALIGN=CENTER>1</TD><TD ALIGN=CENTER>0</TD><TH CLASS="caption">0</TH><TD ALIGN=CENTER>1</TD><TD ALIGN=CENTER>0</TD><TH CLASS="caption">1</TH><TD ALIGN=CENTER>1</TD><TD ALIGN=CENTER>0</TD><TH CLASS="caption">1</TH></TR>
+<TR><TD ALIGN=CENTER>0</TD><TD ALIGN=CENTER>1</TD><TH CLASS="caption">0</TH><TD ALIGN=CENTER>0</TD><TD ALIGN=CENTER>1</TD><TH CLASS="caption">1</TH><TD ALIGN=CENTER>0</TD><TD ALIGN=CENTER>1</TD><TH CLASS="caption">1</TH></TR>
+<TR><TD ALIGN=CENTER>0</TD><TD ALIGN=CENTER>0</TD><TH CLASS="caption">0</TH><TD ALIGN=CENTER>0</TD><TD ALIGN=CENTER>0</TD><TH CLASS="caption">0</TH><TD ALIGN=CENTER>0</TD><TD ALIGN=CENTER>0</TD><TH CLASS="caption">0</TH></TR>
+</TABLE>
+
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+;Examples for AND, OR, XOR.
+;Using binary numbers to demonstrate effect.
+ld      A, 10010101b
+and     00001111b	;after that, A = 00000101b
+ld      B, 11000000b
+or      B		;A = A or B = 11000101b
+xor     11111111b	;A = A xor 11111111b = 00111010b
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+<P>
+
+
+<B CLASS=question>What about the shift instructions? (SLA, SRL, RRC, etc.)</B><BR>
+Shifting is the process of moving the bits inside a byte to the left or the right. Shifting left (SLA) will move bit 0 to bit 1, bit 1 to 2, ... and bit 7 to carry. Bit 0 will be set to 0. When shifting right, there are two modes: arithmetical (SRA) and logical (SRL, being the commonly used one). Logical shifting right is the opposite of shifting left, i.e. bit 7 -> bit 6, etc. bit 0 -> carry, bit 7 will be set 0. Arithmetical shifting nearly works like this, but bit 7 is preserved. This is useful when working with negative numbers(see above), as the sign is kept.<BR>
+Often, shifting is used as a faster alternative to multiplication by 2 or division by 2.<BR>
+Rotation is practically the same as shifting, but the last bit (i.e. 7 or 0) won't get "lost". The Z80 differs between 9-bit rotation (RR - instructions) and 8-bit rotation (RRC - instructions). While 9-bit rotation left will move the 7th bit into the carry AND the carry into bit 0 (i.e. carry is the 9th bit), 8-bit rotation will directly move the 7th bit into the 0th bit and set the carry to this value. Rotation right works the other way round, this means that 0th bit is stored in 7th bit / carry.
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+;Examples for shift instructions
+ld      A, 00001000b
+sla     A		;now, A = 000100000b, Carry = 0
+ld      B, 10000000b
+sla     B		;B = 00000000b, Carry = 1
+ld      C, 00110010b
+srl     C		;C = 00011001b, Carry = 0
+rrc     C		;C = 10001100b, Carry = 1
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>How can I have a list of numbers?</B><BR>
+This is a pretty simple task. First, you have to reserve as many bytes as you need. For instance, if you need 10 numbers, each 1 byte, you reserve 10 bytes. Let's pretend that you got a label called LIST, which contains 10 1-byte numbers.
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+LIST:
+ .db 10,9,8,7,6,5,4,3,2,1
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+Then, you need some function to access a certain number from this list. The following function, GetElement, needs two inputs: HL is a pointer to the list, and A is the index of the number you want to retrieve. Upon return, A will contain the correct number.
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+GetElement:
+ld      E, A	;load DE with the index
+ld      D, 0
+add     HL, DE	;add index to list pointer
+ld      A, (HL)	;get number out of list into A
+ret
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+Pretty simple, isn't it? Now, you could add code to preserve that A is too big, but this isn't too important usually. If you wanted 2 byte numbers, you'd call the ADD HL, DE two times, and load the number into a 16 bit register pair.
+<P>
+
+
+<!-- <IMG SRC=/img/newfaq.gif> --><B CLASS=question>And what about matrices?</B><BR>
+Matrices can be treated nearly equally to lists. However, it is suggested to use formats where the width is 2^n (2, 4, 8, 16, 32, ...). This makes it more easy to write the matrix-GetElement code.<BR>
+In memory, the matrix is stored like a list of wdt*hgt elements: there are hgt lines, each having wdt elements. You can see below how a matrix can be stored.<BR>
+Basically, you can access an element from a matrix using a formula like this A = DE+(C*wdt+B), C being row, B column to read, and DE pointer to the matrix.<BR>
+The code is for matrices with a width of 16, it can be easily modified though.
+<P>
+<TABLE WIDTH=400 ALIGN=CENTER BGCOLOR=#606060>
+<TR><TD>
+<PRE CLASS=code>
+GetElement:
+ld      L, C	;get row
+ld      H, 0
+add     HL, HL	;*2
+add     HL, HL	;*4
+add     HL, HL	;*8
+add     HL, HL	;*16 -> HL = C * 16
+add     HL, DE	;add to matrix pointer
+ld      E, B	;get column
+ld      D, 0
+add     HL, DE
+ld      A, (HL)	;get element
+ret
+;Matrix stored like this:
+.db 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1	;row 1
+.db 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1	;row 2
+.db ...
+</PRE>
+</TD></TR>
+</TABLE>
+<P>
+<P>
+If you want to add a new question mail to <A HREF="mailto:ess.andreas@cable.vol.at">Andreas Ess</A>.<BR>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="../img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="../img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Tue Mar 23 15:45:38 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="../img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="../img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="z80_faq.html#top"><img src="../img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="../img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

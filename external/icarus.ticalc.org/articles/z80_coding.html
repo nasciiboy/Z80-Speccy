@@ -1,0 +1,195 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Z80 coding</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="../ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF link=#6800A0 vlink=#6800A0 LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="../bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="../img/web_left.gif"><A HREF="../index.html"><IMG src="../img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+This section is dedicated to those who want to learn programming the Z80. These page's focus is on the TI-85, but it also contains some tips for general Z80 programming.<P>
+
+
+<TABLE CLASS=nrm WIDTH=400 CELLSPACING=0 BORDER=0 ALIGN=RIGHT>
+<TR><TD BACKGROUND="../img/title.gif" HEIGHT=20 ALIGN=RIGHT><FONT SIZE=3 COLOR=#FFFFFF><B>Tutorials for Z80-beginners</B></FONT></TD></TR>
+</TABLE><BR><BR><P>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> You might consider either reading a book like <I>Rodnay Zak's PROGRAMMING THE Z80</I> or visiting <A HREF=http://www.acc.umu.se/~yarin/usgard.html>Jimmy M&aring;rdell's ZShell/Usgard school</A> which will leads you in small steps to TI-85 assembly programming using ZShell.
+<LI><FONT FACE=Arial SIZE=2> <A HREF=http://www.ticalc.org>TICALC.ORG</A> not only contains lots of programs and useful source code snippets, it also has an <A HREF=http://www.ticalc.org/articles/index.html>Usgard programming tutorial</A>. <A HREF=http://www.ticalc.org/pub/85/asm/shells/usgard.zip>Usgard</A> is the best shell available for the TI-85.
+<LI><FONT FACE=Arial SIZE=2> There are also some compilers for higher level languages floating around in the net. You may want give <A HREF=http://www.ticalc.org/pub/dos/asm/smallc41.zip>Small C</A> or <A HREF=http://www.ticalc.org/pub/dos/asm/usul.zip>USUL</A> a try. They are quite simple to learn and yet provide full assembly support.
+<LI><FONT FACE=Arial SIZE=2> In addition to this, you might want to join the <I>assembly-85</I> list. This is a good place to discuss TI-85 programming related topics. To join, go to <A HREF=http://www.ticalc.org>TICALC.ORG</A>.
+<LI><FONT FACE=Arial SIZE=2> If you have severe problems with a program, and you need some help, <A HREF="http://icarus.ticalc.org/contact.html">contact us</A>
+</UL>
+
+<TABLE CLASS=nrm WIDTH=400 CELLSPACING=0 BORDER=0 ALIGN=RIGHT>
+<TR><TD BACKGROUND="../img/title.gif" HEIGHT=20 ALIGN=RIGHT><FONT SIZE=3 COLOR=#FFFFFF><B>Tips, tricks, FAQs &amp; more</B></FONT></TD></TR>
+</TABLE><BR><BR><P>
+<TABLE CLASS=nrm WIDTH=400 CELLSPACING=0 BORDER=0 ALIGN=RIGHT>
+<TR><TD BACKGROUND="../img/title.gif" HEIGHT=20 ALIGN=RIGHT><FONT SIZE=2 COLOR=#FFFFFF><B>Speeding up your programs</B></FONT></TD></TR>
+</TABLE><BR><BR><P>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Use <A HREF=http://www.ticalc.org/pub/85/asm/shells/usgard.zip>Usgard's</A> built-in functions, which are fully optimized.
+<LI><FONT FACE=Arial SIZE=2> This is a <A HREF="z80_opt.html">short list</A> covering general Z80 optimization techniques
+</UL><P>
+
+<TABLE CLASS=nrm WIDTH=400 CELLSPACING=0 BORDER=0 ALIGN=RIGHT>
+<TR><TD BACKGROUND="../img/title.gif" HEIGHT=20 ALIGN=RIGHT><FONT SIZE=2 COLOR=#FFFFFF><B>Making your program smaller</B></FONT></TD></TR>
+</TABLE><BR><BR><P>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Use as many relocations and rom calls as possible
+<LI><FONT FACE=Arial SIZE=2> Don't use ZShell, but <A HREF=http://www.ticalc.org/pub/85/asm/shells/usgard.zip>Usgard</A>!
+<LI><FONT FACE=Arial SIZE=2> Check out this <A HREF="z80_opt.html">short list</A> (same as above)
+</UL><P>
+
+<TABLE CLASS=nrm WIDTH=400 CELLSPACING=0 BORDER=0 ALIGN=RIGHT>
+<TR><TD BACKGROUND="../img/title.gif" HEIGHT=20 ALIGN=RIGHT><FONT SIZE=2 COLOR=#FFFFFF><B>FAQs</B></FONT></TD></TR>
+</TABLE><BR><BR><P>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Concerning <A HREF=http://www.ticalc.org/faq/index.html>TI calculators</A>
+<LI><FONT FACE=Arial SIZE=2> Concerning <A HREF="z80_faq.html">general Z80 programming</A>
+<LI><FONT FACE=Arial SIZE=2> Concerning <A HREF="usgard_faq.html">Usgard / Usgard programming</A>
+</UL><P>
+
+<TABLE CLASS=nrm WIDTH=400 CELLSPACING=0 BORDER=0 ALIGN=RIGHT>
+<TR><TD BACKGROUND="../img/title.gif" HEIGHT=20 ALIGN=RIGHT><FONT SIZE=2 COLOR=#FFFFFF><B>Check this out!</B></FONT></TD></TR>
+</TABLE><BR><BR><P>
+<UL>
+<LI><FONT FACE=Arial SIZE=2> <B>You need <A HREF=http://www.ticalc.org/pub/dos/asm/tasm301.zip>TASM</A> to compile programs!</B> (I suggest downloading the complete <A HREF=http://www.ticalc.org/pub/85/asm/shells/usgard.zip>Usgard package</A>)
+<LI><FONT FACE=Arial SIZE=2> You don't have a TI-8x calc? Get the <A HREF=http://www.ti8xemu.home.ml.org>TI-8x emulator</A>!
+<LI><FONT FACE=Arial SIZE=2> Andi's <A HREF=http://andi.ganymed.org>homepage</A> contains his games, Usgard infos and some more TI stuff!
+</UL>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="../img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="../img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Wed Jan 06 10:29:38 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="../img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="../img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="z80_coding.html#top"><img src="../img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="../img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

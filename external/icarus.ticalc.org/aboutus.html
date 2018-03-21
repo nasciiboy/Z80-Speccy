@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - About us</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="img/web_left.gif"><A HREF="index.html"><IMG src="img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="img/web_top.gif"> 
+     <A CLASS=contents HREF="features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<!--
+<SCRIPT LANGUAGE="JavaScript1.2">
+
+names = new Array("Andreas Ess","Michael Kristiansen","Jimmy M&aring;dell","Johannes Rajala","Matthew Shepcar","Clement Vasseur","Ben Wise");
+position = new Array("President","Programmer","Lead programmer","Lead artist","Lead programmer","Lead programmer","Programmer");
+jobs = new Array("C/C++, Pascal, Z80 ASM coding<BR>Game design<BR>Composing<BR>Webpage maintenance","Z80/m68k ASM<BR>Game design<BR>Webpage maintenance","Pascal, C/C++, Z80/x86/m68k ASM, algorithm coding<BR>Game design","2D and 3D graphics<BR>Game design","Z80/x86/6502 ASM &amp; C/C++ coding<BR>Game design","Z80/m68k ASM & C/C++ coding<BR>Game design","Z80/x86/m68k ASM &amp; C/C++ programmer<BR>Musician");
+email = new Array("ess.andreas@cable.vol.at","mike_emk@hotmail.com","yarin@acc.umu.se","carrot@sgic.fi","m@shepcar.force9.co.uk","darkclem@wanadoo.fr","bwise@labyrinth.net.au");
+age = new Array("20","19","21","22","20","18","22");
+nation = new Array("Austrian","Swedish","Swedish","Finnish","British","French","Australian");
+
+function SetRecord(no) {
+ _name.innertext = names(no);
+ _pos.innertext = position(no);
+ _jobs.innertext = jobs(no);
+ _email.innertext = email(no);
+ _age.innertext = age(no);
+ _nation = nation(no);
+}
+
+</SCRIPT>
+-->
+
+Icarus Productions is a group of 7 highly-skilled youth who are full of new ideas. We have done several <A HREF="http://icarus.ticalc.org/projects.html">projects</A> for the <A HREF="ti85.html">TI-8x calculators</A> (Z80 Asm), the <A HREF="http://icarus.ticalc.org/gb.html">Game Boy Color</A><SUP>TM</SUP> and the <A HREF="http://icarus.ticalc.org/pc.html">PC</A> and we're always working on new programs &amp; games.<P>
+
+
+<I>Attention Publishers:</I> learn more about us and our programs <A HREF="pubinfo.html">here</A>.<P>
+
+
+Move the mouse over members' names to learn more about each:<BR>
+<TABLE WIDTH="407" HEIGHT="180" BORDER="0" CELLSPACING="4" CELLPADDING="0" VALIGN="top">
+<TR><TD WIDTH="130" VALIGN="top"> 
+ <IMG SRC="img/bar_members.gif" WIDTH="130" HEIGHT="16">
+  <LI> <A HREF="mailto:ess.andreas@cable.vol.at" onMouseOver=SetRecord(0)>Andreas Ess</A>
+  <LI> <A HREF="mailto:mike_emk@hotmail.com"  onMouseOver=SetRecord(1)>Michael Kristiansen</A>
+  <LI> <A HREF="mailto:yarin@acc.umu.se" onMouseOver=SetRecord(2)>Jimmy M&aring;rdell</A>
+  <LI> <A HREF="mailto:carrot@sgic.fi" onMouseOver=SetRecord(3)>Johannes Rajala</A>
+  <LI> <A HREF="mailto:darkclem@wanadoo.fr" onMouseOver=SetRecord(4)>Matthew Shepcar</A>
+  <LI> <A HREF="mailto:m@shepcar.force9.co.uk" onMouseOver=SetRecord(5)>Clement Vasseur</A>
+  <LI> <A HREF="mailto:bwise@labyrinth.net.au" onMouseOver=SetRecord(6)>Ben Wise</A>
+</TD><TD WIDTH=1 BGCOLOR=#000000>
+ <IMG SRC="img/transparent.gif" WIDTH=1 HEIGHT=16>
+</TD><TD WIDTH=276 VALIGN=top BGCOLOR=#CCCCCC>
+ <TABLE WIDTH=99% CELLPADDING=1 CELLSPACING=0 BORDER=0>
+  <TR><TH VALIGN=TOP WIDTH=60>Name</TH><TD><DIV ID="_name">Andreas Ess</DIV></TD></TR>
+  <TR><TH VALIGN=TOP WIDTH=60>Position</TH><TD><DIV ID="_pos">President</DIV></TD></TR>
+  <TR><TH VALIGN=TOP WIDTH=60>Jobs</TH><TD><DIV ID="_jobs">C/C++, Pascal, Z80 ASM coding<BR>Game design<BR>Composing<BR>Webpage maintenance</DIV></TD></TR>
+  <TR><TH VALIGN=TOP WIDTH=60>Email</TH><TD><A HREF="aboutus.html" ID="_email">ess.andreas@cable.vol.at</A></TD></TR>
+  <TR><TH VALIGN=TOP WIDTH=60>Age</TH><TD><DIV ID="_age">20</DIV></TD></TR>
+  <TR><TH VALIGN=TOP WIDTH=60>Nationality</TH><TD><DIV ID="_nation">Austrian</DIV></TD></TR>
+</TD></TR>
+</TABLE>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Sep 02 16:23:28 2001
+</FONT></B></I></TD>
+    <TD BACKGROUND="img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="aboutus.html#top"><img src="img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

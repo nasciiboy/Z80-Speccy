@@ -1,0 +1,333 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - ZPC - general rules</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="../ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF link=#6800A0 vlink=#6800A0 LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="../bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="../img/web_left.gif"><A HREF="../index.html"><IMG src="../img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../articles/hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+<B CLASS=question>What is it?</B><BR>
+The Z80 Programming Competition (from now on refered to as ZPC) is a programming competition where the objective is to write small and/or fast routines (functions) in Z80 assembly. The routine(s) should solve one or more problems, stated in each round. Each round will last for one or more weeks (depending on the nature of the problems) and will contain one to four problems.<P>
+
+
+<B CLASS=question>What kind of problems will there be?</B><BR>
+All problems will be platform independent; the routine should work on all kind of computers and electronical devices with a Z80 processor.<P>
+
+
+The problems will most of the time be quite simple to solve; the competition is about making the program as small (in bytes) as possible and/or as fast (in T-states) as possible.<P>
+
+
+Some (short) problem statments could be to write a routine that...<P>
+
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2> ...mirrors the bits in a byte (ie, turn 10110100b into 00101101b).<BR>
+<LI><FONT FACE=Arial SIZE=2> ...converts a string to uppercase.<BR>
+<LI><FONT FACE=Arial SIZE=2> ...sorts a set of 8 bit integers using a specific algorithm.<BR>
+</UL>
+
+This is not a beauty contest! If your code looks nice and clean, it's a bad sign! :-)<P>
+
+
+<B CLASS=question>More details on the rules please!</B><BR>
+The following rules are <I>important</I> so please read them carefully!!! Specific problems may override one or more of these rules, but this is mentioned in the problem statement specifically!<P>
+
+
+<I>INPUT</I>
+<UL>
+Except for the parameters passed to the routine, you may <I>not</I> assume that any register holds any specific value when the routine is called. Exceptions are bit 7 in R and bit 0 in SP, which will both be 0.
+</UL><P>
+
+
+<I>OUTPUT</I>
+<UL>
+The output is in most problems done by setting one (or more) registers to "the answer", or change some part of the memory according to the problem statement. All other registers may be "trashed" by the routine (exception: upon return from the routine, SP should be equal to the value  it had when the routine was being called).
+</UL><P>
+
+
+<I>MEMORY</I>
+<UL>
+Temporary variables may by default <I>not</I> be used (most of the times the registers are enough). However, a lot of problems will allow a certain number of bytes to be used for temporary storage. These temporary bytes will <I>not</I> be counted in the program size.<BR>
+If temporary memory is allowed, you may assume that the label TEMP equals an address in the memory which is the start of the temporary memory. You can then, in the beginning of the program, define temporary variables like this:<BR><BR>
+var1 = TEMP<BR>
+var2 = TEMP+1
+</UL><P>
+
+
+<I>SELF-MODIFYING CODE</I>
+<UL>  
+By default, the program is assumed to lie in the RAM, so it is allowed to modify the code and change opcodes of code to be run in the future. The self-modifying code must not "destroy" the function. That is, the function must be able to execute again (any number of times).<BR>Changes in predefined data (like arrays) follow the same rules as self-modifying data.<BR>
+<I>Note</I>: If temporary variables are not allowed, you may reserve memory in the code and use this memory as variable storage. This will, of course, make the routine bigger...
+</UL><P>
+
+
+<I>LOCATION</I>
+<UL>
+The start of the program will be at a random address. Thus you can <I>not</I> assume that the routine will start on, say, an even $100 address. This includes predefined data. You may, however, align predefined data like this: (with TASM syntax)<BR>
+.org ($+7)&$FFF8<BR><BR>
+However, this will cost you 7 bytes (worst case).
+</UL><P>
+
+
+<I>RESTRICTIONS</I>
+<UL>
+You may <I>not</I> use any instructions refering to interrupts: DI, EI, LD A,I, LD I,A, RETI and RETN.<BR>
+You may <I>not</I> use the shadow registers (instructions EX AF,AF', EXX)<BR>
+You may <I>not</I> change any part of the memory which is not code or predefined data (self-modifying code) or temporary variables. The only exception to this is the stack, which can be assumed to fit $100 bytes ($80 pushes) unless otherwise specified.
+</UL><P>
+
+
+<I>MISCELLANEOUS</I>
+<UL>
+You <I>are</I> allowed to use undocumented opcodes. If there are any problems determining the speed the instructions, the instruction will be counted as taking 20 T-states.<BR>
+The routine should end with a RET (or RET <condition>) instruction.<BR>
+You may assume that the code is run when interrupts are disabled.<BR>
+You may use some subroutine in two or more of your problems. However, notice that its size will be counted <I>for each</I> problem, and not only once!
+</UL><P>
+
+  
+<B CLASS=question>Who is the winner?</B><BR>
+Each person submitting a <I>valid</I> solution will get a score. Depending on the round, the score will either be the sum of the sizes of the routines, or the sum of the average number of T-states required by each routine. Please note that you will only get a score if your solution is valid, that is, you must have solved all problems in the round.<P>
+
+You may submit a solution any number of time during the week(s), either to make your solution valid or to improve (optimize it). If your solution is not valid, you will get an e-mail within 24 hours of your submission telling you that your solution is not valid.<P>
+
+The winner is the person with the <I>lowest</I> score (of course...). In the case of a tie (which is likely to happen), the winner will be the one who submitted his/her solution <I>first</I>. So, submit early!!!<P>
+
+
+<B CLASS=question>How do I submit a solution?</B><BR>
+By sending an e-mail to <A HREF="mailto:yarin@acc.umu.se">yarin@acc.umu.se</A> with the header SUBMIT. The e-mail should include...<P>
+
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Your real name
+<LI><FONT FACE=Arial SIZE=2> Your e-mail address
+<LI><FONT FACE=Arial SIZE=2> The source code to all routines
+</UL>
+
+<I>All submitted source code may be published on the competition page after the round has been finished!!</I><P>
+
+
+<B CLASS=question>Is there a highscore table I can watch during the competition week?</B><BR>
+Yes, you will be able to check how your solution compares to the others during the week, and thus know if you should try to optimize it. Note that you will only be able to see the score of each entry, not the individual routine sizes (or T-states).<P>
+
+The highscore table will be updated as soon as an entry have been verified.<P>
+
+
+<B CLASS=question>What about the winner?</B><BR>
+The winner will be mentioned on this web site, including the trophy with his/her name on it. Furthermore, he/she'll be included in the list of previous winners.<P>
+
+
+<B CLASS=question>How about an example...?</B><BR>
+Below follows an example of a round specification consisting of two (small) problems:<P>
+
+
+<B>Optimization:</B><BR>
+Size<P>
+
+
+<B>Problem 1:</B><BR>
+Write a routine which complements the Zero flag, and preserve the values of <I>all</I> other registers, <I>including</I> all other flags:<P>
+
+<TABLE BORDER=0>
+<TR><TD><I>Input</I>:</TD><TD>None</TD></TR>
+<TR><TD><I>Output</I>:</TD><TD>Zero flag complemented</TR>
+</TABLE><P>
+
+
+<B>Problem 2:</B><BR>
+Write a routine which reverses a null-terminated string of any size (<64k):<P>
+
+<TABLE BORDER=0>
+<TR><TD><I>Input</I>:</TD><TD>HL -> Null-terminated string</TD></TR>
+<TR><TD><I>Output</I>:</TD><TD>The string pointed to by HL is reversed (HL may be trashed)</TD></TR>
+<TR><TD><I>Spec.</I>:</TD><TD>You may NOT use any temporary storage!!! Since there is no limit of the string size, you can't reserve any memory for it.</TD></TR>
+</TABLE><P>
+
+
+Example e-mail:<P>
+
+
+<PRE>
+Subject: SUBMIT<BR>
+
+Name: Jimmy M&aring;rdell<BR>
+E-mail: yarin@acc.umu.se<BR>
+
+Problem 1
+---------
+ push  af
+ ex    (sp),hl
+ ld    a,l
+ xor   $40
+ ld    l,a
+ ex    (sp),hl
+ pop   af
+ ret
+
+
+Problem 2
+---------
+ push  hl
+ xor   a
+ ld    b,a
+ ld    c,a
+ cpir 
+ dec   hl
+ pop   de 
+Loop:
+ push  hl
+ or    a
+ sbc   hl,de
+ pop   hl
+ ret   z      ; Must check for equality twice... carry won't do
+ dec   hl
+ push  hl
+ or    a      ; Maybe not necessary
+ sbc   hl,de  ; in case of overflow
+ pop   hl
+ ret   z
+ ld    a,(de)
+ ld    b,(hl)
+ ld    (hl),a
+ ld    a,b
+ ld    (de),a
+ inc   de
+ jr    Loop
+</PRE>
+
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="../img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="../img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Tue Mar 23 15:54:30 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="../img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="../img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="zpc_rule.html#top"><img src="../img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="../img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,233 @@
+<!-- This page generated automatically by Icarus' HTMLWiz. http://icarus.ticalc.org -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML LANG="en-US">
+<HEAD>
+<META HTTP-EQUIV="Author" CONTENT="Andreas Ess">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="DESCRIPTION" CONTENT="Icarus Productions produces state-of-the-art Gameboy Color and TI-8x software">
+<META NAME="KEYWORDS" CONTENT="Icarus, Icarus Productions, icarus productions, productions, Andreas Ess, Johannes Rajala, Jimmy Mardell, Matthew Shepcar, Clem Vasseur, Usgard, Daedalus, Pc, Computer, Computers, OpenGL, TI-85, TI85, TI-86, TI86, Game Boy, Gameboy Color, Gbc, Texas Instruments, TI, Calculator, Calculators, Sqrxz, Balloon, XC-1701, Planejump, Plainjump">
+<TITLE>Icarus Productions - Optimization</TITLE>
+
+<LINK REL=stylesheet TYPE="text/css" HREF="../ip.css">
+<SCRIPT language="JavaScript">
+<!--
+var isNS = (navigator.appName == "Netscape");
+var isDynamic = (document.layers || document.all);
+var layerRef = (isNS) ? "document" : "document.all";
+var styleRef = (isNS) ? "" : ".style";
+var l, r, b;
+var pos = new Array(200,24, 315,24, 435,24, 531,24, 595,120);
+
+function showLayer() {
+ var i, j, vis, args;
+ l = 1000;
+ j = r = b = 0;
+ args = showLayer.arguments;
+ for(i=1;i<6;i++) {
+  vis = 0;
+  if(j<args.length)
+   if(args[j]==i) { vis = 1; j++; }
+
+  menuID = "Lyr" + i;
+  if(vis) 
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "visible"');
+  else
+   eval(layerRef + '["' + menuID + '"]' + styleRef + '.visibility = "hidden"');
+  
+  if(vis) {
+   if(l>pos[(i-1)*2]) l = pos[(i-1)*2];
+   if(r<pos[(i-1)*2]+160) r = pos[(i-1)*2]+160;
+   if(isNS) {
+    document[menuID].left = pos[(i-1)*2] + 5;
+    document[menuID].top = pos[(i-1)*2+1] - 4;
+    if(b<args[j-1]+document[menuID].clip.bottom) b = args[j-1]+document[menuID].clip.bottom;
+   } else {
+    document.all[menuID].style.pixelLeft = pos[(i-1)*2];
+    document.all[menuID].style.pixelTop = pos[(i-1)*2+1];
+    if(b<pos[(i-1)*2+1]+150) b = pos[(i-1)*2+1]+150;
+   }
+  }
+ }
+}
+
+function killMenu(evt) {
+ if(isNS) {
+  if(evt.pageX<l||evt.pageX>r||evt.pageY>b) showLayer();
+ } else
+  if(window.event.clientX<l||window.event.clientX>r||window.event.clientY>b) showLayer();
+}
+
+function Init() {
+ if(isDynamic) {
+  if(isNS) {
+   document.captureEvents(Event.MOUSEMOVE); 
+   document.onmousemove = killMenu;
+  } else document.onmousemove = killMenu;
+ }
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript1.2">
+<!--
+   var isNS = (navigator.appName == "Netscape");
+
+   ////////Fix Netscape Resize bug//////
+   NS4 = document.layers;
+   if (NS4) {
+      origWidth = innerWidth;
+      origHeight = innerHeight;
+   }
+
+function reDo() {
+   if (innerWidth != origWidth || innerHeight != origHeight) 
+      location.reload();
+}
+
+if (NS4) onresize = reDo;
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor=#FFFFFF link=#6800A0 vlink=#6800A0 LEFTMARGIN=0 MARGINWIDTH=0 TOPMARGIN=0 MARGINHEIGHT=0 onLoad="Init()">
+
+<A NAME="top">
+
+ <SCRIPT LANGUAGE="JavaScript1.2" SRC="../bin/layers.js"></SCRIPT>
+
+<TABLE cellspacing=0 cellpadding=0 border=0>
+  <TR> 
+    <TD width=190 height=450 rowspan=2 valign=top background="../img/web_left.gif"><A HREF="../index.html"><IMG src="../img/iplogo.gif" width=190 height=200 alt="[Icarus Productions] - Click for main page" border=0></A></TD>
+    <TD width=80 height=24 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../aboutus.html" onMouseOver="showLayer(1)">The team</A></TD>
+    <TD width=105 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../hicolour.html" onMouseOver="showLayer(2)">Projects</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="hicol_faq.html" onMouseOver="showLayer(3)">Articles</A></TD>
+    <TD width=80 align=center valign=center background="../img/web_top.gif"> 
+     <A CLASS=contents HREF="../features/zpc.html" onMouseOver="showLayer(4)">Features</A></TD>
+    <TD width=12 valign=top> <img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+
+  <TR>
+    <TD width=429 height=420 colspan=4 valign=top> 
+
+<TABLE WIDTH=99%><TR><TD>
+<DIV ALIGN=JUSTIFY>
+
+This is a short list which covers a few facts how you can make your programs go faster / use less memory. The first list is copied and edited from a book, its tips are mainly for speed, below you'll find my tips, which also deal with the size of programs.<P>
+
+
+In general, programs can be made to run substantially faster only by first determining where they spend
+their time. This requieres determining which loops (other than delay routines) the processor is executing 
+most often. Reducing the execution time of a frequently executed loop will have a major effect because of the
+multiplying factor. It is thus critical to determine how often instructions are being executed and to 
+work on loops in the order of their frequency of execution.<BR>
+Once it is determined which loops the processor executes most frequently, reduce their execution time 
+with the following techniques:<P>
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Eliminate redundant operations. These may include a constant that is being added during each iteration
+or a special case that is being tested repatedly. Another example is a constant value or a memory address
+that is being fetched from memory each time rather than being stored in a register or register pair.
+<LI><FONT FACE=Arial SIZE=2> Reorganize the loop to reduce the number of jump instructions. You can often eliminate branches by
+changing the initial conditions, inverting the order of operations, or combining operations. In particular,
+ you may find it helpful to initialize everything one step back, thus making the first iteration the same as
+all the others. Inverting the order of operations can be helpful if numerical comparisons are involved, since
+the equality case may not have to be handled sparately. Reorganization may also combine condition checking
+ inside the loop with the overall loop control.
+<LI><FONT FACE=Arial SIZE=2> If you call a function only once, use inline code rather than a function. This will save a CALL and a RET. Also make very small function rather macros than normal functions.
+<LI><FONT FACE=Arial SIZE=2> Try to take maximum advantage of specialized instructions as <I>LD HL, (ADDR); LD (ADDR), HL; EX DE,HL; EX HL,(SP); DJNZ;</I> and the block move/compare instructions by organizing the registers in the right way.
+Thus it is preferable to always use <I>B</I> or <I>BC</I> for a counter, <I>HL</I> for an indirect address, and <I>DE</I> for another indirect address if needed.
+<LI><FONT FACE=Arial SIZE=2> Use the block move, block compare, and <I>block I/O instructions</I> to handle blocks of data. These instructions can replace an entire program sequence, since they comibne counting and updating of pointers with the actual data
+ manipulation or transfer operations and updating of pointers with the actual data manipulation or transfer operations. Note, in particular, that the block move and block<I>I/O</I> instructions transfer data to or form memory
+without using the accumzlator.
+<LI><FONT FACE=Arial SIZE=2> Use the 16-bit instructions whenever possible to manipulate 16-bit data. These instructions are <I>ADC, ADD, DEC, EX INC, LD, POP, PUSH, and SBC.</I>
+<LI><FONT FACE=Arial SIZE=2> Use instructions that operate directly on data in user registers or in memory to avoid having to save and restore the accumulator,<I>HL</I>, or an index register. These instructions
+inculde <I>DEC, EX, INC, LD, POP, PUSH, and the bit manipulation and shift instructions.</I>
+<LI><FONT FACE=Arial SIZE=2> Minimize the use of the index registers, since they always require extra execution time and memory. The index registers are generally used only as backups to <I>HL</I> and in handlingdata structurs that
+involve many fixed offsets.
+<LI><FONT FACE=Arial SIZE=2> Minimize the use of special Z80 instructions that require a 2-byte operation code. These alway reequire extra execution time and memory. Examples are <I>BIT, RES, SET, SLA, SRA</I>, and <I>SRL</I>, as well
+as some load instructions such as <I>LD DE,(ADDR),LD(ADDR), BC</I> and <I>LD SP,(ADDR)</I>.
+<LI><FONT FACE=Arial SIZE=2> Take advantage of specialized short instructions such as the accumulator shifts<I>(RLA, RLCA, RRA, and RRCA)</I> and <I>DJNZ</I>.
+<LI><FONT FACE=Arial SIZE=2> Use absolute jumps(<I>JP</I>) rather than relative jumps(<I>JR</I>). The absolute jumps take less time if a branch actually occurs.
+<LI><FONT FACE=Arial SIZE=2> Organize sequences of conditional jumps to minimize average execution time. Branches that are often taken should come before ones that are seldom, taken for example, checking for a result being negative
+(true 50% of the time if the value is random) before checking for it to be zero(true less than1% of the time if the value is random).
+<LI><FONT FACE=Arial SIZE=2> Test for conditions under which a sequence has no effect and branch around it if the conditions hold. This will be profitable if the sequence is long, and it frequently does not change the result.
+A typical example is the propagation of carries through higher or bytes. If a carry seldom occurs, it will be faster on the average to test for it rather than simply propagate a0.
+<LI><FONT FACE=Arial SIZE=2> A general way to reduce execution time is to replace long sequences of instructions with tables. A single table lookup can perform the same operation as a sequence of instructions if there
+are no special exits or program logic involved. The cost is extra memory, but that may be justified if the memory is available. If enough memory is avaiable, a lookup table may be reasonable approach even if many of its entries are repetitive- that is, even if many inputs procude the same   output. In
+addition to its speed, table lookup is also general, easy to program, and easy to change. 
+</UL>
+<P>
+
+
+<A NAME="mine">
+Now for the even more practical approach :-) Here are Andi's tips (a bit more TI85 specific):
+<UL>
+<LI><FONT FACE=Arial SIZE=2> The less bytes an instruction uses, the faster it generally executes. So always look for a better way to do things. Note however that this might go in hand with some disadvantages... Here are some examples:
+</UL>
+<TABLE CLASS=nrm WIDTH=400 ALIGN=CENTER CELLSPACING=1>
+<TR>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=100 HEIGHT=23>Instead of ...</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=100>... you write</TH>
+ <TH BACKGROUND="../img/web_top.gif" CLASS=nrm WIDTH=100>Disadvantages?</TH>
+</TR>
+<TR CLASS=list>
+ <TD CLASS=nrm ALIGN=... you write>ld a, 0</TD> <TD CLASS=nrm ALIGN=... you write>sub a <I>or</I> xor a</TD> <TD CLASS=nrm ALIGN=... you write>flags are modified</TD>
+</TR><TR CLASS=list>
+  <TD CLASS=nrm ALIGN=... you write>cp 0</TD> <TD CLASS=nrm ALIGN=... you write>and a <I>or</I> or a</TD> <TD CLASS=nrm ALIGN=... you write>none</TD>
+</TR><TR CLASS=list>
+  <TD CLASS=nrm ALIGN=... you write>cp 1</TD> <TD CLASS=nrm ALIGN=... you write>dec a</TD> <TD CLASS=nrm ALIGN=... you write>A is modified</TD>
+</TR><TR CLASS=list>
+  <TD CLASS=nrm ALIGN=... you write>cp 255</TD> <TD CLASS=nrm ALIGN=... you write>inc a</TD> <TD CLASS=nrm ALIGN=... you write>A is modified</TD>
+</TR><TR CLASS=list>
+  <TD CLASS=nrm ALIGN=... you write>srl a</TD> <TD CLASS=nrm ALIGN=... you write>rrca</TD> <TD CLASS=nrm ALIGN=... you write>not exactly the same effect</TD>
+</TR><TR CLASS=list>
+  <TD CLASS=nrm ALIGN=... you write>ld hl, ...<BR>ld de, ...<BR>or a<BR>sbc hl, de</TD> <TD CLASS=nrm ALIGN=... you write>ld hl, ...<BR>ld de, <B>-</B>...<BR>add hl, de</TD> <TD CLASS=nrm ALIGN=... you write>Zeroflag not affected</TD>
+</TR><TR CLASS=list>
+  <TD CLASS=nrm ALIGN=... you write>dec bc<BR>ld a,b<BR>or c<BR>ret z</TD> <TD CLASS=nrm ALIGN=... you write>cpi<BR>ret po</TD> <TD CLASS=nrm ALIGN=... you write>increments HL</TD>
+</TR></TABLE><P>
+
+
+<UL>
+<LI><FONT FACE=Arial SIZE=2> Try, if possible, to use the shadow registers in frequently used loops. You can reach this over the instructions <I>EXX</I> and <I>EX AF',AF</I>. Note however to do a <I>DI</I> to disable interrupts before the actual function and an <I>EI</I> afterwards. Avoid having interrupts switched off all the time.
+<LI><FONT FACE=Arial SIZE=2> Pass arguments to function over registers, NOT by PUSHing/POPing or even variables in memory!!
+<LI><FONT FACE=Arial SIZE=2> Keep often used variables, like position of the main character in registers (optimally in those registers you have to pass to the draw function as coordinates)
+<LI><FONT FACE=Arial SIZE=2> Avoid excessive mode switching using the IY register. Each switching costs 4 bytes!
+<LI><FONT FACE=Arial SIZE=2> Take advantage of ROM functions / built-in functions as often as possible. This won't only save you from coding them, they also save storage and are likely to be highly optimized.
+<LI><FONT FACE=Arial SIZE=2> Try to omit using single pixel routines (like FIND_PIXEL on the TI85) too often. For instance, if drawing a sprite, directly access the video memory.
+<LI><FONT FACE=Arial SIZE=2> If possible, use self-modifying code (only possible when code is in RAM) for less code and faster execution.
+<LI><FONT FACE=Arial SIZE=2> This one courtesy of John Garner: In certain circumstances (where you can disable all interrupts and don't have too make any calls or other use of the stack), an extremely quick way of retrieving data from
+memory is to set the stack pointer SP to the start of the memory and then POP bytes into a register pair. The POP takes 10 T-states but it gets 2 bytes at once, and it's twice as quick as a LD HL,(nnn) and works
+especially well in reading contiguous buffer data. It's 4 times faster than using LD HL,(...) and then you need to update the load address. 
+<LI><FONT FACE=Arial SIZE=2> This of course also works with PUSHing to store data :)
+</UL>
+You've got another suggestion how to make a program run faster? Feel free to <A HREF="http://icarus.ticalc.org/contact.html">contact us</A>
+
+
+</DIV>
+</TD></TR></TABLE>
+
+    </TD>
+    <TD>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD width=190 height=120 rowspan=3 valign=top><IMG src="../img/web_corn.gif" width=190 height=120></TD>
+    <TD colspan=4 valign=top height=54>&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD BACKGROUND="../img/web_top.gif" colspan=3><I><B><FONT COLOR=#ffffff>Page last updated on Sun Mar 28 11:33:02 1999
+</FONT></B></I></TD>
+    <TD BACKGROUND="../img/web_top.gif" align=right><A HREF="mailto:support@icarus.ticalc.org"><img src="../img/inset1.gif" border=0 alt="E-mail us!"></A><A HREF="z80_opt.html#top"><img src="../img/inset2.gif" border=0 alt="Top of page"></A></TD>
+    <TD><img src="../img/top_end.gif" width=12 height=24></TD>
+  </TR>
+  <TR>
+    <TD width=429 height=1 valign=top colspan=4><IMG width=429 height=42 src="../img/transparent.gif"></TD>
+    <TD>&nbsp;</TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
