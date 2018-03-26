@@ -1,0 +1,347 @@
+<HTML>
+<HEAD>
+	<TITLE>Welcome to the Home of NiamTool v2 !</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#3EA0E5">
+
+<CENTER>
+
+<TABLE CELLSPACING="2" CELLPADDING="2" BORDER=0 >
+<TR><TD><IMG SRC="niambear_trans.gif" HSPACE=5 ALIGN=absbottom BORDER=0></TD><TD><B><H1>NiamTool v2</H1></B></TD></TR>
+</TABLE>                                
+</CENTER>
+
+<CENTER>
+<B> Met dank aan:</B> <BR>
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;%62%6F&#101;&#114;&#64;&#104;&#105;&#111;%2E%68%65&#110;%2E%6E&#108;">Ewout de Boer</a><BR>
+Gert Bolmer<BR>
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;%6D&#105;&#99;%68%65&#108;&#95;%62&#117;&#108;&#116;%65%72&#64;&#104;&#111;%74&#109;&#97;&#105;%6C&#46;%63&#111;%6D">Michel Bulter</a><BR>
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;%77%40%64&#100;&#115;%2E%6E&#108;">Jan Wilmans</a><BR>
+Rick Postma<BR>
+Raymond Steffann<BR>
+Paul van der Zijden<BR>
+<BR>
+
+Dit product was niet mogelijk geweest zonder de hulp van de volgende mensen (in willekeurige volgorde):<BR>
+<BR>
+Dhr. Jannink, in zijn dubbelfunctie als tutor en opdrachtgever<BR>
+Dhr. Lansink, onze tutor; speciaal zijn n-1 regel uitleg<BR>
+Dhr. Akkersdijk, niam guru, liet ons het niam-licht zien in een moeilijke periode ;)<BR>
+Dhr. Salomons, dankzij hem is er leven na de IgdTreeSet-Comparator-HashCode<BR>
+<BR>
+
+<B>Laatste update: 7 juil 2004, door Jan Wilmans.
+ 
+</B><BR><HR>
+
+<H2>Op deze pagina staat het resultaat van ons 1e-jaarsproject <B>"NiamTool v2"</B> </H2>
+Het programma vereist minimaal <A HREF="http://java.sun.com/j2se/1.4.2/"> Java 2 Runtime Environment versie 1.4</A>,
+<A HREF="http://www.sun.com/">Sun</A> noemt dit zelf "JavaTM 2 Platform, Standard Edition" of ook wel<BR>
+"Java(TM) 2 Runtime Environment, Standard Edition"<BR>
+Wil je alleen het programma kunnen gebruiken, kies dan <A HREF="http://java.sun.com/j2se/1.4.2/downloads/">hier</A> voor het downloaden van "J2SE JRE",<BR>
+wil je ook zelf java programma's kunnen compileren dan heb je de "J2SE SDK" (Software Development Kit) nodig.<BR>
+Verder staat op de pagina van <A HREF="http://www.sun.com/">Sun</A> ook de <A HREF="http://java.sun.com/j2se/1.4.2/docs/api/">API documentatie</A> online.<BR> 
+Wil je de documentatie offline kunnen gebruiken dan kun je deze ook <A HREF="http://java.sun.com/j2se/1.4.2/download.html">hier</A> downloaden, zie onderaan de pagina onder het kopje "J2SE v 1.4.2 Documentation"<BR>
+<BR>
+
+<H1>Download NiamTool v2.58</H1>
+<A HREF="niamtoolv2_581.tgz"><H3>NiamTool v2.58 voor unix/linux gebruikers (Getest voor linux 2.2.x/2.4.x, SunOs v7/8)</H3></A>
+<A HREF="Niamtool2installer.exe"><H3>NiamTool v2.58 met installer/uninstaller voor windows gebruikers (Getest voor Windows 95/98/2000/WinXP)</H3></A>
+<BR>
+<BR>
+
+<H3> NiamTool v2.41</H3>De vorige release, mochten er grote problemen ontstaat met de nieuwe versie, <BR> stuur dan even een email en gebruik zolang deze versie, <br>let op: deze versie ontsteunde nog geen windows file-associaties, <br>dus als daar problemen mee zijn, dan biedt deze versie zeker geen oplossing. 
+
+<A HREF="niamtoolv2_41.tgz"><H3>NiamTool v2.41 </H3></A>
+
+<BR>
+<BR>
+
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>[11-05-2004] Verbeteringen in 2.58 tov. 2.55:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Feature: menu instellingen toegevoegd, instellingen worden nog niet bewaard</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Feature: de keuze om lijn-aanhechting te bepalen door middel van eindpunt-positie/richtingscoefficient of afstand</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Feature: (incomplete) Ctrl-H selecteert direct ge-relateerde objecten, deze functie werkt nog niet helemaal zoals ik dat zou willen, maar is wel al bruikbaar.</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Feature: Niamtool controleert nu op een environment variabele "exec", deze kan een path naar een .ntm bestand bevatten, zodat je een file-association ntm->niamtool kunt maken. 
+Onder windows maakt de installer hier gebruik van om automatisch een file-associatie voor .ntm bestanden te maken.
+Dit heeft grote voordelen omdat de werk-directory voor verschillende niamtool instanties nu ook de directory wordt waar de tekening staat, zo hoef je dus niet elke keer vanuit je home-directory naar je tekeningen te bladeren.<br><br>
+Je kunt ook zelf de environment-variabele zetten (het is een environment-variabele IN de JRE, niet in de shell) door de niamtool op te starten met: java -jar niamtool.jar -Dexec="tekening.ntm"
+</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>NotReallyAFeature: Vanaf v2.58 komt de windows versie van NiamTool v2 met een install-shield. Deze installeert de NiamTool en maakt file-associaties voor .ntm bestanden, ook is de niamtool te uninstallen via het configuratie-scherm en worden ALLEEN bestanden gewist die ook geinstalleerd zijn. (en niet bijvoorbeeld tekeningen die toevallig ook in de installatiefolder staan)</TD></TR>
+</TABLE>
+
+<br>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>[04-10-2003] Verbeteringen in 2.55 tov. 2.53:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Fix: save-knop wordt nu weer grijs als de tekening opgeslagen is (en sindsdien ongewijzigd)</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: CTRL-D deselecteerd alles</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Fix: Klikbaar gebied van objecttypes was niet aangepast aan verplaatste naam-tekst</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: Vaker dezelfde objecttype naam toestaan, verantwoordelijkheid voor de juistheid van schemas ligt nu bij de gebruiker</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Tempfix: De jar-file is voorlopig bijna 2x groter (700 kb ipv 340 kb) om een probleem met BeansXML import/export te omzeilen, dit kan beter/netter maar voorlopig werkt het im/exporteren in ieder geval</TD></TR>
+</TABLE>
+<br>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Verbeteringen in 2.53 tov. 2.5:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Feature: Corrupte tekeningen kunnen nu toch ingelezen worden zodat ze grafisch hersteld kunnen worden</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: De namen van objecttypes en nominalisatie boven de objecten ipv eronder (overeenkomstig met dictaat 1839)</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Feature: Extra vraag om bevestiging bij afsluiten verwijderd</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Fix: De grootte van het model werd nog steeds niet altijd direct bij het openen van een tekening goed bepaald</TD></TR>
+</TABLE>
+<br>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Verbeteringen in 2.5 tov. 2.41:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: Bij toevoegen/wijzigen frame; het frame-voorstel in volgorde van het geselecteren van de objecttypes geven</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: In het frame-voorstel het eerst in te vullen tekst-deel geselecteerd weergeven</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: Frame-zinnen als "a heeft een b" automatisch converteren naar "&lt;A&gt; heeft een &lt;B&gt;"</TD></TR>
+</TABLE>
+<br>
+
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Verbeteringen in 2.41 tov. 2.4:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: Tekeningen in de beans-xml import/export werden soms niet ge-import/export (IgdObject.koppel() werd niet aangeroepen)</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: Refresh probleem opgelost (In de view paintComponent() en repaint() gebruiken, ipv paint())</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: De grootte van de tekening werd na het openen van een bestand niet goed bepaald, dat zorgde er oa. voor dat een export naar grafisch formaat daarna niet meer goed werkte.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: Niet meer om extra bevestiging vragen bij verwijderen van een verplichting. (veroorzaakte onnodig "are you sure yes/no"-gedrag)</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Request: Bij wijzigen objecttype de oude naam als default geven </TD></TR>
+</TABLE>
+
+<HR>
+
+<H3><CENTER>Toesten(combinaties) in NiamTool V2</CENTER></H3>
+
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR></TR>
+<TR><TD VALIGN=TOP><b>Deze sneltoetsen zijn te gebruiken in NiamTool V2</b><br><br>
+O - Objecttype toevoegen<BR>
+F - Feittype toevoegen<BR>
+D - Deelverzamelingregel toevoegen<BR>
+E - Exclusiviteitregel toevoegen<BR>
+G - Gelijkheidsregel toevoegen<BR>
+V - Verplichtingregel toevoegen/verwijderen<BR>
+A - Afleidingregel toevoegen/verwijderen<BR>
+U - Uniciteitregel toevoegen (de N-1 regel wordt gecontroleerd)<BR>
+ESC - Commando annuleren<BR>
+CTRL-A - Selecteer alles<BR>
+CTRL-D = De-selecteer alles<BR>
+CTRL-H = Highlight direct gerelateerde objecten<BR>
+CTRL-Z = Undo<BR>
+CTRL-Y = Redo<BR>
+ENTER/SPATIE - uitvoeren commando op laatste x/y coördinaat<BR>
+<br>
+(Probeer maar eens de volgende toesten: O,&lt;Enter&gt;,TEST,&lt;Enter&gt;,O,&lt;Enter&gt;,TEST2,&lt;Enter&gt;)</TD></TR>
+</TABLE>
+
+
+<H3>FAQs</H3>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+
+<TR><TD>Q: Ik heb een tekening in .nct formaat (niamtool 1), kan ik die inladen in niamtool v2 ?</TD></TR>
+<TR><TD>A: Nee, niamtool 2 is compleet anders vergeleken met niamtool 1 (ook door een hele andere projectgroep gemaakt)
+verder zijn er meerdere versies van de .nct objectstreams in omloop die onderling weer niet uitwisselbaar zijn tussen
+versie 1.0 en 1.1 van niamtool. </TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Ja, maar ik heb een tekening in .nct formaat dit MOET ik uitprintnen, wat nu ?!!</TD></TR>
+<TR><TD>A: Ik heb <a href="Niamtool1.zip">een versie van niamtool v1.1</a> gepatched zodat hij alle soorten objectstreams leest, 
+ook als de serialVersionUID's in de stream niet kloppen, leest hij ze toch in. 
+Waarschuwing: Dit is een paardemiddel, voor de gevolgen van het gebruik hiervan sta ik niet in! ;-) </TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Goed, nu heb ik de tekening kunnen openen in niamtool 1, hoe krijg ik hem nu in niamtool 2?</TD></TR>
+<TR><TD>A: Uitprinten, overtekenen...have fun! (je moet wel een hele grote tekening hebben als dat meer dan 15 minuten kost</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Ik heb een tekening van niamtool 2 die ik heb opgeslagen en nu niet meer kan inladen! wat nu!</TD></TR>
+<TR><TD>A: Dit kan gebeuren, door een ontwerpfout in de xml-opslag gebeurd dit als 2 objecten van verschillende classes dezelfde 
+hashcode krijgen. Dit komt eigenlijk nooit voor. (lees: voor zover mij bekend is dit 1 keer gebeurd in de laatste 2 jaar) Je kunt
+de tekening zelf herstellen door met een tekst-editor de tekening te openen en de hashcode op te zoeken die door
+2 verschillende types classes wordt gebruikt, als je dan de hashcode van 1 van de 2 consequent overal vervangt door een wikkekeurige
+andere (wel steeds dezelfde uiteraart) is de tekening hersteld. Eventueel wil ik dit ook voor je doen als je de tekening naar mij mailt.</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Waarom verschillende versies, NiamTool is toch in java geschreven?</TD></TR>
+<TR><TD>A: Klopt, beide bestanden bevatten ook in principe hetzelfde, alleen zit er voor de windows versie een installer/uninstaller bij en worden er automatisch file-associaties voor .ntm bestanden gemaakt (oude associaties worden bewaard en als je de NiamTool uninstalled dan worden deze ook hersteld). Wil je geen installer, dat kun je altijd de unix versie handmatig installeren. </TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Ik heb een JRE geinstalleerd maar als ik start.bat opstart gebeurd er niets, behalve dat er even een zwart schermpje flitst.</TD></TR>
+<TR><TD>A: Je krijgt waarschijnlijk een foutmelding omdat je java.exe of javaw.exe niet in je PATH variable hebt staan, of omdat je een oude versie van de JRE hebt geinstalleerd (niamtool vereist v1.4 of hoger)</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Ik heb start.bat nu vanuit een commandline-venster opgestart en ik krijg de foutmelding: "UnsupportedClassVersionError: Apl (unsupported major.minor version 48.0)"</TD></TR>
+<TR><TD>A: Je hebt niet versie 1.4 van de JRE geïnstalleerd maar eerdere versie, zie de links bovenaan deze pagina voor JRE v1.4 (niamtool vereist v1.4 of hoger)</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Ik kan de niamtool niet opstarten, waarom is er geen executable van niamtool (.exe file) ?</TD></TR>
+<TR><TD>A: Omdat de niamtool in java is geschreven heb je een JVM nodig, zie bovenaan deze pagina voor een link</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Maar zou het niet voor makkelijker zijn / sneller werken als je de niamtool met een pre-compiler native compileerd ?</TD></TR>
+<TR><TD>A: Dat zou theoretisch kunnen maar alle precompilers die ik heb gevonden zijn commercieel, dus dat zou het distribueren van 
+de executable illegaal maken. (bv. <a href="http://www.naturalbridge.com/">http://www.naturalbridge.com/</a> of 
+<a href="http://www.excelsior-usa.com/">http://www.excelsior-usa.com/</a>) Ik heb een precompiler getest 
+(Excelsior JET) en de snelheidwinst was te verwaarlozen, bovendien is het nodig om een aantal zeer grote dlls 
+in de package mee te nemen wat het totale te downloaden ingepakte pakket op ongeveer 32 MB zou doen uitkomen.
+(Terwijl de SUN java2 JRE maar 8 MB is en niamtool v2.5 ongeveer 700 KB.) Wil je toch een native executable dan kun je natuurlijk
+de sources van sourceForge downloaden is hem zelf compileren, als je weet hoe jar-packages werken is dat ongeveer 3 uur werk, inclusief 
+het installeren van de native compiler en het compileren van de hele JRE.
+.</TD></TR>
+
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Waarom schiet je niet eens op met die "nieuwe versie" of "nieuwe feature"</TD></TR>
+<TR><TD>A: Nou omdat ik ook een leven heb of misschien omdat niet genoeg mensen me aanmoedigen om door te gaan :)</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Mag ik de sources van de niamtool, want ik wil namelijk ...vulzelfin... ?</TD></TR>
+<TR><TD>A: Ja, dat mag, de laatste sources zijn via <A HREF="http://sourceforge.net/projects/niamtool/">sourceforge</A> te downloaden</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Ik snap er niets van, volgens mij staan de sources niet op sourceforge!?</TD></TR>
+<TR><TD>A: Jawel, maar je moet een account aanmaken voor jezelf, dat is gratis en je zult een cvs-client moeten installeren, instructies staan uitgebreid op de sourceforge webpages</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD>Q: Waarom is deze pagina half nederlands, half engels? kun je niet gewoon alles in 1 taal doen?</TD></TR>
+<TR><TD>A: Ja, dat kan. Maar sommige woorden zijn nu eenmaal zo ingeburgerd dat het er niet duidelijker van wordt als ik ze in het nederlands zou vertalen. Maw. Ik vind het wel leuk zo, daarom :)</TD></TR>
+</TABLE>
+
+<H3> Known bugs / Coming soon </H3>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Deze problemen zijn bekend en hebben hoogste prioriteit om te worden opgelost; ze zijn waarschijnlijk in de eerst volgende versie opgelost; de eerste volgende release komt: <B>Wanneer ik door middel van reacties/email voldoende gemotiveerd wordt</B> :)) <BR><BR></CENTER></TR>
+<TR><TD VALIGN=TOP></TD><TD></TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Html-help functie, zou gewoon moeten worden herschreven, de huidige versie heeft moeite met frames en bevat weinig relevante informatie, als iemand dit wil doen... anders kon het wel eens lang duren voordat deze er komt. (Gert: geen motivatie meer hiervoor?) </TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Sinds v2.58 werkt de help helemaal niet meer als je de niamtool via een file-assosiatie opstart</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Sinds kort? werkt het toevoegen van 2 dezelfde objecttypes niet meer</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Ik heb een keer een tekening door middel van de undo-functie echt helemaal verknald, gelukkig kun je vaak kapotte tekeningen gemakkelijk met een tekst-editor herstellen. Ik heb het probleem niet kunnen reproduceren, als iemand dat wel kan hoor ik het graag.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>In de xml-writer zit een fout waardoor in zeer zeldzame gevallen een tekening niet goed wordt opgeslagen. De oorzaak is bekend maar nog niet opgelost</TD></TR>
+<TR><TD VALIGN=TOP></TD><TD><BR></TD></TR>
+<TR><TD VALIGN=TOP></TD><TD>Misschien op langere termijn:<BR></TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Epilog import/export, leuk/interessant dus komt waarschijnlijk nog wel eens</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Een menu "opties" waarin een aantal runtime-variabelen ingesteld kunnen worden, zoals anti-aliasing in de grafische export etc</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Context-menu opties voor alignment</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Alle contextmenu opties ook in het menu "bewerken" zetten (?)</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Objecten verplaatsen met de cursors werkt niet meer zodra er scrollbars in beeld zijn, omdat dan de scrollbars de "keyboard-focus" krijgen</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Zoomfunctie</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Movesheet-functie (zoals het "handje" in acroread)</TD></TR>
+</TABLE>
+
+<H3> Wishlist / Coming not so soon </H3>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Deze problemen zijn te oninteressant om op te lossen / lonen de moeite niet:<BR> 
+	<H4>(ben je het hier niet mee eens of heb je andere goede ideeën of suggesties voor nieuwe features, <BR>
+	schroom dan niet en stuur een <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;%77%40%64&#100;&#115;%2E%6E&#108;">email</a>)
+	</H4></CENTER>
+</TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Stapelen van uniciteiten kan een stuk intelligenter, nu de n-1 regel wordt gecontroleerd merk je er weinig van maar het systeem is zeker voor verbetering vatbaar.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Het updaten van lijnen en verplichtingregels tijdens het slepen; irritant werk, weinig profijt.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Een feittype tegen de bovenkant slepen geeft rare effecten; lastig op te lossen, heeft verder geen nadelen</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Als je aan een nominalisatie een feittype wilt koppelen en het feittype in de nominalisatie is ook geselecteerd 
+wordt er een uitbreiding gemaakt op het geselecteerde feittype; gewoon beter klikken, heeft verder geen nadelen</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>(gerelateerd) Als je een segment van een feittype selecteert en bv. een objecttype, dan kun je 
+een nieuw feittype maken dat dan gebaseerd wordt op alle objecttypen van alle segmenten van het frame waar het selecteerde segment 
+deel van uitmaakt.; gewoon beter klikken, heeft verder geen nadelen</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Een statusbalk; waarom? mail me een goede functie ervoor en ik maak hem misschien...</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Centreren van de tekening; min of meer overbodig doordat je nu met ctrl-a, alles kunt selecteren en verplaatsen</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>De lijn naar segment zou bij voorkeur aan de bovenkant of onderkant moeten aanhechten, ook al is de lijn naar de zijkant korter (offset), eigenlijk niet interessant genoeg om aandacht aan te besteden :)</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Verplaatsen van objecten met de cursors refreshed alles, ook als er niets wordt verplaatst; dit is maar een detail had vast nog niemand als vervelend ervaren :) opnieuw, BORING en geen zin om dit op te lossen ;)
+</TD></TR>
+
+</TABLE>
+
+<H2>History</H2><HR>
+
+<H3> Niamtool v2.4</H3>
+
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Verbeteringen in 2.4 tov. 2.3:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Ntm-Xml is nu het standaard opslag formaat, dit is een eigen xml-formaat wat compacter is dan het beans-xml-formaat.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Het is mogelijk de NTM-objectStreams van v2.3 te importeren, voor compatibiliteit met v2.1-v2.371</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>De Beans-Xml import/export is volledig geïmplementeerd om tekeningen op te slaan dmv de standaard java-beans-xml-encoder.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bij het veranderen van het frame of de objectformulering worde nu ook de "objecttype <_>" letteraanduiding-koppelingen laten zien, zoals bij het toevoegen ervan</TD></TR>
+
+<TR><TD VALIGN=TOP></TD><TD></TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>De ascii-import/export is nog steeds mogelijk voor compatibiliteit met v2.371 waarin ascii-opslag mogelijk was</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: Er miste een refresh bij het wijzigen van de objectformulering</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Requested: Selecteren kan nu ook met shift ipv alleen met ctrl</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: De save-dialogen zijn nu minder misleidend</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>New feature: Een nominalisatie is nu makkelijker te selecteren, zijn "klik-gevoelige" gebied is groter gemaakt</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>New feature: Een objecttype is nu ook te selecteren door op zijn naam te klikken evenals een nominalisatie</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: De objectformulering van een nominalisatie werd niet ge-update als een letteraanduiding werd veranderd</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix/bug: De frame-controle is uitgeschakeld, twee keer PRECIES hetzelfde frame mag best voorkomen, alleen niet tussen dezelfde objecttypen</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: De scrollbars verschenen pas na een verandering in de tekening na het inladen van een tekening, als deze "te groot" was</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>New feature: Mogelijkheid om ook via een klik op het frame, het frame en alle rollen te selecteren</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Requested: de menuoptie "frame wijzigen" is gewijzigd in "frame-tekst wijzigen"</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: Het beter berekenen van de positie van verplichtingregels (bij verplichtingen over meerdere segmenten)</TD></TR>
+</TABLE>
+
+<H3> Niamtool v2.3</H3>
+<BR>
+
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Verbeteringen in 2.3 tov. 2.2:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: Als een tekening gewijzigd was en je drukte op "nieuw model" dan MOEST je de tekening wel opslaan anders kon je de tekening niet verlaten</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>New feature: Een selectiekader waarmee een aantal objecten tegelijk geselecteerd kunnen worden</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: Als het contextmenu verscheen raakten soms objecten ge-deselecteerd, met name het frame van een feittype</TD></TR>
+</TABLE>
+
+<H3> Niamtool v2.2</H3>
+<BR>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Verbeteringen in 2.2 tov. 2.1:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: De undo/redo functie is hersteld </TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Bugfix: Bij het afsluiten MOEST een gewijzigde tekening worden opgeslagen anders kon je het programma niet verlaten</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>De Openen/Opslaan dialogen zijn nu logischer</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Het jar-bestand is opgeschoond, vanaf deze versie worden alleen <B>gebruikte</B> libraryclasses meegeleverd (v2.1 was 466kb, v2.2 is nu maar 295 kb)</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>De geselecteerde objecten worden nu in een interne subSet bewaard, als gebruiker merk je hier niets van, je hebt er niets aan en ik heb geen snelheidswinst gemerkt.
+(Dat was vrij frustrerend want dit was bijna een hele dag werk maar, er is een duidelijke snelheidswinst meetbaar in bijna alle selectie en beeldafhandelijksmethodes, op zeer langzame computers is dit dan ook een voordeel)</TD></TR>
+</TABLE>
+
+<H3> Niamtool v2.1 </H3>
+
+<BR>
+<TABLE BORDER="0" CELLPADDING="1" CELLSPACING="1" WIDTH="60%">
+<TR><CENTER>Verbeteringen tov. 2.0:</CENTER></TR>
+<TR></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Tekeningen vanaf deze versie zullen in toekomstige versies in te laden zijn, niet alle class-veranderingen zijn mogelijk maar waarschijnlijk zal de ascii-export bij de volgende versie af zijn en is dit probleem helemaal opgelost.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>De undo/redo functie is <B>tijdelijk</B> uitgeschakeld; hij kon een tekening onherstelbaar beschadigen, hij wordt herschreven en zo spoedig mogelijk hersteld</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>In het verwijderen van objecten (nominalisaties) zat een fout, soms kon een nominalisatie niet worden verwijderd als een tekening was opgeslagen en weer ingeladen, dat is hersteld.</TD></TR>
+<TR><TD VALIGN=TOP>-</TD><TD>Er zijn nu sneltoesten voor het toevoegen en verwijderen van alle onderdelen, de spatiebalk of enter kunnen gebruikt worden om te "klikken", wat een onderdeel toevoegt op x+25,y+25 van het laatst geklikte punt. Zo kunnen bv. gemakkelijk meerdere objecttypes achter elkaar ingevoerd worden. <BR>
+O - Objecttype toevoegen<BR>
+F - Feittype toevoegen<BR>
+E - Deelverzamelingregel toevoegen<BR>
+X - Exclusiviteitregel toevoegen<BR>
+G - Gelijkheidsregel toevoegen<BR>
+V - Verplichtingregel toevoegen/verwijderen<BR>
+A - Afleidingregel toevoegen/verwijderen<BR>
+U - Uniciteitregel toevoegen (de N-1 regel wordt gecontroleerd)<BR>
+ESC - Commando annuleren<BR>
+CTRL-A - Selecteer alles<BR>
+ENTER/SPATIE - uitvoeren commando op laatste x/y coördinaat 
+<BR>(Probeer maar eens de volgende toesten: O,&lt;Enter&gt;,TEST,&lt;Enter&gt;,O,&lt;Enter&gt;,TEST2,&lt;Enter&gt;)</TD></TR>
+</TABLE>
+
+<HR>
+<H2> Een voorbeeld van een tekening zoals die met de NiamTool gemaakt kan worden </H2>
+
+Dit voorbeeld is de niam-niamanalyse, het is dus een niam-analyse van de niam-analyse-methode :").<BR>
+Hierbij moet wel vermeld worden dat deze analyse vrij oppervlakkig is, een grondigere analyse is zeker mogelijk.<BR><BR>
+
+<IMG SRC="http://www.myquest.nl/niamtool/niamniamanalyse.gif" HSPACE=5 ALIGN=absbottom BORDER=0>
+</CENTER>
+<CENTER>	
+<HR><BR>
+<I>A human being should be able to change a diaper, plan an invasion,
+butcher a hog, conn a ship, design a building, write a sonnet, balance
+accounts, build a wall, set a bone, comfort the dying, take
+orders, give orders, cooperate, act alone, solve equations, analyze a
+new problem, pitch manure, program a computer, cook a tasty meal,
+fight efficiently, die gallantly. Specialization is for insects.</I><BR>
+<B>—Excerpt from the notebooks of Lazarus Long,<BR>
+from Robert Heinlein’s Time Enough for Love<BR></B>
+<BR>
+
+<HR>This page was created by Jan Wilmans,<A HREF="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;%77%40%64&#100;&#115;%2E%6E&#108;"><IMG SRC="http://www.myquest.nl/myquest/mail1.gif" HSPACE=5 ALIGN=absbottom BORDER=0></A>
+any comments to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;%77%40%64&#100;&#115;%2E%6E&#108;">me</A><BR>
+</CENTER>
+</BODY>
+</HTML>
+
