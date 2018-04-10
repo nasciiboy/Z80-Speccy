@@ -1,0 +1,373 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 8</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 8</b></div>
+
+<h2>Cadenas</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li>Fragmentación utilizando <b>TO</b>. Observe que esta notación no es de BASIC estándar.</li>
+</ul>
+
+<p>Dada una cadena, una subcadena de la misma está constituida por algunos caracteres consecutivos de ella tomados en secuencia. Por consiguiente, "strin" es una subcadena de "bigger string" (una cadena más grande), pero no son subcadenas "b sting" y "big reg".</p>
+
+<p>Hay una notación denominada "slicing" (fragmentación) para describir las subcadenas y puede aplicarse a cualquier expresión de cadena. La forma general es:</p>
+
+<div align="center">expresión de cadena (comienzo <b>TO</b> final)</div>
+
+<p>de modo que, por ejemplo:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>  
+<span class="codigo">
+"abcdef"(2 TO 5)="abcde"
+</span>
+</td>
+</tr>
+</table>
+
+<p>Si omite el comienzo, entonces se supone que es 1; si omite el final, entonces se supone la longitud de la cadena. Por consiguiente:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+"abcdef"(TO 5)="abcde"<br>
+"abcdef"(2 TO)="abcdef"(2 TO 6)="bcdef"<br>
+"abcdef"(TO)="abcdef"(1 TO 6)="abcdef"
+</span>
+</td>
+</tr>
+</table>
+
+<p>(también puede escribir la última como <b>"abcdef"()</b>, ya que lo admite.</p>
+
+<p>Una forma algo diferente es cuando se omite <b>TO</b> y sólo hay un número:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+"abcdef"(3)="abcde"(3 TO 3)="c"
+</span>
+</td>
+</tr>
+</table>
+
+<p>Aunque el comienzo y el final suelen referirse a partes existentes de la cadena, esta regla queda derogada por otra: si el valor es mayor que el contenido de la cadena, el resultado es una cadena vacia. Así:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+"abcdef"(5 TO 7)
+</span>
+</td>
+</tr>
+</table>
+
+<p>da el error <b>3 subscript wrong</b> porque la cadena sólo contiene 6 caracteres y 7 es superior, pero:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+"abcdef"(8 TO 7)=""
+</span>
+</td>
+</tr>
+</table>
+
+<p>y</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+"abcdef"(1 TO 0)=""
+</span>
+</td>
+</tr>
+</table>
+
+<p>El comienzo y el final no deben ser negativos u obtendrá un erros <b>B integer out of range</b> (entero B fuera de margen). El siguiente ejemplo es una simple ilustración de estas reglas.</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+10 LET a$="abcdef"<br>
+20 FOR n=1 TO 6<br>
+30 PRINT a$(n TO 6)<br>
+40 NEXT n<br>
+50 STOP
+</span>
+</td>
+</tr>
+</table>
+
+<p>Teclee <b>NEW</b> cuando se haya ejecutado este programa e introduzca el programa siguiente:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+10 LET a$="No lo creo"<br>
+20 FOR n=1 TO 10<br>
+30 PRINT a$(n TO 10),a$((10-n)TO 10)<br>
+40 NEXT n<br>
+50 STOP
+</span>
+</td>
+</tr>
+</table>
+
+<p>Para variables de cadena, podemos no solamente extraer subcadenas, sino también asignarlas.</p>
+
+<p>Por ejemplo, teclee:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+LET a$="Yo soy el ZX Spectrum"
+</span>
+</td>
+</tr>
+</table>
+
+<p>y luego:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+LET a$=(1 TO 3)="******"
+</span>
+</td>
+</tr>
+</table>
+
+<p>y</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+PRINT a$
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observe cómo puesto que la subcadena <b>a$(5 TO 8)</b> sólo tiene 4 carácteres de longitud, se han utilizado únicamente las cuatro primeras estrellas. Esta es una característica de la asignación a subcadenas: la subcadena ha de tener exactamente la misma longitud después que antes de su asignación. Para cerciorarse de que sucede así, la cadena implicada en la asignación se corta a la derecha si es demasiado larga o se rellena con espacios si es demasiado corta. Este método se llama asignación procusteana en rememoración del célebre posadero Procustes que acostumbraba a cerciorarse de que sus huéspedes encajaban en la cama estirándoles en un potro de tormento o cortándoles los pies.</b></p>
+
+<p>Sí, ahora, prueba:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+LET a$=()="Como estás?"
+</span>
+</td>
+</tr>
+</table>
+
+<p>y</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+PRINT a$;"."
+</span>
+</td>
+</tr>
+</table>
+
+<p>observará que vuelve a suceder los mismo (esta vez con espacios introducidos) porque <b>a$()</b> cuenta como una subcadena.</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+LET a$="Como estas?"
+</span>
+</td>
+</tr>
+</table>
+
+<p>lo hará adecuadamente.</p>
+
+<p>Las expresiones de cadenas complicadas necesitarán encerrarse entre paréntesis antes de que puedan fragmentarse. Por ejemplo:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+"abcd"+"def"(1 TO 2)="abcde"<br>
+("abc"+"def")(1 TO 2)="ab"
+</span>
+</td>
+</tr>
+</table>
+
+<h4>Ejercicio</h4>
+
+<ol>
+<li>Intente escribir un programa para que se imprima el día de la semana utilizando el método de la fragmentación. Recomendación: Se sugiere que la cadena sea DomLunMarMiercJuevVieSab.</li>
+</ol>
+
+<div align="center"><a href="capitulo08.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 3</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 3</b></div>
+
+<h2>Decisiones</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>IF, STOP</b></li>
+<li>=, <, >, <=, >=, <></li>
+</ul>
+
+<p>Todos los programas que hemos visto hasta ahora han sido bastante predecibles (han pasado a través de las instrucciones y han vuelto al principio de nuevo). Ello no es de mucha utilidad. En la práctica el ordenador habría de tomar decisiones y actuar en consecuencia. La instrucción utilizada tiene la forma <b>... IF</b> (si) algo es verdadero, o no verdadero, <b>THEN</b> entonces hacer algo más</p>
+
+<p>Por ejemplo, utilice <b>NEW</b> para borrar el anterior programa del ordenador e introduzca por el teclado y ejecute el siguiente programa (que evidentemente admite que jueguen dos personas).</p>
+
+<table width="400" align="center" bordero="0">
+<tr>
+<td>
+<span class="codigo">
+10 REM Adivine el numero<br>
+20 INPUT a: CLS<br>
+30 INPUT "Adivine el numero",b<br>
+40 IF b=a THEN PRINT "Correcto": STOP<br>
+50 IF b&lt;a THEN PRINT "Demasiado bajo, pruebe de nuevo"<br>
+60 IF b>a THEN PRINT "Demasiado alto, pruebe de nuevo"<br>
+70 GO TO 30
+</span>
+</td>
+</tr>
+</table>
+
+<p>Puede contestar que una sentencia <b>IF</b> adopta la forma:</p>
+
+<p><b>IF</b> condición <b>THEN</b>...</p>
+
+<p>en donde "..." significa una secuencia de comandos, separados por dos puntos, en la forma habitual. La condición es algo que ha de determinar como verdadero o falso; si es verdadero, se ejecutan las sentencias en el resto de la línea después de <b>THEN</b>, en caso contrario, se saltan y el programa ejecuta la siguiente instrucción.</p>
+
+<p>Las condiciones más sencillas comparan dos números o dos cadenas. Pueden probar si dos números son iguales o si uno es mayor que el otro y pueden probar si dos cadenas son iguales o (aproximadamente) si una está antes que la otra en el orden alfabético. Utilizan las relaciones =, <, >, <=, >=, y <>.</p>
+
+<p>= significa "igual a". Aunque es el mismo símbolo que el = en un comando <b>LET</b>, se utiliza en un sentido bastante diferente.</p>
+
+<p>< (<b>SYMBOL SHIFT</b> con <b>R</b>) significa "es menos que", por lo que:</p>
+
+1<2<br>
+-2<-1<br>
+-3<1
+<p>son todas relaciones verdaderas, pero</p>
+
+1<0<br>
+0<-2
+
+<p>son falsas.</p>
+
+<p>La linea 40 compara <b>a</b> y <b>b</b>. Si son iguales, entonces, el programa se interrumpe con el comando <b>STOP</b>. El informe en la parte inferior de la pantalla <b>9 STOP, statement, 30:3</b> indica que la tercera sentencia, o comando, en la línea 30 hizo que se detuviera el programa, esto es, <b>STOP</b>.</p>
+
+<p>La línea 50 determina si <b>b</b> es menor que <b>a</b> y la línea 60 si <b>b</b> es mayor que <b>a</b>. Si una de estas condiciones es verdadera, entonces, se imprime el comentario correspondiente y el programa sigue su camino a la línea 70 que comunica al ordenador que vuelva a la línea 30 y allí comience de nuevo.</p>
+
+<p>El comando <b>CLS</b>, borrar pantalla, en la línea 20 era para impedir que la otra persona vea lo que está introduciendo.</p>
+
+<p>El símbolo > (<b>SYMBOL SHIFT</b> con <b>T</b>) significa "es mayor que" y es lo mismo que < pero en sentido contrario. Puede recordar cuál es cuál porque el extremo aguzado apunta siempre al número que se supone que es más pequeño.</p>
+
+<p><= (<b>SYMBOL SHIFT</b> con <b>Q</b>), que no ha de teclearse < seguido por =, significa "es menor que o igual a", por lo que es que como < con la salvedad de que es verdadero incluso si los dos números son iguales; por consiguiente 2<=2 es verdadero, pero 2<2 es falso.</p>
+
+<p>>= (<b>SYMBOL SHIFT</b> con <b>E</b>) significa que "es mayor que o igual a" y es análogo a >, con las salvedades antes indicadas.</p>
+
+<p><> (<b>SYMBOL SHIFT</b> con <b>W</b>) significa "distinto a", lo opuesto a =.</p>
+
+<p> Los matemáticos suelen escribir <=, >= y <> en la forma <img src="images/shared/menor.png">, <img src="images/shared/mayor.png"> y <img src="images/shared/diferente.png">. Escriben también cosas como '2<3<4' para significar '2<3'y '3<4', pero ello no es posible en BASIC. </p> 
+
+<p>Observación: En algunas versiones de BASIC, pero no en la de ZX Spectrum, la sentencia IF puede tener la forma</p>
+
+<p><b>IF</b> condición <b>THEN</b> número de línea</p>
+
+<p>Ello significa lo mismo que:</p>
+
+<p><b>IF</b> condición <b>THEN GO TO</b> número de línea.</p>
+
+<h4>Ejercicios</h4>
+
+<p>1. Pruebe este programa:</p>
+
+<div align="center"><span class="codigo">10 PRINT "x": STOP: PRINT "y"</span></div>
+
+<p>Cuando lo ejecute, el ordenador visualizará <b>x</b> y se parará con el informe <b>9 STOP statement, 10:2</b>. Ahora, pulse:</p>
+
+<div align="center"><b>CONTINUE</b></div>
+
+<p>Podría esperar que se produjera un salto atrás al comando <b>STOP</b> (<b>CONTINUE</b> suele repetir la sentencia que se refiere en el informe). Sin embargo, en este caso, ello no sería de mucha utilidad, porque el ordemador volvería a detenerse sin visualizar <b>y</b>. Por consiguiente, todo está dispuesto para que después del informe <b>9 CONTINUE</b> salte al comando después del comando <b>STOP</b>. Por ello, en nuestro ejemplo, después de <b>CONTINUE</b>, el ordenador imprime <b>y</b> y llega al final del programa.</p>
+
+<div align="center"><a href="capitulo03.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

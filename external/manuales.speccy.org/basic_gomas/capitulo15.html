@@ -1,0 +1,371 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 15</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 15</b></div>
+
+<h2>Más sobre PRINT e INPUT</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>CLS</b><br></li>
+<li><b>PRINT</b> elementos: nada en absoluto</li>
+<li>Expresiones (tipo de cadena o numéricas): <b>TAB</b> expresión numérica, <b>AT</b> expresión numérica, expresión numérica</li>
+<li><b>PRINT</b> separadores: , ; '</li>
+<li><b>INPUT</b> elementos: variables (numéricas o tipo de cadena)</li>
+<li><b>LINE</b> variable de cadena</li>
+<li>Cualquier elemento de impresión <b>PRINT</b> que no comience con una letra (los comandos no se consideran como comenzando con una letra).</li>
+<li>"Scrolling" (desplazamiento en pantalla).</li>
+</ul>
+
+<p>Ya ha visto <b>PRINT</b> utilizado con mucha frecuencia, por lo que tendrá una idea aproximada de cómo se emplea. Las expresiones cuyos valores se imprimen se denominan elementos <b>PRINT</b> y están separados por comas o punto y coma, llamados separadores <b>PRINT</b>. Un elemento <b>PRINT</b> puede ser también nada en absoluto, que es una forma de explicar lo que sucede cuando utilice dos comas en una fila.</p>
+
+<p>Hay dos clases más de elementos <b>PRINT</b>, que se emplean para decirle al ordenador, no que es lo que ha de imprimir sino en donde. Por ejemplo <b>PRINT AT 11,16; "*"</b> imprime una estrella en la parte central de la pantalla.</p>
+
+<div align="center"><span class="codigo"><b>AT</b> línea, columna</span></div>
+
+<p>desplaza la posición de impresión <b>PRINT</b> (o lugar en donde ha de imprimirse el elemento siguiente) a la línea y a la columna especificada. Las líneas están numeradas desde 0 (en la parte superior) a 21 y las columnas desde 0 (a la izquierda) a 31.</p>
+
+<div align="center"><img src="images/pag102.jpg"></div>
+
+<p><b>TAB</b> columna</p>
+
+<p>imprime suficientes espacios para desplazar la posición de impresión <b>PRINT</b> a la columna especificada. Se mantiene en la misma línea o, si ello implicara salto de línea, se desplazaría a la siguiente. Tenga en cuenta que el ordenador reduce el número de columna 'módulo 32' (divide por 32 y se lleva el resto); por ello, <b>TAB 33</b> significa lo mismo que <b>TAB 1</b>.</p>
+
+<p>Como un ejemplo:</p>
+
+<div align="center"><span class="codigo">PRINT TAB 30; 1; TAB 12; "Contenido"; AT 3, 1; "CAPITULO"; TAB 24; "página"</span></div>
+
+<p>es como podría imprimir el encabezamiento de una página del contenido (o índice) en la página 1 de un libro.</p>
+
+<p>Pruebe la ejecución de este programa:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 20<br>
+20 PRINT TAB 8 * n; n;<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>Este programa indica lo que se entiende por la reducción de módulo 32 de los números en <b>TAB</b>.</p>
+
+<p>Para un ejemplo más elegante, cambie el 8 en la línea 20 por un 6.</p>
+
+<p>Algunas pequeñas puntualizaciones:</p>
+
+<ol type=i start=1>
+<li>
+<p>Estos nuevos elementos se terminan mejor con punto y coma, como lo hicimos anteriormente.</p>
+
+<p>Puede utilizar comas (o nada, al final de la sentencia), pero ello significa que después de haber establecido cuidadosamente la posición de impresión <b>PRINT</b>, cambiará completamente el formato de impresión que había establecido, lo que no suele ser de gran utilidad.</p
+</li>
+
+<li>
+<p>No puede imprimir en las dos líneas inferiores (22 y 23) de la pantalla porque están reservadas para comandos u órdenes, introducción de datos (<b>INPUT</b>), informes, etc. Las referencias a la "línea inferior" suelen significar línea 21.</p>
+</li>
+
+<li>
+<p>Puede utilizar <b>AT</b> para poner la posición de impresión incluso en donde ya hay algo impreso; lo antiguo se borrará cuando imprima algo más.</p>
+</li>
+
+</ol>
+
+<p>Otra sentencia relacionada con <b>PRINT</b> es <b>CLS</b>. Esta última borra la pantalla entera, lo que también se realiza por <b>CLEAR</b> y <b>RUN</b>.</p>
+
+
+<p>Cuando la impresión llega a la parte inferior de la pantalla, comienza a desplazarse hacia arriba de forma semejante a como se realiza en una máquina de escribir. Puede verlo si teclea:</p>
+
+<div align="center"><span class="codigo">CLS: FOR n = 1 TO 22: PRINT n: NEXT n</span></div>
+
+<p>y luego:</p>
+
+<div align="center"><span class="codigo">PRINT 99</span></div>
+
+<p>unas cuantas veces.</p>
+
+<p>Cuando el ordenador está imprimiendo gran cantidad de información, lo hace cuidadosamente, cerciorándose de que nada se pierde por la parte superior de la pantalla hasta que usted haya tenido oportunidad de examinarlo adecuadamente. Puede constatarlo si teclea:</p>
+
+<div align="center"><span class="codigo">CLS: FOR n = 1 TO 100: PRINT n: NEXT n</span></div>
+
+<p>Cuando haya impreso una pantalla completa, se parará, escribiendo <b>scroll?</b> en la parte inferior de la pantalla. Ahora puede inspeccionar los primeros 22 números a su comodidad. Cuando haya acabado su examen, pulse <b>y</b> (por "yes") y el ordenador le proporcionará otra pantalla llena de números. Realmente, cualquier tecla hará que el ordenador siga el proceso con la excepción de las teclas <b>n</b> (por "no"), <b>STOP</b> (<b>SYMBOL SHIFT</b> y <b>a</b>) o <b>SPACE</b> (la tecla <b>BREAK</b>). Estas teclas harán que el ordenador detenga la ejecución del programa con un informe <b>D BREAK CONT repeats</b>.</p>
+
+<p>La sentencia <b>INPUT</b> puede hacer mucho más de lo que le hemos dicho hasta ahora. Ya ha visto sentencias <b>INPUT</b> como</p>
+
+<div align="center"><span class="codigo">INPUT "Qué edad tienes?", edad</span></div>
+
+<p>en la que el ordenador imprime la frase <b>Qué edad tienes?</b> en la parte inferior de la pantalla y luego, tiene que teclear su edad.</p>
+
+<p>De hecho, una sentencia <b>INPUT</b> está constituida por elementos y separadores en la misma forma exactamente que lo está una sentencia <b>PRINT</b>, por ello <b>qué edad tienes?</b> y <b>edad</b> son ambos elementos de información de <b>INPUT</b>. Estos últimos suelen ser los mismos que los de <b>PRINT</b>, pero hay algunas diferencias muy importantes.</p>
+
+<p>En primer lugar, un elemento adicional de <b>INPUT</b> es la variable cuyo valor ha de introducir por teclado (<b>edad</b> en nuestro anterior ejemplo). La regla es que si un elemento de <b>INPUT</b> comienza con una letra, debe ser una variable cuyo valor ha de introducirse.</p>
+
+<p>En segundo lugar, esto parecería significar que no puede imprimir los valores de variables como parte de un epígrafe; sin embargo, puede eludirlo poniendo paréntesis encerrando a la variable. Cualquier expresión que comience con una letra debe encerrarse entre paréntesis si ha de imprimirse como parte de un epígrafe.</p>
+
+<p>Cualquier clase de elemento de impresión <b>PRINT</b> que no sea afectado por estas reglas es también un elemento de introducción <b>INPUT</b>.</p>
+
+<p>Veamos un ejemplo que sirva de ilustración de lo que se está exponiendo:</p>
+
+<div align="center"><span class="codigo">LET mi edad = INT (RND * 100): INPUT("Tengo"; mi edad; "."); "Qué edad tienes?", tu edad</span></div>
+
+<p><b>mi edad</b> está entre paréntesis, por lo que su valor consigue ser impreso. <b>Tu edad</b> no está entre paréntesis, por lo que ha de introducir por el teclado su valor.</p>
+
+<p>Todo lo que una sentencia <b>INPUT</b> escribe sale en la parte inferior de la pantalla, que actúa con cierta independencia de la mitad superior. En particular, sus líneas están numeradas con respecto a la línea superior de la mitad inferior, aun cuando esta última se haya desplazado hacia arriba de la pantalla de televisión real (lo que sucede si introduce grandes cantidades de datos por <b>INPUT</b>). Para ver cómo opera <b>AT</b> en las sentencias <b>INPUT</b>, trate de ejecutar lo siguiente:</p>
+
+<table align="center" border="0" width="400">
+<tr>
+<td align="left">
+<span class="codigo">10 INPUT "Esta es la línea 1.", a$; AT 0, 0; "Esta es la línea 0.", a$; AT 2,0; "Esta es la línea 2.", a$; AT 1, 0; "Esta es todavía la línea 1.", a$
+</span>
+</td>
+</tr>
+</table>
+
+<p>(basta pulsar <b>ENTER</b> cada vez que se detenga). Cuando <b>Esta es la línea 2</b> es objeto de impresión, la parte inferior de la pantalla se desplaza hacia arriba para dejar espacio para ella; pero la numeración se desplaza también hacia arriba, de modo que las líneas de texto mantienen sus mismos números.</p>
+
+<p>Ahora, pruebe el programa siguiente:</p>
+
+<table align="center" border="0" width="350">                                   <tr>                                                                            <td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 19: PRINT AT n, 0; n;: NEXT n<br>
+20 INPUT AT 0, 0; a$; AT 1, 0; a$: AT 2, 0; a$; AT 3, 0; a$; AT 4, 0; a$; AT 5, 0; a$;
+</span>
+</td>
+</tr>
+</table>
+
+<p>A medida que la parte inferior de la pantalla se va desplazando cada vez más hacia arriba, la parte superior no se altera hasta que la parte inferior "amenace" con escribir en la misma línea que la posición de impresión <b>PRINT</b>. Entonces, la parte superior comienza a desaparecer por arriba de la pantalla (acción de "scrolling") para evitar que dicha amenaza se "haga realidad".</p>
+
+<p>Otro perfeccionamiento de la sentencia <b>INPUT</b> que no hemos visto todavía se llama introducción <b>LINE</b> y es una forma distinta de introducir variables de entrada. Si escribe <b>LINE</b> antes del nombre de una variable de entrada que ha de introducirse, como en</p>
+
+<div align="center"><span class="codigo">INPUT LINE a$</span></div>
+
+<p>entonces, el ordenador no le proporcionará las comillas de cadena que es lo que suele hacer para una variable de cadena, aunque hará como si estuvieran. Por consiguiente, si teclea</p>
+
+<div align="center"><span class="codigo">cat</span></div>
+
+<p>como dato de <b>INPUT</b>, a <b>a$</b> se le dará el valor <b>cat</b>. Puesto que las comillas de cadena no aparecen en la cadena, usted no puede suprimirlas ni introducirlas por teclado en una clase distinta de expresión de cadena para los datos de <b>INPUT</b>. Recuerde que no puede utilizar <b>LINE</b> para variables numéricas.</p>
+
+<p>Los caracteres de control <b>CHR$ 22</b> y <b>CHR$ 23</b> tienen efectos bastante similares a <b>AT</b> y <b>TAB</b>. Son bastante singulares como caracteres de control porque siempre que se envían para ser impresos en la pantalla de televisión, deben ir seguidos por dos caracteres más que no tienen su efecto habitual: se tratan como números (sus códigos) para especificar la línea y la columna (por <b>AT</b>) o la posición de tabulación (por <b>TAB</b>). Casi siempre encontrará más fácil utilizar <b>AT</b> y <b>TAB</b>, en la forma habitual, en lugar de los caracteres de control, pero podrían ser de utilidad en algunas circunstancias. El carácter de control <b>AT</b> es <b>CHR$ 22</b>. El primer carácter después del mismo especifica el número de línea y el segundo el número de columna, de modo que</p>
+
+<div align="center"><span class="codigo">PRINT CHR$ 22 + CHR$ 1 + CHR$ c;</span></div>
+
+<p>tiene exactamente el mismo efecto que</p>
+
+<div align="center"><span class="codigo">PRINT AT 1, c;</span></div>
+
+<p>Esto es así aun cuando <b>CHR$ 1</b> o <b>CHR$ c</b> tuvieran normalmente un significado diferente (por ejemplo, si <b>c = 13</b>); el carácter <b>CHR$ 22</b> antes de ellos anula ese significado.</p>
+
+<p>El carácter de control de <b>TAB</b> es <b>CHR$ 23</b> y los dos caracteres después del mismo se utilizan para dar un número entre 0 y 65535 que especifica el número que hubiera tenido en un elemento de información de <b>TAB</b>:</p>
+
+<div align="center"><span class="codigo">PRINT CHR$ 23 + CHR$ a + CHR$ b;</span></div>
+
+<p>tiene el mismo efecto que</p>
+
+<div align="center"><span class="codigo">PRINT TAB a + 256 * b;</span></div>
+
+<p>Puede emplear <b>POKE</b> para detener el ordenador, que le hará la pregunta <b>scroll?</b>, escribiendo</p>
+
+<div align="center"><span class="codigo">POKE 23692,255</span></div>
+
+<p>periódicamente. Después de esto, se desplazará hacia arriba en la pantalla 255 veces antes de pararse con la pregunta <b>scroll?</b> Como un ejemplo, pruebe:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 10000<br>
+20 PRINT n: POKE 23692,255<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>y vigile cualquier zumbido (!) de la pantalla, por el movimiento con gran rapidez.</p>
+
+<p><b>Ejercicios</b></p>
+
+<ol type=0 start=1>
+<li>
+<p>Pruebe el siguiente programa con algunos niños para probar sus tablas de multiplicación.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;10 LET m$ = ""<br>
+&nbsp;&nbsp;20 LET a = INT (RND * 12) + 1: LET b = INT (RND * 12) + 1<br>
+&nbsp;&nbsp;30 INPUT (m$) ''"cuantas son "; (a); "*"; (b); "?"; c<br>
+100 IF c = a * b THEN LET m$ = "Correcto.": GO TO 20<br>
+110 LET m$ = "Erróneo. prueba de nuevo.": GO TO 30
+</span>
+</td>
+</tr>
+</table>
+
+<p>Si son hábiles, podrían ingeniárselas para no tener que hacer los cálculos por sí mismos. Por ejemplo, si el ordenador les pide que escriban la respuesta a <b>2 * 3</b>, todo lo que tienen que teclear es <b>2 * 3</b>.</p>
+
+<p>Una forma de evitarlo es hacerles introducir cadenas en lugar de números. Sustituir <b>c</b> en la línea 30 por <b>c$</b> y en la línea 100 por <b>VAL c$</b> e insertar una línea.</p>
+
+<div align="center"><span class="codigo">40 IF c$ <> STR$ VAL c$ THEN LET m$= "Tecleelo adecuadamente, como un número.":GO TO</span></div>
+
+<p>Esto los volverá locos. Transcurridos unos días, sin embargo, uno de ellos quizá descubra que pueden eludirlo borrando las comillas de cadena y tecleando <b>STR$ (2 * 3)</b>. Para "cerrar esta escapatoria", puede sustituir <b>c$</b> en la línea 30 por <b>LINE c$</b>.</p>
+
+</li>
+</ol>
+
+<br>
+<div align="center"><a href="capitulo15.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

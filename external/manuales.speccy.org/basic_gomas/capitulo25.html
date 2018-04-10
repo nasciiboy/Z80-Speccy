@@ -1,0 +1,2227 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 25</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 25</b></div>
+
+<h2>Las variables del sistema</h2>
+
+<p>Los octetos de la memoria cuyas direcciones están comprendidas entre 23552 y 23733 se han reservado para usos específicos del sistema. Es posible examinarlas (<b>PEEK</b>) para averiguar varios detalles acerca del mismo y, algunas de ellas, se pueden también alterar (<b>POKE</b>). Las hemos listado aquí, junto con sus usos.</p>
+
+<p>Se las ha llamado variables del sistema y poseen nombres, pero no deben ser confundidas con las variables que usa el BASIC. El ordenador no identifica sus nombres como pertenecientes a las variables de sistema, por lo que aquí las exponemos únicamente como mnemotecnias para los "humanos".</p>
+
+<p>Las abreviaturas de la columna 1 tienen los siguientes significados:</p>
+
+<p><b>X</b> Las variables no deben ser alteradas (<b>POKE</b>) pues, de lo contrario el sistema resultará quebrantado.</p>
+
+<p><b>N</b> Las alteraciones de la variable no producirán efectos perjudiciales.</p>
+
+<p>El numero asignado en la columna 1 es el de los octetos que contiene la variable. Cuando hay dos octetos (bytes), el primero es el menos significativo al contrario de lo que se podría esperar. De este modo, para variar el valor <b>v</b> de los dos octetos de una variable ubicada en la dirección <b>n</b>, usamos las sentencias:</p>
+
+<table align="center" valign="top" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+POKE n, v - 256 * INT (v / 256)<br>
+POKE n + 1, INT (v / 256)
+</span>
+</td>
+</tr>
+</table>
+
+<p>y para inspeccionar (<b>PEEK</b>) un valor, se usa la expresión</p>
+
+<div align="center"><span class="codigo">PEEK n + 256 * PEEK (n + 1)</span></div>
+
+<br><br>
+
+<table align="center" width="95%" valign="top" border="0">
+
+<tr>
+
+<td align="left" width="12%">
+<span class="texto">
+<b>Notas</b>
+</span>
+</td>
+
+<td align="left" width="12%">
+<span class="texto">
+<b>Dirección</b>
+</span>
+</td>
+
+<td align="left" width="12%">
+<span class="texto">
+<b>Nombre</b>
+</span>
+</td>
+
+<td align="left" width="64%">
+<span class="texto">
+<b>Contenido</b>
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N8
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23552
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+KSTATE
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Se usa para leer del teclado.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23560
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+LAST K
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Almacena el valor de la tecla pulsada últimamente.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23561
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+REPDEL
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Tiempo (en 1 / 50 de segundo - o en 1 / 60 en Norteamérica) que debe presionarse la tecla para que se repita. Su valor parte de 35, pero es posible alterarlo (<b>POKE</b>) con otros valores.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23562
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+REPPER
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Retardo (en 1 / 50 de segundo - o en 1 / 60 de segundo en Norteamérica) entre repeticiones sucesivas de una tecla mantenida oprimida: inicialmente vale 5.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23563
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+DEFADD
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del argumento de una función definida por el usuario, si es que se está valorando alguna; en otro caso vale 0.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23565
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+K DATA
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Almacena el segundo octeto del control del color introducido por el teclado.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23566
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+TVDATA
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Almacena octetos de color, controles <b>AT</b> y <b>TAB</b> que van a la televisión.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X38
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23568
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+STRMS
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Direcciones de canales de comunicación de entrada y salida.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23606
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+CHARS
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del conjunto de caracteres menos 256 (que comienza por un espacio y lleva el signo de copyright). Se encuentra normalmente en la ROM, pero es posible disponer una RAM para hacer que la función <b>CHARS</b> se dirija a la misma.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23608
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+RASP
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Duración del zumbador de alarma.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23609
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+PIP
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Duración del chasquido del teclado.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23610
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+ERR NR
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+El código de informe menos 1. Se inicializa a 255 (para -1) por lo que si se examina la posición 23610 (<b>PEEK 23610</b>) se obtiene 255.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23611
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+FLAGS
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Varios indicadores para control del sistema BASIC.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23612
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+TV FLAG
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Indicadores asociados con la televisión.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23613
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+ERR SP
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del elemento de la pila de la máquina que es usado como retorno de error.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23615
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+LIST SP
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de la posición de retorno tras un listado automático.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23617
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+MODE
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Especifica el cursor K, L, C, E o G.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23618
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+NEWPPC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Línea a la que hay que saltar.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23620
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+NSPPC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de sentencia en una línea a la que hay que saltar. Si se ejerce la función <b>POKE</b> primeramente a <b>NEWPPC</b>, y luego a <b>NSPPC</b>, se fuerza un salto a una sentencia especificada en una línea.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23621
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+PPC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de línea de la sentencia en curso.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23623
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+SUBPPC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número dentro de la línea de la sentencia en curso.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23624
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+BORDCR
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Color del contorno *8; contiene también los atributos que se suelen usar para la mitad inferior de la pantalla.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23625
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+E PPC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de la línea en curso (con el cursor del programa).
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23627
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+VARS
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de las variables.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23629
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+DEST
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de la variable en la asignación.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23631
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+CHANS
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del canal de datos.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23633
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+CURCHL
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de la información que se destina en ese momento para entrada y salida.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23635
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+PROG
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del programa BASIC.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23637
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+NXTLIN
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de la siguiente línea del programa.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23639
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+DATADD
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de la terminación del último elemento de datos.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23641
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+E LINE
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del comando que se está escribiendo en el teclado.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23643
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+K CUR
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del cursor.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23645
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+CH ADD
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del siguiente carácter a interpretar: el carácter que sigue al argumento de <b>PEEK</b>, o al de <b>NEWLINE</b> al final de una sentencia <b>POKE</b>.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23647
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+X PTR
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del carácter que sigue al signo <span class="inverse">&nbsp;?&nbsp;</span>.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del espacio eventual de trabajo.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23651
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+STKBOT
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del fondo de la pila de cálculo.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23653
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+STKEND
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del comienzo del espacio de reserva.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23655
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+BREG
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Registro b del calculador.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23656
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+MEM
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de la zona utilizada para la memoria del calculador. (Normalmente <b>MEMBOT</b>, pero no siempre).
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23658
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+FLAGS2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Más indicadores.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23659
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+DF SZ
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de líneas (incluida una en blanco) de la mitad inferior de la pantalla.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23660
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+S TOP
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+El número de la línea superior del programa en los listados automáticos.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23662
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+OLDPPC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de línea a la que salta la sentencia <b>CONTINUE</b>.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23664
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+OSPCC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número dentro de la línea de la sentencia a la que salta la instrucción <b>CONTINUE</b>.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23665
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+FLAGX
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Indicadores varios.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23666
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+STRLEN
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Longitud del destino tipo de cadena en la asignación.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23668
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+T ADDR
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del siguiente elemento en la tabla sintática (muy difícilmente útil).
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23670
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+SEED
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+El origen para <b>RND</b>, es la variable que se fija mediante la función <b>RANDOMIZE</b>.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+3
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23672
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+FRAMES
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+3 octetos (el menos significativo en primer lugar) del contador de cuadros. Se incrementa cada 20 ms. Véase el capítulo 18.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23675
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+UDG
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del primer gráfico definido por el usuario. Se la puede cambiar, por ejemplo, para ahorrar espacio a costa de tener menos gráficos definidos por el usuario.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23677
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+COORDS
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Coordenada <b>x</b> del último punto trazado.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23678
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Coordenada <b>y</b> del último punto trazado.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23679
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+P POSN
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de 33 columnas de la posición de la impresora.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23680
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+PR CC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Octeto menos significativo correspondiente a la dirección de la siguiente posición a imprimir en la función <b>PRINT</b> (en la memoria temporal de la impresora).
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23681
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+No se usa.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23682
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+ECHO E
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de las 33 columnas y número de las 24 líneas (en la mitad inferior) del final de la memoria temporal de entrada.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23684
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+DF CC
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección de la posición de <b>PRINT</b> en el fichero de la presentación visual.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23686
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+DFCCL
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Igual que <b>DFCC</b>, pero para la mitad inferior de la pantalla.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23688
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+S POSN
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de las 33 columnas de la posición de <b>PRINT</b>.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23689
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Número de las 24 líneas de la posición de <b>PRINT</b>.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+X2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23690
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+SPOSNL
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Igual que <b>S POSN</b>, pero para la mitad inferior.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23692
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+SCR CT
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Contaje de los desplazamientos hacia arriba ("scroll"): es siempre una unidad más que el número de desplazamientos que se van a hacer antes de terminar en un <b>scroll?</b> Si se cambia este valor con un número mayor que 1 (digamos 255), la pantalla continuará "enrollándose" sin necesidad de nuevas instrucciones.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23693
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+ATTR P
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Colores permanentes en curso, etc. (tal y como los fijaron las sentencias para el color).
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23694
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+MASK P
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Se usa para los colores transparentes, etc. Cualquier bit que sea 1 indica que el bit correspondiente de los atributos no se toma de <b>ATTR P</b>, sino de lo que ya está en pantalla.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23695
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+ATTR T
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Colores en uso temporal, etc. (tal como los fijaron los elementos de color).
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23696
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+MASK T
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Igual que <b>MASK P</b>, pero temporal.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+1
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23697
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+P FLAG
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Más indicadores.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+N30
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23698
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+MEMBOT
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Zona de memoria destinada al calculador; se usa para almacenar números que no pueden ser guardados convenientemente en la pila del calculador.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23728
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+No se usa.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23730
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+RAMTOP
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del último octeto del BASIC en la zona del sistema.
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="left">
+<span class="texto">
+2
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+23732
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+P-RAMT
+</span>
+</td>
+
+<td align="left">
+<span class="texto">
+Dirección del último octeto de la RAM física.
+</span>
+</td>
+
+</tr>
+
+</table>
+
+<br>
+
+<p>Este programa proporciona los primeros 22 octetos de la zona de variables:</p>
+
+<table align="center" border="0" valign="top">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 21<br>
+20 PRINT PEEK (PEEK 16400 + 256 * PEEK 16401 + n)<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>Trate de encajar la variable de control <b>n</b> con las descripciones anteriores. A continuación, sustitúyase la línea 20 por</p>
+
+<div align="center"><span class="codigo">20 PRINT PEEK (16509 + n)</span></div>
+
+<p>Esto último proporciona los primeros 22 octetos de la zona del programa. Compáreselo con el propio programa.</p>
+
+<div align="center"><a href="capitulo25.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

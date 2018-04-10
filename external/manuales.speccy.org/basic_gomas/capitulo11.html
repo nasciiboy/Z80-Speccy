@@ -1,0 +1,286 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 11</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 11</b></div>
+
+<h2>Números aleatorios</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>RANDOMIZE</b></li>
+<li><b>RND</b></li>
+</ul>
+
+<p>Este capítulo trata de la función <b>RND</b> y de la palabra clave <b>RANDOMIZE</b>. Se utilizan ambas en relación con los números aleatorios, por lo que debe tener cuidado en no mezclarlas. Las dos están en la misma tecla (<b>T</b>), habiéndose tenido que abreviar <b>RANDOMIZE</b> en <b>RAND</b>.</p>
+
+<p>En algunas formas, <b>RND</b> es como una función: realiza cálculos y da lugar a un resultado. No es habitual por cuanto que no necesita un argumento.</p>
+
+<p>Cada vez que la utiliza, su resultado es un nuevo número aleatorio entre 0 y 1 (a veces, puede tomar el valor 0, pero nunca 1).</p>
+
+<p>Pruebe:</p>
+
+<table align="center" width="120" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 PRINT RND<br>
+20 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>para ver cómo varía la respuesta. ¿Puede detectar alguna configuración determinada? No será capaz pues "random" significa que es una función aleatoria.</p>
+
+<p>Realmente, <b>RND</b> no es verdaderamente aleatoria, porque sigue una secuencia fija de 65536 números. Sin embargo, es tan profundamente complicada la secuencia que no se tienen pautas obvias y por ello diremos que <b>RND</b> es pseudoaleatoria.</p>
+
+<p><b>RND</b> da un número aleatorio entre 0 y 1, pero fácilmente puede obtener números aleatorios en otros intervalos. Por ejemplo, <b>5 * RND</b> está entre 0 y 5 y <b>1.3 + 0.7 * RND</b> está entre 1.3 y 2. Para obtener números enteros, utilice <b>INT</b> (recordando que <b>INT</b> siempre se redondea por defecto) como en <b>1 + INT (RND * 6)</b> que utilizaremos en un programa para simular dados. <b>RND * 6</b> está en el intervalo de 0 a 6, pero puesto que nunca llega realmente a 6, <b>INT (RND * 6)</b> es 0, 1, 2, 3, 4 ó 5.</p>
+
+<p>Veamos el programa:</p>
+
+<table align="center" width="220" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 REM programa de tirada de dados<br>
+20 CLS<br>
+30 FOR n = 1 TO 2<br>
+40 PRINT 1 + INT (RND * 6);" ";<br>
+50 NEXT n<br>
+60 INPUT A$: GO TO 20
+</span>
+</td>
+</tr>
+</table>
+
+<p>Pulse <b>ENTER</b> cada vez que quiera tirar los dados.</p>
+
+<p>La sentencia <b>RANDOMIZE</b> se utiliza para hacer que <b>RND</b> comience en un lugar definido en su secuencia de números, como puede ver con el programa siguiente:</b>
+
+<table align="center" width="220" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 RANDOMIZE 1<br>
+20 FOR n = 1 TO 5: PRINT RND,: NEXT n<br>
+30 PRINT: GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>Después de cada ejecución de <b>RANDOMIZE 1</b>, la secuencia <b>RND</b> vuelve a iniciarse con 0.0022735596. Puede utilizar otros números entre 1 y 65535 en la sentencia <b>RANDOMIZE</b> para comenzar la secuencia <b>RND</b> en lugares diferentes.</p>
+
+<p>Si tuviera un programa con <b>RND</b> en el mismo y también tuviera algunos errores que no hubiera encontrado, entonces sería de utilidad el empleo de <b>RANDOMIZE</b> como tal, de modo que el programa se comportara de la misma forma cada vez que lo ejecutara.</p>
+
+<p><b>RANDOMIZE</b> por sí misma (y <b>RANDOMIZE 0</b> tiene el mismo efecto) es diferente, porque realmente hace la función de aleatorizar <b>RND</b>. Puede constatarlo en el programa siguiente:</p>
+
+<table align="center" width="220" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 RANDOMIZE<br>
+20 PRINT RND: GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>La secuencia que consigue en este caso no es muy aleatoria, porque <b>RANDOMIZE</b> utiliza el tiempo desde que se puso en servicio el ordenador. Puesto que esto se produce en la misma magnitud cada vez que se ejecuta <b>RANDOMIZE</b>, la siguiente <b>RND</b> hace más o menos lo mismo. Conseguiría un efecto más aleatorio sustituyendo <b>GO TO 10</b> por <b>GO TO 20</b>.</p>
+
+<p>Observación: La mayoría de las versiones de BASIC utilizan <b>RND</b> y <b>RANDOMIZE</b> para obtener números aleatorios, pero no todas las utilizan de la misma manera.</p>
+
+<p>Veamos un programa para lanzar monedas y contar los números de caras y cruces.</p>
+
+<table align="center" width="220" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 LET caras = 0: LET cruces = 0<br>
+20 LET moneda = INT (RND * 2)<br>
+30 IF moneda = 0 THEN LET caras = caras + 1<br>
+40 IF moneda = 1 THEN LET cruces = cruces + 1<br>
+50 PRINT caras;",";cruces<br>
+60 IF cruces <> 0 THEN PRINT caras / cruces;<br>
+70 PRINT: GO TO 20
+</span>
+</td>
+</tr>
+</table>
+
+<p>La relación caras/cruces debe llegar a ser aproximadamente 1 si prosigue durante un período de tiempo suficientemente largo, porque, a largo plazo, debe esperar igual número de caras que de cruces.</p>
+
+<p><b>Ejercicios</b></p>
+
+<ol type=0 start=1>
+
+<li>Pruebe esta regla:
+	<p>Supongamos que elige un número entre 1 y 872 y teclee:</p>
+	<div align="center"><span class="codigo">RANDOMIZE su número</span></div>
+	<p>Entonces, el siguiente valor de <b>RND</b> será:</p>
+	<div align="center"><span class="codigo">(75 * (su número + 1) -1) / 65536</span></div>
+</li>
+
+<li>(Para matemáticos solamente)
+	<p>Sea <b>p</b> un número primo (grande) y sea <b>a</b> una raíz primitiva de módulo <b>p</b>.</p>
+	<p>Entonces, si <b>Bi</b> es el resultado de <b>Ai</b> módulo <b>p (1 =< Bi =< p - 1)</b>, la secuencia:</p>
+	<div align="center"><b>Bi - 1<br>--------<br>&nbsp;p - 1<br></b></div>
+	<p>es una secuencia cíclica de <b>p - 1</b> números distintos en el intervalo <b>0 a 1</b> (excluyendo 1). Eligiendo <b>a</b> adecuadamente, estos números pueden aparecer como bastante aleatorios.</p>
+	<p>65537 es un primo de Fermat, 2 <img src="images/shared/arrow_up.png"> 16 + 1. Habida cuenta de que el grupo multiplicativo de resto distinto de no cero del módulo 65537 tiene una potencia de 2 como su orden, un resto es una raíz primitiva si, y solamente si, no es un resto cuadrático. Utilice la ley de Gauss de reciprocidad cuadrática para demostrar que 75 es una raíz primitiva módulo 65537.</p>
+	<p>El ZX Spectrum utiliza <b>p = 65537</b> y <b>a = 75</b> y almacena algunos valores <b>Bi - 1</b> en memoria. <b>RND</b> obliga la sustitución de <b>Bi - 1</b> en memoria por <b>Bi + 1 - 1</b> y proporciona el resultado <b>(Bi + 1 - 1)</b>, <b>(p - 1)</b>. <b>RANDOMIZE n</b> (con 1 < n < 65535) hace <b>Bi</b> igual a <b>n + 1</b>.</p>
+	<p><b>RND</b> está casi uniformemente distribuida en el intervalo 0 a 1.</p>
+</li>
+</ol>
+
+<br>
+<div align="center"><a href="capitulo11.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

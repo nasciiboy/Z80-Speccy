@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>Manual de Introducción Spectrum 48k - Capítulo 8</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+
+<h2>8. Sonido</h2>
+
+<p>El ZX Spectrum puede producir sonidos de una variedad prácticamente ilimitada. La frecuencia de la nota y su duración están bajo el control del usuario. El comando <b>BEEP</b> se utiliza para comunicar al ordenador que emita un sonido. <b>BEEP</b> es un comando de modo extendido y se obtiene con el empleo de la tecla <b>Z</b>.</p>
+
+<p>La frecuencia "central" para el comando <b>BEEP</b> es el "do" central (C central). Esta frecuencia puede variarse dentro del comando <b>BEEP</b> y puede obtenerse cualquier nota si se expresa como semitonos o partes de semitonos por encima o por debajo de dicha frecuencia central. Si el comando</p>
+
+<div align="center"><span class="codigo">BEEP 2,0</span></div>
+
+<p>se introduce, el ordenador debe emitir un sonido en un tono de "do" (C) central durante dos segundos.</p>
+
+<p>Los dos números dados controlan la clase de nota que se emite; el primero da la duración de la nota en segundos y el segundo la altura de la nota en semitonos por encima del "do" central. Así, el código de altura del sonido para "do" central es <b>0</b>, el del "do" sostenido (C =) es <b>1</b>, el del "re" (D) es <b>2</b> y así sucesivamente hasta el siguiente "do" (C) de una octava superior que es <b>12</b>, porque 12 semitonos constituyen una octava. Puede continuar con 13 y más allá, si así lo desea, de modo que cuanto más alto sea el número, tanto más alto será el tono del sonido.</p>
+
+<p>Pruebe a introducir:</p>
+
+<div align="center"><span class="codigo">BEEP 1,4: BEEP 1,2: BEEP 2,0</span></div>
+
+<p>Debe oír no menos del primer compás de la obra "Tres ratones ciegos". Puesto que puede unir bastantes <b>BEEPs</b> juntos con dos puntos (:) como en la expresión anterior, podría, si tuviera la paciencia necesaria, obtener un tono completo. Le podría atraer el empleo de más de tres notas.</p>
+
+<p>(Los dos puntos no sólo unen <b>BEEPs</b>; puede utilizarlos para elaborar comandos compuestos a partir de algunos de los comandos elementales).</p>
+
+<p>A título de ejemplo más complicado, puede elaborar un comando para el sonido de un camaleón cantando por medio de la mezcla de varios comandos <b>BEEP</b> y <b>BORDER</b> juntos:</p>
+
+<table align="center" width=400" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+BORDER 1: BEEP 1,14: BORDER 3: BEEP 1,16: BORDER 4: BEEP 1,12: BORDER 6: BEEP 1,0: BORDER 5: BEEP 4,7: BORDER 1
+</span>
+</td>
+</tr>
+</table>
+
+<p>(No se preocupe por el hecho de que se extienda de una línea a la siguiente: el ordenador no se entera de tal circunstancia).</p>
+
+<p>Un breve programa para tocar una serie completa de notas podría ser el siguiente:</p>
+
+<table align="center" width=140" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR x = 9 TO 24<br>
+20 BEEP 2, x<br>
+30 NEXT x
+</span>
+</td>
+</tr>
+</table>
+
+<p>Hay muchas más cosas que pueden hacerse con este comando; vea el manual de programación en BASIC para tener más ideas.</p>
+
+<p>Para las notas por debajo del "do" central, el número de semitonos se indica por un número negativo.</p>
+
+<br>
+<div align="center"><a href="capitulo08.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

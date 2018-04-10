@@ -1,0 +1,427 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 20</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 20</b></div>
+
+<h2>Almacenamiento en cinta</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>LOAD, SAVE, VERIFY, MERGE</b></li>
+</ul>
+
+<p>Los métodos básicos para utilizar la grabadora de cassette para conservar (<b>SAVE</b>), cargar (<b>LOAD</b>) y verificar (<b>VERIFY</b>) programas se dan en el fascículo de introducción. Esta sección debe ser objeto de lectura e intentarse realizar los procedimientos antes de seguir más adelante.</p>
+
+<p>Hemos visto que <b>LOAD</b> borra el anterior programa y las variables existentes en el ordenador antes de cargar los nuevos procedentes de la cinta; hay otra sentencia, <b>MERGE</b>, que no hace lo mismo. <b>MERGE</b> sólo borra una variable o línea de programa anterior si ha de hacerlo porque haya una nueva con el mismo nombre o número de línea. Introduzca por el teclado el programa de "dados" incluido en el capítulo 11 y consérvelo en cinta, como "dice" (dados). Ahora introduzca y ejecute lo siguiente:</p>
+
+<table valign="top" align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;&nbsp;1 PRINT 1<br>
+&nbsp;&nbsp;&nbsp;2 PRINT 2<br>
+10 PRINT 10<br>
+20 LET x = 20
+</span>
+</td>
+</tr>
+</table>
+
+<p>y luego, proceda como para la verificación, pero sustituyendo <b>VERIFY</b> "dice" por:</p>
+
+<div align="center"><span class="codigo">MERGE "dice"</span></div>
+
+<p>Si efectúa el listado del programa, puede ver que han sobrevivido las líneas 1 y 2, pero que las líneas 10 y 20 se han sustituido por las del programa de dados. <b>x</b> también ha sobrevivido (pruebe <b>PRINT x</b>).</p>
+
+<p>Ya ha visto formas sencillas de las cuatro sentencias utilizadas con la cinta de cassette:</p>
+
+<p><b>SAVE</b> registra el programa y las variables en cassette.</p>
+
+<p><b>VERIFY</b> comprueba el programa y las variables en cassette con respecto a los ya existentes en el ordenador.</p>
+
+<p><b>LOAD</b> borra del ordenador todos sus programas y variables anteriores y les sustituye por otros nuevos extraídos de cassette.</p>
+
+<p><b>MERGE</b> es como <b>LOAD</b> con la salvedad de que no borra una variable o línea de programa anterior, a no ser que haya de hacerlo porque su nombre o número de línea sea coincidente con una nueva procedente del cassette.</p>
+
+<p>En cada una de ellas, la palabra clave va seguida por una cadena; para <b>SAVE</b> ello proporciona un nombre para el programa en cinta, mientras que para las otras tres, comunica al ordenador qué programa buscar. Mientras realiza la búsqueda, imprime el nombre de cada programa que encuentra. Hay un par de peculiaridades interesantes para todo ello.</p>
+
+<p>Para <b>VERIFY</b>, <b>LOAD</b> y <b>MERGE</b>, puede proporcionar la cadena vacía como el nombre para buscar; entonces, el ordenador no tiene que preocuparse del nombre, sino que toma el primer programa que se encuentra.</p>
+
+<p>Una variante en <b>SAVE</b> adopta la forma:</p>
+
+<div align="center"><span class="codigo"><b>SAVE</b> cadena <b>LINE</b> número</p></span></div>
+
+<p>Un programa conservado con su empleo se registra de tal forma que cuando sea objeto de nueva lectura por <b>LOAD</b> (pero no <b>MERGE</b>) salta automáticamente a la línea con el número dado, con la que se ejecuta por sí misma.</p>
+
+<p>Hasta ahora, los únicos tipos de información que hemos almacenado en cassette han sido programas junto con sus variables. Hay, asimismo, otras dos tipos denominados matrices y bytes.</p>
+
+<p>Las matrices se tratan con pocas diferencias.</p>
+
+<p>Puede conservar matrices en cinta con el empleo de <b>DATA</b> en una sentencia <b>SAVE</b>, mediante:</p>
+
+<div align="center"><span class="codigo"><b>SAVE</b> cadena <b>DATA</b> nombre de matriz()</span></div>
+
+<p>La <b>cadena</b> es el nombre que la información tendrá en la cinta y opera en exactamente la misma forma que cuando conserva un programa o bytes ordinarios.</p>
+
+<p>El nombre de la matriz especifica la matriz que desea conservar, por lo que es simplemente una letra seguida por <b>$</b>. Recuerde los paréntesis en lo sucesivo; podría considerar que son lógicamente innecesarios pero, no obstante, ha de ponerlos para hacerlo más fácil para el ordenador.</p>
+
+<p>Están claras las funciones independientes de la cadena y del nombre de la matriz. Si dice, por ejemplo:</p>
+
+<div align="center"><span class="codigo">SAVE "Bloggs" DATA b()</span></div>
+
+<p>entonces, <b>SAVE</b> toma la matriz <b>b</b> del ordenador y la almacena en cinta con el nombre "Bloggs". Cuando teclea:</p>
+
+<div align="center"><span class="codigo">VERIFY "Bloggs" DATA b()</span></div>
+
+<p>el ordenador buscará una matriz de números almacenada en cinta con el nombre "Bloggs" (cuando la encuentre, escribirá "Matriz de números: Bloggs") y la comprobará con respecto a la matriz <b>b</b> en el ordenador.</p>
+
+<div align="center"><span class="codigo">LOAD "Bloggs" DATA b()</span></div>
+
+<p>encuentra la matriz en la cinta y luego (si hay espacio para ella en el ordenador) borra cualquier matriz ya existente, denominada <b>b</b> y carga la nueva matriz procedente de la cinta, a la que llama <b>b</b>.</p>
+
+<p>No puede utilizar <b>MERGE</b> con matrices almacenadas.</p>
+
+<p>Puede almacenar matrices de caracteres (cadenas) de la misma forma. Cuando el ordenador está buscando la cinta y encuentra una de estas, escribe "Matriz de caracteres": seguida por el nombre. Cuando carga una matriz de caracteres, no borrará solamente cualquier matriz de caracteres anterior con el mismo nombre, sino también cualquier cadena con el mismo nombre.</p>
+
+<p>El almacenamiento de bytes se utiliza para fragmentos de información sin ninguna referencia a lo que se aplica la información que podría ser: una imagen de televisión o gráfico definido por el usuario o algo que haya elaborado por si mismo. Se muestra con el empleo de la palabra <b>CODE</b>, como en:</p>
+
+<div align="center"><span class="codigo">SAVE "imagen" CODE 16384,6912</span></div>
+
+<p>La unidad de almacenamiento en memoria es el byte (un número entre 0 y 255) y cada byte tiene una dirección (que es un número entre 0 y 65535). El primer número después de <b>CODE</b> es la dirección del primer byte que ha de almacenarse en cinta y el segundo es el número de bytes a almacenar. En nuestro caso, 16384 es la dirección del primer byte en el fichero de presentación visual (que contiene la imagen de televisión) y 6912 es el número de bytes en la misma, por lo que estamos conservando una copia de la pantalla de televisión (haga la prueba). El nombre "imagen" opera lo mismo que los nombres para programas.</p>
+
+<p>Para volverle a cargar, utilice:</p>
+
+<div align="center"><span class="codigo">LOAD "imagen" CODE</span></div>
+
+<p>Puede poner números después de <b>CODE</b> en la forma:</p>
+
+<div align="center"><span class="codigo"><b>LOAD</b> nombre <b>CODE</b> comienzo, longitud</span></div>
+
+<p>En este caso, la longitud es simplemente una medida de seguridad; cuando el ordenador ha encontrado los bytes en cinta con el nombre correcto, no obstante, rehusará cargarles si hay más que la longitud de los mismos, puesto que, evidentemente, hay más datos de los que esperaba y podría el ordenador sobreescribir algo que no tuviera usted intención de modificar. Dará el informe de error <b>R Tape loading error</b>. Puede omitir longitud y, entonces, el ordenador efectuará la lectura de cuantos bytes haya.</p>
+
+<p>Comienzo indica la dirección en donde ha de volverse a cargar el primer byte y que puede ser diferente de la dirección en la que fue conservado, aunque si son las mismas puede omitir comienzo en la sentencia <b>LOAD</b>.</p>
+
+<p><b>CODE 16384, 6912</b> es tan útil para conservar y cargar la imagen que puede sustituirle por <b>SCREEN$</b>, por ejemplo:</p>
+
+<div align="center"><span class="codigo">
+SAVE "imagen" SCREEN$<br>
+LOAD "imagen" SCREEN$
+</span></div>
+
+<p>Este es un caso raro para el que no operará <b>VERIFY</b>. Tenga en cuenta que <b>VERIFY</b> escribe los nombres de lo que encuentra en la cinta, de modo que en el momento en que llega a la verificación se ha cambiado el fichero de la presentación visual y falla la verificación. En todos los demás casos, debe utilizar <b>VERIFY</b> siempre que emplee <b>SAVE</b>.</p>
+
+<p>A continuación se da un resumen de las cuatro sentencias utilizadas en este capítulo.</p>
+
+<p>Nombre significa cualquier expresión de cadena y se refiere al nombre con el que se almacena la información en cassette. Debe estar constituido por los caracteres de impresión en ASCII, de los que sólo se utilizan los 10 primeros.</p>
+
+<p>Hay cuatro clases de información que se pueden almacenar en cinta: programa y variables (juntas), matrices de números, matrices de caracteres y bytes puros.</p>
+
+<p>Cuando <b>VERIFY</b>, <b>LOAD</b> y <b>MERGE</b> están buscando información en la cinta con un nombre dado y de una clase dada, imprimen en la pantalla la clase y el nombre de toda la información que encuentran. La clase se indica por "Programa:", "Matriz de números:", "Matriz de caracteres:" o "Bytes:". Si nombre era la cadena vacía, toman el primer lote de información de la clase adecuada, haciendo caso omiso de su nombre.</p>
+
+<p><b>SAVE</b></p>
+
+<p>Conserva información en cinta bajo el nombre dado. El error <b>F</b> se produce cuando el nombre está vacío o tiene 11 o más caracteres.</p>
+
+<p><b>SAVE</b> siempre pone un mensaje "<b>Start tape, then press any key</b>" (ponga en marcha la cinta, luego pulse cualquier tecla) y espera a que se pulse una tecla antes de conservar algo.</p>
+
+<ol start=1 type=0>
+
+<li>
+<p>Programa y variables:</p>
+<div align="center"><span class="codigo"><b>SAVE</b> nombre</span></div>
+<p>es la forma normal.</p>
+<div align="center"><span class="codigo"><b>SAVE</b> nombre <b>LINE</b> número de línea</span></div>
+<p>conserva el programa y variables de tal forma que la carga <b>LOAD</b> se sigue automáticamente con</p>
+<div align="center"><span class="codigo"><b>GO TO</b> número de línea</span></div>
+<p><b>SAVE</b> nombre <b>LINE</b> es equivalente a <b>SAVE</b> nombre <b>LINE 1</b>, de modo que cuando se cargue el programa, se ejecute por sí mismo desde el principio.</p>
+</li>
+
+<li>
+<p>Bytes:</p>
+<div align="center"><span class="codigo"><b>SAVE</b> nombre <b>CODE</b> comienzo, longitud</span></div>
+<p>conserva la longitud en bytes que comienza en la dirección comienzo.</p>
+<div align="center"><span class="codigo"><b>SAVE</b> nombre <b>SCREEN$</b></span></div>
+<p>es equivalente a</p>
+<div align="center"><span class="codigo"><b>SAVE</b> nombre <b>CODE</b> 16384, 6912</span></div>
+<p>y conserva la imagen de televisión.</p>
+</li>
+
+<li>
+<p>Matrices:</p>
+<div align="center"><span class="codigo"><b>SAVE</b> nombre <b>DATA</b> letra()</span></div>
+<p>o</p>
+<div align="center"><span class="codigo"><b>SAVE</b> nombre <b>DATA</b> letra $()</span></div>
+<p>conserva la matriz cuyo nombre es letra o letra$ (ello exige no tener ninguna relación con nombre).</p>
+</li>
+
+</ol>
+
+<p><b>VERIFY</b></p>
+
+<p>Comprueba la información en cinta con respecto a la información existente en memoria. La falta de verificación da el informe de error <b>R Tape loading error</b> (error de carga de cinta).</p>
+
+<ol type=0 start=1>
+
+<li>
+<p>Programa y variables:</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre</span></div>
+</li>
+
+<li>
+<p>Bytes:</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre <b>CODE</b> comienzo, longitud</span></div>
+<p>Si los bytes de nombre en cinta son más en número que en longitud, entonces, da el error <b>R</b>. De no ser así, comprobarles con respecto a los bytes en memoria que comienzan en la dirección comienzo.</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre <b>CODE</b> comienzo</span></div>
+<p>comprueba los bytes de nombre en cinta con respecto a los que hay en memoria que comienzan en la dirección comienzo.</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre <b>CODE</b></span></div>
+<p>comprueba los bytes en nombre en la cinta con respecto a los que hay en memoria que comienza en la dirección a partir de la cual se conservó el primer byte de cassette.</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre <b>SCREEN$</b></span></div>
+<p>es equivalente a:</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre <b>CODE</b> 16384, 6912</span></div>
+<p>pero, casi con toda certeza, dejará de verificar.</p>
+</li>
+
+<li>
+<p>Matrices:</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre <b>DATA</b> letra()</span></div>
+<p>o</p>
+<div align="center"><span class="codigo"><b>VERIFY</b> nombre <b>DATA</b> letra $()</span></div>
+<p>comprueba el nombre de matriz con respecto a la letra o letra$ de matriz en memoria.</p>
+</li>
+
+</ol>
+
+<p><b>LOAD</b></p>
+
+<p>carga nueva información a partir de la cinta, borrando de la memoria la anterior información.</p>
+
+<ol start=1 type=0>
+
+<li>
+<p>Programa y variables:</p>
+<div align="center"><span class="codigo"><b>LOAD</b> nombre</span></div>
+<p>borra el anterior programa y variables y carga el nombre de variables y programa a partir de la cassette; si el programa se conservó utilizando <b>SAVE</b> nombre <b>LINE</b>, el ordenador realiza un salto automático.</p>
+<p>El error <b>4 Out of memory</b> se produce si no hay espacio para el nuevo programa y variables. En este caso, no se borran el anterior programa y variables.</p>
+</li>
+
+<li>
+<p>Bytes:</p>
+<div align="center"><span class="codigo"><b>LOAD</b> nombre <b>CODE</b> comienzo, longitud</span></div>
+<p>Si los bytes en nombre de la cinta son más en número que en longitud, entonces da un error <b>R</b>. De no ser así, los carga en memoria empezando en la dirección comienzo y recubriendo cualquier cosa que hubiera anteriormente.</p>
+<div align="center"><span class="codigo"><b>LOAD</b> nombre <b>CODE</b> comienzo</span></div>
+<p>carga nombre en bytes desde cinta en memoria, empezando en la dirección comienzo y recubriendo cualquier cosa que hubiera con anterioridad.</p>
+<div align="center"><span class="codigo"><b>LOAD</b> nombre <b>CODE</b></span></div>
+<p>carga el nombre en bytes desde cinta en memoria empezando en la dirección a partir de la cual se conservó el primer byte de cinta y recubriendo los bytes que estaban allí en memoria con anterioridad.</p>
+</li>
+
+<li>
+<p>Matrices:</p>
+<div align="center"><span class="codigo"><b>LOAD</b> nombre <b>DATA</b> letra()</span></div>
+<p>o</p>
+<div align="center"><span class="codigo"><b>LOAD</b> nombre <b>DATA</b> letra $()</span></div>
+<p>borra cualquier matriz ya denominada letra o letra $ (según sea adecuado) y forma una nueva a partir de la matriz almacenada en cassette.</p>
+<p>El error <b>4 Out of memory</b> se produce si no hay espacio para matrices nuevas. No se borran las matrices anteriores.</p>
+</li>
+
+</ol>
+
+<p><b>MERGE</b></p>
+
+<p>Carga la nueva información desde cassette sin borrar la anterior información de la memoria.</p>
+
+<ol type=0 start=1>
+
+<li>
+<p>Programa y variables:</p>
+<div align="center"><span class="codigo"><b>MERGE</b> nombre</span></div>
+<p>funde el nombre del programa con el ya existente en memoria, recubriendo cualesquiera variables o líneas de programa en el anterior programa cuyos nombres o números de línea no están en concordancia con los del nuevo programa.</p>
+<p>El error <b>4 Out of memory</b> se produce a no ser que haya suficiente espacio en memoria para la totalidad del anterior programa y variables y la totalidad del nuevo programa y variables que se cargan desde la cinta.</p>
+</li>
+
+<li>
+<p>Bytes:</p>
+<p>Imposible.</p>
+</li>
+
+<li>
+<p>Matrices:</p>
+<p>Imposible.</p>
+</li>
+
+</ol>
+
+<p><b>Ejercicios</b></p>
+
+<ol start=1 type=0>
+
+<li>
+<p>Haga una grabación en cassette en la que el primer programa, cuando se carga, imprime un menú (una lista de los demás programas en la cassette), le pida que elija un programa y luego, lo carga.</p>
+</li>
+
+<li>
+<p>Tome el gráfico de piezas de ajedrez del capítulo 14 y luego, teclee <b>NEW</b> y se seguirán conservando. Sin embargo, no se conservarán cuando se desconecte el ordenador; si desea mantenerles, debe conservarlos en cinta, utilizando <b>SAVE</b> con <b>CODE</b>. La forma más fácil de conservar los veintiún gráficos definidos por el usuario mediante:</p>
+<div align="center"><span class="codigo">SAVE "ajedrez" CODE USR "a", 21 * 8</span></div>
+<p>seguida por:</p>
+<div align="center"><span class="codigo">VERIFY "ajedrez" CODE</span></div>
+<p>Este es el sistema de conservación de bytes que se empleó para la conservación de la imagen. La dirección del primer byte a conservar es <b>USR "a"</b>, la dirección del primero de los ocho bytes que determinan la configuración del primer gráfico definido por el usuario y el número de bytes a conservar es 21 * 8 (8 bytes por cada uno de los 21 gráficos).</p>
+<p>Para una nueva carga, normalmente utilizaría</p>
+<div align="center"><span class="codigo">LOAD "ajedrez" CODE</span></div>
+<p>Sin embargo, si están volviendo a cargar en un Spectrum con una cantidad de memoria diferente o si han desplazado el gráfico definido por el usuario a una dirección distinta (ha de hacer esto deliberadamente con el empleo de técnicas más avanzadas), ha de tener más cuidado y utilizar:</p>
+<div align="center"><span class="codigo">LOAD "ajedrez" CODE USR "a"</span></div>
+<p><b>USR</b> permite el hecho de que el gráfico debe cargarse de nuevo en una dirección diferente.</p>
+</li>
+
+</ol>
+
+
+<div align="center"><a href="capitulo20.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

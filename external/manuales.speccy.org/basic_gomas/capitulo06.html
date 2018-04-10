@@ -1,0 +1,242 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 6</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 6</b></div>
+
+<h2>READ, DATA, RESTORE</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>READ, DATA, RESTORE.
+</b></li>
+</ul>
+
+<p>En algunos programas anteriores, vimos que la información, o datos, puede introducirse directamente en el ordenador con el empleo de la sentencia <b>INPUT</b>. A veces, ello puede ser muy tedioso, sobre todo si muchos datos se repiten cada vez que se ejecuta el programa. Puede ahorrar mucho tiempo utilizando los comandos <b>READ, DATA</b> y <b>RESTORE</b>. Por ejemplo:</p>
+
+<table align="center" width="400">
+<tr>
+<td>
+<span class="codigo">
+10 READ a,b,c<br>
+20 PRINT a,b,c<br>
+30 DATA 10,20,30<br>
+40 STOP
+</spam>
+</td>
+</tr>
+</table>
+
+<p>Una sentencia <b>READ</b> está constituida por <b>READ</b> seguida de una lista de nombres de variables, separados por comas. Actúa de forma bastante similar a una sentencia <b>INPUT</b>, salvo que en lugar de hacerle introducir por el teclado los valores asignados a las variables, el ordenador busca los valores  en la sentencia <b>DATA</b>.</p>
+
+<p>Cada sentencia <b>DATA</b> es una línea de expresiones, númericas o de cadenas, separadas por comas. Puede ponerlas en cualquier lugar que desee en un programa, porque el ordenador las ignora salvo cuando está realizando una sentencia <b>READ</b>. No obstante todas las sentencias <b>DATA</b> en el programa suelen ponerse juntas para formar una larga lista de expresiones, la lista de datos. La primera vez que el ordenador llega a la función <b>READ</b> de un valor, toma la primera expresión de la lista <b>DATA</b>; la siguiente vez, toma la segunda ,así, a medida que encuentra las sucesivas sentencias <b>READ</b>, abre su camino a través de la lista de <b>DATA</b> (si intenta ir más allá del final de dicha lista, se producirá un error).</p>
+
+<p>Observe que es una pérdida de tiempo poner las sentencias <b>DATA</b> en un comando directo, porque <b>READ</b> no las encontrará. Las sentencias <b>DATA</b> han de ir en el programa.</p>
+
+<p>Veamos cómo se encajan juntas en el programa que acaba de introducir por el teclado. La línea 10 dice al ordenador que efectúe la lectura de tres elementos de datos y los asigne a las variables <b>a</b>, <b>b</b> y <b>c</b>. La línea 20 le dice que imprima (<b>PRINT</b>) estas variables. La sentencia <b>DATA</b> en la línea 30, da los valores de <b>a</b>, <b>b</b> y <b>c</b>. La línea 40 detiene el programa. Para ver el orden en que se realizan las cosas, cambie la línea 20 a:</p>
+
+<div align="center"><span class="codigo">20 PRINT b,c,a</span></div>
+
+<p>La información en <b>DATA</b> puede ser parte de un bucle <b>FOR ... NEXT</b>. Teclee:</p>
+
+<table align="center" width="400">
+<tr>
+<td>
+<span class="codigo">
+10 FOR n=1 TO 6<br>
+20 READ D<br>
+30 DATA 2,4,6,8,10,12<br>
+40 PRINT D<br>
+50 NEXT n<br>
+60 STOP
+</spam>
+</td>
+</tr>
+</table>
+
+<p>Cuando este programa se ejecuta (<b>RUN</b>), puede ver a la sentencia <b>READ</b>desplazarse a través de la lista de <b>DATA</b>. Las sentencias <b>DATA</b> pueden contener también variables de cadena.Por ejemplo:</p>
+
+<table align="center" width="400">
+<tr>
+<td>
+<span class="codigo">
+10 READ d$<br>
+20 PRINT "La fecha es",d$<br>
+30 DATA "1 junio 1982"<br>
+40 STOP
+</spam>
+</td>
+</tr>
+</table>
+
+<p>Esta es la forma sencilla de buscar expresiones a partir de la lista de <b>DATA</b>: Comenzar por el principio y seguir a través de ella hasta que llegue al final. Sin embargo, puede hacer que el ordenador salte a cualquier lugar en la lista de <b>DATA</b>, con el empleo de la sentencia <b>RESTORE</b>. Esta sentencia está constituida por <b>RESTORE</b> seguida por un número de línea y hace que las subsiguientes sentencias <b>READ</b> comiencen la lectura de sus datos a partir de la primera sentencia <b>DATA</b>, o después del número de línea dado (puede pasar por alto el número de línea, en cuyo caso es como si hubiera tecleado el número de la primera línea en el programa). </p>
+
+<p>Pruebe este programa:</p>
+
+<table align="center" width="400">
+<tr>
+<td> 
+<span class="codigo">
+10 READ a,b<br>
+20 PRINT a,b<br>
+30 RESTORE 10<br>
+40 READ x,y,z<br>
+50 PRINT x,y,z<br>
+60 DATA 1,2,3<br>
+70 STOP
+</spam>
+</td>
+</tr>
+</table>
+
+<p>En este programa, los datos requeridos por la línea 10 hacen <b>a=1</b> y <b>b=2</b>. La instrucción <b>RESTORE 10</b> restaura las variables y permite que sean objeto de lectura (<b>READ</b>) las variables <b>x</b>,<b>y</b> y <b>z</b> comenzando a partir del primer número en la sentencia <b>DATA</b>. Vuelva a ejecutar este programa sin la línea 30 y vea lo que sucede.</p>
+
+<div align="center"><a href="capitulo06.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

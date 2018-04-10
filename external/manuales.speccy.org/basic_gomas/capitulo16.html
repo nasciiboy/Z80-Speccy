@@ -1,0 +1,542 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 16</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 16</b></div>
+
+<h2>Colores</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>INK</b>, <b>PAPER</b>, <b>FLASH</b>, <b>BRIGHT</b>, <b>INVERSE</b>, <b>OVER</b></li>
+<li><b>BORDER</b></li>
+</ul>
+
+<p>Ejecute este programa:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;10 FOR m = 0 TO 1: BRIGHT m<br>
+&nbsp;&nbsp;20 FOR n = 1 TO 10<br>
+&nbsp;&nbsp;30 FOR c = 0 TO 7<br>
+&nbsp;&nbsp;40 PAPER c: PRINT "&nbsp;&nbsp;&nbsp;&nbsp;" ;: REM 4 espacios coloreados<br>
+&nbsp;&nbsp;50 NEXT c: NEXT n: NEXT m<br>
+&nbsp;&nbsp;60 FOR m = 0 TO 1: BRIGHT m: PAPER 7<br>
+&nbsp;&nbsp;70 FOR c = 0 TO 3<br>
+&nbsp;&nbsp;80 INK c: PRINT c;"&nbsp;&nbsp;&nbsp;&nbsp;";<br>
+&nbsp;&nbsp;90 NEXT c: PAPER 0
+100 FOR c = 4 TO 7<br>
+110 INK c: PRINT c;"&nbsp;&nbsp;&nbsp;&nbsp;";<br>
+120 NEXT c: NEXT m<br>
+130 PAPER 7: INK 0: BRIGHT 0
+</span>
+</td>
+</tr>
+</table>
+
+
+<p>Muestra los ocho colores (incluyendo blanco y negro) y los dos niveles de brillo que el ZX Spectrum puede producir en un televisor en color (si su televisión es de blanco y negro, verá diversas tonalidades de grises). Damos a continuación una lista de colores para referencia; se escriben también con las teclas de números adecuadas.</p>
+
+<ol type=0 start=0>
+<li>- negro</li>
+<li>- azul</li>
+<li>- rojo</li>
+<li>- púrpura o magenta</li>
+<li>- verde</li>
+<li>- azul claro, técnicamente llamado "cyan"</li>
+<li>- amarillo</li>
+<li>- blanco</li>
+</ol>
+
+<p>En una televisión de blanco y negro, estos números están en orden de brillo o luminosidad.</p>
+
+<p>Para utilizar adecuadamente estos colores, necesita conocer un poco sobre cómo se dispone la imagen.</p>
+
+<p>La imagen está dividida en 768 (24 líneas de 32) posiciones en donde pueden imprimirse caracteres y cada carácter se imprime como un cuadrado de 8x8 puntos como para <b>a</b>. Esto debe recordarlo de cuando se trató de los gráficos definidos por el usuario en el capítulo 16, en donde teníamos "ceros" para los puntos blancos y "unos" para los puntos negros.</p>
+
+<div align="center"><img src="images/pag110.jpg"></div>
+
+<p>La posición de carácter se ha asociado también con dos colores: la tinta, o color de primer plano, que es el color para los puntos negros en nuestro cuadrado y el papel, o color de fondo, que se utiliza para los puntos blancos. Para comenzar, cada posición tiene tinta negra y papel blanco, por lo que la escritura aparece como negro sobre blanco.</p>
+
+<p>La posición de carácter tiene también un brillo (brillo normal o especial) y una característica de parpadeo o sin parpadeo (este parpadeo se consigue basculando los colores de tinta y de papel). Todo ello se puede codificar en números, de modo que una posición de carácter tiene:</p>
+
+<ol type=i start=1>
+<li>un cuadrado de 8x8 de "ceros" y de "unos" para definir la forma del carácter, con "0" para papel y "1" para tinta,</li>
+<li>colores de tinta y de papel, cada uno codificado en un número entre 0 y 7,</li>
+<li>un brillo -0 para brillo normal, 1 para brillo especial y</li>
+<li>un número parpadeante -0 para fijo, 1 para parpadeo.</li>
+</ol>
+
+<p>Tenga presente que puesto que los colores de tinta y de papel cubren una posición de carácter completa, posiblemente no pueda tener más de dos colores en un bloque dado de 64 puntos. Lo mismo es válido para el número de parpadeo y brillo; se refieren a la posición de carácter completa y no a puntos individuales. Los colores, brillo y número de parpadeo en una posición dada se denominan atributos.</p>
+
+<p>Cuando imprime algo en la pantalla, cambia la configuración de puntos en esa posicion; es menos obvio, pero no obstante cierto, que cambia también los atributos en esa posición. Al comenzar no lo observará porque todo se imprime con tinta negra sobre papel blanco (y brillo normal y sin parpadeo), pero puede variarlo con las sentencias <b>INK</b>, <b>PAPER</b>, <b>BRIGHT</b> y <b>FLASH</b>. Pruebe</p>
+
+<div align="center"><span class="codigo">PAPER 5</span></div>
+
+<p>y luego, imprima algunas cosas. Todo aparecerá sobre papel "cyan" (azul-verdoso pálido), porque a medida que se imprimen, los colores del papel, en las posiciones que ocupan, se ponen a "cyan" (que tiene código 5).</p>
+
+<p>Las demás operan de la misma forma, por lo que después de</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+<b>PAPER</b> número entre 0 y 7
+</span>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="codigo">
+<b>INK</b> número entre 0 y 7
+</span>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td valign="center">
+<span class="codigo">
+<b>BRIGHT</b> 0 ó 1<br>
+o<br>
+<b>FLASH</b> 0 ó 1
+</span>
+</td>
+<td valign="center">
+<span class="codigo">
+considere 0 como desactivado y 1 como activado
+</span>
+</td>
+</tr>
+</table>
+
+<p>cualquier impresión establecerá el atributo correspondiente en todas las posiciones de carácter que utilice. Pruébelo con algunos ejemplos. Ahora debe ser capaz de ver cómo operaba el programa al principio (recuerde que un espacio es un carácter que tiene el mismo color de tinta (<b>INK</b>) y de papel (<b>PAPER</b>)).</p>
+
+<p>Hay algunos números más que puede utilizar en estas sentencias que tienen efectos menos directos.</p> 
+
+<p>El número 8 puede utilizarse en las cuatro sentencias y significa "transparente" en el sentido de que el anterior atributo se transparenta. Supongamos, por ejemplo, que introduce</p>
+
+<div align="center"><span class="codigo">PAPER 8</span></div>
+
+<p>entonces, ninguna posición de carácter tendrá su color de papel puesto a 8, porque no existe ningún color correspondiente; lo que sucede es que cuando se imprime una posición, su color de papel se deja el mismo que había antes. <b>INK 8</b>, <b>BRIGHT 8</b> y <b>FLASH 8</b> operan de la misma forma para los demás atributos.</p>
+
+<p>El número 9 sólo puede utilizarse con <b>PAPER</b> e <b>INK</b> y significa "contraste". El color (tinta o papel) que utiliza con uno de ellos ha de estar en contraste con el del otro, de modo que sea blanco si el otro es oscuro (negro, azul, rojo o magenta) y negro si el otro es claro (verde, cyan, amarilo o blanco). Pruebe lo anterior tecleando:</p>
+
+<div align="center"><span class="codigo">INK 9: FOR c = 0 TO 7: PAPER c: PRINT c: NEXT c</span></div>
+
+<p>Una visualización más destacada de su potencia ha de ejecutar el programa al principio para obtener bandas coloreadas y luego introduciendo:</p>
+
+<div align="center"><span class="codigo">INK 9: PAPER 8: PRINT AT 0,0;: FOR n = 1 TO 1000: PRINT n;: NEXT n</span></div>
+
+<p>En este caso, el color de la tinta siempre estará en contraste con el color del papel anterior en cada posición.</p>
+
+<p>La televisión en color se basa en el hecho bastante curioso de que el ojo humano sólo puede ver realmente tres colores, que son los primarios: azul, rojo y verde. Los demás colores son mezclas de ellos. Por ejemplo, el magenta se consigue mezclando azul con rojo (que es la razón de que su código 3 sea la suma de los códigos correspondientes a los colores azul y rojo).</p>
+
+<p>Para ver cómo los ocho colores se acoplan juntos, imagine tres proyectores rectangulares, con colores azul, rojo y verde, que inciden en un lugar no coincidente en un recinto de papel blanco en la oscuridad. En donde se solapen verá mezclas de colores, como se indica por el siguiente programa (observe que los espacios de tinta se obtienen con el empleo de una u otra tecla <b>SHIFT</b> con <b>8</b>, cuando se está en el modo G).</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;&nbsp;&nbsp;10 BORDER 0: PAPER 0: INK 7: CLS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;20 FOR a = 1 TO 6<br>
+&nbsp;&nbsp;&nbsp;&nbsp;30 PRINT TAB 6; INK 2;"<img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png">" : REM 18 cuadrados de tinta<br>
+&nbsp;&nbsp;&nbsp;&nbsp;40 NEXT a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;50 LET dataline = 200<br>
+&nbsp;&nbsp;&nbsp;&nbsp;60 GO SUB 1000<br>
+&nbsp;&nbsp;&nbsp;&nbsp;70 LET dataline = 210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;80 GOSUB 1000<br>
+&nbsp;&nbsp;&nbsp;&nbsp;90 STOP<br>
+&nbsp;&nbsp;200 DATA 2,3,7,5,4<br>
+&nbsp;&nbsp;210 DATA 2,2,6,4,4<br>
+1000 FOR a = 1 TO 6<br>
+1010 RESTORE dataline<br>
+1020 FOR b = 1 TO 5<br>
+1030 READ c: PRINT INK c;"<img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png"><img src="images/shared/143_pq.png">";: REM 6 cuadrados de tinta<br>
+1040 NEXT b: PRINT : NEXT a<br>
+1050 RETURN
+</span>
+</td>
+</tr>
+</table>
+
+<p>Hay una función denominada <b>ATTR</b> que averigua cuáles son los atributos que están en una posición dada en la pantalla. Se trata de una función bastante complicada, por lo que se ha relegado al final de este capítulo.</p>
+
+<p>Hay otras dos sentencias, <b>INVERSE</b> Y <b>OVER</b>, que no controlan los atributos, sino las configuraciones de puntos que se imprimen en la pantalla. Utilizan los números 0 para desactivación y 1 para activación, en la misma forma que para el parpadeo (<b>FLASH</b>) o para el brillo (<b>BRIGHT</b>), pero ellas no son las únicas posibilidades. Si hace <b>INVERSE 1</b>, entonces, las configuraciones de puntos impresas serán las inversas de su forma habitual: los puntos de papel serán sustituidos por puntos de tinta y viceversa. Así, <b>a</b> se imprimiría como</p>
+
+<div align="center"><img src="images/pag112.jpg"></div>
+
+<p>Si (como en la condición de encendido) tenemos tinta negra y papel blanco, entonces, esta <b>a</b> aparecerá como blanco sobre negro (pero seguimos teniendo tinta negra y papel blanco en esa posición de carácter). Son los puntos los que han cambiado.</p>
+
+<p>La sentencia</p>
+
+<div align="center"><span class="codigo">OVER 1</span></div>
+
+<p>pone en acción una clase especial de sobreimpresión. En condiciones normales, cuando algo se escribe en una posición de carácter, borra completamente lo que había antes en la misma; pero, ahora, el carácter nuevo simplemente se añadirá en la parte superior del anterior (véase Ejercicio 3). Ello puede ser especialmente útil para escribir caracteres compuestos, como letras con acentos, como es el caso del siguiente programa para imprimir letras alemanas góticas (una "o" con una diéresis sobre ella. (Haga <b>NEW</b> primero).</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 OVER 1<br>
+20 FOR n = 1 TO 32<br>
+30 PRINT "o"; CHR$ 8; """";<br>
+40 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>(observe el carácter de control <b>CHR$ 8</b> que hace retroceder un espacio).</p>
+
+<p>Hay otra forma de utilizar <b>INK</b>, <b>PAPER</b>, etc., que probablemente encontrará de más utilidad que como sentencias. Puede ponerles como elementos de información en una sentencia <b>PRINT</b> (seguidos por ;) y, entonces, hacen exactamente lo mismo que si se hubieran empleado como sentencias, con la salvedad de que su efecto sólo es temporal: duran hasta el final de la sentencia <b>PRINT</b> que las contiene. Así, si teclea.</p>
+
+<div align="center"><span class="codigo">PRINT PAPER 6; "x";: PRINT "y"</span></div>
+
+<p>entonces, solamente la x estará en amarillo.</p>
+
+<p><b>INK</b> y el resto, cuando se utilizan como sentencias, no afectan a los colores de la parte inferior de la pantalla, en donde se introducen los comandos y los datos de <b>INPUT</b>. La parte más baja de la pantalla utiliza el color del contorno para su color de papel y el código 9 de contraste para su color de tinta, tiene desactivado el parpadeo y todo con brillo normal. Puede cambiar el color del contorno a cualquiera de los ocho colores normales (excepto 8 ó 9) con el empleo de la sentencia</p>
+
+<div align="center"><span class="codigo">BORDER color</span></div>
+
+<p>Cuando hace una entrada de datos, se sigue esta norma de empleo de tinta de contraste en papel coloreado en el contorno; pero puede cambiar el color de los epígrafes escritos por el ordenador utilizando los elementos de <b>INK</b> y <b>PAPER</b> (y así sucesivamente) en la sentencia <b>INPUT</b>, lo mismo que lo haría en una sentencia <b>PRINT</b>. Su efecto dura bien hasta el final de la sentencia o bien hasta que se tecleen algunos datos en <b>INPUT</b>, lo que suceda primero. Pruebe:</p>
+
+<div align="center"><span class="codigo">INPUT FLASH 1; INK 1; "Cuál es su número?"; n</span></div>
+
+<p>Hay otra forma de cambiar los colores con el empleo de caracteres de control (de manera bastante similar a la utilizada con los caracteres de control para <b>AT</b> y <b>TAB</b> en el capitulo 15.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="texto">
+<b>CHR$ 16</b> corresponde a <b>INK</b><br>
+<b>CHR$ 17</b> corresponde a <b>PAPER</b><br>
+<b>CHR$ 18</b> corresponde a <b>FLASH</b><br>
+<b>CHR$ 19</b> corresponde a <b>BRIGHT</b><br>
+<b>CHR$ 20</b> corresponde a <b>INVERSE</b><br>
+<b>CHR$ 21</b> corresponde a <b>OVER</b>
+</span>
+</td>
+</tr>
+</table>
+
+<p>Cada uno de ellos va seguido por un carácter que indica un color mediante su código; así, por ejemplo:</p>
+
+<div align="center"><span class="codigo">PRINT CHR$ 16 + CHR$9; ...</span></div>
+
+<p>tiene el mismo efecto que:</p>
+
+<div align="center"><span class="codigo">PRINT INK 9; ...</span></div>
+
+<p>De todos modos, no se habría molestado en utilizar estos caracteres de control porque habría preferido emplear los elementos de color. Sin embargo, algo de gran utilidad que puede hacer con ellos es ponerles en programas, de modo que las partes diferentes que se incluyen sean objeto de listado en colores distintos, para separarlos entre sí o incluso para darles un aspecto más atractivo. Debe ponerlos después del número de línea o se perderán.</p>
+
+<p>Para incluirlos en el programa, ha de introducirlos por el teclado, principalmente utilizando el modo extendido con los dígitos.</p>
+
+<p>Los dígitos 0 a 7 establecen el color correspondiente (de tinta si se pulsa también <b>CAPS SHIFT</b>, de papel si no se pulsa).</p>
+
+<p>Más precisamente, si está en el modo <b>E</b> y pulsa un dígito (por ejemplo, 6 para amarillo; de cualquier modo, ha de estar entre 0 y 7, nunca 8 ó 9), entonces, se insertan dos caracteres: primero, <b>CHR$ 17</b> para papel y luego, <b>CHR$ 6</b> que significa "ponerlo en amarillo". Si hubiera estado pulsando <b>CAPS SHIFT</b> cuando pulsó el dígito, hubiera conseguido <b>CHR$ 16</b> que significa "poner color de tinta" en lugar de <b>CHR$ 17</b>.</p>
+
+<p>Puesto que estos son dos caracteres con los que puede obtener algunos efectos singulares cuando los borre, debe pulsar <b>DELETE</b> dos veces. Después de la primera pulsación conseguirá, con frecuencia, un signo de interrogación o aparecerán cosas todavía más singulares. No se preocupe, le bastará con pulsar <b>DELETE</b> otra vez.</p>
+
+<p><img src="images/shared/arrow_left.png"> y <img src="images/shared/arrow_right.png"> pueden comportarse también extrañamente mientras el cursor se esté desplazando más allá de los caracteres de control.</p>
+
+<p>Todavía en el modo extendido:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="texto">
+8 da <b>CHR$ 19</b> y <b>CHR$ 0</b> para brillo normal<br>
+9 da <b>CHR$ 12</b> y <b>CHR$ 1</b> para brillo especial<br>
+<b>CAPS SHIFT</b> con <b>8</b> da <b>CHR$ 18</b> y <b>CHR$ 0</b> para no parpadeo<br>
+<b>CAPS SHIFT</b> con <b>9</b> da <b>CHR$ 19</b> y <b>CHR$ 1</b> para parpadeo
+</span>
+</td>
+</tr>
+</table>
+
+<p>Hay un par más en el modo ordinario (L):</p>
+
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="texto">
+<b>CAPS SHIFT</b> con <b>3</b> da <b>CHR$ 20</b> y <b>CHR$ 0</b> para caracteres normales<br>
+<b>CAPS SHIFT</b> con <b>4</b> da <b>CHR$ 20</b> y <b>CHR$ 1</b> para caracteres inversos
+</span>
+</td>
+</tr>
+</table>
+
+<p>Para resumir, damos a continuación una descripción completa de la fila superior en el teclado:</p>
+
+<div align="center"><img src="images/pag115.jpg"></div>
+
+<p>La función <b>ATTR</b> tiene la forma</p>
+
+<div align="center"><span class="codigo"><b>ATTR</b> (línea, columna)</span></div>
+
+<p>Sus dos argumentos son los números de línea y de columna que utilizaría en un elemento <b>AT</b> y su resultado es un número que indica los colores y así sucesivamente en la posición de carácter correspondiente en la pantalla de televisión. Puede utilizarlo tan libremente en expresiones como pueda hacerlo con cualquier otra función.</p>
+
+<p>El número resultante es la suma de otros cuatro números como sigue:</p>
+
+<p>128 si la posición de carácter está parpadeando, 0 si no parpadea</p>
+
+<p>64 si la posición de carácter es brillante, 0 si es normal</p>
+
+<p>8 * código para el color del papel</p>
+
+<p>número correspondiente al color de la tinta.</p>
+
+<p>Por ejemplo, si la posición de carácter está parpadeando y tiene brillo normal con papel amarillo y tinta azul, entonces, los cuatro números que hemos de sumar son 128, 0, 8 * 6 ( = 48) y 1, lo que hace un total de 177. Pruebe lo anterior con:</p>
+
+<div align="center"><span class="codigo">PRINT AT 0,0; FLASH 1; PAPER 6; INK 1; " "; ATTR (0,0)</span></div>
+
+<p><b>Ejercicios</b></p>
+
+<ol type=0 start=1>
+<li>
+<p>Pruebe</p>
+
+<div align="center"><span class="codigo">PRINT "B"; CHR$ 8; OVER 1; "/"</span></div>
+
+<p>en donde la barra <b>/</b> atraviesa la <b>B</b> y ha dejado un punto blanco. Esta es la forma en que la sobreimpresión actúa en el ZX Spectrum: dos papeles o dos tintas dan un papel, uno de cada uno da una tinta. Ello tiene la propiedad interesante de que si sobreimprime con la misma cosa dos veces volverá a lo que tenía al principio. Si, ahora teclea:</p>
+
+<div align="center"><span class="codigo">PRINT CHR$ 8; OVER 1; "/"</span></div>
+
+<p>¿por qué recupera una <b>B</b> impoluta sin barra?</p>
+</li>
+
+<li>
+<p>Teclee:</p>
+
+<div align="center"><span class="codigo">PAPER 0: INK 0</span></div>
+
+<p>¿no es lo mismo que estas no afecten a la parte inferior de la pantalla?</p>
+
+<p>Ahora, teclee:</p>
+
+<div align="center"><span class="codigo">BORDER 0</span></div>
+
+<p>y vea lo bien que le trata el ordenador (!)</p>
+</li>
+
+<li>
+<p>Ejecute este programa</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 POKE 22527 + RND * 704, RND * 127<br>
+20 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>No importa cómo opera; está cambiando los colores de los cuadrados en la pantalla de televisión y las <b>RND</b> deben conseguir que ello suceda aleatoriamente. Las bandas diagonales que quizás vea son una manifestación de la configuración oculta en <b>RND</b> (la configuración que le hace pseudoaleatoria en lugar de realmente aleatoria.</p>
+</li>
+
+<li>
+<p>Teclee, o haga la función de carga <b>LOAD</b> de los caracteres de piezas de ajedrez del capítulo 14 y luego introduzca por el teclado el siguiente programa que dibuja un diagrama de una posición de ajedrez que las emplea.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;&nbsp;&nbsp;5 REM dibujo del tablero sin fichas<br>
+&nbsp;&nbsp;10 LET bb = 1: LET bw = 2: REM rojo y azul para tablero<br>
+&nbsp;&nbsp;15 PAPER bw: INK bb: CLS<br>
+&nbsp;&nbsp;20 PLOT 79, 128: REM contorno<br>
+&nbsp;&nbsp;30 DRAW 65, 0: DRAW 0, -65<br>
+&nbsp;&nbsp;40 DRAW -65, 0: DRAW 0, 65<br>
+&nbsp;&nbsp;50 PAPER bb<br>
+&nbsp;&nbsp;60 REM tablero<br>
+&nbsp;&nbsp;70 FOR n = 0 TO 3: FOR m = 0 TO 3<br>
+&nbsp;&nbsp;80 PRINT AT 6 + 2 * n, 11 + 2 * m; " "<br>
+&nbsp;&nbsp;90 PRINT AT 7 + 2 * n, 10 + 2 * m; " "<br>
+100 NEXT m: NEXT n<br>
+110 PAPER 8<br>
+120 LET pw = 6: LET pb = 5: REM colores de piezas blancas y negras<br>
+200 DIM b$(8, 8): REM posiciones de piezas<br>
+205 REM preparación de las posiciones iniciales<br>
+210 LET b$(1)= "rnbqkbnr"<br>
+220 LET b$(2) = "pppppppp"<br>
+230 LET b$(7) = "PPPPPPPP"<br>
+240 LET b$(8)= "RNBQKBNR"<br>
+300 REM visualización del tablero<br>
+310 FOR n = 1 TO 8: FOR m = 1 TO 8<br>
+320 LET bc = CODE b$(n, m); INK pw<br>
+325 IF bc = CODE " " THEN GO TO 350: REM espacio<br>
+330 IF bc > CODE "Z" THEN INK pb: LET bc = bc - 32: REM minúsculas para negro<br>
+340 LET bc = bc + 79: REM conversión a gráficos<br>
+350 PRINT AT 5 + n, 9 + m; CHR$ bc<br>
+360 NEXT m: NEXT n<br>
+400 PAPER 7: INK 0
+</span>
+</td>
+</tr>
+</table>
+</li>
+
+</ol>
+
+
+
+<br><br>
+<div align="center"><a href="capitulo16.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

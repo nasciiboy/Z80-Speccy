@@ -1,0 +1,210 @@
+<html>
+<head>
+<title>Manual de Introducción Spectrum 48k - Capítulo 4</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+
+<h2>4. Algunos comandos sencillos</h2>
+
+<p>La memoria de un ordenador puede utilizarse para almacenar toda clase de cosas. Hasta ahora, hemos visto que la orden o el comando <b>PRINT</b> nos permite visualizar, en la pantalla, letras, números y los resultados de cálculos con el empleo de letras y números.</p>
+
+<p>Si necesitamos decirle al ordenador que recuerde un número, o una cadena de letras, entonces, tenemos que asignar parte de la memoria para dicho uso.</p>
+
+<p>La mayoría de las calculadoras de bolsillo tienen una tecla denominada 'memoria', que se utiliza para recordar números más tarde. Su ordenador puede hacer mucho más que eso. Puede tener tantas de estas casillas imaginarias de memorización como usted quiera y escribir un nombre en cada una.</p>
+
+<p>Como ejemplo, suponga que necesita recordar su edad (!). El comando <b>LET</b> es el que utiliza (<b>LET</b> es la palabra clave en la tecla <b>L</b>) en este caso. Digamos que es 34 dicha edad.</p>
+
+<div align="center"><span class="codigo">LET edad = 34</span></div>
+
+<p>Lo que sucede cuando se utiliza el comando <b>LET</b> es que una cierta sección de memoria se designa "edad" y el número 34 se almacena en ella. Para extraer esta información almacenada, teclee:</p>
+
+<div align="center"><span class="codigo">PRINT edad</span></div>
+
+<p>y aparecerá el número 34. Es muy fácil cambiar el contenido de la "casilla" denominada "edad". Teclee:</p>
+
+<div align="center"><span class="codigo">LET edad = 56</span></div>
+
+<p>y luego:</p>
+
+<div align="center"><span class="codigo">PRINT edad</span></div>
+
+<p>y 56 debe aparecer en la pantalla. 'Edad' es un ejemplo de una variable así llamada, porque puede variar su valor. Es posible combinar la impresión de un mensaje directamente en la pantalla y el valor de una variable. Teclee:</p>
+
+<div align="center"><span class="codigo">PRINT "Su edad es "; edad</span></div>
+
+<p>Sin embargo, el ordenador es mucho más útil que simplemente recordar números con nombres unidos a ellos. También puede recordar cadenas de letras. Para diferenciar entre variables de números y variables de cadenas (como se denominan) se emplea el símbolo del dólar, <b>$</b>, al final del nombre de variable.</p>
+
+<p>Por ejemplo, si necesitamos memorizar la cadena de letras:</b>
+
+<div align="center"><span class="codigo">"Su edad es"</span></div>
+
+<p>podríamos llamarla:</p>
+
+<div align="center"><span class="codigo">a$</span></div>
+
+<p>(los nombres de variables de cadena sólo pueden tener una sola letra, que no sea <b>$</b>). Por ello, teclee:</p>
+
+<div align="center"><span class="codigo">LET a$ = "Su edad es "</span></div>
+
+<p>Si ahora teclea:</p>
+
+<div align="center"><span class="codigo">PRINT a$</span></div>
+
+<p>aparecerá la cadena de letras en la pantalla.</p>
+
+<p>Si el ordenador no se ha desconectado desde el comienzo de este capítulo, teclee:</p>
+
+<div align="center"><span class="codigo">PRINT a$; edad</span></div>
+
+<p>y vea lo que sucede.</p>
+
+<p>Hay otras formas de introducir información en la memoria del ordenador sin utilizar el comando <b>LET</b>.</p>
+
+<p>Por ejemplo, el comando <b>INPUT</b>, en su forma más simple, comunica al ordenador que se espera alguna información procedente del teclado. En vez de teclear <b>LET</b>, etc. cada vez puede teclear:</p>
+
+<div align="center"><span class="codigo">INPUT edad</span></div>
+
+<p>Una vez que se haya pulsado la tecla <b>ENTER</b>, un cursor <span class="inverse">&nbsp;L&nbsp;</span> parpadeante aparecerá en la pantalla. Ello significa que el ordenador necesita alguna información de su parte. En consecuencia, introduzca su edad y luego pulse la tecla <b>ENTER</b>. Aunque parezca que nada ha sucedido, se le ha asignado a la variable el valor que usted ha introducido. Al teclear:</p>
+
+<div align="center"><span class="codigo">PRINT edad</span></div>
+
+<p>se lo debe probar.</p>
+
+<p>Combinemos todo ello en una serie de comandos.</p>
+
+<p>Teclee:</p>
+
+<table align="center" width=200" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+LET b$ = "Cual es su edad?"<br>
+LET a$ = "Su edad es "<br>
+INPUT (b$); edad: PRINT a$; edad
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observe que la última línea está constituida por dos comandos separados por dos puntos (<b>:</b>).</p>
+
+<div align="center"><span class="codigo">INPUT (b$); edad</span></div>
+
+<p>es otra forma de introducción de:</p>
+
+<div align="center"><span class="codigo">INPUT "¿Cuál es su edad? "; edad</span></div>
+
+<br>
+<div align="center"><a href="capitulo04.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

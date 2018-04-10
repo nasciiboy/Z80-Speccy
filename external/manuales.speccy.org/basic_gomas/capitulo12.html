@@ -1,0 +1,303 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 12</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 12</b></div>
+
+<h2>Matrices</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li>Matrices (la forma en que el ZX Spectrum trata las matrices de cadenas se aparta algo del procedimiento normal).</li>
+<li><b>DIM ...</b></li>
+</ul>
+
+<p>Suponga que tiene una lista de números, por ejemplo, las notas de diez personas en una clase. Para almacenarlas en el ordenador podría establecer una variable única para cada persona, pero tal método se consideraría arduo. Podría decidir llamar a la variable Bloggs 1, Bloggs 2 y así sucesivamente hasta Bloggs 10, pero el programa para preparar estos diez números sería bastante largo y aburrido de introducir por teclado.</p>
+
+<p>Sería mucho más atractivo si pudiera teclear:</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td>
+<span class="codigo">
+&nbsp;&nbsp;5 REM este programa no funcionará<br>
+10 FOR n = 1 TO 10<br>
+20 READ Bloggs n<br>
+30 NEXT n<br>
+40 DATA 10,2,5,19,16,3,11,1,0,6
+</span>
+</td>
+</tr>
+</table>
+
+<p>Bueno, lo cierto es que no puede.</p>
+
+<p>Sin embargo, hay un mecanismo mediante el cual puede aplicar esta idea y utiliza matrices. Una matriz es un conjunto de variables, sus elementos, todos ellos con el mismo nombre, y distinguidos solamente por un número (el subíndice) escrito entre paréntesis después del nombre. En nuestro ejemplo, el nombre podría ser <b>b</b> (como las variables de control de los bucles <b>FOR-NEXT</b>, el nombre de una matriz debe ser una sola letra) y las diez variables serían entonces <b>b(1)</b>, <b>b(2)</b> y así sucesivamente, hasta <b>b(10)</b>.</p>
+
+<p>Los elementos de una matriz se denominan variables con subíndice, en oposición a las variables simples, con las que ya está familiarizado.</p>
+
+<p>Antes de que pueda utilizar una matriz, debe reservar algún espacio para la misma en el interior del ordenador y puede hacer esta operación con el empleo de una sentencia <b>DIM</b> (dimensión).</p>
+
+<div align="center"><span class="codigo">DIM b(10)</span></div>
+
+<p>establece una matriz llamada <b>b</b> con dimensión 10 (esto es, hay 10 variables con subíndice <b>b(1)</b>...<b>b(10)</b>) e inicializa los 10 valores a 0. También borra cualquier matriz denominada <b>b</b> que existiera anteriormente. (Pero no una variable simple. Una matriz y una variable numérica simple con el mismo nombre pueden coexistir y no debe producirse ninguna confusión entre ellas porque la variable de matriz siempre tiene un subíndice).</p>
+
+<p>El subíndice puede ser una expresión numérica arbitraria, por lo que, ahora, puede escribir:</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td>
+<span class="codigo">
+10 FOR n = 1 TO 10<br>
+20 READ b(n)<br>
+30 NEXT n<br>
+40 DATA 10,2,5,19,16,3,11,1,0,6
+</span>
+</td>
+</tr>
+</table>
+
+<p>También puede establecer matrices con más de una dimensión.</p>
+
+<p>En una matriz de dos dimensiones, necesita dos números para especificar uno de los elementos (bastante similar a los números de línea y de columna que especifican una posición de carácter en la pantalla de televisión), por lo que tiene la forma de una tabla. Como alternativa, si imagina los números de línea y de columna (dos dimensiones) como referencia a una página impresa, podría tener una dimensión adicional para los números de página. Por supuesto, nos estamos refiriendo a matrices numéricas y por lo tanto, los elementos no serían caracteres impresos como en un libro, sino números. Piense en los elementos de una matriz tridimensional <b>v</b>, como estando especificados por <b>v</b>: número de página, número de línea, número de columna.</p>
+
+<p>Por ejemplo, para establecer una matriz de dos dimensiones <b>c</b> con dimensiones 3 y 6, utilizará una sentencia <b>DIM</b>:</p>
+
+<div align="center"><span class="codigo">DIM c(3,6)</span></div>
+
+<p>Con esta sentencia obtendrá 3 * 6 = 18 variables con subíndice.</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td>
+<span class="codigo">
+c(1,1), c(1,2)..., c(1,6)<br>
+c(2,1), c(2,2)..., c(2,6)<br>
+c(3,1), c(3,2)..., c(3,6)
+</span>
+</td>
+</tr>
+</table>
+
+<p>El mismo principio se aplica para cualquier número de dimensiones.</p>
+
+<p>Aunque pueda tener un número y una matriz con el mismo nombre, no ocurre así con dos matrices, aun cuando éstas tengan distintos números de dimensiones.</p>
+
+<p>Hay también matrices de cadenas. Las cadenas en una matriz se diferencian de las cadenas simples en que son de longitud fija y en que el modo de asignación es siempre "procusteano" (fragmentado o rellenado con espacios). Otra forma de considerarles es como matrices (con una dimensión adicional) de caracteres simples. El nombre de una matriz de cadena es una letra única seguida por <b>$</b> y una matriz de cadena y una variable de cadena simple no pueden tener el mismo nombre (a diferencia con el caso de números).</p>
+
+<p>Suponga, entonces, que quiere una matriz <b>a$</b> de cinco cadenas. Debe decidir cuál será la longitud de estas cadenas. Supongamos que fuera suficiente una longitud de 10 caracteres en cada una. Teclee:</p>
+
+<div align="center"><span class="codigo">DIM a$(5,10)</span></div>
+
+<p>con lo que obtendrá una matriz de 5 * 10 de caracteres, pero también puede considerar cada fila como una cadena:</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td>
+<span class="codigo">
+a$(1) = a$(1,1) a$(1,2) ... a$(1,10)<br>
+a$(2) = a$(2,1) a$(2,2) ... a$(2,10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp; ·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp; ·&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ·<br>
+&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp; ·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp; ·&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ·<br>
+a$(5) = a$(5,1) a$(5,2) ... a$(5,10)
+</span>
+</td>
+</tr>
+</table>
+
+<p>Si da el mismo número de subíndices (dos, en este caso) como si hubiera dimensiones en la sentencia <b>DIM</b>; entonces obtendrá un carácter único; pero si omite el último, obtendrá una cadena de longitud fija. Así, por ejemplo, <b>A$(2,7)</b> es el 7° carácter en la cadena <b>A$(2)</b>; con el empleo de la notación de fragmentación, podría escribirlo también como <b>A$(2)(7)</b>. Ahora teclee:</p>
+
+<div align="center"><span class="codigo">LET a$(2) = "1234567890"</span></div>
+
+<p>y</p>
+
+<div align="center"><span class="codigo">PRINT A$(2), a$(2,7)</span></div>
+
+<p>Obtendrá:</p>
+
+<div align="center"><span class="codigo">1234567890 7</span></div>
+
+<p>Para el último subíndice (el que puede omitir), también tener una forma de fragmentación, de modo que, por ejemplo, sea:</p>
+
+<div align="center"><span class="codigo">a$(2,4 TO 8) = a$(2)(4 TO 8) = "45678"</span></div>
+
+<p>Recuerde:</p>
+
+<p>En una matriz de cadena, todas las cadenas tienen la misma longitud fija. La sentencia <b>DIM</b> tiene un número adicional (el último) para especificar dicha longitud.</p>
+
+<p>Cuando escriba una variable con subíndice para una matriz de cadena, puede introducir un número adicional, o elemento de fragmentación, para estar en correspondencia con el número adicional en la sentencia <b>DIM</b>.</p>
+
+<p>Puede tener matrices de cadenas sin ninguna dimensión. Teclee:</p>
+
+<div align="center"><span class="codigo">DIM a$(10)</span></div>
+
+<p>y encontrará que <b>a$</b> se comporta casi como una variable de cadena, con la salvedad de que siempre tiene la longitud 10 y que la asignación es siempre "procrusteana".</p>
+
+<p><b>Ejercicios</b></p>
+
+<ol type=0 start=1>
+<li>
+
+<p>Utilice las sentencias <b>READ</b> y <b>DATA</b> para establecer una matriz <b>m$</b> de doce cadenas en las que <b>m$(n)</b> es el nombre del n-ésimo mes. (Sugerencia: La sentencia <b>DIM</b> será <b>DIM m$(12,9)</b>. Pruébela imprimiendo todas las <b>m$(n)</b> (utilice un bucle)).</p>
+
+<p>Teclee:</p>
+
+<div align="center"><span class="codigo">PRINT "En ";m$(3);" se celebran las Fallas"</span></div>
+
+<p>¿Qué puedo hacer con todos esos espacios?</p>
+
+</li>
+</ol>
+
+
+<br>
+<div align="center"><a href="capitulo12.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

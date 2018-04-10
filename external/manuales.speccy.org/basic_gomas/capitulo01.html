@@ -1,0 +1,203 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 1</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 1</b></div>
+
+<h2>Introducción</h2>
+
+<p>Tanto si leyó primero el fascículo de introducción como si pasó directamente a este manual, debe tener conocimiento de que los comandos se obedecen inmediatamente y que las instrucciones comienzan con un número de línea y se almacenan para su posterior ejecución. Asimismo, debe conocer los comandos <b>PRINT</b>, <b>LET</b> e <b>INPUT</b> (que pueden utilizarse en todas las máquinas que usan BASIC) y <b>BORDER</b>, <b>PAPER</b> y <b>BEEP</b> (que se utilizan en el Spectrum).</p>
+
+<p>Este manual de BASIC comienza repitiendo algunas cosas dadas en el fascículo de introducción, pero con mucho más detalle, indicándole con exactitud lo que usted puede hacer y lo que no puede. También encontrará algunos ejercicios al final de cada capítulo. No haga caso omiso de ellos, pues muchos de ellos ilustran puntos que están solamente insinuados en el texto. Echeles una ojeada y haga algunos que le interese o que le parezca referirse a un tema que no entiende adecuadamente.</p>
+
+<p>Siempre que pueda hacerlo y, en cualquier caso, tenga encendido el ordenador. Si se pregunta: ¿Qué hará el ordenador si le digo esto o lo otro?, no vacile en introducirlo por el teclado y ver lo que ocurre. Siempre que el manual le diga que teclee algo, pregúntese a sí mismo: ¿Qué podría teclear en su lugar? y pruebe sus respuestas. Cuantos más programas propios escriba, tanto mejor comprenderá el funcionamiento del ordenador.</p>
+
+<p>Al final de este manual de programación hay algunos apéndices. En ellos se incluyen secciones sobre la forma en que está organizada la memoria, sobre cómo el ordenador manipula los números y una serie de programas ejemplo que ilustran la potencia del ZX Spectrum.</p>
+
+
+<h4>El teclado</h4>
+
+<p>Los caracteres del ZX Spectrum no solamente comprenden los símbolos simples (letras, dígitos, etc.) sino también los comandos (palabras clave, nombres de funciones, etc.), estos últimos accesibles con una sola pulsación de la tecla en lugar de deletrearse. Para obtener todas estas funciones o los comandos, algunas teclas tienen cinco o más significados distintos, dados en parte por el cambio de las teclas (esto es, pulsando la tecla <b>CAPS SHIFT</b> o la tecla <b>SYMBOL SHIFT</b> al mismo tiempo que la requerida) y en parte, al tener la máquina en modos operativos diferentes.</p>
+
+<p>El modo viene indicado por el cursor, que es una letra parpadeante que indica en dónde se insertará el siguiente carácter introducido por el teclado.</p>
+
+<p>El modo <span class="inverse">&nbsp;K&nbsp;</span> (por "Keywords" - Palabras clave) sustituye automáticamente al modo <span class="inverse">&nbsp;L&nbsp;</span> cuando la máquina está esperando un comando o una línea de programa (en vez de entrada de datos), y por su posición en la línea sabe que debe esperar un número de línea o una palabra clave. Esta posición es al principio de la línea o inmediatamente despues de <b>THEN</b> o de <b>:</b> (salvo en una cadena). Si no está cambiada la siguiente tecla se interpretará como una palabra clave (escrita en las teclas) o bien como un dígito.</p>
+
+<p>El modo <span class="inverse">&nbsp;L&nbsp;</span> (por letras) suele presentarse en todas las demás circunstancias. Si no está cambiada la siguiente tecla se interpretará como el símbolo principal en esa tecla, en minúsculas para las letras.</p>
+
+<p>En los modos <span class="inverse">&nbsp;K&nbsp;</span> y <span class="inverse">&nbsp;L&nbsp;</span>, <b>SYMBOL SHIFT</b> y una tecla serán interpretados como el carácter rojo subsidiario en la tecla y <b>CAPS SHIFT</b> con una tecla de dígito se interpretará como la función de control escrita en blanco en la tecla. <b>CAPS SHIFT</b> con las demás teclas no afecta a las palabras clave en el modo <span class="inverse">&nbsp;K&nbsp</span> y, en el modo <span class="inverse">&nbsp;L&nbsp;</span>, convierte las minúsculas en mayúsculas.</p>
+
+<p>El modo <span class="inverse">&nbsp;C&nbsp;</span> (por "Capitals" - letras mayúsculas) es una variante del modo <span class="inverse">&nbsp;L&nbsp;</span>, en donde todas las letras aparecen como mayúsculas. <b>CAPS LOCK</b> produce un cambio del modo <span class="inverse">&nbsp;L&nbsp;</span> al modo <span class="inverse">&nbsp;C&nbsp;</span> o viceversa.</p>
+
+<p>El modo <span class="inverse">&nbsp;E&nbsp;</span> (por extendido) se utiliza para obtener caracteres adicionales, la mayoria comandos. Tiene lugar después de que se pulsen juntas ambas teclas de cambio y dura solamente el intervalo de una pulsación de tecla. En este modo, una letra proporciona un solo carácter o comando (que se indica en verde encima de ella) si no está cambiada, y otro (que se indica en rojo debajo de ella), si se pulsa con un cambio. Una tecla de dígito proporciona un comando, si se pulsa con <b>SYMBOL SHIFT</b>; de cualquier modo, da una secuencia de control de colores.</p>
+
+<p>El modo <span class="inverse">&nbsp;G&nbsp;</span> (por gráficos) se produce después de la pulsación de <b>GRAPHICS</b> (<b>CAPS SHIFT</b> y <b>9</b>) y dura hasta que se vuelva a pulsar otra vez o se pulse <b>9</b> en sí mismo. Una tecla de dígito proporcionará un gráfico de mosaico, liberada la tecla <b>GRAPHICS</b> o <b>DELETE</b>, y cada una de las teclas de letra, aparte de <b>V, W, X, Y</b> y <b>Z</b>, dará un gráfico definido por el usuario.</p>
+
+<p>Si cualquier tecla se mantiene oprimida durante más de 2 ó 3 segundos, comenzará la repetición correspondiente.</p>
+
+<p>La introducción por el teclado aparece en la mitad inferior de la pantalla a medida que se teclea, insertándose cada carácter (símbolo simple o comando) inmediatamente antes del cursor. El cursor puede desplazarse a la izquierda con <b>CAPS SHIFT</b> y <b>5</b>, o a la derecha con <b>CAPS SHIFT</b> y <b>8</b>. El carácter antes del cursor puede borrarse con <b>DELETE</b> (<b>CAPS SHIFT</b> y <b>0</b>). Nota: La línea completa puede borrarse tecleando <b>EDIT</b> (<b>CAPS SHIFT</b> y <b>1</b>) y a continuación, <b>ENTER</b>.</p>
+
+<p>Cuando se pulsa <b>ENTER</b>, se ejecuta la línea, se introduce en el programa o se utiliza como entrada de datos, cuando sea adecuado, a no ser que contenga un error de sintaxis. En este caso aparece un signo <span class="inverse">&nbsp;?&nbsp;</span> parpadeante junto al error.</p>
+
+<p>A medida que se introducen las líneas del programa, se visualiza un listado en la mitad superior de la pantalla, La última línea introducida se denomina línea en curso y se indica por el símbolo <span class="inverse">&nbsp;>&nbsp;</span>; este puede desplazarse con el empleo de las teclas <img src="images/shared/arrow_down.png"> (<b>CAPS SHIFT</b> y <b>6</b>) y <img src="images/shared/arrow_up.png"> (<b>CAPS SHIFT</b> y <b>7</b>). Si se pulsa <b>EDIT</b> (<b>CAPS SHIFT</b> y <b>1</b>), la línea en curso se duplica en la parte inferior de la pantalla y puede corregirse.</p>
+
+<p>Cuando se ejecuta un comando o un programa, el resultado se visualiza en la mitad superior de la pantalla y se mantiene allí hasta que se introduzca una línea de programa, o se pulse <b>ENTER</b> con una línea vacia o se pulse <img src="images/shared/arrow_up.png"> o <img src="images/shared/arrow_down.png">. En la parte inferior aparece un informe que da un código (dígito o letra) al que se hace referencia en el Apéndice B. El informe permanece en la pantalla hasta que se pulse una tecla (e indique el modo <span class="inverse">&nbsp;K&nbsp;</span>).</p>
+
+<p>En determinadas circunstancias, <b>CAPS SHIFT</b> con la tecla <b>SPACE</b> actúa como <b>BREAK</b>, deteniendo el ordenador con el informe <span class="inverse">&nbsp;D&nbsp;</span> o <span class="inverse">&nbsp;L&nbsp;</span>. Ello se identifica</p>
+<ol>
+<li>al final de una sentencia mientras se está ejecutando un programa o</li>
+<li>mientras el ordenador esté utilizando la impresora o grabadora de cassette.</li>
+</ol>
+
+<h4>La pantalla de televisión</h4>
+
+<p>Tiene 24 líneas, con 32 caracteres cada una de longitud, y está dividida en dos partes. La parte superior comprende, como máximo, 22 líneas y visualiza un listado o salida de programa. Cuando la impresión en la parte superior ha llegado a la parte inferior, todo se desplaza hacia arriba una línea; si ello trajera consigo la pérdida de una línea que no hubiera tenido todavia oportunidad de ver, entonces el ordenador se detiene con el mensaje <b>scroll?</b>. Al pulsar las teclas <b>N</b>, <b>SPACE</b> o <b>STOP</b> se hará que se pare el programa con el informe <b>D BREAK - CONT repeats</b>; cualquier otra tecla permitirá que continúe el desplazamiento hacia arriba ("scrolling"). La parte inferior se emplea para la introducción de comandos, líneas de programa o entrada de datos y también para visualizar informes. La parte inferior se inicia a partir de dos líneas (la superior es una línea en blanco), pero se amplia para admitir lo que pueda introducirse por el teclado. Cuando llegue a la posición de impresión en curso en la mitad superior, ulteriores ampliaciones harán que se desplace hacia arriba la mitad superior.</p>
+
+<div align="center"><a href="capitulo01.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

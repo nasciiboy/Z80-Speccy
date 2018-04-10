@@ -1,0 +1,297 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 19</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 19</b></div>
+
+<h2>BEEP</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>BEEP</b></li>
+</ul>
+
+<p>Si no ha descubierto todavía que el ZX Spectrum tiene un altavoz incorporado, lea el fascículo de introducción antes de proseguir.</p>
+
+<p>El altavoz se hace sonar con el empleo de la sentencia <b>BEEP</b></p>
+
+<div align="center"><span class="codigo"><b>BEEP</b> duración, tono</b></span></div>
+
+<p>en donde, como es habitual, "duración" y "tono" representan cualquier expresión numérica. La duración se da en segundos y el tono se da en semitonos por encima del "do" central (C) - empleando números negativos para las notas por debajo del "do" central.</p>
+
+<p>Damos un diagrama para mostrar los valores del tono de todas las notas en una octava en el piano:</p>
+
+<div align="center"><img src="images/pag135.jpg"></div>
+
+<div align="center">C = do, D = re, E = mi, F = fa, G = sol, A = la, B = si<br>
+# = sostenido b = bemol</div>
+
+<p>Para conseguir notas más altas o más bajas, ha de sumar o restar 12 para cada octava que suba o baje.</p>
+
+<p>Si tiene un piano frente a usted cuando esté programando una armonía, este diagrama probablemente será todo lo que necesite para obtener los valores del tono. Si, sin embargo, está transcribiendo directamente de alguna música escrita, entonces, le sugerimos que dibuje un diagrama del pentagrama con el valor del tono escrito contra cada línea y espacio, teniendo en cuenta la tecla.</p>
+
+<p>Por ejemplo, teclee:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 PRINT "Frere Jacques"<br>
+20 BEEP 1,0: BEEP 1,2: BEEP .5,3: BEEP .5,2: BEEP 1,0<br>
+30 BEEP 1,0: BEEP 1,2: BEEP .5,3: BEEP .5,2: BEEP 1,0<br>
+40 BEEP 1,3: BEEP 1,5: BEEP 2,7<br>
+50 BEEP 1,3: BEEP 1,5: BEEP 2,7<br>
+60 BEEP .75,7: BEEP .25,8: BEEP .5,7: BEEP .5,5: BEEP .5,3: BEEP .5,2: BEEP 1,0<br>
+70 BEEP .75,7: BEEP .25,8: BEEP .5,7: BEEP .5,5: BEEP .5,3: BEEP .5,2: BEEP 1,0<br>
+80 BEEP 1,0: BEEP 1,-5: BEEP 2,0<br>
+90 BEEP 1,0: BEEP 1,-5: BEEP 2,0
+</span>
+</td>
+</tr>
+</table>
+
+<p>Cuando lo ejecute, debe obtener la marcha fúnebre de la primera sinfonía de Mahler, el fragmento en que los duendes entierran el hombre de la caballería de los Estados Unidos.</p>
+
+<p>Suponga, por ejemplo, que su composición está escrita en la clave de "do" en tono menor, como la sinfonía de Mahler anterior. La entrada es como se indica a continuación.</p>
+
+<div align="center"><img src="images/pag136_01.jpg"></div>
+
+<p>y puede escribir los valores del tono de las notas como:</p>
+
+<div align="center"><img src="images/pag136_02.jpg"></div>
+
+<p>Hemos puesto dos líneas suplementarias, sólo las necesarias. Observe cómo la nota "mi" baja en la armadura afecta no solamente a la nota "mi" en el espacio superior, bemolizándole de 16 a 15, sino también la nota "mi" en la línea inferior, bemolizándola de 4 a 3. Ahora debe ser bastante fácil encontrar el valor del tono de cualquier nota en el pentagrama.</p>
+
+<p>Si desea cambiar la clave de la pieza, lo mejor que puede hacerse es establecer una clave, <b>clave</b>, variable e insertar <b>clave +</b> antes de cada valor de tono; así, la segunda línea se hace:</p>
+
+<div align="center"><span class="codigo">20 BEEP 1, key + 0: BEEP 1, key + 2: BEEP .5, key + 3: BEEP .5, key + 2: BEEP 1, key + 0</span></div>
+
+<p>Antes de que ejecute un programa debe dar a <b>key</b> el valor adecuado: O para "do" en tono menor, 2 para "re" en tono menor, 12 para "do" en tono menor una octava superior y así sucesivamente. Puede conseguir afinar el ordenador con otro instrumento ajustando <b>key</b>, empleando valores fraccionarios.</p>
+
+<p>También puede establecer las duraciones de todas las notas. Puesto que se trata de una pieza bastante lenta, hemos fijado un segundo para una negra y el resto se basan en ello, medio segundo para una corchea y así sucesivamente.</p>
+
+<p>Es más flexible establecer una variable, <b>crochet</b>, para almacenar la longitud de una negra y especificar las duraciones en función de ella. A continuación, la línea 20 se haría:</p>
+
+<table align="center" border="0" width="400">
+<tr>
+<td align="left">
+<span class="codigo">
+20 BEEP crotchet, key + 0: BEEP crotchet, key + 2: BEEP crotchet / 2, key + 3: BEEP crotchet / 2, key + 2: BEEP crotchet, key + 0
+</span>
+</td>
+</tr>
+</table>
+
+<p>(probablemente deseará dar a <b>crotchet</b> y a <b>key</b> nombres más cortos).</p>
+
+<p>Dando a la negra <b>crotchet</b>, valores adecuados, fácilmente puede variar la velocidad de la pieza.</p>
+
+<p>Recuerde que puesto que hay solamente un altavoz en el ordenador, sólo puede tocar una nota a la vez, por lo que está restringido a composiciones no polifónicas. Si desea algo más debe cantar por su cuenta.</p>
+
+<p>Intente programar melodías por sí mismo, comenzando con una bastante sencilla como la de "Tres ratones ciegos". Si no tiene piano ni nunca ha escrito música, apodérese de un instrumento muy sencillo como un silbato o un caramillo y trate de componer melodías. Podría hacer un diagrama que muestre el valor del tono para cada nota que pueda tocar en este instrumento:</p>
+
+<p>Teclee:</p>
+
+<div align="center"><span class="codigo">FOR n = 0 TO 1000: BEEP .5, n: NEXT n</span></div>
+
+<p>Tocará notas tan altas como pueda y luego se interrumpirá con el mensaje de error <b>B integer out of range</b>. Puede imprimir <b>n</b> para averiguar cuán altas fueron las notas conseguidas.</p>
+
+<p>Pruebe lo mismo pero bajando las notas. Las notas muy bajas sonarán como chasquidos; de hecho, las notas más altas también están constituidas por chasquidos de la misma forma, pero más rápidos, por lo que el oído no puede distinguirlos.</p>
+
+<p>Solamente la gama media de notas son realmente buenas para la música; las notas bajas suenan demasiado como chasquidos y las notas altas son agudas y tienden a gorjear un poco.</p>
+
+<p>Introduzca por el teclado la línea de programa siguiente:</p>
+
+<div align="center"><span class="codigo">10 BEEP .5, 0: BEEP .5, 2: BEEP .5, 4: BEEP .5, 5: BEEP .5, 7: BEEP .7, 9: BEEP .5, 11: BEEP .5, 12: STOP</span></div>
+
+<p>Con ella se toca la escala de "do" en tono mayor, que utiliza todas las notas "blancas" en el piano desde la nota "do" media a la siguiente nota "do" arriba. La forma en que esta escala se armoniza es exactamente la misma que en un piano y se denomina afinación plácida, porque el intervalo de altura de un semitono es el mismo a lo largo de toda la escala. Sin embargo, un violinista tocaría la escala de forma muy poco diferente, ajustando todas las notas para hacerlas sonar más agradable al oído. Puede hacerlo moviendo sus dedos muy ligeramente hacia arriba o hacia abajo en las cuerdas de una forma que un pianista no puede hacer.</p>
+
+<p>La escala natural, que es lo que toca el violinista, se obtiene con:</p>
+
+<table align="center" border="0" width="390">
+<tr>
+<td align="left">
+<span class="codigo">
+20 BEEP .5, 0: BEEP .5, 2.039: BEEP .5, 3.86: BEEP .5, 4.98: BEEP .5, 7.02: BEEP .5, 8.84: BEEP .5, 10.88: BEEP .5, 12: STOP
+</span>
+</td>
+</tr>
+</table>
+
+<p>Quizá pueda, o no pueda, ser capaz de detectar cualquier diferencia entre estas dos; algunas personas sí pueden. La primera diferencia notable es que la tercera nota es algo más baja en la escala naturalmente afinada. Si usted es un perfeccionista real, podría desear programar sus armonías para utilizar esta escala natural en lugar de la plácida antes adoptada. La desventaja es que aunque actúa perfectamente en la clave de la nota "do", en otras no sucede lo mismo (todas ellas tienen sus propias escalas naturales) y en algunas, lo hace muy mal. La escala uniformemente temperada (plácida) está solamente algo desactivada y opera igualmente bien en todas las claves o tonos.</p>
+
+<p>Esto es menos problema en el ordenador, por supuesto, porque puede utilizar el artilugio de añadir una clave, <b>key</b>, variable.</p>
+
+<p>Alguna música, especialmente la música india, utiliza intervalos de altura inferior a un semitono. Puede programarlos en una sentencia <b>BEEP</b> sin ninguna dificultad; por ejemplo, el cuarto de tono por encima de la nota "do" media tiene un valor de altura acústica de 0,5.</p>
+
+<p>Puede hacer que el teclado suene como una bocina, en vez de con chasquidos, mediante:</p>
+
+<div align="center"><span class="codigo">POKE 23609, 255</span></div>
+
+<p>El segundo número determina la longitud del sonido de bocina (pruebe con diversos valores entre 0 y 255). Cuando es 0, el sonido es tan corto que parece un chasquido suave.</p>
+
+<p>Si está interesado por hacer más con el sonido del Spectrum, como oír el sonido que <b>BEEP</b> produce en algo distinto al altavoz interno, encontrará que la señal está presente en las conexiones del micrófono y del auricular. Estará a un nivel más alto en la de los auriculares, pero, de cualquier modo, son las mismas. Puede usar esta característica para conectar un auricular o un par de auriculares a su Spectrum. Con ello no se cortará el altavoz interno. Si está realmente ansioso de producir mucho ruido podría conectarle hasta un amplificador (la conexión "<b>MIC</b>" probablemente le proporcionará el nivel correcto) o podría registrar el sonido en una cinta y conseguir que el Spectrum lo toque conjuntamente.</p>
+
+<p>No deteriorará al Spectrum aunque cortocircuite las conexiones "<b>MIC</b>" o "<b>EAR</b>", por lo que debe experimentar para encontrar la mejor prestación para lo que quiera hacer.</p>
+
+<p><b>Ejercicio</b></p>
+
+<ol type=0 start=1>
+<li>
+<p>Volver a escribir el programa de la sinfonía de Mahler del capítulo 8, de modo, que utilice los bucles <b>FOR</b> para repetir las rayas del compás.</p>
+
+<p>Programe el ordenador de modo que toque no solamente la marcha fúnebre, sino también el resto de la primera sinfonía de Mahler.</p>
+</li>
+</ol>
+
+<br><br>
+<div align="center"><a href="capitulo19.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

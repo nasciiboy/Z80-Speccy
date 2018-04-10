@@ -1,0 +1,483 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 9</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 9</b></div>
+
+<h2>Funciones</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>FN</b></li>
+<li><b>LEN, STR$, VAL, SGN, ABS, INT, SQR</b></li>
+<li><b>FN</b></li>
+</ul>
+
+<p>Considere una máquina de hacer embutidos. Suponga que pone un trozo grande de carne en un extremo, gira una manivela y obtiene a la salida en el otro extremo, un embutido de carne. Un hecho analogo se tendría con cualquier otro ingrediente destinado a la fabricación de embutido.</p>
+
+<p>Las funciones son algo similar a estas máquinas de embutidos pero hay una diferencia: trabajan con números y cadenas de caracteres en lugar de hacerlo con carne. Suministre un valor (llamado el argumento), trátelo efectuando algunos cálculos y, finalmente, obtendrá otro valor, el resultado.</p>
+
+<table align="center" border="0" width="600">
+<tr>
+<td width="33%" align="right"><span class="texto">Entrada de carne --></span></td>
+<td width="33%" align="center"><span class="texto">Máquina de embutidos</span></td>
+<td width="33%" align="left"><span class="texto">--> Salida de embutidos</span></td>
+</tr>
+<tr>
+<td width="33%" align="right"><span class="texto">Entrada argumento --></span></td>
+<td width="33%" align="center"><span class="texto">Función</span></td>
+<td width="33%" align="left"><span class="texto">--> Salida resultado</span></td>
+</tr>
+</table>
+
+<p>Argumentos diferentes proporcionan resultados diferentes y si el argumento es completamente incorrecto, la función se interrumpirá y dará un informe de error.</p>
+
+<p>Los mismo que puede tener máquinas diferentes para obtener productos diferentes, funciones distintas realizarán cálculos distintos. Cada una tendrá su propio valor para distinguirla de las demás.</p>
+
+<p>En las expresiones, una función se utiliza escribiendo su nombre seguido del argumento y cuando la expresión es evaluada, se obtiene el resultado de la función.</p>
+
+<p>Como ejemplo una función denominada <b>LEN</b>, que da como resultado la longitud de una cadena de caracteres. Su argumento es la cadena cuya longitud queremos determinar y su resultado es la longitud, de modo que si teclea:</p>
+
+<div align="center"><span class="codigo">PRINT LEN "Sinclair"</span></div>
+
+<p>el ordenador escribirá la respuesta 8, que es el número de letras existentes en la palabra "Sinclair". (Para obtener <b>LEN</b>, como en el caso de la mayoría de los nombres de funciones, debe utilizar el modo extendido, esto es: pulse <b>CAPS SHIFT</b> y <b>SYMBOL SHIFT</b>, al mismo tiempo, para cambiar el cursor de <span class="inverse">&nbsp;L&nbsp;</span> a <span class="inverse">&nbsp;E&nbsp;</span> y luego, pulse la tecla <b>L</b></p>
+
+<p>Si mezcla funciones y operaciones en una sola expresión, entonces las funciones tendrán prioridad sobre las operaciones. Sin embargo, también en este caso, puede eludir esta regla utilizando paréntesis. Por ejemplo, damos a continuación dos expresiones que sólo difieren en los paréntesis y, sin embargo, los cálculos se realizan en un orden completamente distinto  en cada caso (aunque, como por casualidad, los resultados finales son los mismos).</p>
+
+<table align="center" border="0" width="375">
+<tr>
+<td align="left" width="50%">
+<span class="codigo">
+LEN "Fred" + LEN "Bloggs"
+</span>
+</td>
+<td align="left" width="50%">
+<span class="codigo">
+LEN ("Fred" + "Bloggs")
+</span>
+</td>
+</tr>
+<tr>
+<td align="left" width="50%">
+<span class="codigo">
+4 + LEN "Bloggs"
+</span>
+</td>
+<td align="left" width="50%">
+<span class="codigo">
+LEN ("FredBloggs")
+</span>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<span class="codigo">
+4 + 6
+</span>
+</td>
+<td align="left" width="50%">
+<span class="codigo">
+LEN "FredBloggs"
+</span>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<span class="codigo">
+10
+</span>
+</td>
+<td align="center" width="50%">
+<span class="codigo">
+10
+</span>
+</td>
+</tr>
+</table>
+
+<p>Veamos, ahora, algunas otras funciones.</p>
+
+<p><b>STR$</b> convierte números en cadenas: su argumento es un número y su resultado es la cadena que aparecía enla pantalla si el número se visualizara por medio de una sentencia <b>PRINT</b>. Observe cómo su nombre finaliza en un signo <b>$</b> para indicar que su resultado es una cadena. Por ejemplo, podría decir:</p>
+
+<div align="center"><span class="codigo">LET a$ = STR$1e2</span></div>
+
+<p>que tendría exactamente el mismo efecto que si se tecleara:</p>
+
+<div align="center"><span class="codigo">LET a$ = "100"</span></div>
+
+<p>O también podría escribir:</p>
+
+<div align="center"><span class="codigo">PRINT LEN STR$ 100.0000</span></div>
+
+<p>y obtener la respuesta 3, porque <span class="codigo">STR 100.0000 = "100"</span>.</p>
+
+<p><b>VAL</b> es similar a <b>STR$</b> en el sentido inverso: convierte cadenas en números. Por ejemplo:</p>
+
+<div align="center"><span class="codigo">VAL "3.5" = 3.5</span></div>
+
+<p>En un sentido, <b>VAL</b> es la inversa de <b>STR$</b>, porque si toma cualquier número, le aplica <b>STR$</b> y luego, le aplica <b>VAL</b>, volverá a obtener el número original.</p>
+
+<p><b>VAL</b> es una función muy potente, porque la cadena en la que está su argumento no está restringida a que sea como un número sencillo, sino que puede ser cualquier expresión numérica. Así, por ejemplo:</p>
+
+<div align="center"><span class="codigo">VAL "2*3" = 6</span></div>
+
+<p>o también:</p>
+
+<div align="center"><span class="codigo">VAL ("2" + "*3")  = 6</span></div>
+
+<p>Hay dos procesos actuando en este caso. En el primero, el argumento de <b>VAL</b> se evalúa como una cadena: la expresión de cadena <b>"2" + "*3"</b> se evalúa para obtener la cadena <b>"2*3"</b>. Entonces, se eliminan las comillas de la cadena y lo que queda se evalúa como un número: así pues, <b>2*3</b> una vez evaluado dará el número <b>6</b>.</p>
+
+<p>Esto puede ser extremadamente  confuso si no conserva su "presencia de ánimo"; por ejemplo:</p>
+
+<div align="center"><span class="codigo">PRINT VAL "VAL""VAL""""2"""""""</span></div>
+
+<p>(Recuerde que en el interior de una cadena unas comillas de cadena deben escribirse dos veces. Si profundiza más en las cadenas, encontrará que las comillas de cadena necesitan cuadruplicarse o incluso octuplicarse).</p>
+
+<p>Hay otra función, bastante similar a <b>VAL</b>, aunque probablemente menos útil, denominada <b>VAL$</b>. Su argumento sigue siendo una cadena, pero su resultado es también una cadena. Para ver como actua, recuerde que <b>VAL</b> tiene una acción en dos pasos: primero, su argumento se evalúa como un número. Con <b>VAL$</b>, el primer paso es el mismo, pero después de eliminarse las comillas de cadena en el segundo paso, lo que queda se evalúa como otra cadena. Así:</p>
+
+<div align="center"><span class="codigo">VAL$ """Chocolate""" = "Chocolate"</span></div>
+
+<p>(Observe cómo las comillas de cadena proliferan de nuevo).</p>
+
+<p>Haga:</p>
+
+<div align="center"><span class="codigo">LET a$ = "99"</span></div>
+
+<p>e imprima todo lo siguiente: <b>VAL a$, VAL "a$", VAL """a$""", VAL$ a$, VAL "a$" y  VAL$ """a$"""$"""</b>. Algunas de ellas actuarán y otras no lo harán; intente encontrar explicación a todas las respuestas.</p>
+
+<p><b>SGN</b> es la función signo. Es la primera función que ha visto que no tiene nada que hacer con las cadenas, porque su argumento y su resultado son números. El resultado es +1 si el argumento es positivo, 0 si el argumento es cero y -1 si el argumento es negativo.</p>
+
+<p><b>ABS</b> es otra función cuyo argumento y cuyo resultado son números. Convierte el argumento en un número positivo (que es el resultado) haciendo caso omiso del signo, de modo que por ejemplo:</p>
+
+<div align="center"><span class="codigo">ABS -3.2 = ABS 3.2 = 3.2</span></div>
+
+<p><b>INT</b> significa "parte entera" (un entero es un número entero, que puede ser negativo). Esta función convierte un número fraccionario, con cifras decimales, en un entero suprimiendo la parte fraccionaria, así por ejemplo:</p>
+
+<div align="center"><span class="codigo">INT 3.9 = 3</span></div>
+
+<p>Ha de tener cuidado al aplicar esta función a números negativos, porque siempre hay que redondear por defecto; así, por ejemplo:</p>
+
+<div align="center"><span class="codigo">INT -3.9 = -4</span></div>
+
+<p><b>SQR</b> calcula la raíz cuadrada de un número y el resultado multiplicado por si mismo, da el argumento. Por ejemplo:</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+SQR 4 = 2 porque 2*2 = 4
+</span>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="codigo">
+SQR 0.25 = 0.5 porque 0.5 * 0.5 = 0.25
+</span>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="codigo">
+SQR 2 = 1.4142136 (aproximadamente) porque 1.4142136 * 1.4142136 = 2.0000001
+</span>
+</td>
+</tr>
+</table>
+
+<p>Si multiplica cualquier número (incluso uno negativo) por si mismo, la respuesta es siempre positiva. Ello significa que los números negativos no tienen raices cuadradas, por lo que si aplica <b>SQR</b> a un argumento negativo obtendrá un informe de error <b>An Invalid Argument</b> (un argumento no válido).</p>
+
+<p>Asimismo, puede definir funciones por su cuenta. Posibles nombres para estas funciones son <b>FN</b> seguido por una letra (si el resultado es un número) o <b>FN</b> seguida por una letra y por $ (si el resultado es una cadena). Hay más rigurosidad con respecto a los paréntesis: el argumento debe encerrarse entre paréntesis.</p>
+
+<p>Defina una función poniendo una sentencia <b>DEF</b> en algún lugar del programa. Por ejemplo, veamos la definición de una función <b>FN s</b>, cuyo resultado sea el cuadrado del argumento:</p>
+
+<div align="center"><span class="codigo">10 DEF FN s(x) = x * x: REM el cuadrado de x</span></div>
+
+<p><b>DEF</b> se obtiene en modo extendido, con el empleo de <b>SYMBOL SHIFT</b> y de <b>1</b>. Cuando haya escrito esto, el ordenador le dará automáticamente <b>FN</b> porque en una sentencia <b>DEF</b>, <b>FN</b> siempre va inmediatamente detrás de <b>DEF</b>. A continuación, la letra <b>s</b> completa el nombre de <b>FN s</b> de la función.</p>
+
+<p>La <b>x</b> entre paréntesis es un nombre mediante el cual desea referirse al argumento de la función. Puede utilizar cualquier letra única que quiera para ello (o, si el argumento es una cadena, una sola letra seguida por el $).</p>
+
+<p>Después del signo = está la definición real de la función. Esta puede ser cualquier expresión y puede referirse también al argumento utilizando el nombre que le ha dado (en este caso, <b>x</b>) como si fuera una variable ordinaria.</p>
+
+<p>Una vez introducida esta línea, puede invocar, o llamar, la función como si se tratara de las propias funciones del ordenador, tecleando su nombre, <b>FN s</b>, seguido por el argumento. Recuerde que una función definida por usted, debe llevar el argumento encerrado entre paréntesis. Pruébelo unas cuantas veces:</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+PRINT FN s(2)
+</span>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="codigo">
+PRINT FN s(3 + 4)
+</span>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="codigo">
+PRINT 1 + INT FN s(LEN "pollo" / 2 + 3)
+</span>
+</td>
+</tr>
+<tr>
+</table>
+
+<p>Una vez que haya puesto la sentencia <b>DEF</b> correspondiente en el programa, puede utilizar sus propias funciones en expresiones con la misma libertad que puede emplear las del ordenador.</p>
+
+<p>Nota: En algunas versiones de BASIC, debe encerrar entre paréntesis el argumento de una de las funciones del ordenador. Este no es el caso en el BASIC del ZX Spectrum.</p>
+
+<p><b>INT</b> siempre redondea por defecto. Para redondear al entero más próximo, añada primero 0.5 (podría escribir su propia función para hacer esta operación).</p>
+
+<div align="center"><span class="codigo">20 DEF FN r(x) = INT (x + 0.5): REM da x redondeada al entero más próximo.</span></div>
+
+<p>Entonces, obtendrá, por ejemplo:</p>
+
+<table width="400" align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+FN r(2.9) = 3
+</span>
+</td>
+<td align="left">
+<span class="codigo">
+FN r(2.4) = 2
+</span>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="codigo">
+FN r(-2.9) = -3
+</span>
+</td>
+<td align="left">
+<span class="codigo">
+FN r(-2.4) = -2
+</span>
+</td>
+</tr>
+</table>
+
+<p>Compare estas respuestas con las que consigue cuando utiliza <b>INT</b> en lugar de <b>FN r</b>. Escriba y ejecute lo siguiente:</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 LET x = 0: LET y = 0: LET a = 10<br>
+20 DEF FN p(x,y) = a + x * y<br>
+30 DEF FN q() = a + x * y<br>
+40 PRINT FN p(2,3), FN q()
+</span>
+</td>
+</tr>
+</table>
+
+<p>Hay muchos puntos sutiles en este programa.</p>
+
+<p>Primero, una función no está restringida a un solo argumento: puede tener más o incluso ninguno en absoluto, pero siempre debe mantener los paréntesis.</p>
+
+<p>Segundo, no importa en qué lugar del programa ponga las sentencias <b>DEF</b>. Una vez que el ordenador haya ejecutado la línea 10, simplemente salta por encima de las líneas 20 y 30 para llegar a la línea 40. Sin embargo, han de estar en cualquier lugar del programa y no pueden estar en un comando.</p>
+
+<p>Tercero, <b>x</b> e <b>y</b> son los nombres de variables en el programa como un conjunto, y los nombres de argumentos para la función <b>FN p</b>. <b>FN p</b> olvida temporalmente las variables denominadas <b>x</b> e <b>y</b>, pero puesto que no tiene ningún argumento denominado <b>a</b>, todavía recuerda la variable <b>a</b>. Por consiguiente, cuando se está evaluando <b>FN p(2,3)</b>, <b>a</b> tiene el valor 10 porque es la variable, <b>x</b> tiene el valor 2 porque es el primer argumento e <b>y</b> tiene el valor 3 porque es el segundo argumento. El resultado es, entonces: 10 + 2 * 3 = 16. Cuando se está evaluando <b>FN q()</b>, por el contrario, no hay ningún argumento, por lo que <b>a</b>, <b>x</b> e <b>y</b> se refieren todavía a las variables y tienen los valores 10, 0 y 0  respectivamente. La respuesta, en este caso, es: 10 + 0 * 0 = 10.</p>
+
+<p>Ahora cambie la línea 20 a:</p>
+
+<div align="center"><span class="codigo">20 DEF FN p(x,y) = FN q()</span></div>
+
+<p>Esta vez, <b>FN p(2,3)</b> tendrá el valor 10 porque <b>FN q</b> volverá también a las variables <b>x</b> e <b>y</b> en lugar de emplear los argumentos de <b>FN q</b>.</p>
+
+<p>Algunas versiones del BASIC (y no precisamente la del BASIC del ZX Spectrum) tienen funciones denominadas <b>LEFT$</b>, <b>RIGHT$</b>, <b>MID$</b> y <b>TL$</b>.</p>
+
+<p><b>LEFT$</b> (a$,n) da la subcadena de <b>a$</b> que consta de los primeros <b>n</b> caracteres.</p>
+
+<p><b>RIGHT$</b> (a$,n) da la subcadena de <b>a$</b> que está constituida por <b>n2</b> caracteres que comienzan en el <b>n1-ésimo</b>.</p>
+
+<p><b>MID$ (a$, n1, n2)</b> da la subcadena de <b>a$</b> que está constituida por <b>n2</b> caracteres que comienzan en el <b>n1-ésimo</b>.</p>
+
+<p><b>TL$ (a$)</b> da la subcadena de <b>a$</b> que está constituida por todos sus caracteres con la excepción del primero.</p>
+
+<p>Puede escribir algunas funciones definidas por el usuario para hacer lo mismo, por ejemplo:</p>
+
+<table align="center" width="300" border="0">
+<tr>
+<td>
+<span class="codigo">
+10 DEF FN t$(a$) = a$(2 TO): REM TL$<br>
+20 DEF FN i$(a$,n) = a$(TO n): REM LEFT$
+</span>
+</td>
+</tr>
+</table>
+
+<p>Compruebe que estas actúan con cadenas de longitud 0 y 1.</p>
+
+<p>Observe que nuestra función <b>FN i$</b> tiene dos argumentos, uno es un número y el otro es una cadena. Una función puede tener hasta 26 argumentos numéricos (¿por qué precisamente 26?) y, al mismo tiempo, hasta 26 argumentos de cadena.</p>
+
+<p><b>Ejercicio</b></p>
+
+<p>Utilice la función <b>FN s(x) = x * x</b> para probar <b>SQR</b>; debe encontrar que</p>
+
+<div align="center"><span class="codigo">FN s(SQR x) = x</span></div>
+
+<p>si sustituye <b>x</b> por cualquier número positivo y</p>
+
+<div align="center"><span class="codigo">SQR FN s(x) = ABS x</span></div>
+
+<p>si <b>x</b> es un número positivo o negativo (¿por qué <b>ABS</b>?).</p>
+
+<br>
+<div align="center"><a href="capitulo09.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

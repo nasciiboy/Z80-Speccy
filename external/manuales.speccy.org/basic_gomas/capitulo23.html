@@ -1,0 +1,230 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 23</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 23</b></div>
+
+<h2>IN y OUT</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>OUT</b></li>
+<li><b>IN</b></li>
+</ul>
+
+<p>El procesador puede leer de, y (al menos con <b>RAM</b>) escribir en, la memoria utilizando <b>PEEK</b> y <b>POKE</b>. Al procesador, en sí mismo, no le importa realmente si la memoria es ROM, RAM o incluso nada en absoluto; sabe que hay 65536 direcciones de memoria y puede leer un byte de cada una (aunque sea algo sin sentido) y escribir un byte en cada una (aunque se pierda). De una forma completamente análoga, hay 65536 de los que se llaman "ports" de <b>E/S</b> (que significa conectores de entrada/salida). Estos se utilizan por el procesador para comunicar con elementos tales como el teclado o la impresora y pueden controlarse por el BASIC utilizando la función <b>IN</b> y la sentencia <b>OUT</b>.</p>
+
+<p><b>IN</b> es una función como <b>PEEK</b>.</p>
+
+<div align="center"><span class="codigo"><b>IN</b> dirección</span></div>
+
+<p>Tiene un argumento, la dirección de "port", y su resultado es la lectura de un byte desde ese "port". <b>OUT</b> es una sentencia como <b>POKE</b>.</p>
+
+<div align="center"><span class="codigo"><b>OUT</b> dirección</span></div>
+
+<p>escribe el valor dado al "port" con la dirección dada. La forma en que se interpreta la dirección depende, en gran medida, del resto del ordenador; con bastante frecuencia, muchas direcciones diferentes significan lo mismo. En el Spectrum es mejor imaginar que la dirección se escribe en binario, porque los bits individuales tienden a operar con independencia. Hay 16 bits, que llamaremos (utilizando <b>A</b> para indicar dirección).</p>
+
+<div align="center"><span class="codigo">A15, A14, A13, A12, ..., A2, A1, A0</span></div>
+
+<p>En este caso, A0 es el bit de peso 1, A1 es el bit de peso 2, A2 es el bit de peso 4 y así sucesivamente, en correspondencia con el código binario. Los bits A0, A1, A2, A3 y A4 son los más importantes. Suelen ser "1", pero si alguno de ellos es 0, ello indica al ordenador que ha de realizar algo concreto. El ordenador no puede atender a más de una cosa a la vez, por lo que no más de uno de estos cinco bits debe ser 0. Los bits A5, A6 y A7 son ignorados, de modo que si usted es un experto en electrónica los puede emplear por su propia cuenta. Las mejores direcciones a utilizar son las que son un múltiplo de 32 menos 1, de modo que A0, ..., A4 son todos "1". Los bits A8, A9, etc., son utilizados, en ocasiones, para proporcionar información suplementaria.</p>
+
+<p>El byte leído, o escrito, tiene 8 bits y se les suele denominar (utilizando <b>D</b> por datos como D7, D6, ..., D1, D0, se da una lista de las direcciones de "ports" utilizados.</p>
+
+<p>Hay un conjunto de direcciones de entrada que leen el teclado y también la conexión de auricular EAR.</p>
+
+<p>El teclado está dividido en 8 semifilas de 5 teclas cada una.</p>
+
+<table align="center" valign="top" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+IN 65278 lee la semifila CAPS SHIFT a V<br>
+IN 65022 lee la semifila A a G<br>
+IN 64510 lee la semifila Q a T<br>
+IN 63486 lee la semifila 1 a 5<br>
+IN 61438 lee la semifila 0 a 6<br>
+IN 57342 lee la semifila P a 7<br>
+IN 49150 lee la semifila ENTER a H<br>
+IN 32766 lee la semifila SPACE a B
+</span>
+</td>
+</tr>
+</table>
+
+<p>(Estas direcciones son 254 + 256 * (255 - 2 <img src="images/shared/arrow_up.png" border="0">  n) cuando n va de 0 a 7).</p>
+
+<p>En el byte leído, los bits D0 a D4 significan las cinco teclas en la semifila dada (D0 para la tecla exterior, D4 para la más cercana a la parte central. El bit es 0 si la tecla está pulsada y es 1 si no lo está. D6 es el valor en la conexión EAR.</p>
+
+<p>La dirección de "port" 254 utilizada como salida excita el altavoz (D4) y la conexión microfónica MIC (D3) y también establece el color del contorno (D2, D1 y DO).</p>
+
+<p>La dirección de "port" 251 maneja la impresora, tanto en lectura como en escritura: la lectura averigua si la impresora está preparada para imprimir más datos y la escritura envía puntos a imprimir.</p>
+
+<p>Las direcciones de "port" 254, 247 y 239 se emplean para los dispositivos suplementarios mencionados en el capítulo 22.</p>
+
+<p>Ejecute el programa siguiente:</p>
+
+<table align="center" valign="top" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 7: REM semifila número<br>
+20 LET a = 254 + 256 * (255 - 2 <img src="images/shared/arrow_up.png" border="0"> n)<br>
+30 PRINT AT 0, 0; IN a: GO TO 30
+</span>
+</td>
+</tr>
+</table>
+
+<p>y juegue pulsando teclas. Cuando se haya aburrido con cada semifila, pulse <b>BREAK</b> y luego, teclee:</p>
+
+<div align="center"><span class="codigo">NEXT n</span></div><br>
+
+<div align="center"><a href="capitulo23.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

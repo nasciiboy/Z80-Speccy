@@ -1,0 +1,261 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 26</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 26</b></div>
+
+<h2>Empleo del código máquina</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>USR</b> con argumento numérico</li>
+</ul>
+
+<p>Este capítulo está concebido para quienes entienden el código máquina del Z80, que es el conjunto de instrucciones que utiliza el microprocesador Z80. Si no es su caso, pero le gustaría conocerlo, hay mucha bibliografía sobre esta materia y no le será difícil encontrar un libro adecuado en una librería especializada.</p>
+
+<p>Estos programas suelen estar escritos en <b>lenguaje ensamblador</b>, que, aunque sea algo especial, no resulta demasiado difícil de entender con la práctica (puede consultar las instrucciones de lenguaje ensamblador en el apéndice A). Sin embargo, para ejecutarlos en el ordenador necesita codificar el programa en una secuencia de bytes (en esta forma, se denomina <b>código máquina</b>). Esta traducción suele hacerse por el propio ordenador, con el empleo de un programa llamado ensamblador. No hay ningún ensamblador incorporado en el Spectrum, pero puede adquirir uno en cassette. Si no lo adquiere, tendrá que hacer la traducción por sí mismo, a condición de que el programa no sea demasiado largo.</p>
+
+<p>A título de ejemplo, sea el programa:</p>
+
+<table align="center" border="0" valign="top">
+<tr>
+<td align="left">
+<span class="codigo">
+ld bc, 99<br>
+ret
+</span>
+</td>
+</tr>
+</table>
+
+<p>que carga el par de registros <b>bc</b> con 99. Traduce a los cuatro bytes de código máquina 1, 99, 0 (por ld bc, 99) y 201 (por ret). (Si busca 1 y 201 en el Apéndice A, encontrará ld bc, NN (en donde NN significa cualquier número de dos bytes) y ret.)</p>
+
+<p>Cuando tenga su programa de código máquina, el siguiente paso es conseguir su introducción en el ordenador (probablemente, un ensamblador haría esta tarea de forma automática). Necesita decidirse en qué lugar de la memoria ha de ponerse y lo mejor que se puede hacer es conseguir espacio suplementario para tal objeto entre la zona del BASIC y los gráficos definidos por el usuario.</p>
+
+<p>Supongamos, por ejemplo, que tiene una memoria de 16K para el Spectrum. Para comenzar, el extremo superior de la RAM tiene:</p>
+
+<div align="center"><img src="images/pag179.png" border="0"></div>
+
+<p>Si teclea:</p>
+
+<div align="center"><span class="codigo">CLEAR 32499</span></div>
+
+<p>le proporcionará un espacio de 100 (para estar seguro) bytes que comienza en la dirección 32500.</p>
+
+<div align="center"><img src="images/pag180_01.png" border="0"></div>
+
+<p>Para introducir el programa en código máquina, ha de ejecutar un programa en BASIC como el siguiente:</p>
+
+<table align="center" border="0" valign="top">
+<tr>
+<td align="left">
+<span class="codigo">
+10 LET a = 32500<br>
+20 READ n: POKE a, n<br>
+30 LET a = a + 1: GO TO 20<br>
+40 DATA 1, 99, 0, 201
+</span>
+</td>
+</tr>
+</table>
+
+<p>(se producirá una interrupción con el informe <b>E Out of DATA</b> cuando haya rellenado los cuatro bytes que especificó).
+
+<p>Para ejecutar el código máquina, ha de emplear la función <b>USR</b>, pero esta vez con un argumento numérico, la dirección de comienzo. Su resultado es el valor del registro <b>bc</b> en el retorno desde el programa en código máquina, por consiguiente, si hace:</p>
+
+<div align="center"><span class="codigo">PRINT USR 32500</span></div>
+
+<p>obtendrá la respuesta 99.</p>
+
+<p>La dirección de retorno al BASIC se almacena en la forma habitual, por lo que el retorno se hace mediante una instrucción <b>ret</b> del Z80. No debe emplear los registros <b>iy</b> e <b>i</b> en una rutina en código máquina.</p>
+
+<p>Los buses de control, de datos y de direcciones están accesibles en la parte posterior del Spectrum, por lo que con un Spectrum puede hacer casi todo lo que pudiera realizar con un Z80. A veces, sin embargo, al hardware del Spectrum podría plantear inconvenientes. Damos la ilustración de un diagrama de las conexiones expuestas en la parte posterior.</p>
+
+<div align="center"><img src="images/pag180_02.png" border="0"></div>
+
+<p>Puede conservar su programa en código máquina bastante fácilmente con:</p>
+
+<div align="center"><span class="codigo">SAVE "algún nombre" CODE 32500, 4</span></div>
+
+<p>Por lo que se ha visto, no hay ninguna forma de realizar la conservación de modo que cuando se cargue automáticamente se ejecute por sí mismo, pero puede eludir esta dificultad con el empleo de un programa en BASIC.</p>
+
+<table align="center" valign="top" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 LOAD "" CODE 32500,4<br>
+20 PRINT USR 32500
+</span>
+</td>
+</tr>
+</table>
+
+<p>Haga primero:</p>
+
+<div align="center"><span class="codigo">SAVE "algún nombre" LINE</span></div>
+
+<p>y luego:</p>
+
+<table align="center" valign="top" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+SAVE "xxxx" CODE 32500, 4<br>
+LOAD "algún nombre"
+</span>
+</td>
+</tr>
+</table>
+
+<p>que cargará y ejecutará automáticamente el programa en BASIC y este último cargará y ejecutará el código máquina.</p>
+
+<div align="center"><a href="capitulo26.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

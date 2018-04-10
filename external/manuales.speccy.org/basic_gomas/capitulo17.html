@@ -1,0 +1,415 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 17</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 17</b></div>
+
+<h2>Gráficos</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>PLOT</b>, <b>DRAW</b>, <b>CIRCLE</b></li>
+<li><b>POINT</b></li>
+<li>pixels</li>
+</ul>
+
+<p>En este capítulo veremos cómo dibujar imágenes en el ZX Spectrum. La parte de la pantalla que puede utilizar tiene 22 líneas y 32 columnas, lo que equivale a 22*32=704 posiciones de carácter. Como quizás recuerde del capítulo 16, cada una de estas posiciones de carácter está constituida por cuadrados de 8 x 8 puntos y estos se denominan "pixels" (elementos de imagen).</p>
+
+<p>Un pixel está especificado por dos números, que son sus coordenadas. La primera, su coordenada <b>x</b>, indica la distancia en sentido transversal desde la columna izquierda extrema (recuerde que <b>x</b> es una cruz, en el sentido transversal); la segunda, su coordenada <b>y</b>, indica la altura desde la parte inferior. Estas coordenadas suelen escribirse como un par de números entre paréntesis, por lo que (0,0), (255,0), (0,175) y (255,175) son las esquinas inferior izquierda, inferior derecha, superior izquierda y superior derecha, respectivamente.</p>
+
+<p>La sentencia</p>
+
+<div align="center"><span class="codigo"><b>PLOT</b> coordenada <b>x</b>, coordenada <b>y</b></span></div>
+
+<p>entinta el pixel con estas coordenadas, de modo que el siguiente programa "sarampión"</p>
+
+<div align="center"><span class="codigo">10 PLOT INT (RND * 256), INT (RND * 176): INPUT a$: GO TO 10</span></div>
+
+<p>dibuja un punto aleatorio cada vez que pulsa <b>ENTER</b>.</p>
+
+<p>Veamos, ahora, un programa bastante más interesante. Traza una representación gráfica de la función <b>SIN</b> (una onda sinusoidal) para los valores entre 0 y 2 PI.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 255<br>
+20 PLOT n, 88 + 80 * SIN (n / 128 * PI)<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>El siguiente programa traza un gráfico de <b>SQR</b> (parte de una parábola) entre 0 y 4:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 255<br>
+20 PLOT n, 80 * SQR (n / 64)<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observe que las coordenadas del pixel son bastante diferentes de la línea y columna en un <b>AT</b>. Puede encontrar el diagrama en el capítulo 15 de utilidad cuando trabaje con las coordenadas del pixel y los números de línea y de columna.</p>
+
+<p>Para ayudarle en sus dibujos, el ordenador trazará líneas rectas, círculos y arcos, con el empleo de las sentencias <b>DRAW</b> y <b>CIRCLE</b>.</p>
+
+<p>La sentencia <b>DRAW</b>, para dibujar una línea recta, adopta la forma</p>
+
+<div align="center"><span class="codigo">DRAW x,y</span></div>
+
+<p>El lugar de partida de la línea es el pixel en donde quedó la última sentencia <b>PLOT</b>, <b>DRAW</b> o <b>CIRCLE</b> (se denomina posición <b>PLOT</b>; <b>RUN</b>, <b>CLEAR</b>, <b>CLS</b> y <b>NEW</b> le repone a la esquina inferior izquierda, en (0,0)) y el lugar de final del trazado es <b>x</b> pixels a la derecha del mismo e <b>y</b> pixels arriba. La sentencia <b>DRAW</b>, en sí misma, determina la longitud y la dirección de la línea, pero no su punto de partida.</p>
+
+<p>Observe que los números en una sentencia <b>DRAW</b> pueden ser negativos, aunque los incluidos en una sentencia <b>PLOT</b> no lo pueden ser.</p>
+
+<p>Asimismo, puede trazar y dibujar en color, aunque ha de tener presente que los colores cubren siempre la totalidad de una posición de carácter y no puede especificarse para pixels individuales. Cuando se traza un pixel, se ajusta para mostrar el color de tinta en plenitud y a la totalidad de la posición de carácter que lo contiene se le da el color de tinta corriente. El siguiente programa lo pone de manifiesto:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 BORDER 0: PAPER 0: INK 7: CLS : REM apagar pantalla<br>
+20 LET x1 = 0: LET y1 = 0: REM comienzo de línea<br>
+30 LET c = 1: REM para color de tinta, comienzo azul<br>
+40 LET x2 = INT (RND * 256): LET y2 = INT (RND * 176): REM acabado aleatorio de línea<br>
+50 DRAW INK c; x2 - x1, y2 - y1<br>
+60 LET x1 = x2: LET y1 = y2: REM siguiente línea comienza en donde acabó la última<br>
+70 LET c = c + 1: IF c = 8 THEN LET c = 1: REM nuevo color<br>
+80 GO TO 40
+</span>
+</td>
+</tr>
+</table>
+
+<p>Las líneas parecen ser más anchas a medida que prosigue el programa y ello se debe a que una línea cambia los colores de todo el entintado en pixels de todas las posiciones de carácter que atraviesa. Observe que puede encajar los elementos <b>PAPER</b>, <b>INK</b>, <b>FLASH</b>, <b>BRIGHT</b>, <b>INVERSE</b> y <b>OVER</b> en una sentencia <b>PLOT</b> o <b>DRAW</b>, lo mismo que podría hacerlo con <b>PRINT</b> e <b>INPUT</b>. Van entre la palabra clave y las coordenadas y están terminadas por punto y coma o comas.</p>
+
+<p>Una característica adicional de <b>DRAW</b> es que puede utilizarlo para dibujar arcos de circunferencia en lugar de líneas rectas, con el empleo de un número suplementario para especificar un ángulo a girar; la forma es:</p>
+
+<div align="center"><span class="codigo">DRAW x,y,a</span></div>
+
+<p><b>x</b> e <b>y</b> se utilizan para especificar el punto final de la línea lo mismo que antes y <b>a</b> es el número de radianes que debe girarse a medida que se avanza: si <b>a</b> es un número positivo se gira a la izquierda, mientras que si <b>a</b> es negativo, se gira a la derecha. Otra forma de considerar <b>a</b> es como indicación de la fracción de un círculo completo que se dibujará: un círculo completo es 2 PI radianes, por lo que si <b>a = PI</b> dibujará un semicírculo, si <b>a = 0,5 * PI</b> dibujará un cuarto de un círculo y así sucesivamente.</p>
+
+<p>Por ejemplo, supongamos <b>a = PI</b>. Entonces, cualesquiera que sean los valores que tomen <b>x</b> e <b>y</b>, se trazará un semicírculo. Ejecute:</p>
+
+<div align="center"><span class="codigo">10 PLOT 100, 100: DRAW 50, 50, PI</span></div>
+
+<p>que dibujará lo siguiente:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="center">
+<img src="images/pag123.jpg">
+</td>
+<td align="center" valign="top">
+<span class="texto">
+final en (150,150)
+</span>
+</td>
+</tr>
+<tr>
+<td align="center">
+<span class="texto">
+comienzo en (100,100)
+</span>
+</td>
+<td>
+</td>
+</tr>
+</table>
+
+<p>El dibujo comienza en una dirección de sudeste, pero en el momento en que se detiene tiene dirección noroeste; en el recorrido entre dichos dos puntos ha girado 180° ó PI radianes (el valor de <b>a</b>).</p>
+
+<p>Ejecute el programa varias veces, con <b>PI</b> sustituido por otras varias expresiones, v.g. <b>- PI, PI / 2, 3 * PI / 2, PI / 4, 1, 0</b>.</p>
+
+<p>La última sentencia de este capítulo es <b>CIRCLE</b>, que dibuja un círculo completo. Especifica las coordenadas del centro y del radio del círculo con el empleo de</p>
+
+<div align="center"><span class="codigo"><b>CIRCLE</b> coordenada x, coordenada y, radio</span></div>
+
+<p>Lo mismo que con <b>PLOT</b> y <b>DRAW</b>, puede poner las diversas clases de elementos de color al principio de una sentencia <b>CIRCLE</b>.</p>
+
+<p>La función <b>POINT</b> le dice si un pixel es de color de tinta o de papel. Tiene dos argumentos, las coordenadas del pixel (que deben estar encerradas entre paréntesis) y su resultado es 0 si el pixel es de color de papel y 1 si es color de tinta. Pruebe:</p>
+
+<div align="center"><span class="codigo">CLS : PRINT POINT (0,0) : PLOT 0,0: PRINT POINT (0,0)</span></div>
+
+<p>Teclee:</p>
+
+<div align="center"><span class="codigo">PAPER 7: INK 0</span></div>
+
+<p>e investiguemos cómo <b>INVERSE</b> y <b>OVER</b> operan en el interior de una sentencia <b>PLOT</b>. Las dos afectan al pixel correspondiente y no al resto de las posiciones de carácter. Suelen estar inactivas (0) en una sentencia <b>PLOT</b>, por lo que sólo necesita mencionarlas para que se les active (1).</p>
+
+<p>Se da a continuación una lista de las posibilidades para su referencia:</p>
+
+<p><b>PLOT</b>; -esta es la forma habitual. Traza un punto de tinta; esto es, posiciona el pixel para poner de manifiesto el color de tinta.</p>
+
+<p><b>PLOT INVERSE 1</b>; -traza un punto de erradicador de tinta; esto es, posiciona el pixel para poner de manifiesto el color del papel.</p>
+
+<p><b>PLOT OVER 1</b>: -cambia el pixel a partir de cualquier estado anterior, por lo que si tenía color de tinta adquirirá color de papel y viceversa.</p>
+
+<p><b>PLOT INVERSE 1; OVER 1;</b> -deja el pixel exactamente igual a como estaba antes; pero observe que también cambia la posición <b>PLOT</b>, por lo que podría utilizarle simplemente para hacer esa operación.</p>
+
+<p>Como otro ejemplo de utilización de la sentencia <b>OVER</b>, llene la pantalla con escritura utilizando blanco y negro y luego, teclee:</p>
+
+<div align="center"><span class="codigo">PLOT 0, 0: DRAW OVER 1; 255, 175</span></div>
+
+<p>Dibujará una línea bastante correcta, aun cuando tenga interrupciones en la misma siempre que se encuentre con alguna escritura. Ahora vuelva a hacer exactamente el mismo comando. La linea se desvanecerá sin dejar ningún rastro. Esta es la gran ventaja de <b>OVER 1</b>. Si hubiera dibujado la línea utilizando</p>
+
+<div align="center"><span class="codigo">PLOT 0, 0: DRAW 255, 175</span></div>
+
+<p>y la hubiera borrado con el empleo de</p>
+
+<div align="center"><span class="codigo">PLOT 0, 0: DRAW INVERSE 1; 255, 175</span></div>
+
+<p>entonces, habría borrado también parte de la escritura.</p>
+
+<p>Ahora, pruebe:</p>
+
+<div align="center"><span class="codigo">PLOT 0, 0: DRAW OVER 1; 250,175</span></div>
+
+<p>e intente borrar la línea mediante</p>
+
+<div align="center"><span class="codigo">DRAW OVER 1; -250, -175</span></div>
+
+<p>Con esta orden no se opera de forma correcta, porque los pixels que la línea utiliza en el recorrido de retorno no son completamente los mismos que los que se emplearon en el trazado. Ha de borrar una línea en la misma dirección exactamente en que la dibujó.</p>
+
+<p>Una forma de conseguir colores no habituales es introducir dos colores normales juntos en un solo cuadrado, con el empleo de un gráfico definido por el usuario. Ejecute el siguiente programa:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+1000 FOR n = 0 TO 6 STEP 2<br>
+1010 POKE USR "a" + n, BIN 01010101: POKE USR "a" + n + 1, BIN 10101010<br>
+1020 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>que da el gráfico definido por el usuario que corresponde a una configuración de tablero de ajedrez. Si imprime este carácter (modo de gráfico, luego <b>a</b>) en tinta roja sobre papel amarillo, le encontrará con un color naranja moderadamente aceptable.</p>
+
+<p><b>Ejercicios</b></p>
+
+<ol type=0 start=1>
+<li>
+<p>Juegue con los elementos <b>PAPER</b>, <b>INK</b>, <b>FLASH</b> y <b>BRIGHT</b> en una sentencia <b>PLOT</b>. Estas son las partes que afectan a la totalidad de la posición de carácter que contiene el pixel. Normalmente es como si la sentencia <b>PLOT</b> hubiera comenzado</p>
+
+<div align="center"><span class="codigo">PLOT PAPER 8; FLASH 8; BRIGHT 8; ...</span></div>
+
+<p>y sólo se altera el color de tinta de una posición de carácter cuando algo se traza en la misma, pero puede cambiarlo si lo desea.</p>
+
+<p>Tenga especial cuidado cuando utilice colores con <b>INVERSE 1</b>, porque posiciona el pixel para poner de manifiesto el color del papel, pero cambia el color de la tinta y éste podría no ser lo que esperaba.</p>
+</li>
+
+<li>
+<p>Intente dibujar círculos con el empleo de <b>SIN</b> y <b>COS</b> (si ha leído el capítulo 9, trate de resolverlo). Ejecute el programa siguiente:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 2 * PI STEP PI / 180<br>
+20 PLOT 100 + 80 * COS n , 87 + 80 * SIN n<br>
+30 NEXT n<br>
+40 CIRCLE 150,87,80
+</span>
+</td>
+</tr>
+</table>
+
+<p>Puede ver que la sentencia <b>CIRCLE</b> es mucho más rápida, aunque menos exacta.</p>
+</li>
+
+<li>
+<p>Pruebe:</p>
+
+<div align="center"><span class="codigo">CIRCLE 100, 87, 80: DRAW 50, 50</span></div>
+
+<p>A partir de ella puede constatar que la sentencia <b>CIRCLE</b> deja la posición <b>PLOT</b> en un lugar bastante indeterminado (siempre está en algún lugar a medio camino ascendente en el lado derecho del círculo. Habitualmente necesitará seguir a la sentencia <b>CIRCLE</b> con una sentencia <b>PLOT</b> antes de que haga cualquier otro dibujo.</p>
+</li>
+
+<li>
+<p>Veamos un programa para dibujar la gráfica de casi cualquier función. Primero, le pide un número <b>n</b>; trazará la gráfica para valores desde <b>-n</b> a <b>+n</b>. A continuación, le pide la función propiamente dicha, introduciéndola como una cadena. La cadena debe ser una expresión que utilice <b>x</b> como el argumento de la función.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;10 PLOT 0, 87: DRAW 255, 0<br>
+&nbsp;&nbsp;20 PLOT 127, 0: DRAW 0, 175<br>
+&nbsp;&nbsp;30 INPUT s, e$<br>
+&nbsp;&nbsp;35 LET t = 0<br>
+&nbsp;&nbsp;40 FOR F = 0 TO 255<br>
+&nbsp;&nbsp;50 LET x = (f - 128) * s / 128: LET y = VAL e$<br>
+&nbsp;&nbsp;60 IF ABS y > 87 THEN LET t = 0: GO TO 100<br>
+&nbsp;&nbsp;70 IF NOT t THEN PLOT f, y + 88: LET t = 1: GO TO 100<br>
+&nbsp;&nbsp;80 DRAW 1, y - antigua y<br>
+100 LET antigua y = INT (y + x)<br>
+110 NEXT F
+</span>
+</td>
+</tr>
+</table>
+
+<p>Ejecute el anterior programa, a título de ejemplo, introduzca por el teclado <b>10</b> para el número <b>n</b> y <b>10 * TAN x</b> para la función. Trazará una gráfica de tangente de <b>x</b>, cuando <b>x</b> varía desde -10 a +10.</p>
+
+</li>
+
+</ol>
+
+
+<br><br>
+<div align="center"><a href="capitulo17.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

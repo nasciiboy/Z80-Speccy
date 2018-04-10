@@ -1,0 +1,228 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 5</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 5</b></div>
+
+<h2>Subrutinas</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>GO SUB, RETURN</b></li>
+</ul>
+
+<p>A veces, partes diferentes del programa tendrán tareas bastante similares que realizar y se encontrará tecleando las mismas líneas en dos o más ocasiones; sin embargo, ello no es necesario. Puede teclear las líneas una sola vez, en una forma conocida como una subrutina, y luego utilizarlas, o llamarlas, en cualquier lugar del programa sin necesidad de volverlas a introducir por el teclado.</p>
+
+<p>Para realizar esta operación, utilice las sentencias <b>GO SUB</b> (<b>GO</b> a <b>SUB</b>rutina) y <b>RETURN</b>.</p>
+
+<p>Ello adopta la forma:</p>
+
+<div align="center"><b>GO SUB n</b></div>
+
+<p>en donde <b>n</b> es el número de línea de la primera línea en la subrutina. Es lo mismo que <b>GO TO n</b> con la salvedad de que el ordenador recuerda en donde estaba la sentencia <b>GO SUB</b>, de modo que pueda retornar después de realizar la subrutina. Lo hace poniendo el número de línea y el número de la sentencia dentro de la línea (juntos constituyen la dirección de retorno) en la parte superior de una pila (la pila <b>GO SUB</b>).</p>
+
+<div align="center"><b>RETURN</b></div>
+
+<p>toma la dirección de retorno superior de la pila <b>GO SUB</b> y la lleva a la sentencia que la sigue.</p>
+
+<p>A título de ejemplo, vuelva a examinar el programa para adivinar números. Vuelva a teclear lo siguiente:</p>
+
+<table align="center" width="400">
+<tr>
+<td>
+<span class="codigo">
+10 REM "Un juego de adivinacion con nueva disposicion"<br>
+20 INPUT a: CLS<br>
+30 INPUT "Adivine el numero   ",b<br>
+40 IF a=b THEN PRINT "Correcto": STOP<br>
+50 IF a&lt;b THEN GO SUB 100<BR>
+60 IF a>b THEN GO SUB 100<BR>
+70 GO TO 30<br>
+100 PRINT "Pruebe de nuevo"<br>
+110 RETURN
+</spam>
+</td>
+</tr>
+</table>
+
+<p>La sentencia <b>GO TO</b> en la línea 70 es muy importante porque, de no ser por ella, el programa pasará en su ejecución a la subrutina y se producirá un error (<b>7 RETURN without GO SUB</b> - Return sin GO SUB) cuando se llegue a la sentencia <b>RETURN</b>.</p>
+
+<p>Veamos otro programa bastante sencillito que ilustra el empleo de <b>GO SUB</b>,</p>
+
+<table align="center" width="400">
+<tr>
+<td>
+<span class="codigo">
+100 LET x=10<br>
+110 GO SUB 500<br>
+120 PRINT s<br>
+130 LET x=x+4<br>
+140 GO SUB 500<br>
+150 PRINT s<br>
+160 LET x=x+2<br>
+170 GO SUB 500<br>
+180 PRINT s<br>
+190 STOP<br>
+500 LET s=0<br>
+510 FOR y=1 TO x<br>
+520 LET s=s+y<br>
+530 NEXT y<br>
+540 RETURN
+</spam>
+</td>
+</tr>
+</table>
+
+<p>Cuando se ejecute este programa, vea si puede determinar lo que está sucediendo. La subrutina comienza en la línea 500.</p>
+
+<p>Una subrutina puede llamar a otro o incluso a sí misma (en este último caso, se llama <b>recursivo</b>).</p>
+
+<div align="center"><a href="capitulo05.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

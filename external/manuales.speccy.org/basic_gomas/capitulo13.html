@@ -1,0 +1,364 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 13</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 13</b></div>
+
+<h2>Condiciones</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>AND, OR</b></li>
+<li><b>NOT</b></li>
+</ul>
+
+<p>Vimos en el capítulo 3 cómo una sentencia <b>IF</b> adopta la forma</p>
+
+<div align="center"><span class="codigo"><b>IF</b> condición <b>THEN</b></span></div>
+
+<p>Las condiciones, entonces, eran las relaciones (<b>=</b> , <b><</b> , <b>></b> , <b><=</b> , <b>>=</b> y <b><></b>), que comparan dos números o dos cadenas. También pueden combinar varias de ellas, con el empleo de las operaciones lógicas <b>AND</b>, <b>OR</b> y <b>NOT</b>.</p>
+
+<p>Una relación <b>AND</b> y otra relación es verdadera siempre que ambas relaciones sean verdaderas, por lo que podría tener una línea como:</p>
+
+<div align="center"><span class="codigo">IF a$ = "sí" AND x > 0 THEN PRINT x</span></div>
+
+<p>en la que <b>x</b> solamente se consigue imprimir si <b>a$ = "sí"</b> y <b>x > 0</b>. El BASIC es, en este caso, tan próximo al inglés que parece ser que no vale la pena entrar en detalles. Como en inglés, puede unir muchas relaciones con <b>AND</b> y, entonces, el conjunto es verdadero si lo son todas las relaciones individuales.</p>
+
+<p>Una relación <b>OR</b> (<b>O</b>) otra relación es verdadera siempre que una de las dos relaciones, por lo menos, sea verdadera (recuerde que sigue siendo verdadera si ambas relaciones son verdaderas; esto es algo que no siempre se implica en inglés).</p>
+
+<p>La relación <b>NOT</b> vuelve todo al revés. La relación <b>NOT</b> es verdadera siempre que la relación sea falsa y falsa siempre que sea verdadera.</p>
+
+<p>Las expresiones lógicas pueden constituirse con relaciones y las funciones <b>AND</b>, <b>OR</b> y <b>NOT</b>, lo mismo que las expresiones numéricas pueden formarse con números y los signos <b>+</b>, <b>-</b>, etc.; incluso puede ponerles entre paréntesis, en caso de necesidad. Tienen prioridades en la misma forma que las operaciones habituales <b>+</b>, <b>-</b>, <b>*</b>, <b>/</b> y <img src="images/shared/arrow_up.png">  , esto es: <b>OR</b> tiene la más baja prioridad, luego <b>AND</b>, luego <b>NOT</b>, luego las relaciones y las operaciones habituales.</p>
+
+<p><b>NOT</b> es realmente una función, con un argumento y un resultado, pero su prioridad es mucho más baja que la de otras funciones. Por consiguiente, su argumento no precisa paréntesis a no ser que contenga <b>AND</b> u <b>OR</b> (o ambas funciones). <b>NOT a = b</b> significa lo mismo que <b>NOT (a = b)</b> (y lo mismo que <b>a <> b</b>, por supuesto).</p>
+
+<p><b><></b> es la negación de <b>=</b> en el sentido de que es verdadera si, y solamente, si, <b>=</b> es falsa. Dicho de otro modo:</p>
+
+<div align="center"><span class="codigo"><b>a <> b</b> es lo mismo que <b>NOT a = b</b></span></div>
+
+<p>y también:</p>
+
+<div align="center"><span class="codigo"><b>NOT a <> b</b> es lo mismo que <b>a = b</b></span></div>
+
+<p>Persuádase a sí mismo que <b>>=</b> y <b><=</b> son las negaciones de <b><</b> y de <b>></b> respectivamente; por consiguiente, siempre puede prescindir de <b>NOT</b> en una relación cambiando la relación.</p>
+
+<p>Además:</p>
+
+<div align="center"><b>NOT</b> (una primera expresión lógica <b>AND</b> una segunda)</div>
+
+<p>es lo mismo que</p>
+
+<div align="center"><b>NOT</b> (la primera) <b>OR NOT</b> (la segunda)</div>
+
+<p>y</p>
+
+<div align="center"><b>NOT</b> (una primera expresión lógica <b>OR</b> una segunda)</div>
+
+<p>es lo mismo que</p>
+
+<div align="center"><b>NOT</b> (la primera) <b>AND NOT</b> (la segunda)</div>
+
+<p>Con el empleo de lo anterior, puede efectuar las funciones <b>NOT</b> a través de paréntesis hasta que, a la larga, estén aplicadas todas a las relaciones y, luego, puede prescindir de ellas. Hablando en términos lógicos, <b>NOT</b> es innecesaria, aunque pueda seguir considerando que su empleo hace más claro un programa.</p>
+
+<p>La siguiente sección es bastante complicada y puede pasarse por alto por los "pusilánimes".</p>
+
+<p>Pruebe:</p>
+
+<div align="center"><span class="codigo">PRINT 1 = 2,1 <> 2</span></div>
+
+<p>que podría esperar que diera un error de sintaxis. De hecho, en lo que respecta al ordenador, no hay nada como un valor lógico; en cambio, emplea números ordinarios, con observancia de unas pocas reglas:</p>
+
+<ol type=i start=1>
+<li><b>=</b> , <b><</b> , <b>></b> , <b><=</b> , <b>=<</b> y <b><></b> todos ellos dan resultados numéricos: 1 para verdadero y 0 para falso. Por consiguiente, el comando <b>PRINT</b> anterior imprimió 0 para <b>'1 = 2'</b>, que es falso y 1 para <b>'1 <> 2'</b> que es verdadero.<br><br></li>
+<li>En:
+
+<div align="center"><span class="codigo"><b>IF</b> condición <b>THEN</b> ...</span></div>
+
+<p>la condición puede ser realmente cualquier expresión numérica. Si su valor es 0, entonces, cuenta como falso y cualquier otro valor (incluyendo el valor de 1 que da una relación verdadera) cuenta como verdadero. Así, la sentencia <b>IF</b> significa exactamente lo mismo que:</p>
+
+<div align="center"><b>IF</b> condición <> 0 <b>THEN</b> ...</div>
+<br></li>
+
+<li><b>AND</b>, <b>OR</b> y <b>NOT</b> son también operaciones con valoración numérica.
+
+<table align="center" border="0" cellspacing="10">
+<tr>
+<td align="left">
+<span class="texto"><b>x AND y</b> tiene el</span>
+</td>
+<td>
+<span class="texto">
+x, si y es verdadera (no cero)<br>
+valor 0 (falsa), si y es falsa (cero)
+</span>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="texto"><b>x OR y</b> tiene el valor</span>
+</td>
+<td>
+<span class="texto">
+1 (verdadera), si y es verdadera (no cero)<br>
+x, si y es falsa (cero)
+</span>
+</td>
+</tr>
+<tr>
+<td align="left">
+<span class="texto"><b>NOT x</b> tiene el valor</span>
+</td>
+<td>
+<span class="texto">
+1 (verdadera), si y es verdadera (no cero)<br>
+x, si y es falsa (cero)
+</span>
+</td>
+</tr>
+</table>
+
+<p>(observe que "verdadera" significa "no cero" cuando estamos comprobando un valor determinado, pero significa '1' cuando estamos obteniendo uno nuevo).</p>
+
+</li>
+</ol>
+
+<p>Lea detenidamente el capítulo de nuevo teniendo presente lo anteriormente expuesto, cerciorándose de que todo va bien.</p>
+
+<p>En las expresiones <b>x AND y</b>, <b>x OR y</b> <b>y NOT x</b>, <b>x</b> e <b>y</b> tomarán normalmente los valores 0 y 1 para falso y verdadero. Realice las diez combinaciones diferentes (cuatro para <b>AND</b>, cuatro para <b>OR</b> y dos para <b>NOT</b>) y compruebe que hacen lo que el capítulo le indica que ha de esperar que hagan.</p>
+
+<p>Pruebe este programa:</p>
+
+<table width="300" align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 INPUT a<br>
+20 INPUT b<br>
+30 PRINT(a AND a >=b ) + (b AND a < b)<br>
+40 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>Cada vez, imprime el más grande de los dos números <b>a</b> y <b>b</b>.</p>
+
+<p>Convénzase a sí mismo de que puede acordarse de</p>
+
+<div align="center"><span class="codigo">x AND y</span></div>
+
+<p>como teniendo el significado de</p>
+
+<div align="center"><span class="codigo"><b>x</b> si <b>y</b> (si no, el resultado es 0)</span></div>
+
+<p>y de</p>
+
+<div align="center"><span class="codigo">x OR y</span></div>
+
+<p>con el significado de</p>
+
+<div align="center"><span class="codigo"><b>x</b> a no ser que <b>y</b> (en cuyo caso, el resultado es 1)</span></div>
+
+<p>Una expresión con el empleo de <b>AND</b> o de <b>OR</b> como la anterior se denomina una expresión condicional. Un ejemplo con el empleo de <b>OR</b> podría ser:</p>
+
+<div align="center"><span class="codigo">LET precio total = precio menos impuesto * (1.15 OR v$ = "calculado zero")</span></div>
+
+<p>Observe cómo <b>AND</b> tiende a ir con la adición (porque su valor por defecto es 0) y <b>OR</b> tiende a ir con la multiplicación (porque su valor por defecto es 1).</p>
+
+<p>También puede elaborar expresiones condicionales valoradas de cadenas, pero solamente utilizando <b>AND</b></p>
+
+<table align="center" border="0" cellspacing="10">
+<tr>
+<td align="left">
+<span class="texto"><b>x$ AND y</b> tiene el valor</span>
+</td>                                                                                                         <td>
+<span class="texto">
+<b>x$</b> si <b>y</b> no es cero<br>
+<b>""</b> si <b>y</b> es cero
+</span>
+</td>                                                                                                         </tr>
+</table>
+
+<p>por lo que significa <b>x$</b> si <b>y</b> (si no, la cadena vacía).</p>
+
+<p>Pruebe este programa, que introduce dos cadenas y las pone en orden alfabético.</p>
+
+<table align="center" border="0">
+<tr>
+<td aligen="left">
+<span class="codigo">
+10 INPUT "introducir dos cadenas" 'a$,b$<br>
+20 I F a$ > b$ THEN LET c$ = a$: LET a$ = b$: LET b$ = c$<br>
+30 PRINT a$;" ";("<" AND a$ < b$) + ("=" AND a$ = b$);" "; b$<br>
+40 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p><b>Ejercicio</b></p>
+
+<ol type=0 start=1>
+<li>
+<p>El lenguaje BASIC opera, a veces, de forma distinta al inglés. Considere, por ejemplo, la cláusula inglesa 'si <b>a</b> no es igual a <b>b</b> o <b>c</b>'. ¿Cómo podría escribirla en BASIC? La respuesta no es</p>
+
+<div align="center"><span class="codigo">IF A <> B OR C</span></div>
+
+<p>ni tampoco</p>
+
+<div align="center"><span class="codigo">IF A <> B OR A <> C</span></div>
+
+</li>
+</ol>
+
+<br>
+<div align="center"><a href="capitulo13.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

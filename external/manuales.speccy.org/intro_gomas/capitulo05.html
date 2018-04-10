@@ -1,0 +1,265 @@
+<html>
+<head>
+<title>Manual de Introducción Spectrum 48k - Capítulo 5</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+
+<h2>5. Programación Simple</h2>
+
+<p>Hasta ahora hemos estado diciendo al ordenador lo que ha de hacer directamente desde el teclado. Aunque es posible combinar comandos juntos, solamente son factibles aplicaciones limitadas con el empleo de este método.</p>
+
+<p>Lo más importante respecto a los ordenadores es que son programables. Ello significa que podemos darles una serie de instrucciones para hacer que efectúen operaciones de forma secuencial</p>
+
+<p>Cada ordenador tiene su propio lenguaje que nos permite comunicar con el mismo. Algunos lenguajes son muy sencillos, por lo que el ordenador puede comprenderlos con facilidad. Lamentablemente, lenguajes que son sencillos de comprensión para el ordenador no lo son tanto para los usuarios. En algunos aspectos, lo inverso también es cierto: lenguajes que nos son bastante sencillos de comprender son relativamente difíciles para el ordenador e incluso han de traducirse o interpretarse.</p>
+
+<p>El ZX Spectrum utiliza un lenguaje de alto nivel denominado BASIC.</p>
+
+<p>BASIC significa "Beginners All-purpose Symbolic Instruction Code" (Código de instrucciones simbólicas de uso general para principiantes) y fue concebido en la facultad universitaria de Dartmouth en New Hampshire, Estados Unidos, en 1964. Es muy ampliamente utilizado en los ordenadores personales, pero aunque es muy semejante en todos ellos hay sutiles diferencias. Esa es la razón por la que este manual se elabora concretamente para el ZX Spectrum. Pero el BASIC del ZX Spectrum no está muy alejado de un BASIC de consenso (no existente) y por ello, no debe tener demasiadas dificultades en adaptar cualquier programa en BASIC para su ejecución en el ZX Spectrum. A diferencia con otras versiones de BASIC, la del ZX Spectrum no permite que se omita el comando <b>LET</b> cuando se asignen valores a las variables.</p>
+
+<p>Hay un límite para el número de instrucciones que pueden almacenarse en el ordenador. El ZX Spectrum indica este límite emitiendo un zumbido.</p>
+
+<p>Cuando se programa en BASIC es necesario hacer conocer al ordenador el orden en que han de ejecutarse las instrucciones. De aquí que cada línea de la secuencia de instrucciones tenga un número en su principio. Es normal comenzar en 10 e ir incrementando en 10 por cada nueva línea. Esto permite que se inserten otras líneas si se hubieran omitido o modificar el programa.</p>
+
+<p>Examinemos un programa sencillo. Consideremos la serie de comandos al final del último capítulo. Si necesitamos repetir la serie de comandos, sería necesario introducirlos cada vez. Un programa resuelve el problema eliminando dicha necesidad.</p>
+
+<p>Introduzca lo siguiente con <b>ENTER</b> después de cada línea.</p>
+
+<table align="center" width=200" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 LET b$ = "Cual es su edad?"<br>
+20 LET a$ = "Su edad es "<br>
+30 INPUT (b$); edad<br>
+40 PRINT a$; edad
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observe que no es necesario introducir ningún espacio, salvo entre comillas.</p>
+
+<p>Nada sucederá realmente hasta que digamos al ordenador que comience a ejecutar el programa. Esta orden se comunica con el empleo de <b>RUN</b> (la palabra clave en <b>R</b>).</p>
+
+<p>Introduzca este comando y vea lo que sucede.</p>
+
+<table align="center" width="250" border="0" cellpadding="10" bgcolor="#000000" cellspacing="10">
+<tr>
+<td bgcolor="#FFFFFF">
+<span class="codigo">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<bt>
+<br>
+<br>
+<br>
+<span class="codigo">(Cual es su edad? <span class="inverse">&nbsp;L&nbsp;</span><span>
+</span>
+</td>
+</tr>
+</table>
+
+<div align="center">Figura 4</div>
+
+<p>También puede haber notado una flecha apuntando a la derecha cuando se ha introducido cada línea. Ella indica la última línea introducida. Si necesita volver a ver el programa, pulse <b>ENTER</b> (o <b>LIST</b>). Puede emplear <b>RUN</b> para ejecutar el programa tantas veces como quiera. Cuando ya no necesite el programa, puede suprimirlo con el empleo del comando <b>NEW</b>, el cual borra el programa almacenado en memoria y le proporciona una "pizarra limpia" dispuesta para que escriba uno nuevo.</p>
+
+<p>Teclee <b>NEW</b>, luego <b>ENTER</b> y vea lo que sucede.</p>
+
+<table align="center" width="250" border="0" cellpadding="10" bgcolor="#000000" cellspacing="10">
+<tr>
+<td bgcolor="#FFFFFF">
+<span class="codigo">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<bt>
+<br>
+<br>
+<br>
+<span class="codigo">(c) 1982 Sinclair Research Ltd.</span>
+</span>
+</td>
+</tr>
+</table>
+
+<div align="center">Figura 5</div>
+
+<p>Para recapitular:</p>
+
+<p>Cuando teclee un comando precedido por un número, este último comunica al ordenador que no se trata simplemente de un comando, sino de una línea de programa. El ordenador no procede a ejecutar la instrucción correspondiente, sino que realiza su almacenamiento para más tarde.</p>
+
+<p>El ZX Spectrum escribe en la pantalla (o lista) todas las líneas de programa que ha introducido con un <span class="inverse"><b>&nbsp;>&nbsp;</b></span> en la última línea.</p>
+
+<p>El ordenador no ejecutará inmediatamente ninguna de estas líneas, sino que las va almacenando en su interior.</p>
+
+<p>Para conseguir que el ordenador ejecute estas líneas, debe emplear el comando <b>RUN</b>.</p>
+
+<p>Si pulsa <b>ENTER</b>, conseguirá un nuevo listado.</p>
+
+<p>Consideremos otro programa sencillo. Este será algo más matemático e imprimirá los cuadrados de todos los números entre 1 y 10 (el cuadrado de un número es ese número multiplicado por sí mismo).</p>
+
+<p>Para generar números de 1 a 10 se introduce otro concepto en la programación en BASIC. Se trata del método mediante el cual conseguimos que cuente el ordenador. Anteriormente vimos que los números pueden almacenarse en la memoria del ordenador uniendo un "nombre" a los mismos o dicho técnicamente, asignando un valor a una variable. Sea la variable <b>x</b> que comienza con el valor 1 y que ha de incrementarse en pasos de 1 hasta 10. Esta operación se realizará con el empleo del comando <b>FOR</b> ... <b>TO</b> ... <b>STEP</b>.</p>
+
+<p>Por tanto, para introducir este programa, teclee <b>NEW</b> para deshacerse del anterior y escriba lo siguiente:</p>
+
+<div align="center"><span class="codigo">10 FOR x = 1 TO 10 STEP 1</span></div>
+
+<p>(la parte <b>STEP 1</b> normalmente puede omitirse si el contaje se incrementa en pasos de 1).</p>
+
+<p>La siguiente línea debe comunicar al ordenador lo que ha de hacer con <b>x</b> para cualquier valor que tenga. Para ello, teclee:</p>
+
+<div align="center"><span class="codigo">20 PRINT x, x * x</span></div>
+
+<p>Finalmente, necesitamos una línea para decirle al ordenador que vaya al siguiente valor de <b>x</b>; por consiguiente, teclee:</p>
+
+<div align="center"><span class="codigo">30 NEXT x</span></div>
+
+<p>Al llegar a esta instrucción, el ordenador vuelve a la línea 10 y repite la secuencia. Cuando <b>x</b> supera a 10, el ordenador pasa a la siguiente línea en el programa, esto es, la línea 40.</p>
+
+<p>El programa debe aparecer ahora en la pantalla como sigue:</p>
+
+<table align="center" width=200" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR x = 1 TO 10 STEP 1<br>
+20 PRINT x, x * x<br>
+30 NEXT x
+</span>
+</td>
+</tr>
+</table>
+
+<p>Para la conclusión, debemos tener otra línea que comunique al ordenador que el programa ha finalizado cuando <b>x=10</b>; por tanto, teclee:</p>
+
+<div align="center"><span class="codigo">40 STOP</span></div>
+
+<p>Si el programa está ahora en <b>RUN</b> (ejecución) deben aparecer dos columnas, la primera con los valores de <b>x</b> y la segunda con los valores de <b>x * x</b> o <b>x</b> al cuadrado. Es posible etiquetar estas columnas añadiendo otra línea, tal como:</p>
+
+<div align="center"><span class="codigo">5 PRINT "x","x * x"</span></div>
+
+<p>Nótese que aunque esta línea se haya introducido después de todas las demás líneas, por tener un número de línea más bajo el ordenador la coloca automáticamente en el lugar correcto.</p>
+
+<p>Intente escribir programas con el empleo de otras funciones matemáticas. Si tiene alguna duda sobre cómo utilizarlas, haga referencia a las páginas correspondientes en el manual de programación en BASIC.</p>
+
+<br>
+<div align="center"><a href="capitulo05.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<html>
+<head>
+<title>Manual de Introducción Spectrum 48k - Capítulo 7</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+
+<h2>7. Colores</h2>
+
+<p>Una de las razones para adquirir el ZX Spectrum en el primer lugar fue la posibilidad de utilizar color en la pantalla de TV. La pantalla se divide en dos zonas. La parte exterior se refiere como <b>BORDER</b> (contorno) y la zona central como <b>PAPER</b> (papel). Es posible cambiar los colores de estas dos secciones, a voluntad, tanto directamente por medio del teclado como por un programa.</b>
+
+<p>El ZX Spectrum tiene una gama de ocho colores, a los que se les da números entre 0 y 7. Aunque los colores parecen en orden aleatorio, de hecho, proporcionan tonalidades decrecientes de gris en una TV monocroma.</p>
+
+<p>A continuación se da una lista de los colores con los números asociados a los mismos para referencia:</p>
+
+<ol type=0 start=0>
+<li>negro</li>
+<li>azul</li>
+<li>rojo</li>
+<li>púrpura o magenta</li>
+<li>verde</li>
+<li>azul pálido o "cyan" (azul-verde)</li>
+<li>amarillo</li>
+<li>blanco</li>
+</ol>
+
+<p>Cuando el ordenador se activa por primera vez, el sistema trabaja en blanco y negro. Por ello, el valor normal para <b>BORDER</b> y <b>PAPER</b> es 7, esto es, blanco. El color de cualquier carácter que aparece en la pantalla se define por el comando <b>INK</b> (tinta). Este suele ser 0, esto es, negro. Inicialmente, los tres comandos que controlan los colores de la pantalla están ajustados por el ordenador.</p>
+
+<p>Sin embargo, usted puede cambiar estos valores. Por ejemplo, teclee:</p>
+
+<div align="center"><span class="codigo">BORDER 2</span></div>
+
+<p>Si recordó pulsar la tecla <b>ENTER</b>, el contorno debe cambiar ahora de blanco a rojo. Se incluye la zona en la parte inferior en donde se introducen los comando e instrucciones. Pruebe a teclear otros números y verá cómo cambian los colores.</p>
+
+<p>Intente cambiar la zona central de la pantalla tecleando:</p>
+
+<div align="center"><span class="codigo">PAPER 5</span></div>
+
+<p>El comando <b>PAPER</b> es uno de los comandos del modo extendido, según se mencionó anteriormente. Se obtiene introduciendo <b>CAPS SHIFT</b> y <b>SYMBOL SHIFT</b> al mismo tiempo. <b>PAPER</b> es, entonces, una <b>C</b> cambiada (mayúscula). Cuando la tecla <b>ENTER</b> se pulsa dos veces, la zona central de la pantalla debe cambiar a azul pálido. La primera pulsación de <b>ENTER</b> cancela el comando <b>PAPER</b> ya almacenado en el ordenador, pero sólo cuando se pulse <b>ENTER</b> por segunda vez (con lo que se hace que el ordenador efectúe el <b>LISTADO</b> de un programa y por tanto, reconstruya la información de la pantalla) se consigue el empleo del nuevo color de <b>PAPER</b>. Si se está utilizando una televisión de color, y no se ha cambiado de color, pruebe ajustando los mandos del color del aparato y quizá, el mando de sintonía.</p>
+
+<p>El comando <b>INK</b> es semejante al comando <b>PAPER</b> y controla el color de los caracteres que aparecen en la sección <b>PAPER</b> de la pantalla. Evidentemente, si los colores de <b>INK</b> y de <b>PAPER</b> son los mismos nada aparecerá en la pantalla (!).</p>
+
+<p>Los comandos <b>BORDER</b>, <b>PAPER</b> e <b>INK</b> pueden emplearse en programas. A continuación damos uno sencillo para mostrar la gama de colores de que se dispone.</p>
+
+<table align="center" width=120" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR x = 0 TO 7<br>
+20 BORDER x<br>
+30 PAPER 7 - x: CLS<br>
+40 PAUSE 50<br>
+50 NEXT x
+</span>
+</td>
+</tr>
+</table>
+
+<p>Este programa, cuando está en ejecución (<b>RUN</b>), pasa a través de los ocho colores, contrastando los colores de <b>PAPER</b> y de <b>BORDER</b>. El comando <b>CLS</b>, después de <b>PAPER</b>, obliga al ordenador a reconstruir la imagen de la pantalla y a emplear el nuevo color de <b>PAPER</b>. El comando <b>PAUSE</b> interrumpe el programa durante un segundo, para que podamos ver lo que está sucediendo (pruebe a ejecutar el programa con el comando <b>PAUSE</b> omitido). Para mostrar cómo actúa el comando <b>INK</b>, introduzca por el teclado el siguiente programa, después de un comando <b>NEW</b>.</p>
+
+<table align="center" width=300" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 BORDER 7<br>
+20 PAPER 1<br>
+30 INK 4<br>
+40 PRINT "Caracteres verdes sobre fondo azul"
+</span>
+</td>
+</tr>
+</table>
+
+<p>Hay otros comandos asociados con las capacidades de colores del ZX Spectrum y se detallarán en el manual de programación en BASIC.</p>
+
+<br>
+<div align="center"><a href="capitulo07.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

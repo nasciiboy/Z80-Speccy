@@ -1,0 +1,534 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 2</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 2</b></div>
+
+<h2>Conceptos de la programación en BASIC</h2>
+
+
+<h4>Resumen</h4>
+<ul>
+<li>Programas</li>
+<li>Números de línea</li>
+<li>Edición correctora de programas con el empleo de <img src="images/shared/arrow_down.png">, <img src="images/shared/arrow_up.png"> y <b>EDIT</b>, <b>RUN</b>, <b>LIST</b>, <b>GO TO</b>, <b>CONTINUE</b>, <b>INPUT</b>, <b>NEW</b>, <b>REM</b>, <b>PRINT</b></li>
+<li><b>STOP</b> en entrada de datos</li>
+<li><b>BREAK</b></li>
+</ul>
+
+<p>Teclee estas dos líneas de un programa de ordenador para obtener el resultado de la suma de dos números:</p>
+
+<table align ="center" border="0" width="250">
+<tr>
+<td>
+<span class="codigo">
+20 PRINT a<br>
+10 LET a=10
+</span>
+</td>
+</tr>
+</table>
+<p>de modo que en la pantalla aparezca:</p>
+
+<table align="center" width="250" border="0" cellpadding="10" bgcolor="#000000" cellspacing="10">
+<tr>
+<td bgcolor="#FFFFFF">
+<span class="codigo">
+10<span class="inverse">></span>LET a=10<br>
+20 PRINT a
+<br>
+<br>
+<br>
+<br>
+<br>
+<bt>
+<br>
+<br>
+<span class="inverse">K<span>
+</span>
+</td>
+</tr>
+</table>
+
+<p>Como ya sabe, debido a que estas líneas comenzaban con números, no se "obedecieron" inmediatamente sino que se almacenaron como líneas de programa. También habrá observado que los números de línea rigen el orden de las instrucciones del programa, lo cual es muy importante a la hora de ejecutarlo, pero que también se refleja en el orden de las líneas en el listado que puede ver ahora en la pantalla.</p>
+
+<p>Hasta ahora sólo ha introducido un número, por lo que teclee:</p>
+
+<div align="center"><span class="codigo">15 LET b=15</span></div>
+
+<p>y veamos lo que ocurre. Hubiera sido imposible insertar esta línea entre las dos antes indicadas si estas se hubieran 1 y 2 en lugar de 10 y 20 (los números de línea deben ser números enteros entre 1 y 9999), por ello es por lo que, cuando se introduce por el teclado un programa, es muy conveniente dejar espacios entre los números de línea.</p>
+
+<p>Ahora necesita cambiar la línea 20 a:</p>
+
+<div align="center"><span class="codigo">20 PRINT a+b</span></div>
+
+<p>Podría introducir la nueva instrucción por completo, pero resulta más fácil emplear el modo <b>EDIT</b> descrito en el fascículo de introducción. el <span class="inverse">&nbsp;>&nbsp;</span> en la línea 15 se denomina el cursor del programa y la línea a la que apunta es la línea en curso. Esta suele ser la última línea que introdujo, pero puede utilizar las teclas <img src="images/shared/arrow_up.png"> o <img src="images/shared/arrow_down.png">  para desplazar el cursor del programa hacia abajo o hacia arriba (inténtelo, dejando el cursor del programa eventualmente en la línea 20).</p>
+
+<p>Cuando pulse la tecla <b>EDIT</b>, una copia de la línea en curso se visualizará en la parte inferior de la pantalla (en su caso, una copia de la línea 20). Mantenga oprimida la tecla <img src="images/shared/arrow_right.png"> hasta que el cursor <span class="inverse">&nbsp;L&nbsp;</span> se desplace al final de la línea y entonces teclee</p>
+
+<div align="center"><span class="codigo">+b</span> (sin <b>ENTER</b>)</div>
+
+<p>La línea en la parte inferior de la pantalla debe leerse ahora:</p>
+
+<div align="center"><span class="codigo">20 PRINT a+b</span></div>
+
+<p>Pulse <b>ENTER</b> y sustituirá la anterior línea 20, de modo que en la pantalla aparecerá:</p>
+
+<table align="center" width="250" border="0" cellpadding="10" bgcolor="#000000" cellspacing="10">
+<tr>
+<td bgcolor="#ffffff">
+<span class="codigo">
+10 LET a=10<br>
+15 LET b=15<br>
+20<span class="inverse">></span>PRINT a+b
+<br>
+<br>
+<br>
+<br>
+<br>
+<bt>
+<br>
+<br>
+<span class="inverse">K<span>
+</span>
+</td>
+</tr>
+</table>
+
+<p>Ejecute este programa con el empleo de <b>RUN</b> y <b>ENTER</b> y se visualizará la suma. Vuelva a ejecutar el programa y luego teclee:
+
+<div align="center"><span class="codigo">PRINT a,b</span></div>
+
+<p>Las variables siguen estando allí, aun cuando el programa haya acabado.</p>
+
+<p>Hay un método útil empleando <b>EDIT</b> para prescindir de la parte inferior de la pantalla. Teclee cualquier cosa que carezca de significado (sin <b>ENTER</b>), e imagínese que después desea hacerlo desaparecer por carecer de valor. Una forma de borrarlo es pulsar la tecla <b>DELETE</b>, pero de otro modo de hacerlo es como sigue. Si pulsa <b>EDIT</b>, lo que se quiere borrar en la parte inferior de la pantalla se sustituirá por una copia de la línea en curso. Si pulsa ahora <b>ENTER</b>, dicha línea en curso volverá intacta al programa, dejando limpia la parte inferior de la pantalla.</p>
+
+<p>Si introduce una línea por error, por ejemplo:</p>
+
+<div align="center"><span class=·codigo">12 LET b=8</span></div>
+
+<p>se incluirá en el programa y se apercibirá de su error. Para borrar esta línea innecesaria, teclee:</p>
+
+12 (con <b>ENTER</b>, por supuesto)
+
+<p>Observará con sorpresa que ha desaparecido el cursor del programa. Debe imaginar que está oculto entre las líneas 10 y 15, por lo que si pulsa <img src="images/shared/arrow_up.png"> se desplazará hasta la línea 10, mientras que si pulsa <img src="images/shared/arrow_down.png"> se desplazará hasta la línea 15.</p>
+
+<p>Teclee:</p>
+
+<div align="center">12 (y <b>ENTER</b>)</div>
+
+<p>De nuevo, el cursor del programa se ocultará entre las líneas 10 y 15. Ahora pulse <b>EDIT</b> y descenderá la línea 15; cuando el cursor del programa esté oculto entre dos líneas, <b>EDIT</b> bajará la siguiente línea después del nuevo número de línea. Teclee <b>ENTER</b> para borrar la parte inferior de la pantalla.</p>
+
+<p>Ahora teclee:</p>
+
+<div align="center">30 (y <b>ENTER</b>)</div>
+
+<p>Esta vez, el cursor del programa está oculto tras el final del programa y si pulsa <b>EDIT</b>, la línea 20 bajará.</p>
+
+<p>Finalmente teclee:</p>
+
+<div align="center"><span class="codigo">LIST 15</span></div>
+
+<p>Observará ahora en la pantalla:</p>
+
+<table align ="center" border="0" width="250">
+<tr>
+<td>
+<span class="codigo">
+15 LET b=5<br>
+20 PRINT a+b
+</span>
+</td>
+</tr>
+</table>
+
+<p>La línea 10 ha desaparecido de la pantalla, pero sigue estando en su programa (lo puede comprobar pulsando <b>ENTER</b>). Los únicos efectos de <span class="codigo">LIST 15</span> son producir un listado que comienza en la línea 15 y poner el cursor del programa en la línea 15. Si tiene un programa muy largo, entonces, <b>LIST</b>, será probablemente una forma más útil de desplazar el cursor del programa que con las teclas <img src="images/shared/arrow_down.png">  y <img src="images/shared/arrow_up.png">.</p>
+
+<p>Esto ilustra otro uso de números de línea y es que actuan como nombres para las líneas del programa de modo que pueda hacer referencia a los mismos, de forma bastante parecida a cuando las variables tienen nombre.</p>
+
+<p><b>LIST</b>, sin ningún número, lista el programa a partir de la primera línea.</p>
+
+<p>Otro comando visto en el fascículo de introducción es:</p>
+
+<p align="center"><b>NEW</b></p>
+
+<p>Su efecto es borrar tanto los programas como las variables que hubiese almacenados en el ordenador. Ahora, introduzca cuidadosamente este programa que cambia las temperaturas en grados Fahrenheir a grados Centígrados.</p>
+
+<table align ="center" border="0" width="450">
+<tr>
+<td>
+<span class="codigo">
+10 REM conversion de temperaturas<br>
+20 PRINT "grados F","grados C"<br>
+30 PRINT<br>
+40 INPUT "Introducir grados F ",F<br>
+50 PRINT F,(F-32)*5/9<br>
+60 GO TO 40
+</span>
+</td>
+</tr>
+</table>
+
+<p>Necesitará teclear las palabras contenidas en la línea 10. Asimismo, aunque <b>GO TO</b> tiene un espacio entre ambos vocablos, todo es realmente una sola palabra clave (en <b>G</b>).</p>
+
+<p>Ahora, haga la ejecución correspondiente. Verá los encabezamientos impresos en la pantalla por la línea 20, ¿pero que sucedió con la línea 10?. Aparentemente, el ordenador la ha ignorado completamente. En efecto, así es. <b>REM</b> en la línea 10 significa que se trata de una observación, o de un recordatorio, y su única misión es recordarle lo que hace el programa. Un comando <b>REM</b> está constituido por <b>REM</b> seguido por algo que desee indicar y el ordenador lo ignorará precisamente hasta el final de la línea.</p>
+
+<p>Hasta ahora, el ordenador ha llegado al comando <b>INPUT</b> en la línea 40 y está a la espera de que introduzca por el teclado un valor para la variable <b>F</b> (puede decirlo porque en donde podría haber esperado un cursor <span class="inverse">&nbsp;K&nbsp;</span> hay, en su lugar, un cursor <span class="inverse">&nbsp;L&nbsp;</span>). Introduzca un número; no se olvide de <b>ENTER</b>. Ahora, el ordenador ha presentado el resultado y está esperando otro número. Ello es así porque la línea 60, <span class="codigo">GO TO 40</span> significa exactamente que el ordenador en vez de ejecutar el programa y detenerse, ha de saltar a la línea 40 y comenzar de nuevo. Por consiguiente, introduzca otra temperatura.</p>
+
+<p>Después de introducir unos cuantos valores más podría llegar a preguntarse si la máquina no llegará a "aburrirse" realizando siempre la misma operación. Realmente no será así, pero la siguiente vez que le pida otro número puede teclear <b>STOP</b>. Entonces, el ordenador presentará un informe <b>D STOP In INPUT In line 30:1</b>, que le indica por qué se ha detenido y en dónde lo ha hecho (en el primer comando de la línea 30).</p>
+
+<p>Si quiere continuar el programa, teclee:</p>
+
+<div align="center"><b>CONTINUE</b></div>
+
+<p>y el ordenador le pedirá otro número.</p>
+
+<p>Cuando se utiliza <b>CONTINUE</b>, el ordenador recuerda el número de línea en el último informe que le transmitió, mientras no fuera <b>0 OK</b>, y salta a dicha línea; en nuestro caso, ello lleva consigo el salto a la línea 40, al comando <b>INPUT</b>.</p>
+
+<p>Sustituya la línea 60 por <span class="codigo">GO TO 31</span>, lo que no dará lugar a ninguna diferencia perceptible en la ejecución del programa. Si el número de línea en un comando <b>GO TO</b> se refiera a una línea no existente, entonces, el salto será a la siguiente línea después del número dado. Lo mismo es válido para <b>RUN</b>; de hecho, <b>RUN</b> en si mismo significa realmente <b>RUN 0</b>.</p>
+
+<p>Ahora introduzca por teclado números hasta que la pantalla comience a llenarse. Cuando esté llena, el ordenador desplazará el conjunto de la mitad superior de la pantalla hacia arriba una línea para hacer espacio, perdiendo el encabezamiento al salir por la parte superior. Este desplazamiento se denomina "scrolling".</p>
+
+<p>Cuando se canse de realizar esta operación, detenga el programa con el empleo de <b>STOP</b> y consiga el listado pulsando <b>ENTER</b>.</p>
+
+<p>Examine la sentencia <b>PRINT</b> en la línea 50. La puntuación en esta sentencia (la coma en este caso) es muy importante y debe tener presente que sigue reglas mucho más definidas que la puntuación en el idioma inglés.</p>
+
+<p>Las comas se utilizan para hacer que la impresión comience en el margen izquierdo, o en la parte central de la pantalla, dependiendo de lo que venga a continuación. Así, en la línea 50, la coma hace que la temperatura centígrada se imprima en medio de la línea. Por el contrario, con punto y coma, el siguiente número o cadena se imprime inmediatamente después de lo que le precede. Puede constatarlo en la línea 50, si sustituye la coma por punto y coma.</p>
+
+<p>Otro signo de puntuación que puede utilizar como tal en los comandos <b>PRINT</b> es el apóstrofe ('). Este signo hace que lo que se imprima a continuación aparezca al principio de la siguiente línea en la pantalla, pero ello sucede, de todos modos, al final de cada comando <b>PRINT</b>, por lo que no tendrá mucha necesidad de apóstrofe. Esta es la razón por la que el comando <b>PRINT</b> en la línea 50 comienza siempre su impresión en una línea nueva y también por qué el comando <b>PRINT</b> en la línea 30 produce una línea en blanco.</p>
+
+<p>Si quiere inhibir lo anterior, de modo que después de un comando <b>PRINT</b> el siguiente quede en la misma línea, puede poner una coma, o un punto y coma, al final del primer comando. Para constatarlo, sustituya la línea 50 sucesivamente por cada una de las sentencias:</p>
+
+<span class="codigo">
+<div align="center">50 PRINT F,<br>
+50 PRINT F;</div>
+<p>y</p>
+<div align="center">50 PRINT F</div>
+</span>
+
+<p>y ejecute cada variante. Para completarlo, podría probar también</p>
+
+<div align="center"><span class="codigo">50 PRINT F'</span></div>
+
+<p>El comando con la coma extiende todo en dos columnas, con el punto y coma presenta todo junto, sin ninguno de los dos signos anteriores asigna una línea para cada número y lo mismo sucede con el apóstrofe (el apóstrofe da una nueva línea por sí mismo, pero inhibe la automática).</p>
+
+<p>Tenga presente la diferencia entre las comas y el punto y coma en los comandos <b>PRINT</b>; además, no debe confundirlos con los dos puntos (:) que se utilizan para separar comandos en una sola línea.</p>
+
+<p>Ahora, teclee estas líneas suplementarias:</p>
+
+<table align ="center" border="0" width="450">
+<tr>
+<td>
+<span class="codigo">
+100 REM este programa cortes recuerda su nombre<br>
+110 INPUT n$<br>
+120 PRINT "Hola";n$;"!"<br>
+130 GO TO 110<br>
+</span>
+</td>
+</tr>
+</table>
+
+<p>Este es un programa independiente del anterior, pero puede mantener a ambos en el ordenador al mismo tiempo. Para ejecutar el nuevo programa, teclee:</p>
+
+<div align="center"><span class="codigo">RUN 100</span></div>
+
+<p>Puesto que este programa espera que se introduzca una cadena en lugar de un número, imprime dos comillas. Esto le ayuda a saber que debe introducir. Pruébelo escribiendo cualquier cosa.</p>
+
+<p>Otra vez volverá a encontrarse con dos comillas, pero no tiene que utilizarlas si no lo necesita. Pruebe esto, por ejemplo: suprima las comillas (con <img src="images/shared/arrow_right.png"> y <b>DELETE</b>) y teclee:</p>
+
+<div align="center"><span class="codigo">n$</span></div>
+
+<p>Puesto que no hay comillas de cadena, el ordenador sabe que ha de realizar algún cálculo; en este caso, el cálculo consiste en determinar el valor de la variable de cadena denominada <b>n$</b>, que es cualquier nombre que casualmente haya introducido por el teclado en la última ocasión. Por supuesto, la sentencia <b>INPUT</b> actúa como <span class="codigo">LET n$=n$</span>, por lo que se mantiene invariable el valor de <b>n$</b>.</p>
+
+<p>A continuación, con fines comparativos, teclee:</p>
+
+<div align="center"><span class="codigo">n$</span></div>
+
+<p>de nuevo, pero esta vez sin suprimir las variables de caden. Ahora, precisamente para confundirle, la variable <b>n$</b> tiene el valor <b>"n$"</b>.</p>
+
+<p>Si desea utilizar <b>STOP</b> para la introducción de datos, debe desplazar primero el cursor haciéndolo retroceder al principio de la línea, con el empleo de la tecla <img src="images/shared/arrow_left.png">.</p>
+
+<p>Volvamos, ahora, a ese <span class="codigo">RUN 100</span> que teníamos anteriormente y que saltaba a la línea 100. ¿Podríamos haber puesto <span class="codigo">GO TO 100</span> en su lugar?. En este caso, hemos de dar una respuesta afirmativa en primera instancia, pero hay una diferencia. <span class="codigo">RUN 100</span>, ante todo, suprime todas las variables y borra la pantalla y después de ello opera lo mismo que <span class="codigo">GO TO 100</span>. Esta última no borra nada. Pueden darse casos en los que quiera ejecutar un programa sin borrar ninguna variable; entonces, sería necesaria <b>GO TO</b> y sin embargo, <b>RUN</b> podría tener efectos desastrosos. Por ello es preferible dejar la costumbre de teclear automáticamente <b>RUN</b> para ejecutar un programa.</p>
+
+<p>Otra diferencia es que puede teclear <b>RUN</b> sin un número de línea y el ordenador comienza en la primera línea del programa. <b>GO TO</b> debe tener siempre un número de línea.</p>
+
+<p>Ambos programas se interrumpieron porque tecleó <b>STOP</b> en la línea de entrada; a veces, por error, escribe un programa que no puede detener y que no se parará por si mismo. Teclee:</p>
+
+<table align ="center" border="0" width="300">
+<tr>
+<td>
+<span class="codigo">
+200 GO TO 200<br>
+RUN 200
+</span>
+</td>
+</tr>
+</table>
+
+<p>Este programa tiene el "aspecto" de proseguir indefinidamente a no ser que se decida a desenchufar el aparato, pero hay un remedio menos drástico. Pulse <b>CAPS SHIFT</b> junto con la tecla <b>SPACE</b>, que tiene escrito <b>BREAK</b> por encima. El programa se interrumpirá, con el mensaje <b>L BREAK Into program</b> (interrupción del programa por ruptura).</p>
+
+<p>Al final de cada sentencia, el programa constata si están pulsadas estas teclas y si lo están, el ordenador se para. La tecla <b>BREAK</b> puede emplearse también cuando esté utilizando el magnetofón, la impresora o cualquier otro dispositivo que pueda conectaral ordenador (precisamente en caso de que el ordenador esté esperando que ellos hagan algo, pero no lo hacen).</p>
+
+<p>En estos casos, hay un informe diferente <b>D BREAK-CONT repeats</b>. En tales circunstancias, CONTINUE repite (y, de hecho, en la mayoría de los casos también) la sentencia en donde se detuvo el programa; pero después del informe <b>L BREAK Into program</b>, <b>CONTINUE</b> pasa directamente a la siguiente sentencia después de permitir que se hagan algunos saltos.</p>
+
+<b>Vuelva a ejecutar el programa del nombre y cuando el ordenador le pida que haga la introducción, teclee:</b>
+
+<div align="center"><span class="codigo">n$</span> (después de quitar las comillas)</div>
+
+<p>n$ es una variable no definida y obtiene un informe de error <b>2 Variable not Found</b> (variable no encontrada). Si, ahora, teclea:</p>
+
+<div align="center"><span class="codigo">LET n$="algo determinado"</span></div>
+
+<p>(que tiene su propio informe <b>0 OK, 0:1</b>) y</p>
+
+<div align="center"><span class="codigo">CONTINUE</codigo></div>
+
+<p>encontrará que puede utilizar <b>n$</b> como introducción de datos sin ninguna dificultad.</p>
+
+<p>En este caso, <b>CONTINUE</b> realiza un salto al comando <b>INPUT</b> en la línea 110. No hace caso de la sentencia <b>LET</b>, porque dijo "OK", y salta al comando al que se hizo referencia en el anterior informe, el primero en la línea 110. Se pretende que esto sea de utilidad. Si un programa se interrumpe por algún error, entonces puede hacer todo lo preciso para subsanar la anomalía y <b>CONTINUE</b> podrá operar todavía en lo sucesivo.</p>
+
+<p>Como dijimos anteriormente, el informe <b>L BREAK Into program</b> es especial, porque después del mismo <b>CONTINUE</b> no repite el comando en donde se detuvo el programa.</p>
+
+<p>Los listado automáticos (los que no son el resultado de un comando <b>LIST</b>, sino que se producen después de introducir una nueva línea) quizás le hayan desconcertado. Si introduce por el teclado en un programa con 50 líneas todas las sentencias <b>REM</b></p>
+
+<table align ="center" border="0" width="200">
+<tr>
+<td>
+<span class="codigo">
+1 REM<br>
+2 REM<br>
+3 REM<br>
+:   :<br>
+:   :<br>
+49 REM<br>
+50 REM
+</span>
+</td>
+</tr>
+</table>
+
+<p>entonces será capaz de experimentar.</p>
+
+<p>Lo primero a recordar es que la línea en curso (con <span class="inverse">&nbsp>&nbsp;</span>) siempre aparecerá en la pantalla y normalmente cerca de la parte central.</p>
+
+<p>Pulse:</p>
+
+<p><span class="codigo">LIST</span> (y <b>ENTER</b>, por supuesto)</p>
+
+<p>y cuando el ordenador le pregunte scroll? (porque ha llenado la pantalla), pulse <b>n</b> para indicar "No". El ordenador emitirá el informe <b>D BREAK-CONTINUE repeats</b> como si hubiera tecleado <b>BREAK</b>. En alguna ocasión, podría averiguar lo que sucede si pulsa y en lugar de <b>n</b>; <b>n</b>, <b>SPACE</b> y <b>STOP</b> cuentan como "no", mientras que todo lo demás cuenta como "si".</p>
+
+<p>Ahora, vuelva a pulsar <b>ENTER</b> para obtener un listado automático, deberá ver las líneas 1 a 22 en la pantalla. Ahora, teclee:</p>
+
+<div align="center"><span class="codigo">23 REM</span></div>
+
+<p>obtendrá las líneas 2 a 23 en la pantalla; teclee:</p>
+
+<div align="center"><span class="codigo">28 REM</span></div>
+
+<p>y obtendrá las líneas 27 a 48. (En ambos casos, al teclear una nueva línea, ha desplazado el cursor del programa y por ello se ha realizado un nuevo listado).</p>
+
+<p>Quizás esto le parezca algo arbitrario. Realmente, trata de proporcionarle exactamente lo que necesita, aunque al ser los "humanos" criaturas imprevisibles, no siempre el ordenador adivina correctamente.</p>
+
+<p>El ordenador mantiene un registro no solamente de la línea en curso (la que ha de aparecer en la pantalla), sino también de la línea superior en la pantalla. Cuando intenta hacer un listado, lo primero que hace es comparar la línea superior con la línea en curso.</p>
+
+<p>Si la línea superior viene detrás, entonces no resulta oportuno comenzar en este punto y por ello el ordenador utiliza la línea en curso para una nueva línea superior y realiza su listado.</p>
+
+<p>De cualquier otro modo, su método es comenzar la ejecución del listado a partir de la línea superior y proseguir hasta que la línea en curso sea objeto de listado, con un desplazamiento hacia arriba ("scrolling"-arrollamiento) en caso de necesidad. Sin embargo, primero efectúa un cálculo aproximado para ver cuando ocupa y si la respuesta es que tiene una magnitud excesiva, entonces el ordenador desplaza la línea superior hacia abajo para estar mucho más próxima a la línea en curso. Ahora, al haber determinado su línea superior, el ordenador comienza el listado a partir de la misma. Si, cuando llega al final del programa o al fondo de la pantalla, se ha listado la línea en curso, entonces, se detiene el ordenador. De no ser así, se produce un desplazamiento hacia arriba hasta que la línea en curso esté en la pantalla y por cada línea adicional que sea objeto de listado, el ordenador desplaza la línea superior hacia abajo en una línea, de modo que la línea superior se desplace a las proximidades de la línea en curso.</p>
+
+<p>Experimente con el desplazamiento de la línea en curso, tecleando</p>
+
+<div align="center""><span class="codigo">número de línea REM</span></div>
+
+<p><b>LIST</b> desplaza la línea en curso pero no la línea superior, por lo que los subsiguientes listados podrían ser distintos. Por ejemplo, teclee</p>
+
+<div align="center""><span class="codigo">LIST</span></div>
+
+<p>para conseguir el listado y luego pulse, de nuevo, <b>ENTER</b> para hacer que la línea 0 sea la línea superior. Debe tener las líneas 1 a 22 en la pantalla, teclee</p>
+
+<div align="center""><span class="codigo">LIST 22</span></div>
+
+<p>que le proporcionará las líneas 22 a 43; cuando pulse <b>ENTER</b> de nuevo, vuelva a las líneas 1 a 22. Ello tiende a ser más útil para programas cortos que para largos.</p>
+
+<p>Utilizando el programa lleno de sentencias <b>REM</b> anterior, teclee:</p>
+
+<div align="center""><span class="codigo">LIST</span></div>
+
+<p>y luego <b>n</b> cuando el ordenador le pregunte scroll?. Ahora, teclee:</p>
+
+<div align="center""><span class="codigo">CONTINUE</span></div>
+
+<p>En este caso, <b>CONTINUE</b> tiene un carácter un poco "caprichoso" porque se pone en blanco la parte inferior de la pantalla; pero puede restaurar la normalidad con <b>BREAK</b>. La razón es que <b>LIST</b> era el primer comando en la línea, por lo que <b>CONTINUE</b> repite este comando. Lamentablemente, el primer comando en la línea es ahora <b>CONTINUE</b>, propiamente dicho, por lo que el ordenador se estabiliza realizando la función <b>CONTINUE</b> una y otra vez hasta que lo detenga.</p>
+
+<p>Puede variar esta circunstancia sustituyendo <b>LIST</b> por</p>
+
+<div align="center""><span class="codigo">:LIST</span></div>
+
+<p>para lo que <b>CONTINUE</b> da <b>0 OK</b> (porque <b>CONTINUE</b> salta al segundo comando en la línea, que se toma para su final) o</p>
+
+<div align="center""><span class="codigo">::LIST</span></div>
+
+<p>para lo que <b>CONTINUE</b> da <b>N Statement lost</b> - sentencia perdida (porque <b>CONTINUE</b> salta al tercer comando en la línea, ya que no existe).</p>
+
+<p>Ya ha visto las sentencias <b>PRINT, LET, INPUT, RUN, LIST, GO TO, CONTINUE, NEW</b> y <b>REM</b> y todas ellas pueden utilizarse como comandos directos o en líneas de programa (ello es cierto para casi todos los comandos en el ZX Spectrum en su versión particular del BASIC. <b>RUN, LIST, CONTINUE</b> y <b>NEW</b> no suelen ser de mucho uso en un programa, pero se pueden utilizar.</p>
+
+<h4>Ejercicios</h4>
+
+<ol>
+<li>Ponga una sentencia <b>LIST</b> en un programa de modo que cuando lo ejecute haga automáticamente un listado.</li>
+
+<li>Escriba un programa para introducir precios e imprimir el impuesto adeudado (al 15 por ciento). Ponga las sentencias <b>PRINT</b> de modo que el ordenador indique lo que va a hacer y le pregunte el precio de entrada con extravagante cortesía. Modifique el programa para que también pueda introducir la tasa fiscal (para permitir las tasas de crecimiento cero o los cambios futuros).</li>
+
+<li>Escriba un programa para imprimir el total de los números que introduzca. (Sugerencia: Tome dos variables denominadas total (inicialice esta con valor 0) e item. Introduzca item, súmela a total, imprima ambas y vuelva a hacerlo otra vez).</li>
+
+<li>¿Que harían <b>CONTINUE</b> y <b>NEW</b> en un programa? ¿Puede imaginar alguna aplicación?.</li>
+</ol>
+
+<div align="center"><a href="capitulo02.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

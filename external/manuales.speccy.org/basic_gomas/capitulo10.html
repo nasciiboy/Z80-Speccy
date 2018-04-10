@@ -1,0 +1,353 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 10</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 10</b></div>
+
+<h2>Funciones matemáticas</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><img src="images/shared/arrow_up.png"></li>
+<li><b>PI, EXP, LN, SIN, COS, TAN, ASN, ACS, ATN</b></ul>
+</ul>
+
+<p>Este capítulo trata de las funciones matemáticas de que dispone el ZX Spectrum. Es bastante probable que nunca tenga que hacer uso de estas funciones en absoluto, por lo que si lo encuentra demasiado pesado, no vacile en hacer caso omiso de este capítulo. Abarca la operación <img src="images/shared/arrow_up.png"> (elevación a una potencia), las funciones <b>ESP</b> y <b>LN</b> y las funciones trigonométricas <b>SIN</b>, <b>COS</b>, <b>TAN</b> y sus inversas <b>ASN</b>, <b>ACS</b> Y <b>ATN</b>.
+
+<p><img src="images/shared/arrow_up.png"> y <b>EXP</b>.</p>
+
+<p>Puede elevar un número a la potencia de otro, ello significa "multiplicar el primer número por sí mismo el número de veces indicado por el segundo". Esto se suele indicar escribiendo el segundo número inmediatamente encima y a la derecha del primer número; pero, evidentemente, esta notación sería difícil en un ordenador y por ello utilizamos el símbolo <img src="images/shared/arrow_up.png"> en su lugar. Por ejemplo, las potencias de 2 son:</p>
+
+<table width="600" align="center" border="0">
+<tr>
+<td align="left" width="40%">
+<span class="codigo">
+2 <img src="images/shared/arrow_up.png"> 1 = 2
+</span>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td align="left" width="40%">
+<span class="codigo">
+2 <img src="images/shared/arrow_up.png"> 2 = 2 * 2 = 4
+</span>
+</td>
+<td align="left" width="40%">
+<span class="codigo">
+(2 al cuadrado, normalmente escrito 2)
+</span>
+</td>
+</tr>
+<tr>
+<td align="left" width="40%">
+<span class="codigo">
+2 <img src="images/shared/arrow_up.png"> 3 = 2 * 2 * 2 = 8
+</span>
+</td>
+<td align="left" width="40%">
+<span class="codigo">
+(2 al cubo, normalmente escrito 2)
+</span>
+</td>
+</tr>
+<tr>
+<td align="left" width="40%">
+<span class="codigo">
+2 <img src="images/shared/arrow_up.png"> 4 = 2 * 2 * 2 *2 = 16
+</span>
+</td>
+<td align="left" width="40%">
+<span class="codigo">
+(2 a la cuarta potencia, normalmente escrito 2)
+</span>
+</td>
+</tr>
+</table>
+
+<p>Por consiguiente, a su nivel más elemental, 'a <img src="images/shared/arrow_up.png"> b' significa "<b>a</b> multiplicada por si misma <b>b</b> veces", pero, evidentemente, esta operación sólo tiene sentido si <b>b</b> es un número entero positivo. Para encontrar una definición que sirva para otros valores de <b>b</b>, consideramos la regla:</p>
+
+<div align="center"><span class="codigo">a <img src="images/shared/arrow_up.png"> (b + c) = a <img src="images/shared/arrow_up.png"> b * a <img src="images/shared/arrow_up.png"> c</span></div>
+
+<p>(Observe que damos a <img src="images/shared/arrow_up.png"> una prioridad mayor que a <b>*</b> y <b>/</b>, por lo que cuando haya varias operacions en una sola expresión, las operaciones <img src="images/shared/arrow_up.png"> se efectúan antes de las operaciones <b>*</b> y <b>/</b>). Es bastante claro que lo anterior se verifica cuando <b>b</b> y <b>c</b> son números enteros positivos; pero si decidimos que necesitamos operar incluso cuando no lo son, entonces, nos veremos obligados a aceptar que:</p>
+
+<table width="600" align="center" border="0">
+<tr>
+<td>
+<span class="codigo">
+a <img src="images/shared/arrow_up.png"> 0 = 1<br>
+a <img src="images/shared/arrow_up.png"> (-b) = 1 / a <img src="images/shared/arrow_up.png"> b<br>
+a <img src="images/shared/arrow_up.png"> (1 / b) = la raíz b-ésima de <b>a</b>, o lo que es lo mismo, el número que tiene que multiplicar por sí mismo <b>b</b> veces para obtener <b>a</b>
+</span>
+<td>
+</tr>
+</table>
+
+<p>y</p>
+
+<table width="600" align="center" border="0">
+<tr>
+<td>
+<span class="codigo">
+a <img src="images/shared/arrow_up.png"> (b * c) = (a <img src="images/shared/arrow_up.png"> b) <img src="images/shared/arrow_up.png"> c
+</span>
+</td>
+</tr>
+</table>
+
+<p>Si nunca vió alguna de estas expresiones con anterioridad, entonces, no trate de recordarlas directamente; limítese a recordar que:</p>
+
+<div align="center"><span class="codigo">a <img src="images/shared/arrow_up.png"> (-1) = 1 / a</span></div>
+
+<div align="center">y</div>
+
+<div align="center"><span class="codigo">a <img src="images/shared/arrow_up.png"> (1 / 2) = SQR a</span></div>
+
+<p>y quizás cuando esté familiarizado con estas expresiones, el resto comenzará a tener sentido.</p>
+
+<p>Experimente con todo ello probando este programa:</p>
+
+<table width="220" border="0" align="center">
+<tr>
+<td>
+<span class="codigo">
+10 INPUT a,b,c,<br>
+20 PRINT a <img src="images/shared/arrow_up.png"> (b + c) = a <img src="images/shared/arrow_up.png"> b * a <img src="images/shared/arrow_up.png"> c<br>
+30 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>Por supuesto, si la regla que dimos anteriormente es cierta, los números que imprima cada vez el ordenador serán iguales. (Observación: Habida cuenta de la forma en que el ordenador actúa con respecto a la operación <img src="images/shared/arrow_up.png"> , el número a la izquierda, que es <b>-a</b> en este caso, nunca debe ser negativo).</p>
+
+<p>Un ejemplo bastante típico de la posible aplicación de esta función es la del interés compuesto. Suponga que tiene invertido parte de su dinero en una sociedad inmobiliaria y ésta le devenga un interés anual del 15%. Entonces, transcurrido un año, no sólo tendrá el 100% que tendría de todos modos, sino también los intereses del 15% que la sociedad inmobiliaria le haya proporcionado, lo que totaliza el 115% respecto a la cantidad que tenía originalmente. Para exponerlo de otra forma, ha multiplicado su cantidad de dinero por un factor de 1.15 como consecuencia de esta operación. Transcurrido otro año, volverá a suceder lo mismo, por lo que tendrá 1.15 * 1.15 = 1.15 <img src="images/shared/arrow_up.png"> 2 = 1.3225 veces su cantidad de dinero original. En general, transcurridos <b>y</b> años, tendrá 1.15 <img src="images/shared/arrow_up.png"> <b>y</b> veces la cantidad inicial de que disponía.</p>
+
+<p>Si prueba este comando:</p>
+
+<div align="center"><span class="codigo">FOR y = 0 TO 100: PRINT n, 10, 10 * 1.15 <img src="images/shared/arrow_up.png"> y: NEXT y</span></div>
+
+<p>verá que incluso partiendo de solamente 2.000 pesetas su montante crece bastante rápidamente y, lo que es más, crece con mayor rapidez a medida que transcurre el tiempo (aún siendo así, podría considerar que no se mantiene a la altura de la inflación).</p>
+
+<p>Esta clase de comportamiento, en donde transcurrido un intervalo de tiempo fijo esa cantidad se multiplica por sí misma en una proporción fija, se denomina crecimiento exponencial, y se calcula elevando un número fijo a la potencia del tiempo.</p>
+
+<p>Suponga que hizo lo siguiente:</p>
+
+<div align="center"><span class="codigo">10 DEF FN a(x) = a <img src="images/shared/arrow_up.png"> x</span></div>
+
+<p>En este caso, <b>a</b> es más o menos fija, mediante sentencias <b>LET</b>; su valor corresponderá al tipo de interés, que sólo cambia periódicamente.</p>
+
+<p>Hay un determinado valor para <b>a</b> que hace a la función <b>FN a</b> especialmente atractiva a los ojos de un matemático y este valor se denomina <b>e</b>. El ZX Spectrum tiene una función denominada <b>EXP</b> definida por:</p>
+
+<div align="center"><span class="codigo">EXP x = e <img src="images/shared/arrow_up.png"> x</span></div>
+
+<p>Lamentablemente, <b>e</b> en sí mismo no es un número especialmente atractivo, pues se trata de un número decimal no recurrente con infinitas cifras. Puede ver sus primeras cifras decimales haciendo</p>
+
+<div align="center"><span class="codigo">PRINT EXP 1</span></div>
+
+<p>porque <b>EXP 1 = e <img src="images/shared/arrow_up.png"> 1 = e</b>. Por supuesto, esto es sólo una aproximación. Nunca puede obtener el número <b>e</b> con exactitud.</p>
+
+<p><b>LN</b></p>
+
+<p>La inversa de una función exponencial es una función logarítmica; el logaritmo (en base <b>a</b>) de un número <b>x</b> es la potencia a la que tiene que elevar <b>a</b> para obtener el número <b>x</b> y se escribe logax. Así, por definición, a <img src="images/shared/arrow_up.png"> logax = x y es también cierto que log (a <img src="images/shared/arrow_up.png"> x) = x.</p>
+
+<p>Puede que ya conozca cómo utilizar los logaritmos de base 10 para efectuar multiplicaciones (dichos logaritmos se denominan logaritmos vulgares). El ZX Spectrum tiene una función <b>LN</b> que calcula logaritmos en base <b>e</b> (que se conocen como logaritmos naturales). Para calcular logaritmos en cualquier otra base, debe dividir el logaritmo natural por el logaritmo natural de la base:</p>
+
+<div align="center"><span class="codigo">logax = LN x / LN a</span></div>
+
+<p><b>PI</b></p>
+
+<p>Dado cualquier círculo, puede determinar su perímetro (la longitud de su contorno, que suele denominarse su circunferencia) multiplicando su diámetro (anchura) por un número llamado PI (letra griega que significa perímetro).</p>
+
+<p>Como el número <b>e</b>, PI es un decimal no periódico y su valor es 3.141592653589... La palabra PI en el Spectrum (en el modo extendido, entonces, <b>M</b>) se toma con el significado de este número. <b>Pruebe PRINT PI</b>.</p>
+
+<p>SIN, COS y TAN, ASN, ACS y ATN</p>
+
+<p>Las funciones trigonométricas miden lo que sucede cuando un punto se desplaza alrededor de un círculo. Consideremos un círculo de radio 1 (este valor del radio no es crítico y se toma para facilitar los cálculos) y un punto que se desplaza alrededor del mismo. El punto comienza su desplazamiento en la posición de las tres en punto y se va moviendo en sentido contrario a las agujas del reloj.</p>
+
+<div align="center"><img src="images/68.png"></div>
+
+<p>Hemos dibujado también dos líneas denominadas ejes que se cruzan en el centro del círculo. La línea horizontal (entre las posiciones de las tres y de las nueve en punto de un reloj) se denomina el eje <b>x</b> y la vertical (entre las posiciones de las 6 y de las 12 en punto) se denomina el eje y.</p>
+
+<p>Para especificar dónde está el punto, dirá cuánto se ha desplazado éste alrededor del círculo a partir de su posición de partida de las tres en punto: llamaremos a esta distancia <b>a</b>. Sabemos que la longitud de la circunferencia del círculo es 2 PI (porque su radio es 1 y su diámetro es, pues, 2), por lo que cuando se haya desplazado una cuarta parte del recorrido del círculo, será a = PI / 2, cuando se haya desplazado la mitad de su recorrido será a = PI y cuando haya realizado el recorrido completo, será a = 2 PI.</p>
+
+<p>Dada la distancia en forma curvilínea alrededor del contorno, <b>a</b>, puede considerarse oportuno conocer otras dos distancias para determinar cuánto se ha desplazado el punto a la derecha del eje <b>y</b> y cuánto por encima del eje <b>x</b>. Estas se denominan coseno y seno de <b>a</b> respectivamente. Las funciones <b>COS</b> y <b>SIN</b> en el ordenador sirven para calcularlas.</p>
+
+<div align="center"><img src="images/69.png"></div>
+
+<p>Tenga presente que si el punto se desplaza a la izquierda del eje <b>y</b>, entonces, el coseno se hace negativo y si el punto pasa a la región por debajo del eje <b>x</b>, el seno se hace negativo.</p>
+
+<p>Otra propiedad es que una vez que <b>a</b> haya alcanzado el valor de 2 PI, el punto vuelve al punto de partida y el seno y el coseno comienzan a tomar los mismos valores que antes:</p>
+
+<table width="170" border="0" align="center">
+<tr>
+<td>
+<span class="codigo">
+SIN (a + 2 * PI) = SIN a<br>
+COS (a + 2 * PI)= COS a
+</span>
+</td>
+</tr>
+</table>
+
+<p>La tangente de <b>a</b> se define como el seno dividido por el coseno y la función correspondiente en el ordenador se denomina <b>TAN</b>.</p>
+
+<p>A veces, necesitamos trabajar con estas funciones a la inversa cuando lo que se da es el valor que toman dichas funciones y hemos de determinar el valor de <b>a</b> correspondiente. Las funciones que permiten realizar esta operación se denominan arco seno (<b>ASN</b> en el ordenador), arco coseno (<b>ACS</b>) y arco tangente (<b>ATN</b>).</p>
+
+<p>En el diagrama del punto que se desplaza alrededor del círculo, examine el radio que une el centro con el punto. Debe ser capaz de constatar que la distancia que hemos llamado <b>a</b>, la distancia que el punto ha recorrido a lo largo del contorno del círculo, es una forma de medir el ángulo a través del cual el radio se ha desplazado alejándose del eje <b>x</b>. Cuando <b>a = PI / 2</b>, el ángulo es de 90º; cuando <b>a = PI</b> el ángulo es de 180º y así sucesivamente, hasta llegar a que sea <b>a = 2 PI</b> en que el ángulo será de 360º. Asimismo, podría hacer caso omiso de los grados y medir el ángulo en función de <b>a</b> solamente y diremos, entonces, que estamos midiendo el ángulo en radianes. Así, PI / 2 radianes = 90 grados, etc.</p>
+
+<p>Siempre debe tener presente que, en el ZX Spectrum, las funciones <b>SIN</b>, <b>COS</b>, etc., trabajan con radianes y no con grados. Para la conversión de grados en radianes, hay que dividir por 180 y multiplicar por PI; para pasar de radianes a grados, tendrá que dividir por PI y multiplicar por 180.</p>
+
+
+<br>
+<div align="center"><a href="capitulo10.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

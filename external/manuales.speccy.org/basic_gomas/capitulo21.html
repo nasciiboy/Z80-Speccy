@@ -1,0 +1,250 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 21</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 21</b></div>
+
+<h2>La Impresora ZX</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>LPRINT, LLIST, COPY</b></li>
+</ul>
+
+<p><b>Nota</b>. Ninguna de estas sentencias es de BASIC estándar, aunque <b>LPRINT</b> se utiliza por otros ordenadores.</p>
+
+<p>Si dispone de una impresora ZX, tendrá algunas instrucciones de su manejo. En este capítulo se estudian las sentencias BASIC necesarias para hacerla trabajar.</p>
+
+<p>Las dos primeras, <b>LPRINT</b> y <b>LLIST</b>, son lo mismo que <b>PRINT</b> y <b>LIST</b>, con la salvedad de que utilizan la impresora en vez de la televisión. (La L inicial es un "accidente histórico" pues cuando se inventó el lenguaje BASIC se acostumbraba a emplear una máquina de escribir eléctrica en lugar de una televisión, por lo que <b>PRINT</b> significaba realmente impresión. Si deseara gran cantidad de datos a la salida, tendría que utilizar una impresora de línea muy rápida unida al ordenador y una sentencia <b>LPRINT</b> con el significado de "impresora de línea <b>PRINT</b>").</p>
+
+<p>Pruebe el siguiente programa a título de ejemplo:</p>
+
+<table align="center" valign="top" border="0" width="300">
+<tr>
+<td align="left">
+<span class="codigo">
+10 LPRINT "Este programa".'<br>
+20 LLIST<br>
+30 LPRINT ' "imprime el juego de caracteres" '<br>
+40 FOR n = 32 TO 255<br>
+50 LPRINT CHR$ n;<br>
+60 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>La tercera sentencia, <b>COPY</b>, imprime una reproducción de la pantalla de televisión. Por ejemplo, teclee <b>LIST</b> para conseguir un listado en la pantalla del programa anterior y teclee:</p>
+
+<div align="center"><span class="codigo">COPY</span></div>
+
+<p>Observe que <b>COPY</b> no actúa con uno de los istados que el ordenador realiza automáticamente, porque se suprime siempre que se obedezca una orden o comando. Debe utilizar primero <b>LIST</b> o bien emplear <b>LLIST</b> y prescindir de <b>COPY</b>.</p>
+
+<p>Siempre puede parar la impresora, cuando esté funcionando, al pulsar la tecla <b>BREAK</b> (<b>CAPS SHIFT y SPACE</b>).</p>
+
+<p>Si ejecuta estas sentencias sin la impresora conectada, se perderá toda la salida y se proseguirá con la siguiente sentencia.</p>
+
+<p>Pruebe el programa siguiente:</p>
+
+<table align="center" valign="top" border="0" width="300">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 31 TO 0 STEP -1<br>
+20 PRINT AT 31 - n, n; CHR$ (CODE "0" + n);<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>Verá una configuración de caracteres que bajan diagonalmente desde la esquina superior derecha hasta que alcanza la parte inferior de la pantalla, entonces el programa pregunta si desea un desplazamiento hacia arriba en forma de rodillo ("scrolling").</p>
+
+<p>Ahora cambie <b>AT 31 - n, n</b> en la línea 20 por <b>TAB n</b>. El programa tendrá exactamente el mismo efecto que antes.</p>
+
+<p>Ahora cambie <b>PRINT</b> en la línea 20 por <b>LPRINT</b>. Esta vez no habrá ninguna pregunta de <b>scroll?</b>, que no debe producirse con la impresora y la configuración se mantendrá directamente con las letras <b>F</b> a <b>O</b>.</p>
+
+<p>Ahora cambie <b>TAB n</b> por <b>AT 31 - n, n</b>, utilizando todavía <b>LPRINT</b>. Esta vez obtendrá una sola línea de símbolos. La razón para la diferencia es que la salida por <b>LPRINT</b> no se imprime de forma directa, sino que se dispone en una memoria intermedia una imagen de una sola línea que el ordenador transmitirá a la impresora cuando llegue a ella. La impresión tiene lugar:</p>
+
+<ol type=i start=1>
+
+<li>
+<p>cuando la memoria intermedia está llena</p>
+</li>
+
+<li>
+<p>después de una sentencia <b>LPRINT</b> que no finalice en una coma o punto y coma</p>
+</li>
+
+<li>
+<p>cuando una coma, apóstrofe o elemento <b>TAB</b> requiere una nueva línea o</p>
+</li>
+
+<li>
+<p>al final de un programa, si se ha dejado algo sin imprimir.</p>
+</li>
+
+</ol>
+
+<p>El apartado (iii) explica la razón por la que nuestro programa con <b>TAB</b> actúa en la forma en que lo hace. Como para <b>AT</b>, se ignora el número de línea y la posición de <b>LPRINT</b> (como la posición <b>PRINT</b>, pero para la impresora en lugar de la televisión) se cambia al número de columna. Un elemento <b>AT</b> nunca puede hacer que una línea se envíe a la impresora.</p>
+
+<p><b>Ejercicio</b></p>
+
+<ol type=0 start=1>
+
+<li>
+<p>Hacer una representación gráfica impresa de <b>SIN</b> ejecutando el programa del capítulo 19 y utilizando, luego, <b>COPY</b>.</p>
+</li>
+
+</ol>
+
+<div align="center"><a href="capitulo21.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

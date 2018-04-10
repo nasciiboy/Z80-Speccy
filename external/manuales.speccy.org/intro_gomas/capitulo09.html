@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>Manual de Introducción Spectrum 48k - Capítulo 9</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+
+<h2>9. ¿Cómo es el interior del ZX Spectrum</h2>
+
+<p>En la ilustración adjunta se muestra cómo es "por dentro" el ZX Spectrum.</p>
+
+<div align="center"><img src="images/figura10.png"></div>
+
+<div align="center">Figura 10</div>
+
+<p>Como puede observar, todo, o casi todo, se nombra por una abreviatura de tres letras. Los elementos rectangulares negros de plástico, con patillas metálicas, son los circuitos integrados que realmente hacen todo el trabajo. En el interior de cada uno hay un elemento cuadrado de 1/4 x 1/4 pulgadas de silicio unido por hilos de conexión a las patillas metálicas. En esa pastilla de silicio hay miles de transistores que constituyen los circuitos electrónicos que son el ordenador.</p>
+
+<p>El cerebro que hay detrás de todo este complejo es la pastilla integrada del procesador, que suele denominarse la CPU (Unidad Central de Proceso). En este caso particular se llama Z80A, que es una versión más rápida del popular Z80.</p>
+
+<p>El procesador controla el ordenador, realiza los cálculos aritméticos, examina qué teclas se han pulsado, decide lo que hay que hacer como consecuencia y, en general, decide lo que el ordenador debe realizar en cada momento. Sin embargo, a pesar de su inteligencia, no podría hacer todo lo anterior por su propia cuenta. No sabe nada acerca del BASIC, ni sobre la aritmética de coma decimal, por ejemplo, y ha de obtener todas las instrucciones de otra pastilla integrada, la ROM (memoria de solo lectura). La ROM contiene una larga lista de instrucciones que forman un programa de ordenador y que comunica al procesador lo que ha de hacer en todas las circunstancias previsibles. Este programa está escrito no en BASIC sino en lo que se denomina código-máquina del Z80 y adopta la forma de una larga secuencia de números. Hay, en total, 16384 (16 * 1024) y esta es la razón de que al BASIC del ZX Spectrum se le denomina, a veces, un 16K BASIC (1K equivale a 1024).</p>
+
+<p>Aunque hay pastillas integradas similares en otros ordenadores, esta secuencia particular de instrucciones es exclusiva para el ZX Spectrum y se escribió especialmente para el mismo.</p>
+
+<p>Las ocho pastillas integradas próximas a ella son para la memoria. Esta es RAM (memoria de acceso aleatorio) y hay otras dos pastillas que actúan de forma muy vinculada a las anteriores. LA RAM es en donde el ordenador almacena la información que precisa conservar, algunos programas en BASIC, las variables, la imagen para la pantalla de televisión y diversos otros elementos que mantienen el registro del estado del ordenador.</p>
+
+<p>La pastilla grande es la SCL (Lógica Ordenador Sinclair). Actúa realmente como el "centro de comunicaciones", que se cerciora de que todo lo que requiere el procesador se realiza oportunamente. Asimismo, lee la memoria para ver de qué consta la imagen de televisión y envía las señales adecuadas al dispositivo de interconexión ("interface") de TV.</p>
+
+<p>El codificador PAL es un grupo completo de componentes que convierte la salida de televisión de la pastilla integrada de lógica en una forma apropiada para las televisiones en color.</p>
+
+<p>El regulador convierte la tensión algo errática de la fuente de alimentación en una tensión de 5 voltios absolutamente constante.</p>
+
+<p>Con esto concluimos este manual de introducción. Si considera que lo ha comprendido bien, le recomendamos que pase a la lectura del manual de programación en BASIC.</p>
+
+<br>
+<div align="center"><a href="capitulo09.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

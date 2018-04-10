@@ -1,0 +1,531 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 14</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 14</b></div>
+
+<h2>El juego de caracteres</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>CODE</b>, <b>CHR$</b></li>
+<li><b>POKE</b>, <b>PEEK</b></li>
+<li><b>USR</b></li>
+<li><b>BIN</b></li>
+</ul>
+
+<p>Las letras, dígitos, signos de puntuación, etc., que pueden aparecer en cadenas se denominan caracteres y constituyen el alfabeto, o juego de caracteres, que emplea el ZX Spectrum. La mayoría de estos caracteres son símbolos simples, pero hay algunos más, denominados tokens (términos simbólicos) que representan a palabras completas, tales como <b>PRINT</b>, <b>STOP</b>, <b><></b>, etc.</p>
+
+<p>Hay 256 caracteres y cada uno tiene un código entre 0 y 255. Hay una lista completa de ellos en el Apéndice A. Para la conversión entre códigos y caracteres, hay dos funciones <b>CODE</b> y <b>CHR$</b>.</p>
+
+<p><b>CODE</b> se aplica a una cadena y proporciona el código del primer carácter en la cadena (o 0 si la cadena está vacía).</p>
+
+<p><b>CHR$</b> se aplica a un número y proporciona la cadena de caracteres única cuyo código es ese número.</p>
+
+<p>Este programa proporciona la impresión del juego completo de caracteres:</p>
+
+<div align="center"><span class="codigo">10 FOR a = 32 TO 255: PRINT CHR$ A;: NEXT a</span></div>
+
+<p>En la parte superior puede ver un espacio, 15 símbolos y signos de puntuación, los diez dígitos, siete símbolos más, las mayúsculas, seis símbolos más, las minúsculas y cinco símbolos adicionales. Estos son todos (salvo £ y &copy;) tomados de un juego de caracteres, de gran uso, conocido como ASCII (que es la abreviatura de American Standard Codes for Information Interchange - Códigos normalizados americanos para intercambio de información); ASCII asigna también códigos numéricos a estos caracteres y estos son los códigos que utiliza el ZX Spectrum.</p>
+
+<p>El resto de los caracteres no forman parte del ASCII y son peculiares para el ZX Spectrum. Los primeros entre ellos son un espacio y 15 configuraciones de manchas negras y blancas. Se denominan los símbolos gráficos y pueden utilizarse para el dibujo de imágenes. Puede introducirlos a partir del teclado, con el empleo de lo que se llama modo de gráficos. Si pulsa <b>GRAPHICS</b> (<b>CAPS SHIFT</b> con <b>9</b>), entonces, el cursor cambiará a <span class="inverse">&nbsp;G&nbsp;</span>. Ahora, las teclas para los dígitos 1 a 8 darán los símbolos de gráficos; por sí mismas, proporcionan los símbolos dibujados en las teclas y con una tecla de cambio pulsada, dan el mismo símbolo pero invertido, esto es, el negro se hace blanco y viceversa.</p>
+
+<p>Prescindiendo de las teclas de cambio, el dígito 9 le lleva de nuevo al modo normal (<b>L</b>) y el dígito 0 es <b>DELETE</b>.</p>
+
+<p>Los dieciséis símbolos gráficos son los siguientes:</p>
+
+<table border="0" align="center" cellspacing="20">
+<tr>
+<td align="center"><span class="texto">Símbolo</span></td>
+<td align="center"><span class="texto">Código</span></td>
+<td align="center"><span class="texto">Cómo se obtiene</span></td>
+<td align="center"><span class="texto">Símbolo</span></td>
+<td align="center"><span class="texto">Código</span></td>
+<td align="center"><span class="texto">Cómo se obtiene</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/128.png"></td>
+<td align="center"><span class="texto">128</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>8</span></td>
+<td align="center"><img src="images/shared/143.png"></td>
+<td align="center"><span class="texto">143</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 8</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/129.png"></td>
+<td align="center"><span class="texto">129</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>1</span></td>
+<td align="center"><img src="images/shared/142.png"></td>
+<td align="center"><span class="texto">142</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 1</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/130.png"></td>
+<td align="center"><span class="texto">130</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>2</span></td>
+<td align="center"><img src="images/shared/141.png"></td>
+<td align="center"><span class="texto">141</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 2</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/131.png"></td>
+<td align="center"><span class="texto">131</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>3</span></td>
+<td align="center"><img src="images/shared/140.png"></td>
+<td align="center"><span class="texto">140</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 3</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/132.png"></td>
+<td align="center"><span class="texto">132</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>4</span></td>
+<td align="center"><img src="images/shared/139.png"></td>
+<td align="center"><span class="texto">139</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 4</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/133.png"></td>
+<td align="center"><span class="texto">133</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>5</span></td>
+<td align="center"><img src="images/shared/138.png"></td>
+<td align="center"><span class="texto">138</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 5</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/134.png"></td>
+<td align="center"><span class="texto">134</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>6</span></td>
+<td align="center"><img src="images/shared/137.png"></td>
+<td align="center"><span class="texto">137</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 6</span></td>
+</tr>
+
+<tr>
+<td align="center"><img src="images/shared/135.png"></td>
+<td align="center"><span class="texto">135</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>7</span></td>
+<td align="center"><img src="images/shared/136.png"></td>
+<td align="center"><span class="texto">136</span></td>
+<td align="center"><span class="texto"><span class="inverse">&nbsp;G&nbsp;</span><br>cambiada 7</span></td>
+</tr>
+
+</table>
+
+<p>Después de los símbolos de gráficos, observará lo que parece ser otra copia del alfabeto de la A a la U. Son caracteres que puede redefinir usted mismo, aunque cuando la máquina se enciende por primera vez constituyen un conjunto de letras. Se denominan gráficos definidos por el usuario. Puede introducirlos desde el teclado pasando al modo de gráficos y utilizando luego las teclas de letras de A a U.</p>
+
+<p>Para definir un carácter nuevo, siga esta recomendación: defina un carácter para indicar <b>PI</b>.</p>
+
+<ol type=i start=1>
+<li>
+<p>Decida cuál quiere que sea el aspecto del carácter. Cada carácter tiene un cuadrado de puntos de 8 x 8, cada uno de los cuales puede mostrar el color del papel o el color de la tinta (ver el fascículo de introducción). Debe dibujar un diagrama similar al adjunto, con cuadros negros para el color de tinta.</p>
+<div align="center"><img src="images/pag093.png"></div>
+<p>Hemos dejado un margen de un cuadro alrededor de todo el perímetro, porque todas las demás letras tienen dicho margen (salvo las letras minúsculas con rabos, en las que dicho rabo va a la derecha hasta la parte inferior).</p>
+</li>
+<li>
+<p>Decida qué gráfico definido por el usuario ha de indicar <b>PI</b>. Por ejemplo, la correspondiente a <b>P</b>, de modo que si pulsa <b>P</b> en el modo de gráficos obtendrá <b>PI</b>.</p>
+</li>
+<li>
+<p>Almacene la nueva configuración. Cada gráfico definido por el usuario tiene su configuración almacenada como ocho números, uno por cada fila. Puede escribir cada uno de estos números como <b>BIN</b> seguida por ocho "0" o "1" (0 para papel, 1 para tinta) de modo que los ocho números para nuestro carácter <b>PI</b> son:</p>
+<div align="center"><span class="codigo">
+BIN 00000000<br>
+BIN 00000000<br>
+BIN 00000010<br>
+BIN 00111100<br>
+BIN 01010100<br>
+BIN 00010100<br>
+BIN 00010100<br>
+BIN 00000000
+</span></div>
+<p>(si tiene conocimientos sobre números binarios, entonces, se dará cuenta de que <b>BIN</b> se utiliza para escribir un número en el sistema binario en lugar de hacerlo en el sistema decimal habitual).</p>
+</ol>
+
+<p>Estos ocho números se almacenan en memoria, en ocho lugares, cada uno de los cuales tiene una dirección. La dirección del primer byte, o grupo de ocho dígitos, es <b>USR "P"</b> (<b>P</b> porque es lo que elegimos en (ii)), la del segundo es <b>USR "P" + 1</b> y así sucesivamente, hasta el octavo, que tiene la dirección <b>USR "P" + 7</b>.</p>
+
+<p><b>USR</b> es, en este caso, una función para convertir un argumento de cadena en la dirección del primer byte en memoria para el correspondiente gráfico definido por el usuario. El argumento de cadena debe ser un carácter único que puede ser el gráfico definido por el usuario, o la correspondiente letra (en mayúsculas o en minúsculas). Hay otro uso para <b>USR</b>, cuando su argumento es un número, que se tratará más adelante.</p>
+
+<p>Aun cuando no lo comprenda, el siguiente programa lo hará por usted:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 FOR n = 0 TO 7<br>
+20 INPUT fila: POKE USR "P" + n, fila<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>Interrumpirá la introducción de datos (<b>INPUT</b>) ocho veces para permitirle teclear los ocho números <b>BIN</b> anteriores. Ha de teclearlos en el orden correcto, comenzando por la fila superior.</p>
+
+<p>La sentencia <b>POKE</b> almacena un número directamente en la posición de memoria, eludiendo los mecanismos normalmente utilizados por el BASIC. La opuesta de <b>POKE</b> es <b>PEEK</b> y nos permite examinar el contenido de una posición de memoria, aunque no altere realmente el contenido de esa posición. Se tratarán adecuadamente en el capitulo 28.</p>
+
+<p>Después de los gráficos definidos por el usuario vienen los 'tokens' (términos simbólicos).</p>
+
+<p>Habrá observado que no hemos impreso los primeros 32 caracteres con códigos 0 a 31. Estos son caracteres de control. No producen nada que pueda imprimirse y ya que no tienen efecto sobre la pantalla, o se emplean para controlar algo distinto de ésta se imprime <b>?</b> para indicar que no los entiende. Se describen con más detalle en el Apéndice A.</p>
+
+<p>Tres que utiliza la televisión son los correspondientes a los códigos 6, 8 y 13; después de todo <b>CHR$ 8</b> es el único que probablemente encuentre de utilidad.</p>
+
+<p><b>CHR$ 6</b> imprime espacios en exactamente la misma forma que una coma en una sentencia <b>PRINT</b>, por ejemplo:</p>
+
+<div align="center"><span class="center">PRINT 1; CHR$ 6;2</span></div>
+
+<p>hace lo mismo que</p>
+
+<div align="center"><span class="center">PRINT 1,2</span></div>
+
+<p>Evidentemente, esta no es una forma muy clara de utilizarlo. Una forma más sutil es:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">LET a$="1" + CHR$ 6 + "2"<br>
+PRINT a$
+</span>
+</td>
+</tr>
+</table>
+
+<p><b>CHR$ 8</b> es "retroceso": desplaza la posición de la impresión un espacio hacia atrás. Pruebe:</p>
+
+<div align="center"><span class="codigo">PRINT "1234"; CHR$ 8; "5"</span></div>
+
+<p>que imprime <b>1235</b>.</p>
+
+<p><b>CHR$ 13</b> es "nueva línea": desplaza la posición de impresión al principio de la línea siguiente.</p>
+
+<p>En la televisión se utilizan también los correspondientes a los códigos 16 a 23; estos se explican en los capítulos 15 y 16. Todos los caracteres de control se indican en el Apéndice A.</p>
+
+<p>Con el empleo de códigos para los caracteres podemos ampliar el concepto de "ordenación alfabética" para cubrir las cadenas que contengan cualquier tipo de carácter no sólo letras. Si en lugar de pensar sobre la base del alfabeto habitual de 26 letras, utilizamos el alfabeto ampliado de 256 caracteres, en el mismo orden que sus códigos, el principio es exactamente el mismo. Por ejemplo, estas cadenas están en el orden alfabético del ZX Spectrum. (Observe la característica bastante singular de que las letras minúsculas van después de todas las mayúsculas; así, "a" va después de "Z"; también cuentan los espacios)</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="texto">
+CHR$ 3 + "JARDINES ZOOLOGICOS"<br>
+CHR$ 8 + "CAZA DE ARMADILLOS"<br>
+" AAAARGH!"<br>
+"(Observación entre paréntesis)"<br>
+"100"<br>
+"129.95 inc. IVA"<br>
+"AASVOGEL" (BUITRE SUDAFRICANO)<br>
+"Aardvark" (armadillo)<br>
+"PRINT"<br>
+"Zoo'<br>
+"[interpolación]"<br>
+"aasvogel"<br>
+"zoo'<br>
+"zoología
+</span>
+</td>
+</tr>
+</table>
+
+<p>He aquí la regla para determinar en qué orden aparecen dos cadenas. Primero, comparar los primeros caracteres. Si son diferentes, entonces, uno de ellos tendrá su código inferior al del otro y la cadena a la cual pertenecen será la anterior (inferior) de las dos cadenas. Si son iguales, entonces, hay que pasar a la comparación de los caracteres siguientes. Si, en este proceso, una de las cadenas se acaba antes que la otra, entonces, esa cadena es la anterior; de cualquier otro modo, deben ser iguales.</p>
+
+<p>Las relaciones <b>=</b>, <b><</b> , <b>></b> , <b><=</b> , <b>>=</b> y <b><></b> se utilizan tanto para cadenas como para números: <b><</b> significa "va antes" y <b>></b> significa "va después", por lo que</p>
+
+<table align="center" border="0">
+<tr>
+<td align="justify">
+<span class="texto">
+"<b>AA man</b>" < "<b>AARDVARK</b>"<br>
+"<b>AARDVARK</b>" > "<b>AA man</b>"
+</span>
+</td>
+</tr>
+</table>
+
+<p>son ambas verdaderas.</p>
+
+<p><b><=</b> y <b>>=</b> actúan de la misma forma que lo hacen para números, de modo que:</p>
+
+<div align="center"><span class="codigo">"<b>La misma cadena</b>" <= "<b>La misma cadena</b>"</span></div>
+
+<p>es verdadera, pero</p>
+
+<div align="center"><span class="codigo">"<b>La misma cadena</b>" < "<b>La misma cadena</b>"</span></div>
+
+<p>Es falsa.</p>
+
+<p>Experimente lo anterior con el empleo del programa siguiente, que introduce dos cadenas y las pone en orden.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 INPUT "Teclee dos cadenas:" ,a$,b$<br>
+20 IF a$ > b$ THEN LET c$=a$: LET a$=b$: LET b$=c$<br>
+30 PRINT a$;" ";<br>
+40 IF a$ < b$ THEN PRINT "<"; GO TO 60<br>
+50 PRINT " = "<br>
+60 PRINT " "; b$<br>
+70 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observe cómo hemos de introducir <b>c$</b> en la línea 20 cuando permutamos <b>a$</b> y <b>b$</b>.</p>
+
+<div align="center"><span class="codigo">LET a$ = b$: LET b$ = a$</span></div>
+
+<p>no tendría el efecto deseado.</p>
+
+<p>El programa siguiente introduce los gráficos definidos por el usuario para mostrar las piezas de ajedrez:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="texto">
+P para peón<br>
+R para torre<br>
+N para caballo<br>
+B para alfil<br>
+K para rey<br>
+Q para reina
+</texto>
+</td>
+</tr>
+</table>
+
+<p>Piezas de ajedrez.</p>
+
+<table align="center">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;5 LET b = BIN 01111100: LET c = BIN 00111000: LET d = BIN 00010000<br>
+10 FOR n = 1 TO 6: READ p$: REM 6 piezas<br>
+20 FOR f = 0 TO 7: REM lectura de pieza en 8 bytes<br>
+30 READ a: POKE USR p$ + F, a<br>
+40 NEXT f<br>
+50 NEXT n<br>
+100 REM alfil<br>
+110 DATA "b", 0, d, BIN 00101000, BIN 01000100<br>
+120 DATA BIN 01101100, c, b, 0<br>
+130 REM rey<br>
+140 DATA "k", 0, d, c, d<br>
+150 DATA c, BIN 01000100, c, 0<br>
+160 REM torre<br>
+170 DATA "r", 0, BIN 01010100, b, c<br>
+180 DATA c, b, b, 0<br>
+190 REM reina<br>
+200 DATA "q", 0, BIN 01010100, BIN 00101000, d<br>
+210 DATA BIN 01101100, b, b, 0<br>
+220 REM peón<br>
+230 DATA "p", 0, 0, d, c<br>
+240 DATA c, d, b, 0
+250 REM caballo<br>
+260 DATA "n", 0, d, c, BIN 01111000<br>
+270 DATA BIN 00011000, c, b, 0
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observe que 0 puede utilizarse en lugar de BIN 00000000.</p>
+
+<p>Cuando haya ejecutado el programa, examine las piezas pasando al modo de gráficos.</p>
+
+<p><b>Ejercicios</b></p>
+
+<ol type=0 start=1>
+<li>
+<p>Imagine el espacio para un símbolo dividido en cuatro partes como un pastel. Entonces, si cada cuarta parte puede ser negra o blanca, hay 2 x 2 x 2 x 2 = 16 posibilidades. Encontrarlas todas en el juego de caracteres.</p>
+</li>
+
+<li>
+<p>Ejecute este programa:</p>
+<table align="center">
+<tr>
+<td align="left">
+<span class="codigo">
+10 INPUT a<br>
+20 PRINT CHR$ a;<br>
+30 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+<p>Si experimenta con este programa, encontrará que <b>CHR$ a</b> está redondeado al número entero más próximo y si <b>a</b> no está en el intervalo de 0 a 255, entonces, el programa se interrumpe con informe de error <b>B Integer out of range</b> (B entero fuera de margen).</p>
+</li>
+<li>
+<p>¿Cuál de los dos es el inferior?</p>
+<table align="center">
+<tr>
+<td align="left">
+<span class="texto">
+"EVIL"<br>
+"evil"
+</span>
+</td>
+</tr>
+</table>
+</li>
+
+<li>
+<p>Indique cómo modificar el programa para establecer los gráficos definidos por el usuario de modo que utilice las sentencias <b>READ</b> y <b>DATA</b> en lugar de la sentencia <b>INPUT</b>.</p>
+</li>
+
+
+</ol>
+
+<br>
+<div align="center"><a href="capitulo14.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 7</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 7</b></div>
+
+<h2>Expresiones</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li>Operaciones: +, -, *, /. </li>
+<li>Expresiones, notación científica, nombres de variables.</li>
+</ul>
+
+<p>Ya se han visto algunas de las formas en que el ZX Spectrum puede calcular con números. Puede realizar las cuatro operaciones aritméticas <b>+, -, *</b> y <b>/</b> (recuerde que <b>*</b> se utiliza para la multiplicación y <b>/</b> se emplea para la división) y puede determinar el valor de una variable, dado su nombre.</p>
+
+<p>El ejemplo:</p>
+
+<div align="center"><span class="codigo">LET TAX=suma*15/100</span></div>
+
+<p>proporciona apenas una indicación del muy importante hecho de que pueden combinarse estos cálculos. Dicha combinación, como <b>suma*15/100</b>, se denomina una expresión, que es una forma abreviada de comunicar al ordenador que haga varios cálculos, uno después del otro. En nuestro ejemplo, la expresión <b>suma*15/100</b> significa "busque el valor de la variable denominada 'suma', multiplíquele por 15 y divida por 100.</p>
+
+<p>Si todavía no lo ha hecho, recomendamos que examine el fascículo de introducción para ver como el ZX Spectrum trabaja con los números y el orden en que evalúa el ordenador las expresiones matemáticas.</p>
+
+<p>Para recapitular:</p>
+
+<p>Las multiplicaciones y las divisiones se efectúan primero. Estas operaciones tienen una prioridad más alta que la suma y la resta. En relación entre ellas, la multiplicación y la división tienen la misma prioridad, lo que significa que ambas operaciones se efectúan en orden de izquierda a derecha. Una vez realizadas, se sigue con las sumas y las restas que también tienen la misma prioridad y que, por tanto, se efectúan en orden de izquierda a derecha.</p>
+
+<p>Aunque todo lo que realmente necesita saber es si una operación tiene una prioridad más alta o más baja que otra, el ordenador realiza esto con la asignación de un número entre 1 y 16 para representar la prioridad de cada operación: <b>*</b> y <b>/</b> tienen prioridad 8 y <b>+</b> y <b>-</b> tiene prioridad 6.</p>
+
+<p>Este orden de cálculo es absolutamente rígido, pero puede eludirlo con el empleo de paréntesis: cualquier cosa entre paréntesis se evalúa primero y luego se trata como un número único.</p>
+
+<p>Las expresiones son útiles porque, siempre que el ordenador esté esperando que usted le introduzca un número, puede darle una expresión en lugar de tal número y el ordenador dará la solución. Las excepciones a esta regla son tan pocas que se establecerán explícitamente en cada caso.</p>
+
+<p>Puede reunir tantas cadenas (o variables de cadena) como quiera en una sola expresión y si lo requiere, incluso puede utilizar paréntesis.</p>
+
+<p>Realmente tenemos la obligación de decirle lo que puede y lo que no puede utilizar como nombre  de variables. Como ya dijimos, el nombre de una variable de cadena ha de ser una sola letra seguida por <b>$</b> y el nombre de la variable de control de un bucle <b>FOR-NEXT</b> debe ser una sola letra, pero los nombres de las variables númericas ordinarias son mucho más libres. Puede utilizar ya sean letras o dígitos, siempre y cuando comiencen por una letra. Puede poner espacios si con ellos se facilita la lectura, pero n han de considerarse como parte del nombre. Asimismo, no se establece ninguna diferencia para el nombre si lo escribe en mayúsculas o en minúsculas.</p>
+
+<p>Damos algunos ejemplos de los nombres de variables que están permitidos:</p>
+
+<ul>
+<li><b>x</b></li>
+<li><b>t42</b></li>
+<li><b>Este nombre es tan largo que nunca será capaz de volverlo a escribir sin cometer un error</b></li>
+<li><b>ahora somo seis</b></li>
+<li><b>aHOrasoMosSEIS </b>(estos dos últimos nombres se consideran los mismos y se refieren a la misma variable.)</li>
+</ul>
+
+<p>Lo que sigue no se permite como nombres de variables:</p>
+
+<ul>
+<li><b>2001</b> (comienza con un dígito)</li>
+<li><b>3 osos</b> (empieza con un dígito)</li>
+<li><b>M*A*S*H</b> (* no es una letra ni un dígito)</li>
+<li><b>Segado-Angel</b> (- no es una letra ni un dígito)</li>
+</ul>
+
+<p>Las expresiones númericas pueden representarse por un número y un exponente (una vez más, haga referencia al fascículo de introducción). Pruebe lo siguiente para constatarlo:</p>
+
+<table align="center" width="400" border="0"> 
+<tr>
+<td>
+<span class="codigo">
+PRINT 2.34e0<br>
+PRINT 2.34e1<br>
+PRINT 2.34e2
+</span>
+</td>
+</tr>
+</table>
+
+<p>y así sucesivamente, hasta</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo"> 
+PRINT 2.34e15
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observará que, después de unos instantes, el ordenador comienza también a utilizar la notación científica. Esta es la razón por la que no más de catorce caracteres pueden emplearse para escribir un número. Análogamente, pruebe:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td> 
+<span class="codigo">
+PRINT 2.34e-1<br>
+PRINT 2.34e-2
+</span>
+</td>
+</tr>
+</table>
+
+<p>y así sucesivamente.</p>
+
+<p><b>PRINT</b> da solamente ocho dígitos significatios de un número. Pruebe:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td> 
+<span class="codigo">
+PRINT 4294967295,4294967295-429e7
+</span>
+</td>
+</tr>
+</table>
+
+<p>Ello prueba que el ordenador puede retener los dígitos de 4294967295, aún cuando no esté preparado para visualizarlos todos a la vez.</p>
+
+<p>El ZX Spectrum utiliza la aritmética de coma flotante, lo que significa que mantiene separados los dígitos de un número (su mantisa) y la posición del punto (el exponente). Ello no es siempre exacto, incluso para números enteros. Teclee:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td> 
+<span class="codigo">
+PRINT 1e10+1-1e10,1e10-1e10+1
+</span>
+</td>
+</tr>
+</table>
+
+<p>Los números se calculan con una precisión de 9 1/2 dígitos, por lo que 1e10 es demasiado grande para ser almacenado con una precisión absolutamente correcta. La inexactitud (realmente casi 2) es superior a 1 y por ello los números 1e10 y 1e10+1 son para el ordenador aparentemente iguales.</p>
+
+<p>Para un ejemplo todavía más peculiar, teclee:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td> 
+<span class="codigo">
+PRINT 5e9+1-5e9
+</span>
+</td>
+</tr>
+</table>
+
+<p>En este caso,la inexactitud en 5e9 es sólo de casi 1 y el 1 a añadir se redondea, por tanto, a 2. Los números 5e9+1 y 5e9+2 son para el ordenador aparentemente iguales.</p>
+
+<p>El mayor número entero que puede obtenerse con exactitud completa es 2³² -1 (o 4.294.967.295).</p>
+
+<p>La cadena "" sin ningún carácter en absoluto se denomina la cadena nula o vacía. Recuerde que los espacios son significativos y una cadena vacía no es lo mismo que una que no contenga nada sino espacios.</p>
+
+<p>Pruebe:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+PRINT "No has acabado "El Quijote" todavía?"
+</span>
+</td>
+</tr>
+</table>
+
+</p>Cuando pulse <b>ENTER</b>, obtendrá el signo de interrogación parpadeante que indica que hay un error en algún lugar de la línea. Cuando el ordenador encuentra las dobles comillas al principio de "El Quijote", imagina que ellas marcan el final de la cadena "No has acabado" y, entonces, no puede determinar lo que significa "El Quijote".</p>
+
+<p>Hay un subterfugio para superar este inconveniente: siempre que requiera escribir un símbolo de comillas de cadena en la parte media de una cadena, debe escribirlo por dos veces, como sigue:</p>
+
+<table align="center" width="400" border="0">
+<tr>
+<td>
+<span class="codigo">
+PRINT "No has acabado ""El Quijote"" todavía?"
+</span>
+</td>
+</tr>
+</table>
+
+<p>Como puede observar por lo que se imprime en la pantalla, cada doble comilla está realmente sólo una vez; las ha escrito dos veces simplemente para que el ordenador las identifique de forma adecuada.</p>
+
+<div align="center"><a href="capitulo07.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

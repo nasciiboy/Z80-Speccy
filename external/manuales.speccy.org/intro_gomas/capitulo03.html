@@ -1,0 +1,264 @@
+<html>
+<head>
+<title>Manual de Introducción Spectrum 48k - Capítulo 3</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+
+<h2>3. Números, letras y el ordenador como calculadora</h2>
+
+<p>Ya hemos visto cómo decirle al ordenador que imprima letras y caracteres gráficos en la pantalla, con el empleo de <b>PRINT</b>. También hemos visto que <b>ENTER</b> ha de emplearse para decirle al ordenador que ejecute la orden que se acaba de introducir por el teclado. Desde ahora en adelante, no utilizaremos <b>ENTER</b> en el manual cada vez que se utilice una orden o "comando", sino que supondremos que la ha tecleado automáticamente al final de la línea.</p>
+
+<p>Los números pueden manipularse por el ordenador más fácilmente que las letras. En el capítulo anterior aludimos a ello al explicar que el ordenador espera un número después de <b>PRINT</b>, si no se emplean comillas.</p>
+
+<p>Por ello, si tecleamos:</p>
+
+<div align="center"><span class="codigo">PRINT 2</span></div>
+
+<p>el número 2 aparecerá en la pantalla.</p>
+
+<p>Es posible mezclar letras y números:</p>
+
+<div align="center"><span class="codigo">PRINT 2, "ABC"</span></div>
+
+<p>Obsérvese que hay una separación, o intervalo, en la pantalla entre el <b>2</b> y <b>ABC</b>. Ahora, teclee:</p>
+
+<div align="center"><span class="codigo">PRINT 2;"ABC"</span></div>
+
+<p>y luego:</p>
+
+<div align="center"><span class="codigo">PRINT 2 "ABC"</span></div>
+
+<p>Utilizando una coma entre los elementos después de <b>PRINT</b> se les espacia en 16 columnas, si se emplea punto y coma no se dejan espacios y si no se pone nada, se produce un error.</p>
+
+<p><b>PRINT</b> puede utilizarse también con las funciones matemáticas en el teclado. De hecho, el ZX Spectrum puede emplearse como una calculadora electrónica.</p>
+
+<p>Por ejemplo:</p>
+
+<div align="center"><span class="codigo">PRINT 2 + 2</span></div>
+
+<p>La respuesta aparece en la parte superior de la pantalla. Compare esto con:</p>
+
+<div align="center"><span class="codigo">PRINT "2 + 2"</span></div>
+
+<p>Es posible combinarlos para obtener algo más útil. Pruebe:</p>
+
+<div align="center"><span class="codigo">PRINT "2 + 2 = "; 2 + 2</span></div>
+
+<p>Pruebe algunas otras expresiones aritméticas como:</p>
+
+<table width="80" border="0" align="center" valign="top">
+<tr>
+<td align="left">
+<span class="codigo">
+PRINT 3 - 2<br>
+PRINT 4 / 5<br>
+PRINT 12 * 2
+</span>
+</td>
+</tr>
+</table>
+
+
+<p>El asterisco <b>*</b> se utiliza como un signo de multiplicación en lugar de <b>x</b> para evitar confusiones con la letra <b>x</b> y el símbolo <b>/</b> se emplea en vez del signo de división.</p>
+
+<p>Experimente con muchos cálculos diferentes. Si lo desea, puede utilizar números negativos o números con puntos decimales (comas).</p>
+
+<p>Si llega a emplear las 22 líneas de la parte superior de la pantalla, entonces observará que sucede algo interesante: todo se desplazará una línea hacia arriba y se perderá la línea superior. Esto se denomina "scrolling" (desplazamiento en pantalla).</p>
+
+<p>Los cálculos no se realizan siempre en el orden en que lo podría esperar. Como un ejemplo, pruebe:</p>
+
+<div align="center"><span class="codigo">PRINT 2 + 3 * 5</span></div>
+
+<p>Podría esperar que la secuencia fuera: tomar 2, sumar 3, obteniendo 5 y luego multiplicar por 5, obteniendo 25. Sin embargo, esto no es así. Las multiplicaciones y las divisiones también se realizan antes de las sumas y de las restas, por lo que la expresión '2 + 3 * 5' significa 'tomar 3 y multiplicar por 5, obteniendo 15 y luego sumarle 2, obteniendo 17'. El número 17 debe ser la respuesta visualizada en la pantalla.</p>
+
+<p>Dado que las multiplicaciones y las divisiones se realizan primero, decimos que tienen prioridad más alta que la suma y la resta. Entre sí, la multiplicación y la división tienen la misma prioridad, lo que significa que las multiplicaciones y las divisiones se realizan en un orden de izquierda a derecha. Una vez efectuadas estas operaciones, nos quedarán las sumas y las restas y como estas últimas tienen también la misma prioridad entre sí, las realizaremos en el orden de izquierda a derecha.</p>
+
+<p>Veamos cómo el ordenador realizaría la operación siguiente:</p>
+
+<div align="center"><span class="codigo">PRINT 20 - 2 * 9 + 4 / 2 * 3</span></div>
+
+<br>
+
+<table align="center" width="500" border="0">
+<tr>
+<td align="left" width="30%">
+<span class="codigo">
+&nbsp;&nbsp;i 20 - 2 * 9 + 4 / 2 * 3<br>
+&nbsp;ii 20 - 18 + 4 / 2 * 3<br>
+iii 20 - 18 + 2 * 3<br>
+</span>
+</td>
+<td align="left" valign="center">
+<span class="codigo">
+Primero realizamos las multiplicaciones y las divisiones en orden de izquierda a derecha.
+</span>
+</td>
+</tr>
+<tr>
+<td align="left" width="30%">
+<span class="codigo">
+iv 20 - 18 + 6<br>
+&nbsp;v 2 + 6<br>
+vi 8
+</span>
+</td>
+<td align="left" valign="center">
+<span class="codigo">
+y luego las sumas y las restas
+</span>
+</td>
+</tr>
+</table>
+
+<p>Aunque todo lo que realmente necesita saber es si una operación tiene una prioridad más alta o más baja que otra, el ordenador lo hace aplicando un número entre 1 y 16 para representar la prioridad de cada operación. Así: <b>*</b> y <b>/</b> tienen prioridad 8, y <b>+</b> y <b>-</b> tienen prioridad 6.</p>
+
+<p>Este orden de cálculo es absolutamente rígido, pero puede modificarlo empleando paréntesis; algo entre paréntesis se evalúa primero y luego se trata como un solo número, de modo que:</p>
+
+<div align="center"><span class="codigo">PRINT 3 * 2 + 2</span></div>
+
+<p>da la respuesta 6 + 2=8 pero:</p>
+
+<div align="center"><span class="codigo">PRINT 3 * (2 + 2)</span></div>
+
+<p>proporciona la respuesta 3 * 4 = 12.</p>
+
+<p>A veces es útil dar al ordenador expresiones como estas porque cuando el ordenador está esperando que le introduzca un número, puede proporcionarle, en cambio, una expresión y le dará la respuesta correspondiente. Las excepciones a esta regla son tan pocas que se indicarán explícitamente en cada caso.</p>
+
+<p>Puede escribir números con comas decimales (utilícese el punto ortográfico) y también puede emplear la notación científica, como es bastante frecuente en las calculadoras de bolsillo. En esta notación, después de un número ordinario (con o sin punto decimal) escribirá una parte exponencial constituida por la letra <b>e</b>, luego quizá <b>-</b> y a continuación un número. La parte exponencial desplaza la coma decimal hacia la derecha (o hacia la izquierda, para un exponente negativo), con lo que se multiplica (o se divide) el número original por 10 unas cuantas veces. Por ejemplo:</p>
+
+<table align="center" width=130" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+2.34e0 = 2.34<br>
+2.34e3 = 2340<br>
+2.34e-2 = 0.0234 etc.
+</span>
+</td>
+</tr>
+</table>
+
+<p>(pruebe a imprimir estas expresiones en el ordenador). Este es uno de los pocos casos en que no puede sustituir un número por una expresión; por ejemplo, no puede escribir:</p>
+
+<div align="center"><span class="codigo">(1.34 + 1) e (6/2)</span></div>
+
+<p>También puede tener expresiones cuyos valores no sean números, sino cadenas de letras. Ha visto ya la forma más sencilla de esta cadena en muchas ocasiones y esta es la cadena de letras escritas entre comillas. Es bastante análoga a la forma más simple de expresión numérica, que no es otra cosa que un número escrito sin ningún otro elemento. Lo que todavía no ha visto es el uso del signo <b>+</b> con cadenas (pero no los signos <b>-</b>, <b>*</b> ó <b>/</b>, por lo que no hay ningún problema de prioridades en este caso). Para sumar cadenas basta unirlas una después de otra. Un ejemplo es:</p>
+
+<div align="center"><span class="codigo">PRINT "jers" + "ey cow"</span></div>
+
+<p>Puede "sumar" tantas cadenas como quiera en una sola expresión y si así lo necesita, puede emplear incluso paréntesis.</p>
+
+<br>
+<div align="center"><a href="capitulo03.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+        </select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Introducción Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

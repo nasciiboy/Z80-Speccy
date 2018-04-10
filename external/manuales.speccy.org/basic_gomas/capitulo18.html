@@ -1,0 +1,343 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 18</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em; text-align: justify;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 18</b></div>
+
+<h2>Movimiento</h2>
+
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>PAUSE, INKEY$, PEEK</b></li>
+</ul>
+
+<p>Con bastante frecuencia, deseará conseguir que el programa tenga una duración determinada y para tal fin, encontrará de utilidad la sentencia <b>PAUSE</b>.</p>
+
+<div align="center"><span class="codigo">PAUSE n</span></div>
+
+<p>interrumpe el cómputo y congela el contenido de pantalla durante <b>n</b> imágenes de la televisión (a 50 imágenes por segundo en Europa o 60 en América). El valor <b>n</b> puede ser de hasta 65535, lo que le proporciona poco menos de 22 minutos; si <b>n = 0</b>, entonces, significa "Pausa para siempre".</p>
+
+<p>Una pausa siempre puede acortarse pulsando una tecla (tenga presente que un espacio con <b>CAPS SHIFT</b> producirá también una interrupción). Ha de pulsar la tecla después de que haya comenzado la pausa.</p>
+
+<p>El siguiente programa actúa sobre el segundero de un reloj.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;10 REM Primero dibujamos el cuadrante del reloj<br>
+&nbsp;&nbsp;20 FOR n = 1 TO 12<br>
+&nbsp;&nbsp;30 PRINT AT 10 - 10 * COS (n / 6 * PI), 16 + 10 * SIN (n / 6 * Pl); n<br>
+&nbsp;&nbsp;40 NEXT n<br>
+&nbsp;&nbsp;50 REM Ahora ponemos en marcha el reloj<br>
+&nbsp;&nbsp;60 FOR t = 0 TO 200000: REM t es el tiempo en segundos<br>
+&nbsp;&nbsp;70 LET a = t / 30 * PI : REM a es el ángulo del segundero en radianes<br>
+&nbsp;&nbsp;80 LET sx = 80 * SIN a: LET sy = 80 * COS a<br>
+200 PLOT 128, 88: DRAW OVER 1; sx, sy: REM dibujo del segundero<br>
+210 PAUSE 42<br>
+220 PLOT 128, 88: DRAW OVER 1; sx, sy: REM borrar segundero<br>
+400 NEXT t
+</span>
+</td>
+</tr>
+</table>
+
+<p>La "cuerda" de este reloj se acabará en unas 55,5 horas debido a la línea 60, pero fácilmente puede prolongar su período de funcionamiento. Observe cómo la temporización está controlada por la línea 210. Podría esperar <b>PAUSE 50</b> para hacerle dar un "tic-tac" de un segundo, pero el cómputo lleva algo de tiempo también y ha de permitírselo. Esto es mejor hacerlo por tanteo, sincronizando el reloj del ordenador con uno real y ajustando la línea 210 hasta que concuerden (no puede hacer esta operación con una gran exactitud; un ajuste de un cuadro en un segundo es el 2% o la mitad de una hora en un día).</p>
+
+<p>Hay una manera mucho más exacta de medir el tiempo, utilizando el contenido de determinadas posiciones de memoria. Los datos almacenados se recuperan con el empleo de <b>PEEK</b>. En el capítulo 25 se explicará con detalle. La expresión utilizada es:</p>
+
+<div align="center"></span class="codigo">(65536 * PEEK 23674 + 256 * PEEK 23673+ PEEK 23672) / 50</span>/div
+
+<p>Nos da el número de segundos desde que el ordenador se puso en marcha (hasta unos 3 días y 21 horas, cuando retorna a 0).</p>
+
+<p>Damos a continuación, un programa de reloj para aplicar lo anterior:</p>
+
+<table align="center" border="0" width="400">
+<tr>
+<td align="left">
+<span class="codigo">
+&nbsp;&nbsp;10 REM Primero, dibujamos el cuadrante del reloj<br>
+&nbsp;&nbsp;20 FOR n = 1 TO 12<br>
+&nbsp;&nbsp;30 PRINT AT 10 - 10 * COS (n / 6 * PI), 16 + 10 * SIN (n / 6 * PI); n<br>
+&nbsp;&nbsp;40 NEXT n<br>
+&nbsp;&nbsp;50 DEF FN t() = INT ((65536 * PEEK 23674 + 256 * PEEK 23673 + PEEK 23672) / 50): REM número de segundos desde puesta en marcha<br>
+100 REM Ahora ponemos en marcha el reloj<br>
+110 LET t1 = FN t()<br>
+120 LET a = t1 / 30 * PI : REM a es el ángulo del segundero en radianes<br>
+130 LET sx = 72 * SIN a: LET sy = 72 * COS a<br>
+140 PLOT 131, 91: DRAW OVER 1; sx, sy: REM dibujo segundero<br>
+200 LET t = FN t()<br>
+210 IF t <= t1 THEN GO TO 200: REM esperar hasta tiempo para siguiente segundero<br>
+220 PLOT 131, 91: DRAW OVER 1; sx, sy: REM borrar anterior segundero<br>
+230 LET t1 = t: GO TO 120
+</span>
+</td>
+</tr>
+</table>
+
+<p>El reloj interno que utiliza este método debe tener una exactitud de un 0,01 % mientras el ordenador esté ejecutando su programa, o lo que es lo mismo, 10 segundos por día; pero se detiene temporalmente siempre que haga <b>BEEP</b>, o una operación de cinta de cassette, o utilice !a impresora o cualquiera de los demás elementos suplementarios de equipos que pueda emplear con el ordenador. Todas estas operaciones le harán perder tiempo.</p>
+
+<p>Los números <b>PEEK 23674</b>, <b>PEEK 23673</b> y <b>PEEK 23672</b> se retienen en el interior del ordenador y se utilizan para el contaje en 1 / 50 de segundo. Cada uno está entre 0 y 255 y se incrementan gradualmente a través de todos los números desde 0 a 255; después de 255 pasan directamente a 0.</p>
+
+<p>El que se incrementa más frecuentemente es <b>PEEK 23672</b>. Cada 1 / 50 de segundo se incrementa en 1. Cuando está en 255, el siguiente incremento le lleva a 0 y, al mismo tiempo, impulsa a <b>PEEK 23673</b> hasta 1. Cuando (cada 250 / 50 segundos) <b>PEEK 23673</b> se lleva desde 255 a 0, impulsa, a su vez, a <b>PEEK 23674</b> en 1. Esto debe ser suficiente para explicar por qué opera adecuadamente la anterior expresión.</p>
+
+<p>Ahora, veámoslo detenidamente. Suponga que nuestros tres números son 0 (para PEEK <b>23674</b>), 255 (para <b>PEEK 23673</b>) y 255 (para <b>PEEK 23672</b>). Ello significa que al cabo de unos 21 minutos después del encendido, nuestra expresión debiera proporcionar:</p>
+
+<div align="center"><span class="codigo">(65536 * 0 + 256 * 255 + 255) / 50 =1310,7</span></div>
+
+<p>Pero hay un peligro oculto. La siguiente vez que haya un contaje de 1 / 50 segundo, los tres números cambiarán a 1, 0 y 0. Frecuentemente, esto sucederá cuando esté a medio camino de la evaluación de la expresión: el ordenador evaluaría <b>PEEK 23674</b> como 0, pero, entonces, cambian los otros dos a 0 antes de que pueda aplicarles la función <b>PEEK</b>. La respuesta sería, entonces:</p>
+
+<div align="center"><span class="codigo">(65536 * 0 + 256 * 0 + 0) / 50 = 0</span></div>
+
+<p>que está desesperadamente equivocada.</p>
+
+<p>Una sencilla regla para evitar este problema es evaluar la expresión dos veces en sucesión y tomar la respuesta más grande.</p>
+
+<p>Si examina detenidamente el anterior programa puede ver que cumple con dicha regla de forma implícita.</p>
+
+<p>Veamos un artificio para aplicar la regla. Defina las funciones:</p>
+
+<table align="center" border="0" width="400">
+<tr>
+<td align="left">
+<span class="codigo">
+10 DEF FN m(x,y) = (x + y + ABS (x - y)) / 2: REM la más grande de x y de y<br>
+20 DEF FN u() = (65536 * PEEK 23674 + 256 * PEEK 23673 + PEEK 23672) / 50: REM tiempo, puede estar equivocado<br>
+30 DEF FN t() = (FN u()): REM tiempo, correcto
+</span>
+</td>
+</tr>
+</table>
+
+<p>Puede cambiar los tres números del contador de modo que proporcionen el tiempo real en lugar del tiempo desde que el computador se puso en marcha. Por ejemplo, para ajustar el tiempo a las 10:00 de la mañana, se percatará de que equivale a 10 * 60 * 60 * 50 = 1800000 cincuentavas partes de un segundo y que:</p>
+
+<div align="center"><span class="codigo">1800000 = 65536 * 27 + 256 * 119 + 64</span></div>
+
+<p>Para poner los tres números a 27, 119 y 64, hace:</p>
+
+<div align="center"><span class="codigo">POKE 23674,27: POKE 23673,119: POKE 23672,64</span></div>
+
+<p>En los países con frecuencias de red de 60 hertzios, estos programas deben sustituir 50 por 60, en donde sea adecuado.</p>
+
+<p>La función <b>INKEY$</b> (que no tiene ningún argumento) efectúa la lectura del teclado. Si está pulsando exactamente una tecla (o una tecla <b>SHIFT</b> y cualquier otra tecla), entonces, el resultado es el carácter que dicha tecla da en modo <b>L</b>; de no ser así, en cualquier otro modo, el resultado es la cadena vacía.</p>
+
+<p>Pruebe el siguiente programa que opera como una máquina de escribir:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 IF INKEY$ <> "" THEN GO TO 10<br>
+20 IF INKEY$ = "" THEN GO TO 20<br>
+30 PRINT INKEY$;<br>
+40 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>En este caso, la línea 10 espera a que retire su dedo del teclado y la línea 20 espera a que pulse una nueva tecla.</p>
+
+<p>Recuerde que a diferencia con <b>INPUT</b>, <b>INKEY$</b> no le espera. Por ello no teclee <b>ENTER</b>, pero, por otra parte, si no teclea nada en absoluto, entonces, habrá perdido su oportunidad.</p>
+
+<p><b>Ejercicios</b></p>
+
+<ol type=0 start=1>
+
+<li>
+<p>¿Qué sucede si omite la línea 10 en el programa de máquina de escribir?</p>
+</li>
+
+<li>
+<p>Otra forma de utilizar <b>INKEY$</b> es una conjunción con <b>PAUSE</b>, como en este programa de máquina de escribir de alternativa.</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 PAUSE 0<br>
+20 PRINT INKEY$;<br>
+30 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+
+<p>Para hacer este trabajo ¿por qué es esencial que una pausa no deba acabar si le encuentra pulsando una tecla cuando da comienzo?</p>
+</li>
+
+<li>
+<p>Adaptar el programa del segundero de modo que indique también el minutero y la aguja de las horas, dibujándolos cada minuto. Si se considera ambicioso, disponga que cada cuarto de hora haga cualquier "efecto especial" (por ejemplo, podría hacer que diera las campanadas del Big Ben con <b>BEEP</b>). Vea el siguiente capítulo.</p>
+</li>
+
+<li>
+<p>(Para sádicos). Pruebe este programa:</p>
+
+<table align="center" border="0">
+<tr>
+<td align="left">
+<span class="codigo">
+10 IF INKEY$ = "" THEN GO TO 10<br>
+20 PRINT AT 11, 14; "OUCH!"<br>
+30 IF INKEY$ <> "" THEN GO TO 30<br>
+40 PRINT AT 11, 14; "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<br>
+50 GO TO 10
+</span>
+</td>
+</tr>
+</table>
+</li>
+
+</ol>
+
+<br><br>
+<div align="center"><a href="capitulo18.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>

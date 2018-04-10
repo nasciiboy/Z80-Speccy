@@ -1,0 +1,323 @@
+<html>
+<head>
+<title>Manual Basic Spectrum 48k - Capítulo 4</title>
+<meta name="author" content="Miguel">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+	p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #0000; text-indent: 1em;}
+	.inverse { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color:#ffffff;background-color:black;}
+	.texto { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; color: #000000}
+	.codigo { font-family: Courier, monotype; font-size: 12px; font-style: normal; font-variant: normal; color:black; background-color:blue:}
+//-->
+</style>
+</head>
+<body text="#000000" bgcolor="#d9dddd" link="#000099" vlink="#990099" alink="#000099" font="" face="Verdana,Helvetica,Arial,Times">
+<a name="inicio">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+<table cellpadding="4" cellspacing="0" border="0" width="700" align="center" bgcolor="#ffffff">
+<tr>
+<td>
+<span class="texto">
+<div align="right"><b>Capítulo 4</b></div>
+
+<h2>Iteración con bucles</h2>
+
+<h4>Resumen</h4>
+
+<ul>
+<li><b>FOR, NEXT</b></li>
+<li><b>TO, STEP</b></li>
+</ul>
+
+<p>Suponga que desea introducir 5 números y sumarlos juntos. Una forma (que no le recomendamos que haga la introducción por el teclado a no ser que sea "masoquista") es escribir:</p>
+
+<table align="center" width="300">
+<tr>
+<td>
+<span class="codigo">
+10 LET total=0<BR>
+20 INPUT a<BR>
+30 LET total=total+a<br>
+40 INPUT a<BR>
+50 LET total=total+a<br>
+60 INPUT a<BR>
+70 LET total=total+a<br>
+80 INPUT a<BR>
+90 LET total=total+a<br>
+100 INPUT a<BR>
+110 LET total=total+a<br>
+120 PRINT total
+</span>
+</td>
+</tr>
+</table>
+
+<p>Este método no es una buena práctica de programación. Puede ser tolerable para cinco números, pero puede imaginar cuán tedioso sería el procedimiento para sumar diez números y en el caso de un centenar sería prácticamente imposible.</p>
+
+<p>Mucho mejor es establecer una variable para contar hasta 5 y luego, interrumpir el programa como en el desarrollo siguiente (que sí le instamos a introducir por el teclado):</p>
+
+<table align="center" width="300">
+<tr>
+<td>
+<span class="codigo">
+10 LET total=0<br>
+20 LET cuenta=1<br>
+30 INPUT a<br>
+40 REM cuenta=numero de veces que a se ha introducido hasta ahora<br>
+50 LET total=total+a<br>
+60 LET cuenta=cuenta+1<br>
+70 IF cuenta<=5 THEN GO TO 30<br>
+80 PRINT total
+</span>
+</td>
+</tr>
+</table>
+
+<p>Observe cuán fácil sería cambiar la línea 70 de modo que este programa sume diez números o incluso un centenar.</p>
+
+<p>Esta clase de contaje es tan útil que hay dos comandos especiales para hacerlo más fácil: los comandos u órdenes <b>FOR</b> y <b>NEXT</b>. Siempre se utilizan conjuntamente.</p>
+
+<p>Con el empleo de estos nuevos medios, el programa que acaba de introducir por el teclado realiza exactamente lo mismo que:</p>
+
+<table align="center" width="300">
+<tr>
+<td>
+<span class="codigo">
+10 LET total=0<br>
+20 FOR c=1 TO 5<br>
+30 INPUT a<br>
+40 REM c=numero de veces que a se ha introducido hasta ahora<br>
+50 LET total=total+a<br>
+60 NEXT c<br>
+80 PRINT total
+</span>
+</td>
+</tr>
+</table>
+
+<p>(Para conseguir este programa a partir del anterior, ha de corregir las líneas 20, 40, 60 y 70, <b>TO</b> es <b>SYMBOL SHIFT</b> con <b>F</b>).</p>
+
+<p>Observe que hemos cambiado <b>cuenta</b> por <b>c</b>. La variable de contaje (o variable de control) de un bucle <b>FOR-NEXT</b> debe contener una sola letra para su nombre.</p>
+
+<p>El efecto de este programa es que <b>c</b> opera a través de los valores 1 (el valor inicial), 2,3,4 y 5 (el límite) y para cada uno, se ejecutan las líneas 30, 40 y 50. A continuación, cuando <b>c</b> ha terminado con sus cinco valores, se ejecuta la línea 80.</p>
+
+<p>Una sutileza adicional es que la variable de control no tiene que incrementarse en 1 en cada ocasión, sino que puede cambiar este 1 a cualquier otro valor que desee mediante el empleo de una parte <b>STEP</b> en el comando <b>FOR</b>. La forma más general para un comando <b>FOR</b> es:</p>
+
+<p><b>FOR</b> variable de control = valor inicial <b>TO</b> límite <b>STEP</b> paso</p>
+
+<p>en donde la variable de control es una sola letra y el valor incial, límite y paso son, en su totalidad, elementos que puede calcular el ordenador como números (como los números reales, o sumas o los nombres de variables numéricas). Por consiguiente, si sustituye la línea 20 en el programa por:</p>
+
+<div align="center"><span class="codigo">20 FOR c=1 TO 5 STEP 3/2</span></div>
+
+<p>entonces <b>c</b> operará con los valores 1, 2,5 y 4. Observe que no tiene que limitarse a números enteros y también, que la variable de control no tiene que alcanzar el límite exactamente (mantiene la iteración por bucle en tanto que sea inferior o igual al límite).</p>
+
+<p>Pruebe el siguiente programa para imprimir los números desde 1 a 10 en orden inverso.</p>
+
+<table align="center" width="300">
+<tr>
+<td>
+<span class="codigo">
+10 FOR n=10 TO 1 STEP -1<br>
+20 PRINT n<br>
+30 NEXT n
+</span>
+</td>
+</tr>
+</table>
+
+<p>Anteriormente dijimos que el programa mantiene la iteración por bucle mientras que la variable de control sea inferior o igual al límite. Si profundiza en lo que ello significaría en este caso, constatará que no se trata de algo banal. La regla normal ha de modificarse cuando el paso es negativo pues, entonces, el programa realiza la iteración por bucle en tanto que la variable de control sea superior o igual al límite</p>
+
+<p>Debe tener cuidado si está realizando dos bucles <b>FOR-NEXT</b> conjuntamente, uno en el interior del otro. Pruebe el siguiente programa, que imprime los números correspondientes a un juego completo de dominó (de seis puntos).</p>
+
+<table align="center" width="500">
+<tr>
+<td>
+<span class="codigo">
+10 FOR m=0 to 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\</br>
+20 FOR n=0 to m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+30 PRINT m;":";n;""; | bucle n | bucle m<br>
+40 NEXT n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+50 PRINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+60 NEXT m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/
+</span>
+</td>
+</tr>
+</table>
+
+<p>Puede observar que el bucle <b>n</b> está completamente en el interior del bucle <b>m</b> (se dice que están adecuadamente "anidados" o encajados). Lo que debe evitarse es tener dos bucles <b>FOR-NEXT</b> que se solapen sin estar completamente uno en el interior del otro, somo es el casos que se indica a continuación:</p>
+
+<table align="center" width="500">                                                                             <tr>                                                                                                           <td>
+<span class="codigo">
+5 REM este programa es erroneo<br>
+10 FOR m=0 to 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\</br>
+20 FOR n=0 to m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+30 PRINT m;":";n;""; | bucle m | bucle n<br>
+40 NEXT m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+50 PRINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+60 NEXT n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/
+</span>                                                                                                        </td>
+</tr>                                                                                                          </table>
+
+<p>Dos bucles <b>FOR-NEXT</b> deben estar uno en el interior del otro o completamente separados.</p>
+
+<p>Otra cosa a evitar es saltar a la parte media de un bucle <b>FOR-NEXT</b> desde el exterior. La variable de control sólo está adecuadamente establecida cuando ejecuta su sentencia <b>FOR</b> y si la omitiera, la sentencia <b>NEXT</b> produciría confusión en el ordenador. Probablemente obtendrá un informe de error con el mensaje <b>NEXT without FOR</b> (<b>NEXT</b> sin <b>FOR</b>) o <b>variable not found</b> (variable no encontrada).</p>
+
+<p>No hay nada que le detenga con el empleo de <b>FOR</b> y de <b>NEXT</b> en un comando directo. Por ejemplo, pruebe:</p>
+
+<div align="center"><span class="codigo">FOR m=0 to 10: PRINT m: NEXT m</span></div>
+
+<p>A veces, puede utilizarle como una forma (algo artificial) de eludir la restricción de que no puede realizar la función <b>GO TO</b> en cualquier lugar en el interior de un comando (porque un comando no tiene ningún número de línea). Por ejemplo:</p>
+
+<div align="center"><span class="codigo">FOR m=0 to 1: STEP 0: INPUT a: PRINT a: NEXT m</span></div>
+
+<p>El paso (<b>STEP</b>) de cero, en este caso, hace que el comando (u orden) se repita a si mismo "eternamente".</p>
+
+<p>Este procedimiento no es recomendable, porque si se produce un error, entonces habrá perdido el comando y tendrá que volverle a introducir por el teclado (y <b>CONTINUE</b> ya no actuará).</p>
+
+<h4>Ejercicios</h4>
+
+<ol>
+<li><p>Una variable de control no sólo tiene un nombre y un valor, como una variable ordinaria, sino tambien un límite, un paso y una referencia a la sentencia después de la sentencia <b>FOR</b> correspondiente. Persuádase a sí mismo de que cuando se ejecuta la sentencia <b>FOR</b> toda esta información esté disponible (utilizando el valor inicial como el primer valor que toma la variable) y también de que esta información es suficiente para que la sentencia <b>NEXT</b> conozca en cuanto incrementar el valor, si ha de saltar hacia atrás y, de ser así, a dónde debe efectuarse el salto.</p><br></li>
+<li><p>Ejecutar el tercer programa anterior y luego, teclee:</p>
+<div align="center"><span class="codigo">PRINT c</span></div><br>
+<p>¿Por qué la respuesta 6 y no 5?</p>
+<p>(Respuesta: El comando <b>NEXT</b> en la línea 60 se ejecuta 5 veces y cada vez se añade 1 a <b>c</b>. La última vez, <b>c</b> se hace 6 y luego, el comando <b>NEXT</b> decide no realizar el bucle hacia atrás, sino seguir adelante, al haber <b>c</b> sobrepasado su límite).</p>
+<p>¿Qué sucede si pone <span class="codigo">STEP 2</span> en la línea 20?</p><br></li>
+<li><p>Cambie el tercer programa de modo que en lugar de sumar automáticamente cinco números, le pida que introduzca cuantos números quiera sumar. Cuando ejecute este programa, ¿que sucede si introduce 0, con el signifacado de que no quiere sumar ningún número? ¿Por qué podría esperar que ello causara problemas al ordenador, aunque esté claro lo que usted quiere decir? (El ordenador ha de efectuar una búsqueda para el comando <b>NEXT c</b>, que no suele ser habitualmente necesario). De hecho, todo ello se ha tenido en cuenta.</p><br></li>
+<li><p>En la línea 10 del cuarto programa anterior, cambie 10 por 100 y ejecute el programa. Imprimirá los números desde 100 a 89 en la pantalla y luego comunicará el mensaje <b>scroll?</b> en la parte inferior de la pantalla. Ello le da una oportunidad de ver los números que están a punto de desaparecer de la pantalla por la parte superior. Si pulsa <b>n, STOP</b> o la tecla <b>BREAK</b>, el programa se interrumpirá con el informe <b>D BREAK-CONT repeats</b>. Si pulsa cualquier otra tecla, entonces el ordenador imprimirá otras 22 líneas y le interrogará de nuevo con la misma pregunta anterior.</p></br></li>
+<li><p>Suprima le línea 30 del cuarto programa. Cuando ejecute el nuevo programa así abreviado, el ordenador imprimirá el primer número y se parará con el mensaje <b>0 OK</b>. Si teclea:</p>
+<div align="center"><span class="codigo">NEXT n</span></div><br><p>el programa recorrerá una vez el bucle e imprimirá el número siguiente.</p></li>
+</ol>
+
+<div align="center"><a href="capitulo04.html#inicio">Subir</a></div>
+
+</span>
+</td>
+</tr>
+</table>
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="author" content="Miguel">
+  <script language="JavaScript">
+<!--
+function enlace(url)
+{
+document.location = url.options[url.selectedIndex].value;
+}
+-->
+  </script>
+</head>
+<body>
+<table cellpadding="2" bgcolor="d9dddd" cellspacing="0" border="0" width="700"
+ align="center">
+  <tbody>
+    <tr>
+      <td valign="middle" rowspan="1" colspan="1">
+      <form>
+        <select onchange="enlace(this)" name="select" target="main"
+ title="Selecciona capítulo" align="center">
+        <option value="" selected="selected">-Selecciona capítulo-</option>
+        <option value="index.html">Indice</option>
+        <option value="capitulo01.html">Capítulo 1</option>
+        <option value="capitulo02.html">Capítulo 2</option>
+	<option value="capitulo03.html">Capítulo 3</option>
+	<option value="capitulo04.html">Capítulo 4</option>
+	<option value="capitulo05.html">Capítulo 5</option>
+	<option value="capitulo06.html">Capítulo 6</option>
+	<option value="capitulo07.html">Capítulo 7</option>
+	<option value="capitulo08.html">Capítulo 8</option>
+	<option value="capitulo09.html">Capítulo 9</option>
+	<option value="capitulo10.html">Capítulo 10</option>
+	<option value="capitulo11.html">Capítulo 11</option>
+	<option value="capitulo12.html">Capítulo 12</option>
+        <option value="capitulo13.html">Capítulo 13</option>
+	<option value="capitulo14.html">Capítulo 14</option>
+	<option value="capitulo15.html">Capítulo 15</option>
+	<option value="capitulo16.html">Capítulo 16</option>
+	<option value="capitulo17.html">Capítulo 17</option>
+	<option value="capitulo18.html">Capítulo 18</option>
+	<option value="capitulo19.html">Capítulo 19</option>
+	<option value="capitulo20.html">Capítulo 20</option>
+	<option value="capitulo21.html">Capítulo 21</option>
+	<option value="capitulo22.html">Capítulo 22</option>
+	<option value="capitulo23.html">Capítulo 23</option>
+	<option value="capitulo24.html">Capítulo 24</option>
+	<option value="capitulo25.html">Capítulo 25</option>
+	<option value="capitulo26.html">Capítulo 26</option>
+	</select>
+      </form>
+      </td>
+      <td valign="middle" width="74%" align="right">
+      <h4><font color="#000000">Manual de Basic Spectrum 48k.</font></h4>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>
